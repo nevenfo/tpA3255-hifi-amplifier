@@ -46,3 +46,9 @@ Sans projet ouvert et sans instance KiCad avec IPC actif, les capacités réelle
 - `check_kicad_ui` : succès, `running=true`, `ipc_responsive=true`.
 
 La limitation initiale UI/IPC est donc levée. Le contenu du schéma et du PCB reste à construire et à valider via MCP.
+
+## Limitation de sauvegarde observée
+
+Avec KiCad 10.0 ouvert, API activée sur `ipc://C:\Users\FlowUP\AppData\Local\Temp\kicad\api.sock`, la lecture explicite du projet, du schéma vide et le viewer fonctionnent. En revanche, `save_project` échoue parce que l’appel IPC `GetOpenDocuments` est rejeté avec `AS_UNHANDLED`. Un probe d’écriture schématique explicite doit déterminer si la limitation porte seulement sur ce wrapper ou sur toute persistance MCP.
+
+Le probe a créé et vérifié le symbole custom `LM5010ASD`, mais le placeur n’a pas résolu sa bibliothèque projet. Après enregistrement GUI comme `HifiAmp_TPA3255_Local`, les erreurs ont alterné entre `no_project_path_found` et `Library 'HifiAmp_TPA3255_Local' not found`. Le défaut bloque la capture sans édition directe interdite des fichiers KiCad.

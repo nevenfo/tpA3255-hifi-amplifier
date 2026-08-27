@@ -72,6 +72,8 @@ Architecture initiale reprise de l’EVM :
 - `LM5010ASD/NOPB` : buck PVDD vers +15 V.
 - `LM2940IMP-12/NOPB` : +15 V vers +12 V.
 - `TLV1117-33IDCY` : +12 V vers +3.3 V.
+
+Les références, boîtiers et valeurs vérifiés pour la capture sont centralisés dans `docs/power-block.md`.
 - Filtre du rail AOP : `L6=10 µH/0.8 A`, `C81=10 µF`, puis découplages locaux `0.1 µF + 10 µF`.
 
 Valeurs buck d’ancrage EVM : `L1=100 µH/1.5 A`, `R2=182 kΩ`, `R39=4.99 kΩ`, `R40=1.00 kΩ`, `C1=0.047 µF`, `C2=0.1 µF/100 V`, `C3=1 µF/100 V`, `C4=2.2 µF/100 V`, `C6=4.7 µF`, `C7=5600 pF`, `C12=4700 pF`, `C13=0.1 µF`, `C39=47 µF/63 V`. Les diodes et leurs références exactes doivent être confirmées avant capture.
@@ -136,7 +138,6 @@ L’EVM utilise à la place `10 µH + 1 µF` avec Coilcraft `MA5172-AE`; ces deu
 - `NEEDS_DATA: choix mécanique du potentiomètre double 10 kΩ logarithmique ; nécessaire pour empreinte et durée de vie.`
 - `NEEDS_DATA: références exactes des inductances 15 µH et condensateurs 680 nF ; nécessaires pour saturation, DCR, pertes et empreintes.`
 - `NEEDS_DATA: protection 48 V inversion/surtension et TVS ; le clamp doit rester compatible avec le maximum absolu TPA3255.`
-- `NEEDS_DATA: référence exacte des diodes du buck LM5010A extraite de la BOM TI avant capture.`
 - `NEEDS_DATA: common-mode garanti du TPA3255 ; non spécifié explicitement, mitigé par les condensateurs de liaison EVM.`
 - `NEEDS_DATA: dissipateur, pression/interface thermique, boîtier, ventilation et température ambiante.`
 - `NEEDS_DATA: réponse/EMI du filtre LC, stabilité toutes charges et performance OPA1612 dans cette topologie ; validation par simulation ciblée puis prototype/mesure.`
