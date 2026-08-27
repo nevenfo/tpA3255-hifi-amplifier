@@ -12,6 +12,8 @@ Iout_rms = sqrt(P/R) = sqrt(100/8) = 3.536 Arms
 Iout_peak = sqrt(2) × Iout_rms = 5.000 A
 ```
 
+Les deux inverseurs `−1` en cascade donnent deux branches opposées de 1.190 Vrms, donc 2.380 Vrms différentiels. À l’entrée nominale EVM de 2 Vrms SE, chaque broche reçoit 2 Vrms, soit 5.657 Vpp, sous la limite TI de 7 Vpp par broche ; le différentiel vaut alors 4 Vrms.
+
 ## Budget DC indicatif
 
 Pour 200 W audio et une hypothèse de calcul de 90 % d’efficacité :

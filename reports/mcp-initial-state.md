@@ -37,3 +37,12 @@ Catalogue observé : 202 outils, 21 toolsets ; toolset actif lors du probe : `pr
 ## Limitation initiale
 
 Sans projet ouvert et sans instance KiCad avec IPC actif, les capacités réelles d’édition, ERC, PCB et DRC restent non validées. Le prochain probe doit créer puis ouvrir le projet via MCP, lancer/joindre KiCad, et répéter `check_kicad_ui`.
+
+## Reprise live après création du squelette
+
+- Les fichiers `HifiAmp_TPA3255.kicad_pro`, `HifiAmp_TPA3255.kicad_sch` et `HifiAmp_TPA3255.kicad_pcb` sont présents et non suivis par Git au jalon.
+- `launch_kicad_ui` : succès.
+- `open_project` : succès sur `HifiAmp_TPA3255.kicad_pro`.
+- `check_kicad_ui` : succès, `running=true`, `ipc_responsive=true`.
+
+La limitation initiale UI/IPC est donc levée. Le contenu du schéma et du PCB reste à construire et à valider via MCP.

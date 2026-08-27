@@ -60,7 +60,7 @@ A0.3.
 - [x] A1.3 Calculer niveaux, gains, impédances, headroom, rails et budget de puissance.
 - [x] A1.4 Définir alimentation auxiliaire, séquencement, RESET/MUTE/FAULT et protections.
 - [x] A1.5 Justifier filtre LC, découplages, thermique, EMI et connectique.
-- [ ] A1.6 Enregistrer chaque inconnue critique comme `NEEDS_DATA` et valider la revue d’architecture.
+- [x] A1.6 Enregistrer chaque inconnue critique comme `NEEDS_DATA` et valider la revue d’architecture.
 
 ### Validation
 

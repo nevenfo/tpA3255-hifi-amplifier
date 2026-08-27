@@ -2,40 +2,42 @@
 
 ## Phase actuelle
 
-Phase A — Inspection et architecture.
+Phase B — Schéma KiCad.
 
 ## Tâche actuelle
 
-A1.6 — Enregistrer les inconnues critiques et valider la revue d’architecture.
+B1.1 — Valider le squelette de projet via MCP et préparer le premier bloc schématique.
 
 ## Dernière tâche validée
 
-A1.5 — Architecture initiale et calculs documentés.
+A1.6 — Architecture initiale revue et inconnues critiques enregistrées.
 
 Validation :
-- Sources TI primaires référencées avec documents et sections dans `docs/architecture.md`.
-- BTL stéréo, interface OPA1612 +1/−1, rails, contrôle, LC et stack-up initial définis.
-- Niveaux, budget DC et coupures calculés dans `reports/calculs-initiaux.md`.
-- Huit `NEEDS_DATA` explicites interdisent encore un statut fabricable.
+- Sources TI primaires référencées dans `docs/architecture.md`.
+- BTL stéréo, niveaux, rails, contrôle, LC, stack-up et protections initiales définis.
+- Interface corrigée selon l’EVM : deux inverseurs `−1` en cascade par canal, `+12V-OA`, `VMID=6 V`.
+- Huit `NEEDS_DATA` explicites interdisent encore un statut fabricable mais pas une capture marquée.
+- `launch_kicad_ui`, `open_project` et `check_kicad_ui` ont validé l’UI et l’IPC live.
 
 ## Décisions actives
 
-- Toutes les opérations KiCad directes passent exclusivement par le spécialiste `kicad-control` et le MCP privé.
-- Recherche documentaire initiale limitée aux sources officielles TI ; toute donnée critique non vérifiée devient `NEEDS_DATA`.
+- Toutes les opérations KiCad directes passent exclusivement par `kicad-control` et le MCP privé.
 - Aucun PCB avant gate ERC explicitement validé.
+- Les composants non figés restent marqués et sans prétention de fabricabilité.
 
 ## Blocage actif
 
-Aucun ; revue A1.6 puis création du projet via MCP.
+Aucun.
 
 ## Fichiers / zones utiles
 
-- `plan.md`
-- `progress.md`
-- `reports/mcp-initial-state.md`
+- `HifiAmp_TPA3255.kicad_pro`
+- `HifiAmp_TPA3255.kicad_sch`
+- `HifiAmp_TPA3255.kicad_pcb`
 - `docs/architecture.md`
 - `reports/calculs-initiaux.md`
+- `reports/mcp-initial-state.md`
 
 ## NEXT ACTION
 
-A1.6 — Revoir les `NEEDS_DATA`, valider l’architecture initiale, puis demander à `kicad-control` de créer et ouvrir le projet via MCP et de prouver l’IPC live.
+B1.1 — Inspecter le squelette ouvert via MCP, confirmer schéma/PCB vides et enregistrables, puis préparer B1.2 alimentation/connectique sans commencer le PCB.

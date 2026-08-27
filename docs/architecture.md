@@ -8,6 +8,7 @@ Date de gel initial : 2026-08-27. Ce document précède toute création de symbo
 - TPA3255EVM, guide TI `SLOU441`, juillet 2016 : <https://www.ti.com/lit/ug/slou441/slou441.pdf>
 - TPA3255EVM, schéma TI `SLAR129A` : <https://www.ti.com/lit/pdf/slar129>
 - OPA1612, datasheet TI `SBOS450C`, révision C, août 2014 : <https://www.ti.com/lit/ds/symlink/opa1612.pdf>
+- Conversion single-ended vers différentiel pour TPA32xx, note TI `SLAA719` : <https://www.ti.com/lit/an/slaa719/slaa719.pdf>
 
 Les datasheets ont été vérifiées comme documents officiels TI actuels au 2026-08-27. L’EVM sert d’ancre de validation ; ses choix ne sont pas copiés aveuglément.
 
@@ -19,8 +20,8 @@ Les datasheets ont été vérifiées comme documents officiels TI actuels au 202
   └─ buck 15 V ── LDO 12 V
                   ├─ VDD/GVDD du TPA3255
                   ├─ filtre LC ── +12V-OA ── VMID 6 V
-                  │                         ├─ RCA L ─ volume 10 kΩ log ─ OPA1612 (+1/−1)
-                  │                         └─ RCA R ─ volume 10 kΩ log ─ OPA1612 (+1/−1)
+                  │                         ├─ RCA L ─ volume 10 kΩ log ─ OPA1612 (−1 puis −1)
+                  │                         └─ RCA R ─ volume 10 kΩ log ─ OPA1612 (−1 puis −1)
                   └─ LDO 3.3 V ── supervision/commande
 ```
 
@@ -45,9 +46,9 @@ TI publie 150 W/8 Ω à 1 % THD+N en BTL ; 2 × 100 W/8 Ω est donc dans l’env
 - Potentiomètre double `10 kΩ` logarithmique placé avant les buffers. La référence mécanique finale reste à sélectionner.
 - Deux `OPA1612AIDR` SOIC-8 : quatre AOP au total, deux par canal.
 - Alimentation simple `+12V-OA`, filtrée depuis le rail 12 V ; `VMID=6 V` produit par 10.0 kΩ/10.0 kΩ et fortement découplé.
-- Par canal, une branche non-inverseuse de gain +1 et une branche inverseuse de gain −1, réseaux `10.0 kΩ 0.1 %` et compensation `22 pF C0G`, adaptés de `SLAR129A`.
+- Par canal, deux inverseurs de gain `−1` sont montés en cascade, entrées non-inverseuses à `VMID`, avec résistances de gain `10.0 kΩ 0.1 %` et compensation `22 pF C0G`, conformément à `SLAR129A`, `SLOU441` pp. 16–18 et `SLAA719` p. 3. Le premier étage fournit `−VSE`; le second réinverse ce signal et fournit `+VSE`.
 - Résultat : `Vdiff = 2 × VSE`. Les quatre sorties passent par `10 µF` de blocage DC, puis `100 Ω` série et `100 pF` anti-RF avant `INPUT_A/B/C/D`.
-- L’OPA1612 SOIC-8 est pin-à-pin avec le NE5532ADR de l’EVM. À `VMID=6 V` et `2 Vrms` RCA, le signal 3.17–8.83 V reste dans sa plage de mode commun 2–10 V et dans son swing garanti.
+- L’OPA1612 SOIC-8 est pin-à-pin avec le NE5532ADR de l’EVM. Sous 0/12 V, sa plage de mode commun garantie est 2–10 V ; à `VMID=6 V` et `2 Vrms` par branche, le signal 3.17–8.83 V y reste et son swing garanti sous 10 kΩ est compatible.
 - Un condensateur d’entrée avant le volume est retenu pour bloquer le DC source ; valeur initiale `4.7 µF` avec charge nominale 10 kΩ. Technologie et référence finale restent à sélectionner selon encombrement et distorsion.
 
 Le rôle de l’OPA1612 est donc précisément : buffer faible bruit, conversion SE→différentielle, adaptation d’impédance et filtrage RF. Il ne réalise ni le réglage de volume ni l’amplification de puissance.
@@ -60,6 +61,7 @@ Le rôle de l’OPA1612 est donc précisément : buffer faible bruit, conversion
 - Avec la conversion `Vdiff=2×VSE`, niveau après volume : 1.19 Vrms SE.
 - Une source 2 Vrms atteint donc 100 W avec environ −4.5 dB d’atténuation au volume, laissant une marge raisonnable.
 - Impédance d’entrée TPA3255 : 20 kΩ par entrée selon TI.
+- Le `VIN=7 Vpp` TI s’applique à chaque broche `INPUT_X`. Une source SE de 2 Vrms produit 2 Vrms par branche, soit 5.66 Vpp par broche et 4 Vrms différentiels ; elle respecte cette limite mais peut faire écrêter l’étage de puissance avant la pleine course du volume.
 
 Le common-mode garanti des entrées TPA3255 n’est pas explicitement donné. Les condensateurs de liaison de l’EVM sont conservés pour laisser le circuit établir sa propre polarisation.
 
