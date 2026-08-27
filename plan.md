@@ -36,8 +36,8 @@ Aucune.
 
 - [x] A0.1 Inspecter le workspace et Git sans modification.
 - [x] A0.2 Créer `plan.md`, `progress.md` et un rollback Git local.
-- [ ] A0.3 Sonder KiCad, IPC/API, MCP et outils exposés par des opérations read-only live.
-- [ ] A0.4 Consigner capacités, observabilité et limitations initiales.
+- [x] A0.3 Sonder KiCad, IPC/API, MCP et outils exposés par des opérations read-only live.
+- [x] A0.4 Consigner capacités, observabilité et limitations initiales.
 
 ### Validation
 
@@ -55,11 +55,11 @@ A0.3.
 
 ### Tâches
 
-- [ ] A1.1 Vérifier datasheets, EVM et recommandations TI actuelles avec pages/sections.
-- [ ] A1.2 Établir le schéma-bloc stéréo et le rôle exact de l’OPA1612/volume/interface différentielle.
-- [ ] A1.3 Calculer niveaux, gains, impédances, headroom, rails et budget de puissance.
-- [ ] A1.4 Définir alimentation auxiliaire, séquencement, RESET/MUTE/FAULT et protections.
-- [ ] A1.5 Justifier filtre LC, découplages, thermique, EMI et connectique.
+- [x] A1.1 Vérifier datasheets, EVM et recommandations TI actuelles avec pages/sections.
+- [x] A1.2 Établir le schéma-bloc stéréo et le rôle exact de l’OPA1612/volume/interface différentielle.
+- [x] A1.3 Calculer niveaux, gains, impédances, headroom, rails et budget de puissance.
+- [x] A1.4 Définir alimentation auxiliaire, séquencement, RESET/MUTE/FAULT et protections.
+- [x] A1.5 Justifier filtre LC, découplages, thermique, EMI et connectique.
 - [ ] A1.6 Enregistrer chaque inconnue critique comme `NEEDS_DATA` et valider la revue d’architecture.
 
 ### Validation

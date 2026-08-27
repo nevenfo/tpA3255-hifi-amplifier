@@ -6,17 +6,17 @@ Phase A — Inspection et architecture.
 
 ## Tâche actuelle
 
-A0.3 — Sonder KiCad, IPC/API, MCP et outils exposés par des opérations read-only live.
+A1.6 — Enregistrer les inconnues critiques et valider la revue d’architecture.
 
 ## Dernière tâche validée
 
-A0.2 — Continuité créée après inspection initiale.
+A1.5 — Architecture initiale et calculs documentés.
 
 Validation :
-- Workspace vide observé avec `fd -H -d 3 .`.
-- `git status --short --branch` : `fatal: not a git repository (or any of the parent directories): .git`.
-- Aucun `kicad-cli` ni `kicad-control` trouvé dans le `PATH`; `rtk.exe` présent.
-- Aucun fichier KiCad préexistant à préserver.
+- Sources TI primaires référencées avec documents et sections dans `docs/architecture.md`.
+- BTL stéréo, interface OPA1612 +1/−1, rails, contrôle, LC et stack-up initial définis.
+- Niveaux, budget DC et coupures calculés dans `reports/calculs-initiaux.md`.
+- Huit `NEEDS_DATA` explicites interdisent encore un statut fabricable.
 
 ## Décisions actives
 
@@ -26,13 +26,16 @@ Validation :
 
 ## Blocage actif
 
-Aucun ; sondes MCP live et recherche TI en cours.
+Aucun ; revue A1.6 puis création du projet via MCP.
 
 ## Fichiers / zones utiles
 
 - `plan.md`
 - `progress.md`
+- `reports/mcp-initial-state.md`
+- `docs/architecture.md`
+- `reports/calculs-initiaux.md`
 
 ## NEXT ACTION
 
-A0.3 — Recevoir et vérifier les probes live de `kicad-control`, puis consigner exactement l’état IPC/MCP et les outils exposés.
+A1.6 — Revoir les `NEEDS_DATA`, valider l’architecture initiale, puis demander à `kicad-control` de créer et ouvrir le projet via MCP et de prouver l’IPC live.
