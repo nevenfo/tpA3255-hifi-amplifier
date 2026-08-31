@@ -6,7 +6,7 @@ Phase B2 terminée pour sa partie topologique. **GATE C2 = PASS.**
 
 ## Tâche actuelle
 
-Décision utilisateur en attente sur le dimensionnement du bulk, qui conditionne B2.5 (vérification SOA) puis la reprise de D1.1.
+B2.5 — Choisir `Q302` et vérifier sa SOA. Sourcing fabricant en cours.
 
 ## Dernière tâche validée
 
@@ -33,21 +33,15 @@ Décision utilisateur en attente sur le dimensionnement du bulk, qui conditionne
 
 ## Blocage actif
 
-**Décision utilisateur requise : dimensionnement du bulk.**
+Aucun. **Arbitrage tranché par l'utilisateur : le bulk de 15 400 µF est conservé**, et le MOSFET de hot-swap sera choisi à SOA renforcée.
 
-La datasheet `SNVS452G` §9.2.1.1 l'énonce directement — *« the FET's total energy dissipation equals the total energy stored in the output capacitor (½CV²) »*. L'exigence SOA est donc structurelle et ne dépend pas du réglage.
+Motif : la réserve d'énergie conditionne la tenue en crête dans le grave et la stabilité du rail sous transitoire, ce qui prime sur la facilité de choix du composant. Les options 8 200 µF, 4 700 µF et précharge séparée par relais ont été présentées et écartées.
 
-| Bulk | Exposition SOA pire cas |
-|---|---|
-| 15 400 µF (actuel) | 389 W pendant **318 ms** |
-| 8 200 µF | 377 W pendant **179 ms** |
-| 4 700 µF | 390 W pendant **98 ms** |
+Conséquence, exigence à satisfaire pour `Q302` — issue de la section 9.2.1.2.5 de `SNVS452G`, la datasheet énonçant en 9.2.1.1 que *« the FET's total energy dissipation equals the total energy stored in the output capacitor (½CV²) »* :
 
-Un MOSFET de commutation ordinaire ne convient pas : il faut une SOA garantie en mode linéaire. Réduire le bulk raccourcit fortement la durée d'exposition, ce qui est le levier décisif — à arbitrer contre le ripple. **Non tranché.**
+**Tenir 6,95 A sous 56 V pendant 318 ms, soit environ 389 W en régime linéaire** (5,34 A × 56 V pendant 318 ms, majorés de la marge 1,3 × recommandée par TI).
 
-Tant que ce point n'est pas réglé, B2.5 reste bloquée et `Q302` ne peut pas être choisi.
-
-Réduire le bulk modifierait la netlist et **imposerait un nouveau gate ERC**. Figer des références sans changer la topologie (B2.5, B2.7) ne l'impose pas.
+Le régime est **linéaire, pas commuté** : la plupart des MOSFET à tranchées ont une SOA fortement dégradée en linéaire, et beaucoup de datasheets ne publient aucune courbe au-delà de 10 ms. Le déclassement en température de l'équation 19 devra être appliqué, la SOA étant spécifiée à 25 °C de boîtier.
 
 ## NEEDS_DATA ouverts
 
@@ -88,4 +82,4 @@ Levés cette session : brochage VSSOP-10 du `LM5069` (section 6 de la datasheet)
 
 ## NEXT ACTION
 
-Obtenir de l'utilisateur l'arbitrage sur le bulk (15 400 / 8 200 / 4 700 µF), puis sourcer un MOSFET `Q302` à SOA garantie en mode linéaire satisfaisant l'exposition retenue, clore B2.5, et reprendre D1.1 sur les 8 empreintes manquantes.
+B2.5 — Retenir un `Q302` dont la courbe SOA publiée couvre 6,95 A sous 56 V pendant 318 ms après déclassement en température, puis renseigner sa `Value` au schéma via `kicad-control`. Enchaîner sur B2.7 (références réelles de `F301` et `D301`), puis reprendre D1.1 sur les 8 empreintes manquantes.
