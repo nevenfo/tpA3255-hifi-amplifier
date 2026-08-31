@@ -81,3 +81,104 @@ Le point d'attention est le **pouvoir de coupure en continu** : la plupart des c
 - TI LM5066 : https://www.ti.com/lit/gpn/LM5066 — LM5069 : https://www.ti.com/product/LM5069 — LM5060 : https://www.ti.com/product/LM5060
 - Schurter OMF 63 : https://www.schurter.com/en/datasheet/OMF_63
 - Littelfuse BF1 58V : https://www.littelfuse.com/assetdocs/littelfuse-datasheet-142-bf1-58v?assetguid=837e42d2-ca5a-4d2e-8438-0342b74c753a
+
+---
+
+# Dimensionnement de l'étage LM5069 (B2.4)
+
+Source unique : datasheet TI **`SNVS452G`**, révision de janvier 2020, lue directement (`https://www.ti.com/lit/ds/symlink/lm5069.pdf`). Les numéros d'équation ci-dessous sont ceux de ce document. Aucune valeur n'est reprise d'une source secondaire.
+
+Contrôle de cohérence effectué avant application : l'équation 9 reproduit exactement les 14,90 kΩ de l'exemple TI (équation 10), et le recoupement indépendant du paramètre `PWRLIM-1` (`SENSE-OUT` = 48 V, `R_PWR` = 150 kΩ → 25 mV typique) donne 303 W contre 300 W par la voie directe. Les équations sont donc utilisées correctement.
+
+## Variante retenue
+
+**`LM5069-2`**, à redémarrage automatique. La variante `LM5069-1` se verrouille définitivement après défaut et n'est réarmable que par cyclage de l'alimentation : inacceptable pour un appareil audio grand public.
+
+## Paramètres électriques utilisés (tableau *Electrical Characteristics*)
+
+| Paramètre | Min | Typ | Max |
+|---|---|---|---|
+| `VCL` seuil de limitation de courant (`VIN`-`SENSE`) | 48,5 mV | 55 mV | 61,5 mV |
+| `VCB` seuil de disjoncteur | 80 mV | 105 mV | 130 mV |
+| `tCB` temps de réponse du disjoncteur | — | 0,44 µs | 1,2 µs |
+| `UVLOTH` | 2,45 V | 2,5 V | 2,55 V |
+| `OVLOTH` | — | 2,5 V | 2,6 V |
+| courant d'hystérésis `UVLO`/`OVLO` | 12 µA | 21 µA | 30 µA |
+| `VTMRH` seuil haut du temporisateur | 3,76 V | 4 V | 4,16 V |
+| courant de détection de défaut | 51 µA | 85 µA | 120 µA |
+
+## Seuils de sous-tension et de surtension
+
+Configuration *Option A*, trois résistances (figure 30), équations 21 à 24 puis relecture par 28 à 33.
+
+Cibles : `V_UVH` = 40 V, `V_UVL` = 36 V, `V_OVH` = 56 V.
+
+**Valeurs retenues, série E96 à 1 % : `R1` = 191 kΩ, `R2` = 5,11 kΩ, `R3` = 9,09 kΩ.**
+
+| Seuil | Valeur obtenue |
+|---|---|
+| `V_UVH` (mise en conduction) | 40,1 V |
+| `V_UVL` (coupure basse) | 36,1 V |
+| `V_OVH` (**coupure haute**) | **56,4 V** |
+| `V_OVL` (reprise) | 52,3 V |
+| hystérésis UV / OV | 4,0 V / 4,1 V |
+
+Vérification de la marge, seule qui compte ici : en cumulant le seuil interne `OVLOTH` à son maximum de 2,6 V et les résistances à 1 %, `V_OVH` pire cas atteint **59,9 V**, soit **5,1 V (8 %) sous le maximum absolu de 65 V** du TPA3255. La reprise à 52,3 V reste au-dessus d'une alimentation 48 V à +5 % (50,4 V), donc pas de battement en fonctionnement normal.
+
+## Limitation de courant
+
+Équation 1, dimensionnée sur `V_CL` **minimal** pour garantir la conduction à pleine charge :
+
+`R_SNS ≥ 48,5 mV / 10 A = 4,85 mΩ` → valeur normalisée immédiatement inférieure retenue : **`R_SNS` = 4 mΩ**.
+
+| Fonction | Min | Typ | Max |
+|---|---|---|---|
+| Limitation de courant | 12,1 A | 13,75 A | 15,4 A |
+| Disjoncteur (`VCB`) | 20,0 A | 26,3 A | 32,5 A |
+
+La conduction est donc garantie jusqu'à 12,1 A, ce qui couvre le pire cas de consommation en charge 4 Ω (≈ 9,3 A) sans risque de coupure en pleine musique.
+
+## Limitation de puissance et temporisateur
+
+- Plancher imposé par l'équation 8 (`V_SNS` ≥ 5 mV) : `P_LIM` ≥ 70 W.
+- Plafond imposé par la datasheet : `R_PWR` ≤ 150 kΩ, soit `P_LIM` ≤ ≈ 305 W.
+- **Retenu : `R_PWR` = 147 kΩ → `P_LIM` = 299 W**, volontairement proche du plafond (voir justification ci-dessous).
+- Équation 12, avec `C_OUT` = 15 400 µF : `t_start` = 69 ms typique, **94 ms** en pire cas (`P_LIM` à −24 %, `I_LIM` minimal).
+- Équation 13 : **`C_TIMER` = 3,9 µF**.
+- Équation 14 : `t_flt` = 122 ms au minimum, 184 ms typique, 318 ms au maximum.
+
+Critère de non-coupure au démarrage, vérifié en croisant les pires cas des deux côtés (et non typique contre typique comme dans l'exemple TI) : `t_flt,min` = 122 ms > `t_start,max` = 94 ms, **marge × 1,30**.
+
+## Exigence SOA imposée au MOSFET — point dur de cette conception
+
+Méthode de la section 9.2.1.2.5 : en défaut, le MOSFET subit `V_DS` = `V_IN,MAX` et `I_D` = `P_LIM` / `V_IN,MAX` pendant `t_flt`.
+
+**Pire cas : 56 V et 5,34 A pendant 318 ms.** Avec la marge de 1,3 × recommandée par TI, le MOSFET doit tenir **6,95 A sous 56 V pendant 318 ms, soit 389 W en mode linéaire**.
+
+C'est une contrainte sévère, et elle est **structurelle, non un défaut de réglage** : `P_LIM × t_flt` suit l'énergie de charge du bulk, que la limite de puissance soit réglée haut ou bas. Charger 15 400 µF sous 56 V stocke 24,1 J, que le MOSFET doit dissiper à l'identique ; les dispersions du temporisateur (51 à 120 µA) et de la limite de puissance (± 24 %) portent l'exposition pire cas bien au-delà.
+
+C'est pourquoi `P_LIM` est réglé **près du plafond** : à énergie constante, une limite de puissance élevée raccourcit `t_flt`, et la SOA d'un MOSFET s'améliore beaucoup plus vite quand la durée diminue que lorsque le courant diminue.
+
+Effet du bulk sur la durée d'exposition, à `P_LIM` maximal :
+
+| Bulk | `t_start` pire cas | `C_TIMER` | Exposition SOA |
+|---|---|---|---|
+| 15 400 µF (actuel) | 94 ms | 3,9 µF | 389 W pendant **318 ms** |
+| 8 200 µF | 52 ms | 2,2 µF | 377 W pendant **179 ms** |
+| 4 700 µF | 29 ms | 1,2 µF | 390 W pendant **98 ms** |
+
+`NEEDS_DATA` — **référence exacte du MOSFET de hot-swap `Q302`**, à choisir sur courbe SOA constructeur vérifiant 6,95 A / 56 V / 318 ms. Un MOSFET à conduction seule ne convient pas : il faut une SOA garantie en mode linéaire. La vérification devra appliquer le déclassement en température de l'équation 19, la SOA étant spécifiée à 25 °C de boîtier alors que le boîtier est chaud pendant l'événement.
+
+`NEEDS_DATA` — `R_DS(on)` et résistance thermique du MOSFET retenu, pour l'équation 4 (température de boîtier en régime établi, à maintenir sous 125 °C).
+
+## Composants figés à ce stade
+
+| Repère | Valeur | Équation |
+|---|---|---|
+| `R1` / `R2` / `R3` (seuils) | 191 kΩ / 5,11 kΩ / 9,09 kΩ, 1 % | 21 à 24 |
+| `R_SNS` | 4 mΩ | 1 |
+| `R_PWR` | 147 kΩ | 9 |
+| `C_TIMER` | 3,9 µF | 13 |
+| `U8` | `LM5069-2`, VSSOP-10 | — |
+
+`NEEDS_DATA` — correspondance broche/numéro du boîtier VSSOP-10, à relever sur le schéma de brochage avant la capture du symbole.
