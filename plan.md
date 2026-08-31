@@ -88,6 +88,28 @@ A1 validée.
 
 Schéma complet inspecté bloc par bloc via la stack et conforme à l’architecture A1.
 
+## B2 — Retouches schématiques issues des décisions mécaniques et de protection
+
+### Objectif
+
+Intégrer au schéma les décisions prises après le gate C1 : déport mécanique des entrées et du volume, et renforcement de la protection d'entrée 48 V.
+
+### Dépendances
+
+C1 PASS ; décisions utilisateur du 2026-08-31 ; sourcing fabricant de la protection 48 V.
+
+### Tâches
+
+- [ ] B2.1 Déporter `RV1` hors carte : ajouter un connecteur de volume, recâbler les nets et sortir `RV1` du périmètre PCB.
+- [ ] B2.2 Convertir les entrées `J2`/`J3` en connecteur de câblage vers RCA de châssis, avec retour de masse maîtrisé.
+- [ ] B2.3 Corriger `Q301` : clamp Zener de grille et résistance de grille dimensionnés pour un rail 48 V.
+- [ ] B2.4 Ajouter la limitation d'appel de courant pour environ 15 400 µF de bulk et vérifier la SOA du MOSFET pendant la charge.
+- [ ] B2.5 Figer `F301` et `D301` sur des références réelles dont le clamp reste sous le maximum absolu PVDD de 65 V.
+
+### Validation
+
+Chaque ajout est sourcé ou calculé ; aucune coordonnée existante déplacée ; nets vérifiés par inspection MCP.
+
 # Phase C — Gate schématique
 
 ## C1 — ERC et revue schématique obligatoire
@@ -107,17 +129,37 @@ B1 validée.
 
 Gate schématique explicite, reproductible, sans problème réel ERC non traité.
 
+## C2 — Re-gate ERC après B2
+
+### Objectif
+
+Le gate C1 ne couvre plus le schéma une fois B2 appliquée ; le rejouer est obligatoire.
+
+### Dépendances
+
+B2 validée.
+
+### Tâches
+
+- [ ] C2.1 Relancer ERC et comparer à la référence du gate C1 : 0 erreur / 14 avertissements.
+- [ ] C2.2 Traiter tout écart réel, puis consigner explicitement PASS/FAIL ; interdire la reprise de D1 si FAIL.
+
+### Validation
+
+Gate schématique de nouveau explicite et reproductible sur le schéma modifié.
+
 # Phase D — Footprints
 
 ## D1 — Attribuer et valider les empreintes
 
 ### Dépendances
 
-C1 PASS.
+C2 PASS.
 
 ### Tâches
 
-- [ ] D1.1 Associer chaque composant à une empreinte compatible et disponible.
+- [ ] D1.1 Associer chaque composant à une empreinte compatible et disponible. *(PARTIAL : 103/111 assignés, toutes résolvables ; `U6` corrigé vers une empreinte à PowerPAD. Restent `J2`, `J3`, `RV1`, `C110`, `C210`, `F301`, `D301`, `Q301`, débloqués par B2.)*
+- [ ] D1.4 Créer l'empreinte locale du connecteur d'entrée et de volume déportés, aucune empreinte RCA n'existant dans les librairies KiCad.
 - [ ] D1.2 Vérifier boîtiers fabricant, orientations, courants, connecteurs et contraintes d’assemblage.
 - [ ] D1.3 Vérifier particulièrement HTSSOP TPA3255, PowerPAD et stratégie de vias thermiques.
 
