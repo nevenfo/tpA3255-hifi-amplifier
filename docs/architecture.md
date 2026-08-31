@@ -140,6 +140,7 @@ L’EVM utilise à la place `10 µH + 1 µF` avec Coilcraft `MA5172-AE`; ces deu
 - `NEEDS_DATA: protection 48 V inversion/surtension et TVS ; le clamp doit rester compatible avec le maximum absolu TPA3255.`
 - `NEEDS_DATA: common-mode garanti du TPA3255 ; non spécifié explicitement, mitigé par les condensateurs de liaison EVM.`
 - `NEEDS_DATA: dissipateur, pression/interface thermique, boîtier, ventilation et température ambiante.`
+- `NEEDS_DATA: valeur du condensateur de découplage VMID (C110) ; A1 exige un point milieu fortement découplé mais aucune source ne fixe la capacité.`
 - `NEEDS_DATA: réponse/EMI du filtre LC, stabilité toutes charges et performance OPA1612 dans cette topologie ; validation par simulation ciblée puis prototype/mesure.`
 
 Ces points interdisent actuellement `PRÊT À FABRIQUER = OUI`, mais n’empêchent pas la capture schématique initiale si les composants non figés sont explicitement marqués.
