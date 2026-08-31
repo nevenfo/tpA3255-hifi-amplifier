@@ -35,12 +35,29 @@ Piège de nommage écarté : `SM30T35CAY`, `SMC30J30CA` et `SMC3K30CAHM3-57` ann
 
 ## Anti-inversion de polarité
 
-Montage retenu en Phase B : P-MOSFET série sur le rail positif, grille bridée par Zener — le montage actuel de `Q301`, grille auto-polarisée sur le drain, expose le `V_GS` à 48 V contre un maximum typique de ±20 V, et doit être corrigé.
+État constaté au schéma : `Q301` porte le symbole `Transistor_FET:Q_NMOS_GSD`, c'est-à-dire un **N-MOS**, et non le P-MOS que suppose un montage série sur le rail positif. Sa grille auto-polarisée expose le `V_GS` à 48 V contre un maximum typique de ±20 V.
+
+**Topologie constatée par inspection** : grille et drain étaient court-circuités sur `PVDD_FUSED` (sortie du fusible `F301`), source sur `PVDD` (rail aval). Le transistor est donc **en série sur le rail positif**, et non sur le retour de masse. Un N-MOS ne pouvant pas conduire côté haut sans pompe de charge, le montage était faux dans son principe, et pas seulement mal polarisé.
+
+**Correction appliquée** : passage à un **P-MOS** (`Transistor_FET:Q_PMOS_GSD`), grille séparée du drain sur un net dédié `Q301_GATE`, tirée vers `GND` par `R305` (100 kΩ) et clampée par la Zener `D302` (15 V).
+
+### Sens de montage du P-MOS — piège à ne pas reproduire
+
+Ce montage se câble **à l'envers d'un usage d'interrupteur**, et une première correction s'y est trompée. Seule la diode de structure décide :
+
+- Sur un P-MOS, l'**anode** de la diode de structure est le **drain**, sa cathode la source.
+- Pour protéger, cette diode doit conduire dans le sens du courant **normal**, de `PVDD_FUSED` vers `PVDD`. Son anode — donc le **drain** — doit être **en amont**.
+- **Câblage correct : drain sur `PVDD_FUSED`, source sur `PVDD`.**
+- Avec l'orientation inverse (source en amont), en inversion l'anode se retrouve côté charge à ≈ 0 V et la cathode côté entrée à −48 V : la diode devient passante, le courant traverse la charge en sens inverse et **la protection ne joue pas**.
+
+La Zener `D302` clampe le `V_GS` : sa cathode doit donc être sur la **source** (`PVDD`), jamais sur le drain. En fonctionnement normal la source monte à ≈ 47,3 V, la grille est tirée vers `GND` par `R305`, le `V_GS` est clampé à ≈ 15 V et le courant de clamp vaut ≈ 33 V / 100 kΩ ≈ 330 µA, soit ≈ 5 mW dans la Zener.
+
+**Ce défaut est invisible à l'ERC** : la netlist est parfaitement valide, seule la physique du composant est en cause. Il illustre pourquoi un gate ERC ne vaut jamais validation électronique.
+
+Dans les deux cas, le clamp de grille retenu est une **Zener de 15 V** avec une **résistance de grille de 100 kΩ**, qui limite le courant Zener à environ 330 µA sous 48 V (≈ 5 mW) tout en gardant une décharge de grille rapide en cas d'inversion. La fourchette de 9 à 15 V pour le `V_GS` vient de `AND90146` ; elle n'est pas spécifique à 48 V.
 
 - Candidat `IRF9540NS` (Vishay/Infineon, D2PAK/TO-263) : `V_DS` = -100 V, `I_D` continu = -23 A, `P_tot` = 3,8 W.
   `NEEDS_DATA` : `R_DS(on)` non recoupé — 117 mΩ et « < 55 mΩ » à `V_GS` = -10 V trouvés dans deux sources secondaires, le PDF officiel n'ayant pas pu être lu. À confirmer dans le tableau *Electrical Characteristics*.
-- Réseau de grille, pratique de conception d'après `AND90146` (ON Semi) et un guide de conception PMOS, **non spécifique à 48 V** : Zener maintenant le `V_GS` entre -9 et -15 V, résistance de grille de 100 Ω à quelques kΩ pour limiter le courant Zener sans ralentir la décharge de grille en cas d'inversion.
-- Variante N-MOSFET côté masse mentionnée par `AND90146` : meilleur `R_DS(on)` à coût égal, mais impose une pompe de charge ou un contrôleur, et surtout **rompt la masse système directe** — écarté ici, le référencement analogique d'un étage audio en dépend.
 
 ## Limitation de l'appel de courant
 
