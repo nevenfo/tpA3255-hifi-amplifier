@@ -172,7 +172,11 @@ Méthode de la section 9.2.1.2.5 : en défaut, le MOSFET subit `V_DS` = `V_IN,MA
 
 **Pire cas : 56 V et 5,34 A pendant 318 ms.** Avec la marge de 1,3 × recommandée par TI, le MOSFET doit tenir **6,95 A sous 56 V pendant 318 ms, soit 389 W en mode linéaire**.
 
-C'est une contrainte sévère, et elle est **structurelle, non un défaut de réglage** : `P_LIM × t_flt` suit l'énergie de charge du bulk, que la limite de puissance soit réglée haut ou bas. Charger 15 400 µF sous 56 V stocke 24,1 J, que le MOSFET doit dissiper à l'identique ; les dispersions du temporisateur (51 à 120 µA) et de la limite de puissance (± 24 %) portent l'exposition pire cas bien au-delà.
+C'est une contrainte sévère, et elle est **structurelle, non un défaut de réglage**. La datasheet l'énonce directement en section 9.2.1.1 :
+
+> When charging the output capacitor through the hot swap MOSFET, the FET's total energy dissipation equals the total energy stored in the output capacitor (½CV²). Thus, both the input voltage and output capacitance determine the stress experienced by the MOSFET.
+
+Autrement dit `P_LIM × t_flt` suit l'énergie de charge du bulk, que la limite de puissance soit réglée haut ou bas. Charger 15 400 µF sous 56 V stocke 24,1 J, que le MOSFET doit dissiper à l'identique ; les dispersions du temporisateur (51 à 120 µA) et de la limite de puissance (± 24 %) portent l'exposition pire cas bien au-delà.
 
 C'est pourquoi `P_LIM` est réglé **près du plafond** : à énergie constante, une limite de puissance élevée raccourcit `t_flt`, et la SOA d'un MOSFET s'améliore beaucoup plus vite quand la durée diminue que lorsque le courant diminue.
 
@@ -198,4 +202,16 @@ Effet du bulk sur la durée d'exposition, à `P_LIM` maximal :
 | `C_TIMER` | 3,9 µF | 13 |
 | `U8` | `LM5069-2`, VSSOP-10 | — |
 
-`NEEDS_DATA` — correspondance broche/numéro du boîtier VSSOP-10, à relever sur le schéma de brochage avant la capture du symbole.
+## Brochage VSSOP-10 (DGS), section 6 de la datasheet
+
+| N° | Nom | N° | Nom |
+|---|---|---|---|
+| 1 | `SENSE` | 10 | `GATE` |
+| 2 | `VIN` | 9 | `OUT` |
+| 3 | `UVLO` | 8 | `PGD` |
+| 4 | `OVLO` | 7 | `PWR` |
+| 5 | `GND` | 6 | `TIMER` |
+
+Raccordements de la figure 27 (*Typical Application Schematic*) : `R_PWR` de `PWR` à la masse, `C_TIMER` de `TIMER` à la masse, diviseur de seuils de `VSYS` à la masse avec les prises sur `UVLO` et `OVLO`, et un condensateur céramique de découplage au plus près de `VIN`.
+
+Le `NEEDS_DATA` sur ce brochage est donc levé.
