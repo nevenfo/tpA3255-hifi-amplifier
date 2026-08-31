@@ -346,3 +346,64 @@ Le symbole déjà en place, `Device:D_TVS`, est bidirectionnel : ce choix rétab
 - Série SMDJ — https://www.farnell.com/datasheets/2794255.pdf
 - LM5069, maxima absolus et section 8.3 — https://www.ti.com/lit/ds/symlink/lm5069.pdf
 - TI, *Using MOSFET Safe Operating Area Curves in Your Design* — https://www.ti.com/lit/pdf/sluaao2
+
+# `Q301` figé et défaut de brochage corrigé (B2.9)
+
+## `Q301` — P-MOS d'anti-inversion
+
+Exigences réunies : bloquer 56 V en inversion avec marge, conduire 4,6 A en continu avec des crêtes musicales à 9,3 A et jusqu'à 15,4 A pendant au plus 318 ms si le LM5069 limite, tolérer un `V_GS` clampé à 15 V par `D302`, et dissiper peu.
+
+**Retenu : `IPP330P10NM`** — Infineon OptiMOS, P-canal, TO-220-3. Valeurs lues sur la datasheet *Final Data Sheet* Rev. 2.0 du 2021-05-10, dépourvue de couche texte et donc lue par rendu de page.
+
+| Paramètre | Valeur |
+|---|---|
+| `V_DS` | −100 V |
+| `R_DS(on)` max à `V_GS` = −10 V | 33 mΩ |
+| `I_D` à `T_C` = 25 °C | −62 A |
+| `I_D` à `T_A` = 25 °C, `R_thJA` = 40 °C/W | **−6,9 A** |
+| `I_D,pulse` | −248 A |
+| `V_GS` | −20 à +20 V |
+| `Q_G` | −189 nC |
+| `E_AS` | 1960 mJ |
+| `R_thJC` | 0,5 °C/W |
+| `T_j` | −55 à +175 °C |
+
+Vérifications :
+
+- **Blocage en inversion** : 100 V contre les 56 V que la source peut appliquer à l'envers, marge 1,79 ×.
+- **`V_GS`** : la Zener `D302` de 15 V clampe à 15,75 V au pire de sa tolérance de 5 %, contre ±20 V admis. Marge 1,27 ×.
+- **Conduction nominale** : 4,6² × 33 mΩ = 0,70 W.
+- **Limitation de courant LM5069** : 15,4² × 33 mΩ = 7,8 W pendant au plus 318 ms, soit 2,5 J. Avec `R_thJC` = 0,5 °C/W et une impédance thermique transitoire inférieure à cette valeur sur une telle durée, l'échauffement de jonction reste inférieur à 4 °C. Sans enjeu.
+- **Aucune contrainte SOA** : contrairement à `Q302`, `Q301` ne travaille jamais en régime linéaire. Il est soit passant, soit bloqué.
+
+**Contrainte d'implantation** : la datasheet plafonne le courant continu à **6,9 A** avec la seule surface de cuivre de référence, soit 6 cm² sur une couche de 70 µm donnant `R_thJA` = 40 °C/W. Les 4,6 A nominaux passent, mais la tenue des crêtes à 9,3 A repose sur leur brièveté. Prévoir au minimum cette surface, un radiateur restant préférable.
+
+Une variante CMS existe dans le guide de sélection Infineon, `IPB320P10LM` en D²PAK à 32 mΩ, si le traversant pose problème. Chiffre issu du guide seul ; sa datasheet n'a pas été lue.
+
+### Réserve de conception, non levée
+
+À 100 V, un P-canal reste environ trois fois moins bon qu'un N-canal à surface de silicium égale. L'alternative moderne est un contrôleur de diode idéale, `LM74700` ou `LM5050`, pilotant un N-canal dans le rail positif : sa pompe de charge fournit précisément la commande côté haut dont l'absence avait fait rejeter le montage N-canal en B2.3. Cette voie **n'a pas été retenue** — la topologie P-MOS est tranchée et ses 0,70 W de pertes sont acceptables — mais l'arbitrage est consigné ici pour qu'il reste révisable.
+
+## Défaut de brochage trouvé sur `Q301` et `Q302`
+
+Défaut réel, **invisible à l'ERC**, trouvé en croisant les symboles avec les brochages constructeurs des composants une fois ceux-ci figés.
+
+Les deux transistors portaient un symbole de la famille `*_GSD`, qui déclare **broche 2 = Source et broche 3 = Drain**. Or les deux composants retenus ont **broche 2 = Drain, qui est la semelle, et broche 3 = Source** :
+
+| Repère | Composant | Boîtier | Brochage réel |
+|---|---|---|---|
+| `Q301` | `IPP330P10NM` | TO-220-3 | 1 = Gate, 2 = Drain (semelle), 3 = Source |
+| `Q302` | `IXTK200N10L2` | TO-264 | 1 = Gate, 2 = Drain (semelle), 3 = Source |
+
+Conséquence si le défaut n'était pas corrigé : au report vers le PCB, la pastille du drain physique serait câblée sur le net de source et réciproquement. Les deux transistors seraient montés à l'envers, diode de structure passante en permanence, et **ni l'anti-inversion ni le hot-swap ne fonctionneraient**. L'ERC ne voit rien de tout cela : la numérotation des broches lui est indifférente.
+
+**Correctif appliqué** : `Q301` passe à `Transistor_FET:Q_PMOS_GDS` et `Q302` à `Transistor_FET:Q_NMOS_GDS`.
+
+Le correctif est **géométriquement neutre**, ce qui a été vérifié dans `Transistor_FET.kicad_sym` avant de l'appliquer : les variantes `GSD` et `GDS` ont exactement les mêmes positions de broches — `G` à (−5,08 ; 0), `D` à (2,54 ; 5,08), `S` à (2,54 ; −5,08). Seuls les numéros changent. La connectivité, qui repose sur la coïncidence label/ancre, est donc intacte.
+
+Le schéma ne contient que ces deux transistors : le défaut est entièrement circonscrit.
+
+## Sources de ce lot
+
+- `IPP330P10NM` — https://www.infineon.com/dgdl/Infineon-IPP330P10NM-DataSheet-v02_00-EN.pdf
+- Infineon, *P-channel MOSFETs Selection guide 2023* — https://www.infineon.com/assets/row/public/documents/24/66/infineon-productselectionguide-p-channel-mosfets-productselectionguide-en.pdf
