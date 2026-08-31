@@ -2,84 +2,83 @@
 
 ## Phase actuelle
 
-Phase B2 terminée pour sa partie topologique. **GATE C2 = PASS.**
+Phase B2. **GATE C2 = PASS** (inchangé : seules des `Value` et propriétés ont été écrites, sans effet ERC).
 
 ## Tâche actuelle
 
-B2.5 — Choisir `Q302` et vérifier sa SOA. Sourcing fabricant en cours.
+B2.9 — Figer `Q301`, le P-MOS d'anti-inversion.
 
 ## Dernière tâche validée
 
-**C2 — Re-gate ERC. GATE C2 = PASS**, prononcé par le principal après vérification indépendante du rapport archivé.
+**B2.5 et B2.7 — les trois composants critiques du bloc de protection sont figés sur datasheet**, écritures relues au fichier par le principal.
 
-- ERC final : **0 erreur / 15 avertissements** — 5 « mismatch symbole/librairie » (`U1`, `U2`, `U6`, `U7`, `U8`) et 10 off-grid, aucune autre catégorie. Rapport : `reports/ERC_C2_gate_final-2026-08-31.json`.
-- Le 5ᵉ mismatch est `U8`, écart attendu pour un symbole créé localement, de même nature bénigne que les quatre autres.
-- Réserve du gate C1 maintenue : ne jamais déplacer les points off-grid sans revérifier ensuite la coïncidence label/ancre.
+| Repère | Référence | Preuve |
+|---|---|---|
+| `Q302` | `IXTK200N10L2` (Littelfuse/IXYS *Linear L2*, TO-264) | SOA **garantie** 625 W à `T_C` = 75 °C / `t_p` = 5 s, contre 389 W exigés — marge 1,61 × |
+| `F301` | `Schurter UMT-H` 12,5 A, `3403.0285.11` | 125 VDC, coupure 1000 A en continu ; coordination vérifiée sur la table *Pre-Arcing Time* |
+| `D301` | `SMDJ58A`, 3000 W, DO-214AB | `V_RWM` = 58 V > 56 V ; écrête sous le plafond de 88 V du LM5069 |
 
-### Chaîne de protection capturée et vérifiée
+Analyse complète, méthode et réserves : section finale de `docs/protection-48v.md`.
 
-`J1` → `PVDD_EXT` → `F301` → `PVDD_FUSED` → `D301` (TVS) et `Q301` (anti-inversion P-MOS) → `PVDD_PROT` → `R306` 4 mΩ → `PVDD_SENSE` → `Q302` → `PVDD` → bulk et TPA3255.
+### Ce qui a réellement fait basculer les choix
 
-- `U8` (`LM5069-2`) : `VIN`=`PVDD_PROT`, `SENSE`=`PVDD_SENSE`, `GATE`=`HS_GATE` vers la grille de `Q302`, `OUT`=`PVDD`, `PGD` en no-connect explicite.
-- Diviseur de seuils en configuration *Option A* : `R307` 191 k entre `PVDD_PROT` et `UVLO`, `R308` 5,11 k entre `UVLO` et `OVLO`, `R309` 9,09 k entre `OVLO` et `GND`. `R310` 147 k de `PWR` à `GND`, `C325` 3,9 µF de `TIMER` à `GND`, `C326` 100 nF de découplage sur `VIN`.
-- `PWR_FLAG` ajouté sur `PVDD_PROT` (6 au total) : résout l'erreur `Input Power pin not driven` sur `U8` pin 2.
-- Les 22 consommateurs préexistants de `PVDD` sont inchangés.
+1. **Les courbes SOA sont des images.** Deux recherches web ont échoué pour cette seule raison. La lecture a été faite par **extraction vectorielle des tracés du PDF**, recalés sur les étiquettes d'axes. Méthode validée trois fois : `I_DM` retrouvé à 140,2 A contre 140 A au tableau, et sur les quatre datasheets la valeur déduite coïncide à moins de 1 % près avec la ligne **SOA garantie** du tableau *Safe Operating Area Specification*.
+2. **Le candidat évident échoue.** L'`IXTH64N10L2` ne tient que 215 W à 75 °C, soit 0,55 × le besoin. Il faut un die environ trois fois plus gros que ce que 4,6 A nominaux laisseraient supposer — conséquence directe et chiffrée du bulk de 15 400 µF conservé.
+3. **Le déclassement de l'équation 19 est devenu inutile** : IXYS publie la courbe directement à `T_C` = 75 °C et garantit une valeur testée à cette température.
+4. **Note (3) des maxima absolus du LM5069** : `GATE` flotte 12 V au-dessus de `VIN`, donc le plafond de service est **88 V**, pas 100 V. C'est ce qui écarte la `SMCJ58A` (93,6 V dès 16 A) au profit de la `SMDJ58A`.
+5. **Un calibre de fusible trop bas romprait la coordination.** À 12,5 A, une limitation de courant LM5069 à 15,4 A pendant 318 ms vaut 1,23 × `In`, pour lequel la datasheet impose ≥ 60 min avant amorçage : ouverture impossible. `F301` est un ultime recours contre un `Q302` en court-circuit, jamais une protection de surcharge.
 
-### Défauts trouvés et corrigés par le principal, tous invisibles à l'ERC
+## Contraintes nouvelles créées par ces choix
 
-1. **Orientation du P-MOS `Q301`** : câblé source en amont, donc protection anti-inversion inopérante — la diode de structure d'un P-MOS a son anode sur le drain, qui doit être en amont. Corrigé et vérifié par lecture de la géométrie du symbole.
-2. **Coordination fusible/TVS** : `D301` était en amont de `F301`. Une TVS dont le mode de défaillance est le court-circuit doit être en aval du fusible, sinon elle met la source en court sans qu'aucun fusible ne coupe. Rattachée à `PVDD_FUSED`.
-3. **Empreinte de `U6`** (phase D1.1) : HTSSOP-44 sans pad thermique alors que le symbole déclare un pin 45 `EP`. Remplacée par la variante `-1EP`.
+- `Q302` doit être **monté sur radiateur** : la SOA suppose le boîtier maintenu à 75 °C. À reporter en Phase E.
+- `Q301` doit tenir **`V_DS` ≥ 100 V**, étant traversé par l'écrêtage de `D301` à 93,6 V. C'est l'objet de B2.9.
+- Rail d'entrée : les calibres UMT-H sont établis sur pistes de 7,5 mm en cuivre 140 µm. Déclassement sinon.
+- `F301` n'a **aucune empreinte KiCad compatible** (`Fuse_Schurter_UMT250` vise 3 × 10,1 mm contre 5,3 × 16 mm). Empreinte locale à créer en D1.4.
 
 ## Blocage actif
 
-Aucun. **Arbitrage tranché par l'utilisateur : le bulk de 15 400 µF est conservé**, et le MOSFET de hot-swap sera choisi à SOA renforcée.
-
-Motif : la réserve d'énergie conditionne la tenue en crête dans le grave et la stabilité du rail sous transitoire, ce qui prime sur la facilité de choix du composant. Les options 8 200 µF, 4 700 µF et précharge séparée par relais ont été présentées et écartées.
-
-Conséquence, exigence à satisfaire pour `Q302` — issue de la section 9.2.1.2.5 de `SNVS452G`, la datasheet énonçant en 9.2.1.1 que *« the FET's total energy dissipation equals the total energy stored in the output capacitor (½CV²) »* :
-
-**Tenir 6,95 A sous 56 V pendant 318 ms, soit environ 389 W en régime linéaire** (5,34 A × 56 V pendant 318 ms, majorés de la marge 1,3 × recommandée par TI).
-
-Le régime est **linéaire, pas commuté** : la plupart des MOSFET à tranchées ont une SOA fortement dégradée en linéaire, et beaucoup de datasheets ne publient aucune courbe au-delà de 10 ms. Le déclassement en température de l'équation 19 devra être appliqué, la SOA étant spécifiée à 25 °C de boîtier.
+Aucun.
 
 ## NEEDS_DATA ouverts
 
-Maintenus sur consigne explicite de l'utilisateur plutôt qu'inventés : `Q302` et sa courbe SOA, `R_DS(on)` et résistance thermique du MOSFET retenu, P-MOS `Q301`, Zener `D302`, TVS `D301`, fusible `F301`, `C110`/`C210`, potentiomètre `RV1`, et la confirmation par dessin mécanique TI que l'EP du TPA3255DDV vaut 5,2 × 14 mm.
+`Q301` (B2.9), `D302`, `C110`/`C210`, potentiomètre `RV1`, confirmation par dessin mécanique TI que l'EP du TPA3255DDV vaut 5,2 × 14 mm.
 
-Levés cette session : brochage VSSOP-10 du `LM5069` (section 6 de la datasheet), et le choix de la variante `-2`.
+Nouveaux, assumés : stabilité de la boucle de limitation de puissance du LM5069 face aux 540 nC de grille de `Q302`, TI ne spécifiant aucune capacité de grille maximale ; `V_C` de la `SMDJ58A` en dessous de `I_PP`, non spécifiée.
 
-## État de la stack MCP
-
-`kicad-agentic-mcp` v1.1.3. Ne pas restaurer `v1.1.2` : blocage `DocumentType` résolu, analyse dans `reports/MCP_BUG-documenttype-routing-eeschema.md`.
-
-- `save_project` / `open_project` échouent hors GUI : `Connection refused`. Les écritures sont fichier et persistées ; prouver par relecture.
-- **Attributs `on_board` / `in_bom` / `dnp` inaccessibles**, et aucune suppression de propriété isolée : `edit_schematic_component` ne gère que Reference/Value/Footprint/Datasheet plus des propriétés personnalisées.
-- `add_power_symbol` : le paramètre `power_net` désigne le **nom du symbole de librairie**, pas le net cible. Passer `"PWR_FLAG"` ; le rattachement au net se fait uniquement par coïncidence de position.
-- `get_schematic_component` / `get_component_nets` exigent un **chemin absolu**.
-- Ces deux outils mésattribuent les broches `power_in` : elles remontent `"net":"LM5069-2"` de type `PowerSymbol` alors que `list_schematic_labels` et `get_net_connections` confirment les bons `NetLabel`. Le fichier est correct ; c'est la résolution de net de l'outil qui est fautive.
-- Outils chargés par `load_toolset` accessibles seulement via `kicad_invoke` ; appel direct → `Error: No such tool available`.
-- `search_footprints` n'indexe pas toute la librairie globale : vérifier sur disque avant de conclure à une absence.
-- Sortie MCP tronquée au-delà d'environ 72 000 caractères.
+Levés cette session : `Q302` et sa courbe SOA, `R_DS(on)` et résistance thermique du MOSFET, `F301`, `D301`.
 
 ## Décisions actives
 
 - Toute édition schéma/PCB/librairie passe par `kicad-control`/MCP. Lecture hors MCP pour vérifier seulement.
-- **Les rapports d'agents sont systématiquement vérifiés par le principal avant tout verdict.** Trois redressements à ce jour : un comptage ERC faux, une affirmation erronée sur le sens de la diode de structure, et un rapport prétendant à tort n'avoir rien fait.
+- **Les rapports d'agents sont systématiquement vérifiés par le principal avant tout verdict.** Cette session : les deux recherches web ont rendu un résultat honnêtement vide sur la SOA, et un PDF récupéré chez un distributeur s'est révélé être un composant sans rapport. Le rapport `kicad-control`, lui, s'est vérifié exact.
+- **Outillage acquis, à réutiliser** : `pymupdf` est installé, et `pdftotext` est présent dans `/mingw64/bin`. Cela permet de lire réellement les datasheets — texte, rendu de page en image, et extraction vectorielle des courbes. Les serveurs Littelfuse et DigiKey refusent les requêtes automatisées ; les miroirs tiers fonctionnent, mais **l'identité de tout PDF récupéré doit être contrôlée sur son en-tête** avant exploitation.
 - Aucune mutation géométrique : la connectivité repose sur la coïncidence label/ancre.
-- TVS cantonnée aux transitoires rapides ; la protection en surtension est **active**, par `LM5069`. Aucune TVS passive ne peut borner ce rail sous 65 V (facteur de clamp requis 1,354 contre 1,3 à 1,6 pour la technologie avalanche).
-- `LM5066` écarté : télémétrie PMBus inutile ici.
-- Vias thermiques du PowerPAD `U6` traités en Phase E par calcul.
+- TVS cantonnée aux transitoires rapides ; la protection en surtension est **active**, par `LM5069`.
+- Bulk maintenu à 15 400 µF sur arbitrage utilisateur ; `Q302` choisi en conséquence.
 - Asymétrie de nommage assumée : `-VSE`/`+VSE` à gauche, `-VSE_R`/`+VSE_R` à droite. À trancher avant H2.
-- Fichiers projet KiCad versionnés ; artefacts volatils exclus par `.gitignore`.
+- Instantanés PDF automatiques du MCP (`*_pre_delete_*.pdf`) exclus par `.gitignore`.
+
+## État de la stack MCP
+
+`kicad-agentic-mcp` v1.1.3. Ne pas restaurer `v1.1.2`. Analyse dans `reports/MCP_BUG-documenttype-routing-eeschema.md`.
+
+- `save_project` / `open_project` échouent hors GUI : `Connection refused`. Les écritures sont fichier et persistées ; prouver par relecture.
+- **Attributs `on_board` / `in_bom` / `dnp` inaccessibles** ; `edit_schematic_component` ne gère que Reference/Value/Footprint/Datasheet plus des propriétés personnalisées.
+- `add_power_symbol` : `power_net` désigne le **nom du symbole de librairie**, pas le net cible.
+- `get_schematic_component` / `get_component_nets` exigent un **chemin absolu** et mésattribuent les broches `power_in`.
+- Outils de `load_toolset` accessibles seulement via `kicad_invoke`.
+- `search_footprints` n'indexe pas toute la librairie globale : vérifier sur disque.
+- Sortie MCP tronquée au-delà d'environ 72 000 caractères.
+- **Piège de relecture hors MCP** : le `.kicad_sch` contient une section `lib_symbols` avant les instances. Une recherche naïve de `(property "Reference" ...)` suivie d'une fenêtre de caractères déborde sur le symbole voisin et rend des valeurs fausses. Itérer sur les blocs `(symbol` de premier niveau à parenthèses équilibrées.
 
 ## Fichiers / zones utiles
 
 - `HifiAmp_TPA3255.kicad_pro`, `.kicad_sch`, `.kicad_pcb`
-- `HifiAmp_TPA3255.kicad_sym` (contient le symbole `LM5069` créé localement), `sym-lib-table`, `fp-lib-table`, `HifiAmp_TPA3255_Local.pretty/`
+- `HifiAmp_TPA3255.kicad_sym` (symbole `LM5069` local), `sym-lib-table`, `fp-lib-table`, `HifiAmp_TPA3255_Local.pretty/`
 - `docs/architecture.md`, `docs/power-block.md`, **`docs/protection-48v.md`**
+- Librairies KiCad : `C:/Users/FlowUP/AppData/Local/Programs/KiCad/10.0/share/kicad/footprints`
 - `reports/ERC_C2_gate_final-2026-08-31.json`
 
 ## NEXT ACTION
 
-B2.5 — Retenir un `Q302` dont la courbe SOA publiée couvre 6,95 A sous 56 V pendant 318 ms après déclassement en température, puis renseigner sa `Value` au schéma via `kicad-control`. Enchaîner sur B2.7 (références réelles de `F301` et `D301`), puis reprendre D1.1 sur les 8 empreintes manquantes.
+B2.9 — Retenir un P-MOS `Q301` réel vérifiant `V_DS` ≥ 100 V, `I_D` ≥ 12 A continus, `R_DS(on)` faible sous `V_GS` = −15 V (grille clampée par `D302`), en boîtier dissipatif. Renseigner sa `Value` via `kicad-control`, puis enchaîner sur D1.1 en assignant les empreintes désormais débloquées : `D301` → `Diode_SMD:D_SMC`, `Q302` → `Package_TO_SOT_THT:TO-264-3_*`.

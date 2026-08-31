@@ -16510,7 +16510,7 @@
 				)
 			)
 		)
-		(property "Value" "NEEDS_DATA"
+		(property "Value" "12.5A T 125VDC"
 			(at 264.795 320.04 90)
 			(effects
 				(font
@@ -16535,6 +16535,14 @@
 					(size 1.27 1.27)
 				)
 			)
+		)
+				(property "MPN" "3403.0285.11"
+			(at 266.7 320.04 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+				(property "Manufacturer" "Schurter"
+			(at 266.7 320.04 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 		(instances
 			(project "HifiAmp_TPA3255"
@@ -16561,7 +16569,7 @@
 				)
 			)
 		)
-		(property "Value" "NEEDS_DATA"
+		(property "Value" "SMDJ58A"
 			(at 279.4 322.58 0)
 			(effects
 				(font
@@ -16586,6 +16594,10 @@
 					(size 1.27 1.27)
 				)
 			)
+		)
+				(property "MPN" "SMDJ58A"
+			(at 279.4 320.04 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 		(instances
 			(project "HifiAmp_TPA3255"
@@ -16613,7 +16625,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "NEEDS_DATA"
+		(property "Value" "NEEDS_DATA - P-MOS VDS>=100V"
 			(at 297.18 320.04 0)
 			(effects
 				(font
@@ -17388,7 +17400,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "NEEDS_DATA"
+		(property "Value" "IXTK200N10L2"
 			(at 386.08 424.18 0)
 			(effects
 				(font
@@ -17414,6 +17426,14 @@
 					(size 1.27 1.27)
 				)
 			)
+		)
+				(property "MPN" "IXTK200N10L2"
+			(at 381 424.18 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+				(property "Manufacturer" "Littelfuse/IXYS"
+			(at 381 424.18 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 		(instances
 			(project "HifiAmp_TPA3255"

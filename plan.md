@@ -104,10 +104,12 @@ C1 PASS ; décisions utilisateur du 2026-08-31 ; sourcing fabricant de la protec
 - [x] B2.2 Convertir les entrées `J2`/`J3` en connecteur de câblage vers RCA de châssis, avec retour de masse maîtrisé.
 - [x] B2.3 Corriger `Q301` : clamp Zener de grille et résistance de grille dimensionnés pour un rail 48 V. L'anti-inversion reste une fonction distincte du hot-swap, la diode de structure d'un MOSFET N côté haut conduisant en inversion.
 - [x] B2.4 Dimensionner l'étage `LM5069` sur équations de datasheet : seuils de sous-tension et de surtension avec marge sous 65 V, résistance de shunt, limitation de puissance et temporisateur de défaut.
-- [ ] B2.5 Vérifier la SOA du MOSFET de hot-swap pendant la charge des 15 400 µF, contre la courbe SOA de la référence retenue.
+- [x] B2.5 Vérifier la SOA du MOSFET de hot-swap pendant la charge des 15 400 µF, contre la courbe SOA de la référence retenue. *(`Q302` = `IXTK200N10L2`, SOA garantie 625 W à 75 °C contre 389 W exigés, marge 1,61 ×.)*
 - [x] B2.6 Capturer le bloc `LM5069` au schéma : contrôleur, MOSFET série, shunt et réseau de programmation.
 - [ ] B2.8 Exclure `RV1` du circuit imprimé (attribut `on_board` à `no`) et supprimer la propriété parasite `exclude_from_board` laissée sur ce symbole. **Aucun des 202 outils MCP n'expose ces opérations** : action manuelle dans l'interface KiCad, ou traitement au moment de la génération du PCB.
-- [ ] B2.7 Figer `F301` et `D301` sur des références réelles, la TVS étant explicitement cantonnée aux transitoires rapides et non à la protection en surtension.
+- [x] B2.7 Figer `F301` et `D301` sur des références réelles, la TVS étant explicitement cantonnée aux transitoires rapides et non à la protection en surtension. *(`F301` = `Schurter UMT-H` 12,5 A `3403.0285.11` ; `D301` = `SMDJ58A`.)*
+
+- [ ] B2.9 Figer `Q301` sur une référence réelle. Contrainte dure établie en B2.7 : `V_DS` ≥ 100 V, le P-MOS étant traversé par l'écrêtage de `D301` à 93,6 V.
 
 ### Validation
 
@@ -161,8 +163,8 @@ C2 PASS.
 
 ### Tâches
 
-- [ ] D1.1 Associer chaque composant à une empreinte compatible et disponible. *(PARTIAL : 103/111 assignés, toutes résolvables ; `U6` corrigé vers une empreinte à PowerPAD. Restent `J2`, `J3`, `RV1`, `C110`, `C210`, `F301`, `D301`, `Q301`, débloqués par B2.)*
-- [ ] D1.4 Créer l'empreinte locale du connecteur d'entrée et de volume déportés, aucune empreinte RCA n'existant dans les librairies KiCad.
+- [ ] D1.1 Associer chaque composant à une empreinte compatible et disponible. *(PARTIAL ; `U6` corrigé vers une empreinte à PowerPAD. Restent sans empreinte, vérifié au fichier : `J2`, `J3`, `J4`, `RV1`, `C110`, `C210`, `F301`, `D301`, `Q301`, `Q302`. Pistes établies : `D301` → `Diode_SMD:D_SMC` ; `Q302` → `Package_TO_SOT_THT:TO-264-3_*`, orientation à trancher en Phase E car le boîtier doit être sur radiateur ; `F301` → empreinte locale, voir D1.4.)*
+- [ ] D1.4 Créer les empreintes locales manquantes : le fusible `Schurter UMT-H` 5,3 × 16 mm, aucune empreinte KiCad ne couvrant ce corps, et le connecteur d'entrée et de volume déportés. *(À revoir : B2.2 a converti `J2`/`J3` en connecteurs de câblage 2 points vers RCA de châssis, donc des empreintes standard existent peut-être ; la famille de connecteur reste à choisir.)*
 - [ ] D1.2 Vérifier boîtiers fabricant, orientations, courants, connecteurs et contraintes d’assemblage.
 - [ ] D1.3 Vérifier particulièrement HTSSOP TPA3255, PowerPAD et stratégie de vias thermiques.
 

@@ -65,7 +65,7 @@ Charger 15 400 µF sous 48 V est le point dur. Pendant la rampe, le MOSFET séri
 
 Un simple réseau RC de démarrage progressif sur la grille échoue typiquement par **sortie de l'aire de sécurité (SOA)** du MOSFET, pas par dépassement de courant : un boîtier D2PAK à `P_tot` = 3,8 W sans dissipation adaptée n'encaisse pas une rampe longue.
 
-`NEEDS_DATA` : la vérification chiffrée de la SOA contre le profil de charge du bulk n'a pas été faite — elle exige le graphe SOA du datasheet complet du MOSFET finalement retenu.
+**Levé en B2.5** : la vérification chiffrée de la SOA a été faite sur la courbe constructeur de quatre candidats. Voir la section finale de ce document.
 
 Contrôleurs dédiés relevés, plage 48 V :
 
@@ -82,7 +82,7 @@ Le point d'attention est le **pouvoir de coupure en continu** : la plupart des c
 - `Schurter OMF 63`, montage en surface 7,4 × 3,1 mm : calibré **63 VAC / 63 VDC**, gamme 0,063 à 10 A, pouvoir de coupure 50 A à 63 VDC, `I²t` jusqu'à 54 A²s à 10 A. Compatible du besoin (≈ 4,6 A continus).
 - `Littelfuse BF1 58V`, MIDI vissé : calibré **58 VDC**, mais gamme 30 à 200 A — surdimensionné, le calibre minimal dépasse déjà largement le besoin.
 
-`NEEDS_DATA` : aucun fusible traversant de format classique (5 × 20 mm ou 6,3 × 32 mm) explicitement calibré 48–63 VDC entre 10 et 20 A n'a été identifié sur datasheet.
+**Levé en B2.7** : le format traversant classique reste sans candidat, mais un fusible CMS `Schurter UMT-H` 12,5 A calibré 125 VDC répond au besoin. Voir la section finale de ce document.
 
 ## Réserves
 
@@ -188,9 +188,7 @@ Effet du bulk sur la durée d'exposition, à `P_LIM` maximal :
 | 8 200 µF | 52 ms | 2,2 µF | 377 W pendant **179 ms** |
 | 4 700 µF | 29 ms | 1,2 µF | 390 W pendant **98 ms** |
 
-`NEEDS_DATA` — **référence exacte du MOSFET de hot-swap `Q302`**, à choisir sur courbe SOA constructeur vérifiant 6,95 A / 56 V / 318 ms. Un MOSFET à conduction seule ne convient pas : il faut une SOA garantie en mode linéaire. La vérification devra appliquer le déclassement en température de l'équation 19, la SOA étant spécifiée à 25 °C de boîtier alors que le boîtier est chaud pendant l'événement.
-
-`NEEDS_DATA` — `R_DS(on)` et résistance thermique du MOSFET retenu, pour l'équation 4 (température de boîtier en régime établi, à maintenir sous 125 °C).
+**Levé en B2.5** : `Q302` = `IXTK200N10L2`, dont la SOA garantie à 75 °C vaut 625 W contre 389 W exigés. `R_DS(on)` ≤ 11 mΩ et `R_thJC` = 0,12 °C/W. Méthode, comparaison des candidats et réserves : section finale de ce document.
 
 ## Composants figés à ce stade
 
@@ -201,6 +199,9 @@ Effet du bulk sur la durée d'exposition, à `P_LIM` maximal :
 | `R_PWR` | 147 kΩ | 9 |
 | `C_TIMER` | 3,9 µF | 13 |
 | `U8` | `LM5069-2`, VSSOP-10 | — |
+| `Q302` | `IXTK200N10L2`, TO-264 | 19, SOA garantie |
+| `F301` | `Schurter UMT-H` 12,5 A, `3403.0285.11` | coordination LM5069 |
+| `D301` | `SMDJ58A`, DO-214AB | plafond 88 V, note (3) |
 
 ## Brochage VSSOP-10 (DGS), section 6 de la datasheet
 
@@ -215,3 +216,123 @@ Effet du bulk sur la durée d'exposition, à `P_LIM` maximal :
 Raccordements de la figure 27 (*Typical Application Schematic*) : `R_PWR` de `PWR` à la masse, `C_TIMER` de `TIMER` à la masse, diviseur de seuils de `VSYS` à la masse avec les prises sur `UVLO` et `OVLO`, et un condensateur céramique de découplage au plus près de `VIN`.
 
 Le `NEEDS_DATA` sur ce brochage est donc levé.
+
+# Composants figés par sourcing datasheet (B2.5 et B2.7)
+
+## Méthode de lecture des courbes SOA
+
+Une courbe SOA est un graphique, pas un tableau : aucune valeur ne s'en extrait par lecture de texte, et deux recherches web successives ont échoué pour cette raison exacte. La méthode retenue a été l'**extraction vectorielle** des tracés du PDF, recalés sur les étiquettes d'axes, puis évaluation analytique au point 56 V.
+
+Trois contrôles indépendants valident la méthode :
+
+- Sur la Fig. 13 de l'`IXTH64N10L2`, la ligne horizontale supérieure du gabarit retombe à 140,2 A, contre `I_DM` = 140 A au tableau des maxima absolus.
+- Sur les quatre datasheets lues, la valeur déduite de la Fig. 14 coïncide à moins de 1 % près avec la ligne **SOA garantie** du tableau *Safe Operating Area Specification*, qui est une valeur testée et non un tracé.
+- Toutes les lignes SOA de cette famille ont une pente exactement −1 en log-log : la SOA y est purement limitée en puissance, sans repli par instabilité thermique. C'est la propriété qu'apporte la famille *Linear L2*, et elle rend la valeur en watts indépendante de la tension.
+
+## `Q302` — MOSFET de hot-swap
+
+Exigence à satisfaire, établie plus haut : **389 W, soit 6,95 A sous 56 V, pendant 318 ms**, marge 1,3 × de TI incluse ; 299 W sans cette marge.
+
+Comparaison sur la valeur **garantie** à `T_C` = 75 °C et `t_p` = 5 s, donc plus sévère que les 318 ms réellement subies :
+
+| Référence | Boîtier | `R_DS(on)` | `R_thJC` | SOA garantie à 75 °C | Verdict sur 389 W |
+|---|---|---|---|---|---|
+| `IXTH64N10L2` | TO-247 | 32 mΩ | 0,35 °C/W | 215 W | ÉCHEC, 0,55 × |
+| `IXTH110N10L2` | TO-247 | 18 mΩ | 0,21 °C/W | 360 W | ÉCHEC, 0,93 × |
+| `IXTN200N10L2` | SOT-227 | 11 mΩ | 0,15 °C/W | 500 W | passe, 1,29 × |
+| **`IXTK200N10L2`** | **TO-264** | **≤ 11 mΩ** | **0,12 °C/W** | **625 W** | **passe, 1,61 ×** |
+
+**Retenu : `IXTK200N10L2`** (Littelfuse/IXYS, *Linear L2*, 100 V / 200 A, TO-264 traversant, `V_GSS` ±30 V).
+
+Motif du choix contre l'`IXTN200N10L2`, pourtant suffisant : le SOT-227 est un module isolé à cosses vissées, plus encombrant et plus contraignant à implanter qu'un TO-264 traversant, pour une marge inférieure.
+
+Le fait marquant est que le candidat évident, l'`IXTH64N10L2`, échoue d'un facteur 1,8 : **la contrainte impose un die environ trois fois plus gros que ce que le courant nominal de 4,6 A laisserait supposer.** C'est la conséquence directe et chiffrée du bulk de 15 400 µF conservé.
+
+Lecture détaillée à 56 V (Fig. 14, `T_C` = 75 °C) :
+
+| Durée | `IXTH64N10L2` | `IXTK200N10L2` |
+|---|---|---|
+| 10 ms | 7,05 A / 395 W | 27,3 A / 1527 W |
+| 100 ms | 4,57 A / 256 W | 15,2 A / 850 W |
+| DC (`t_p` = 5 s) | 3,78 A / 212 W | 11,2 A / 625 W |
+
+Le déclassement en température de l'équation 19 n'a pas eu à être appliqué : IXYS publie la courbe **directement à `T_C` = 75 °C** et garantit une valeur testée à cette température, ce qui est plus solide qu'un déclassement calculé depuis une courbe à 25 °C.
+
+Vérifications secondaires :
+
+- Régime établi, équation 4 : 4,6 A dans ≤ 11 mΩ donne 0,23 W, et 1,6 W à la limite de courant minimale de 12,1 A. La température de boîtier en régime établi est sans enjeu.
+- Charge de grille `Q_g(on)` = 540 nC et `Q_gd` = 115 nC, contre un courant de source de grille du LM5069 de 10 µA min, 16 µA typique, 22 µA max. Ce courant faible **n'entame pas** la marge `t_flt` / `t_start` : la section 8.3.3 énonce que le temporisateur de défaut n'est actif que *pendant* la limitation de puissance, alors que la charge initiale de la grille la précède.
+- Coupure assurée dans les deux modes : 2 mA de pull-down sur expiration du temporisateur, 230 mA sur disjoncteur.
+
+### Contrainte d'implantation créée par ce choix
+
+La SOA suppose le boîtier **maintenu** à 75 °C pendant l'événement. `Q302` doit donc être monté sur radiateur, sans quoi la courbe ne s'applique pas. À reporter en Phase E.
+
+`NEEDS_DATA` — stabilité de la boucle de limitation de puissance du LM5069 face à une charge de grille de 540 nC. TI ne spécifie aucune capacité de grille maximale et aucune donnée trouvée ne permet de trancher.
+
+## `F301` — fusible
+
+**Retenu : `Schurter UMT-H` 12,5 A, référence `3403.0285.11`** — CMS 5,3 × 16 mm, temporisé T, 250 VAC / **125 VDC**, pouvoir de coupure **1000 A à 125 VDC**.
+
+Le piège identifié en amont, celui des cartouches calibrées en alternatif seulement ou en continu à 32 V, est écarté : le calibre continu et son pouvoir de coupure sont énoncés séparément au tableau des variantes. À noter que la gamme ne tient pas 250 VDC sur tous ses calibres : elle retombe à 125 VDC de 10 à 16 A, puis à 72 VDC de 20 à 50 A.
+
+Coordination avec le LM5069, vérifiée sur la table *Pre-Arcing Time* de la datasheet, ligne des calibres 0,160 A à 12,5 A :
+
+| Sollicitation | Courant | Réponse du fusible |
+|---|---|---|
+| Régime nominal | 4,6 A = 0,37 × `In` | aucune |
+| Crête musicale sur 4 Ω | 9,3 A = 0,74 × `In` | aucune |
+| Limitation de courant LM5069, ≤ 318 ms | ≤ 15,4 A = 1,23 × `In` | **≥ 60 min avant amorçage** : ouverture impossible |
+| Disjoncteur LM5069 | 20 à 32,5 A | l'électronique coupe la première |
+| `Q302` défaillant en court-circuit | ≥ 125 A = 10 × `In` | 10 à 100 ms |
+
+Le rôle de `F301` est donc précisément borné : **ultime recours contre un `Q302` en court-circuit ou un court-circuit de câblage**, jamais protection de surcharge. Cette fonction appartient au LM5069, et un calibre plus bas romprait la coordination en ouvrant sur un événement que l'électronique est conçue pour encaisser.
+
+Deux conséquences à reporter :
+
+- Les calibres de cette famille sont établis sur carte d'essai à pistes de **7,5 mm en cuivre de 140 µm** pour le calibre 12,5 A. Le rail d'entrée devra s'en approcher, faute de quoi un déclassement s'applique.
+- **Aucune empreinte KiCad existante ne convient** : `Fuse_Schurter_UMT250` vise un corps de 3 × 10,1 mm, pastilles 2 × 3,75 mm à ± 4,25 mm, contre 5,3 × 16 mm ici. Empreinte locale à créer, à rattacher à D1.4.
+
+## `D301` — TVS
+
+**Retenue : `SMDJ58A`**, unidirectionnelle 3000 W, DO-214AB.
+
+`V_RWM` = 58 V, strictement au-dessus des 56 V que le rail peut légitimement atteindre ; `V_BR` = 64,4 à 71,2 V ; `V_C` = 93,6 V à `I_PP` = 32,1 A.
+
+Le plafond de tension n'est pas fixé par le TPA3255, que `Q302` isole en surtension via l'OVLO, mais par ce que `D301` protège réellement, c'est-à-dire l'amont : `U8` et `Q301`. La note (3) des maxima absolus du LM5069 est décisive :
+
+> The GATE pin voltage is typically 12 V above VIN when the LM5069 is enabled. Therefore, the Absolute Maximum Ratings for VIN (100 V) applies only when the LM5069 is disabled, or for a momentary surge to that voltage because the Absolute Maximum Rating for the GATE pin is also 100 V.
+
+Le circuit étant actif, la broche `GATE` flotte 12 V au-dessus de `VIN` : le plafond de service est **88 V**, et non 100 V. La phrase autorise bien un dépassement momentané jusqu'à 100 V, ce qui décrit exactement un écrêtage de TVS ; la lecture prudente a néanmoins été retenue.
+
+Ce plafond départage deux boîtiers qui affichent pourtant la même `V_C` de 93,6 V, mais pas au même courant :
+
+| Référence | Puissance | `V_C` = 93,6 V à | Résistance dynamique déduite | `V_C` estimée à 16 A |
+|---|---|---|---|---|
+| `SMCJ58A` | 1500 W | 16,1 A | ≈ 1,6 Ω | ≈ 93,6 V, au-dessus des 88 V |
+| **`SMDJ58A`** | **3000 W** | **32,1 A** | **≈ 0,80 Ω** | **≈ 81 V, sous les 88 V** |
+
+Réserve explicite : la dernière colonne est une **interpolation linéaire** entre `V_BR` typique et le couple (`V_C`, `I_PP`) publiés. Aucune des deux datasheets ne spécifie `V_C` en dessous de `I_PP`. Le choix du 3000 W est donc motivé par une marge, pas par une valeur garantie.
+
+L'alignement des colonnes de la table SMDJ, dont l'extraction texte est décalée, a été contrôlé en vérifiant que le produit `V_C` × `I_PP` redonne 3000 W sur toute la gamme : 35,5 × 84,5 pour le 22 V, 93,6 × 32,1 pour le 58 V, 103 × 29,1 pour le 64 V.
+
+`NEEDS_DATA` — `V_C` de `SMDJ58A` à un courant de surge inférieur à `I_PP`, non spécifiée.
+
+### Contrainte dure nouvelle imposée à `Q301`
+
+Le P-MOS d'anti-inversion est traversé par l'écrêtage de `D301` : **`V_DS` ≥ 100 V obligatoire**. Cette contrainte n'existait pas avant que la TVS soit figée.
+
+## Réserves sur ce lot
+
+- Disponibilité en stock non vérifiée. L'`IXTK200N10L2` est actif au catalogue Littelfuse et référencé chez JLCPCB sous `C3281712`, mais les niveaux de stock varient selon les distributeurs.
+- Les datasheets IXYS ont été lues sur un miroir tiers, les serveurs Littelfuse refusant les requêtes automatisées. L'identité de chaque fichier a été contrôlée sur son en-tête et ses valeurs de tableau, après qu'un premier PDF récupéré chez un distributeur se soit révélé être un composant sans aucun rapport.
+
+## Sources de ce lot
+
+- `IXTK200N10L2` — https://www.littelfuse.com/products/power-semiconductors-control-ics/mosfets-si-sic/n-channel-linear/l2/ixtk200n10l2
+- `IXTH64N10L2` — https://www.littelfuse.com/products/power-semiconductors-control-ics/mosfets-si-sic/n-channel-linear/l2/ixth64n10l2
+- `IXTN200N10L2` — https://www.littelfuse.com/products/power-semiconductors/discrete-mosfets/n-channel-linear/l2/ixtn200n10l2.aspx
+- Schurter UMT-H — https://www.schurter.com/en/datasheet/typ_UMT-H.pdf
+- Série SMDJ — https://www.farnell.com/datasheets/2794255.pdf
+- LM5069, maxima absolus et section 8.3 — https://www.ti.com/lit/ds/symlink/lm5069.pdf
+- TI, *Using MOSFET Safe Operating Area Curves in Your Design* — https://www.ti.com/lit/pdf/sluaao2

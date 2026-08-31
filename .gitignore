@@ -7,3 +7,6 @@ fp-info-cache
 
 # Historique d'éditeur
 .history/
+
+# Instantanes PDF automatiques du MCP avant suppression de composant
+*_pre_delete_*.pdf
