@@ -17219,7 +17219,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Diode_SMD:D_SMC"
 			(at 279.4 320.04 0)
 			(hide yes)
 			(effects
@@ -17280,7 +17280,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_TO_SOT_THT:TO-220-3_Vertical"
 			(at 297.18 317.5 0)
 			(hide yes)
 			(effects
@@ -18063,7 +18063,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_TO_SOT_THT:TO-264-3_Vertical"
 			(at 386.08 421.64 0)
 			(hide yes)
 			(effects

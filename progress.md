@@ -6,7 +6,7 @@ Phase B2. **GATE C2 = PASS** (inchangé : seules des `Value` et propriétés ont
 
 ## Tâche actuelle
 
-D1.1 — Attribuer les empreintes désormais débloquées.
+D1.1 — Empreintes. `D301`, `Q301` et `Q302` assignés ; 16 composants restent.
 
 ## Dernière tâche validée
 
@@ -87,6 +87,12 @@ Levés cette session : `Q302` et sa courbe SOA, `R_DS(on)` et résistance thermi
 
 À 100 V, un P-canal reste environ trois fois moins bon qu'un N-canal. L'alternative serait un contrôleur de diode idéale (`LM74700`, `LM5050`) pilotant un N-canal, dont la pompe de charge fournit exactement la commande côté haut dont l'absence avait fait rejeter le N-canal en B2.3. Non retenue : la topologie P-MOS est tranchée et 0,70 W est acceptable. Consignée pour rester révisable.
 
+## Inventaire réel des empreintes manquantes
+
+Refait au fichier, il est **plus large que ce que le plan indiquait** : le réseau du LM5069 et le clamp de grille, ajoutés en B2.3, B2.4 et B2.6, n'avaient jamais été assignés. Restent sans empreinte : `C110`, `C210`, `C325`, `C326`, `D302`, `F301`, `J2`, `J3`, `J4`, `R305` à `R310`, `RV1`. Les cinq `PWR_FLAG` n'en requièrent aucune.
+
+Assignés cette session : `D301` → `Diode_SMD:D_SMC`, `Q301` → `Package_TO_SOT_THT:TO-220-3_Vertical`, `Q302` → `Package_TO_SOT_THT:TO-264-3_Vertical`. Orientation verticale retenue par défaut ; la variante à semelle plaquée dépend du radiateur et se tranche en Phase E.
+
 ## NEXT ACTION
 
-D1.1 — Assigner les empreintes désormais débloquées via `kicad-control` : `D301` → `Diode_SMD:D_SMC`, `Q301` → `Package_TO_SOT_THT:TO-220-3_*`, `Q302` → `Package_TO_SOT_THT:TO-264-3_*`. L'orientation exacte, verticale ou horizontale semelle plaquée, dépend du radiateur et se tranche en Phase E : retenir la variante verticale par défaut et le noter. Restent ensuite bloqués `J2`, `J3`, `J4`, `RV1` (famille de connecteur à choisir), `C110`, `C210` (`NEEDS_DATA`) et `F301` (empreinte locale, D1.4).
+D1.5 — Assigner les passifs du bloc de protection. Attention, un seul point dur : **`R306` est un shunt de 4 mΩ traversé par 4,6 A en continu et jusqu'à 15,4 A en limitation**, il lui faut une empreinte de shunt de puissance et une référence réelle, pas une empreinte générique. `C325` vaut 3,9 µF et impose un boîtier en conséquence. `R305`, `R307` à `R310` et `C326` sont des passifs standard. `D302` reste `NEEDS_DATA`.
