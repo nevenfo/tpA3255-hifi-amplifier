@@ -102,13 +102,15 @@ C1 PASS ; décisions utilisateur du 2026-08-31 ; sourcing fabricant de la protec
 
 - [ ] B2.1 Déporter `RV1` hors carte : ajouter un connecteur de volume, recâbler les nets et sortir `RV1` du périmètre PCB.
 - [ ] B2.2 Convertir les entrées `J2`/`J3` en connecteur de câblage vers RCA de châssis, avec retour de masse maîtrisé.
-- [ ] B2.3 Corriger `Q301` : clamp Zener de grille et résistance de grille dimensionnés pour un rail 48 V.
-- [ ] B2.4 Ajouter la limitation d'appel de courant pour environ 15 400 µF de bulk et vérifier la SOA du MOSFET pendant la charge.
-- [ ] B2.5 Figer `F301` et `D301` sur des références réelles dont le clamp reste sous le maximum absolu PVDD de 65 V.
+- [ ] B2.3 Corriger `Q301` : clamp Zener de grille et résistance de grille dimensionnés pour un rail 48 V. L'anti-inversion reste une fonction distincte du hot-swap, la diode de structure d'un MOSFET N côté haut conduisant en inversion.
+- [ ] B2.4 Dimensionner l'étage `LM5069` sur équations de datasheet : seuils de sous-tension et de surtension avec marge sous 65 V, résistance de shunt, limitation de puissance et temporisateur de défaut.
+- [ ] B2.5 Vérifier la SOA du MOSFET de hot-swap pendant la charge des 15 400 µF, contre la courbe SOA de la référence retenue.
+- [ ] B2.6 Capturer le bloc `LM5069` au schéma : contrôleur, MOSFET série, shunt et réseau de programmation.
+- [ ] B2.7 Figer `F301` et `D301` sur des références réelles, la TVS étant explicitement cantonnée aux transitoires rapides et non à la protection en surtension.
 
 ### Validation
 
-Chaque ajout est sourcé ou calculé ; aucune coordonnée existante déplacée ; nets vérifiés par inspection MCP.
+Chaque ajout est sourcé sur datasheet ou calculé explicitement ; aucun seuil de sécurité posé de mémoire ; toute grandeur dépendant d'un composant non figé reste `NEEDS_DATA`. Aucune coordonnée existante déplacée ; nets vérifiés par inspection MCP.
 
 # Phase C — Gate schématique
 

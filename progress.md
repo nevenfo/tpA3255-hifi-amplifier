@@ -6,7 +6,7 @@ Phase D — Empreintes.
 
 ## Tâche actuelle
 
-D1.1 — Attribution des empreintes. **PARTIAL, non cochée.**
+B2 — Retouches schématiques issues des décisions mécaniques et de protection. D1.1 est suspendue en PARTIAL et reprendra après le re-gate C2.
 
 ## Dernière tâche validée
 
@@ -27,18 +27,15 @@ Variante `_ThermalVias` disponible dans la même librairie mais **délibérémen
 
 ## Blocage actif
 
-8 composants sans empreinte, tous par indétermination du composant physique, aucun par échec d'outil :
+Aucun. Les 8 empreintes manquantes sont débloquées par les décisions utilisateur du 2026-08-31, qui rouvrent du travail schématique (B2) et imposent un re-gate ERC (C2) avant de clore D1.1.
 
-| Réf | Boîtier requis | Cause |
-|---|---|---|
-| `J2`, `J3` | Connecteur RCA | **Aucune empreinte RCA/cinch/phono dans les 155 librairies KiCad 10.0** (vérifié par le principal). Création locale impossible sans cotes mécaniques d'un P/N choisi. |
-| `RV1` | Potentiomètre double 10 k LOG | `NEEDS_DATA mecanique` — axe, pas de pattes, montage PCB ou déporté non tranchés |
-| `C110`, `C210` | Céramique SMD | `NEEDS_DATA` découplage `VMID` — capacité/tension non tranchées, donc boîtier indéterminé |
-| `F301` | Fusible | `NEEDS_DATA` — SMD ou porte-fusible traversant non tranché |
-| `D301` | TVS | `NEEDS_DATA` — boîtier dépend du calibre |
-| `Q301` | MOSFET anti-inversion | `NEEDS_DATA` — SOT-23 / DPAK / TO-220 selon calibre |
+Décisions utilisateur prises :
+- `J2`/`J3` : RCA **déportés sur châssis**, reliés par connecteur de câblage. Signal analogique le plus sensible sur fils : blindage à soigner.
+- `RV1` : potentiomètre **déporté par nappe blindée**, hors carte. Point haute impédance.
+- Protection 48 V : niveau **renforcé**, avec limitation de l'appel de courant.
+- Surtension : **`LM5069` + MOSFET N externe**, coupant réellement l'alimentation. `LM5066` écarté, sa télémétrie PMBus n'apportant rien ici. TVS cantonnée aux transitoires rapides. Seuils à marge explicite sous les limites absolues du TPA3255. Toute grandeur dépendant du MOSFET exact, de la TVS, du shunt ou des seuils précis reste `NEEDS_DATA` plutôt qu'inventée.
 
-Prochaine tentative : trancher les choix mécaniques avec l'utilisateur, puis sourcer les P/N fabricant.
+**Résultat de conception majeur, consigné dans `docs/protection-48v.md`** : aucune TVS passive au silicium ne satisfait à la fois `V_RWM ≥ 48 V` et `V_C < 65 V`. Le facteur de clamp exigé serait 65/48 = 1,354, contre 1,3 à 1,6 pour la technologie avalanche, familles automobiles load dump comprises. `SMCJ48A` et `SLD8S48A` clampent toutes deux à 77,4 V. Une TVS seule sur ce rail est une protection illusoire contre une surtension soutenue. D'où l'OVP actif.
 
 ## État de la stack MCP
 
@@ -67,9 +64,9 @@ Limitations observées, consignées sans contournement :
 
 - `HifiAmp_TPA3255.kicad_pro`, `.kicad_sch`, `.kicad_pcb`
 - `HifiAmp_TPA3255.kicad_sym`, `sym-lib-table`, `fp-lib-table`, `HifiAmp_TPA3255_Local.pretty/`
-- `docs/architecture.md`, `docs/power-block.md`
+- `docs/architecture.md`, `docs/power-block.md`, `docs/protection-48v.md`
 - `reports/ERC_B1_gate_2026-08-31.json`, `reports/MCP_BUG-documenttype-routing-eeschema.md`
 
 ## NEXT ACTION
 
-Trancher avec l'utilisateur les 4 choix mécaniques bloquants — montage des RCA `J2`/`J3`, montage du potentiomètre `RV1`, format du fusible `F301`, calibre et boîtier de la protection `D301`/`Q301` — puis sourcer les P/N fabricant et clore D1.1 avant d'ouvrir D1.2.
+B2.4 — Dimensionner l'étage `LM5069` à partir des équations de sa datasheet (`SNVS452`) : seuils de sous-tension et de surtension avec marge sous les 65 V absolus, résistance de shunt pour ≈ 4,6 A continus, limitation de puissance et temporisateur, puis vérification SOA (B2.5) pour la charge des 15 400 µF. Ensuite seulement, capture schématique du bloc via `kicad-control` (B2.6).
