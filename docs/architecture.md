@@ -144,7 +144,10 @@ L’EVM utilise à la place `10 µH + 1 µF` avec Coilcraft `MA5172-AE`; ces deu
 - Boucles PVDD–demi-pont–condensateurs minimales ; bootstrap au plus près.
 - Entrées et retours analogiques courts, éloignés des nœuds de commutation et des inductances.
 - Filtres LC près des sorties de puissance, borniers haut-parleur en bord de carte.
-- PowerPAD et masse reliés à une matrice de vias thermiques et à un dispositif dissipateur conforme au boîtier DDV.
+- **Correction du 2026-08-31, établie par lecture directe du dessin de boîtier `DDV0044D` dans `SLASEA8A` :** le PowerPAD du `DDV` est sur la **face supérieure** du composant (« The package type contains a PowerPAD that is located on the top side of the device for convenient thermal coupling to the heat sink », §6 ; note 5 du dessin de boîtier : « The exposed thermal pad is designed to be attached to an external heatsink »). Le `LAND PATTERN EXAMPLE` ne comporte que **44 pastilles de 1.45 × 0.4 mm au pas 0.635 mm, sans aucune pastille thermique côté PCB**.
+- En conséquence, **aucune matrice de vias thermiques sous le TPA3255 n'est possible ni pertinente** : la chaleur sort par le dessus, vers un dissipateur pressé sur le boîtier. La rédaction initiale « PowerPAD et masse reliés à une matrice de vias thermiques » était erronée et est annulée. La dissipation dépend entièrement du dissipateur, de son interface et de sa pression mécanique — ce que le `NEEDS_DATA` dissipateur couvre déjà.
+- Les vias thermiques restent pertinents ailleurs sur la carte, notamment sous les régulateurs à languette et pour la continuité du plan de masse, mais pas comme voie de dissipation du TPA3255.
+- `NEEDS_DATA: traitement de la broche 45 (PowerPad) du symbole. L'empreinte conforme au land pattern TI n'a que 44 pastilles ; la broche 45 ne peut donc être brasée à rien. Son rattachement actuel à GND dans le schéma n'a pas de contrepartie physique et doit être tranché en Phase D.`
 
 ## NEEDS_DATA avant gel final
 
