@@ -201,7 +201,7 @@ Effet du bulk sur la durée d'exposition, à `P_LIM` maximal :
 | `U8` | `LM5069-2`, VSSOP-10 | — |
 | `Q302` | `IXTK200N10L2`, TO-264 | 19, SOA garantie |
 | `F301` | `Schurter UMT-H` 12,5 A, `3403.0285.11` | coordination LM5069 |
-| `D301` | `SMDJ58A`, DO-214AB | plafond 88 V, note (3) |
+| `D301` | `SMDJ58CA`, DO-214AB | plafond 88 V, note (3) |
 
 ## Brochage VSSOP-10 (DGS), section 6 de la datasheet
 
@@ -295,7 +295,7 @@ Deux conséquences à reporter :
 
 ## `D301` — TVS
 
-**Retenue : `SMDJ58A`**, unidirectionnelle 3000 W, DO-214AB.
+**Retenue : `SMDJ58CA`**, bidirectionnelle 3000 W, DO-214AB. Le motif du choix bidirectionnel est exposé plus bas.
 
 `V_RWM` = 58 V, strictement au-dessus des 56 V que le rail peut légitimement atteindre ; `V_BR` = 64,4 à 71,2 V ; `V_C` = 93,6 V à `I_PP` = 32,1 A.
 
@@ -310,17 +310,27 @@ Ce plafond départage deux boîtiers qui affichent pourtant la même `V_C` de 93
 | Référence | Puissance | `V_C` = 93,6 V à | Résistance dynamique déduite | `V_C` estimée à 16 A |
 |---|---|---|---|---|
 | `SMCJ58A` | 1500 W | 16,1 A | ≈ 1,6 Ω | ≈ 93,6 V, au-dessus des 88 V |
-| **`SMDJ58A`** | **3000 W** | **32,1 A** | **≈ 0,80 Ω** | **≈ 81 V, sous les 88 V** |
+| **`SMDJ58CA`** | **3000 W** | **32,1 A** | **≈ 0,80 Ω** | **≈ 81 V, sous les 88 V** |
 
 Réserve explicite : la dernière colonne est une **interpolation linéaire** entre `V_BR` typique et le couple (`V_C`, `I_PP`) publiés. Aucune des deux datasheets ne spécifie `V_C` en dessous de `I_PP`. Le choix du 3000 W est donc motivé par une marge, pas par une valeur garantie.
 
 L'alignement des colonnes de la table SMDJ, dont l'extraction texte est décalée, a été contrôlé en vérifiant que le produit `V_C` × `I_PP` redonne 3000 W sur toute la gamme : 35,5 × 84,5 pour le 22 V, 93,6 × 32,1 pour le 58 V, 103 × 29,1 pour le 64 V.
 
-`NEEDS_DATA` — `V_C` de `SMDJ58A` à un courant de surge inférieur à `I_PP`, non spécifiée.
+`NEEDS_DATA` — `V_C` de `SMDJ58CA` à un courant de surge inférieur à `I_PP`, non spécifiée.
 
-### Contrainte dure nouvelle imposée à `Q301`
+### Ce que `D301` impose réellement à `Q301`, et ce qu'elle n'impose pas
 
-Le P-MOS d'anti-inversion est traversé par l'écrêtage de `D301` : **`V_DS` ≥ 100 V obligatoire**. Cette contrainte n'existait pas avant que la TVS soit figée.
+Correction d'une déduction fausse posée en première rédaction. `Q301` **n'est pas** contraint à `V_DS` ≥ 100 V par l'écrêtage : pendant un écrêtage, sa grille est tenue 15 V sous sa source par `R305` et `D302`, donc il **conduit**, et son `V_DS` reste voisin de zéro. Ce que l'écrêtage impose, c'est 93,6 V sur le **nœud**, donc sur `VIN` de `U8` — c'est l'analyse du plafond de 88 V ci-dessus, qui elle reste valable.
+
+La contrainte réelle sur `Q301` est son **blocage en inversion** : tenir la tension d'alimentation appliquée à l'envers, soit 56 V, plus une marge. Un calibre 100 V reste prudent mais n'est pas imposé par la TVS.
+
+### Conséquence : `D301` doit être bidirectionnelle
+
+Une TVS **unidirectionnelle**, cathode sur `PVDD_FUSED` et anode sur `GND`, entre en conduction directe dès que l'alimentation est branchée à l'envers : elle court-circuite la source et fait fondre `F301`. Cela annule la fonction même de `Q301`, dont l'objet est précisément de rendre l'inversion inoffensive.
+
+**Retenu : `SMDJ58CA`**, variante bidirectionnelle. Elle bloque jusqu'à −58 V en inversion, laisse `Q301` faire son travail, et partage exactement les caractéristiques électriques de la variante `A`, dont elle occupe la même ligne de tableau : `V_RWM` = 58 V, `V_BR` = 64,4 à 71,2 V, `V_C` = 93,6 V à `I_PP` = 32,1 A.
+
+Le symbole déjà en place, `Device:D_TVS`, est bidirectionnel : ce choix rétablit du même coup la cohérence entre le symbole et le composant.
 
 ## Réserves sur ce lot
 

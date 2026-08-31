@@ -16,7 +16,7 @@ B2.9 — Figer `Q301`, le P-MOS d'anti-inversion.
 |---|---|---|
 | `Q302` | `IXTK200N10L2` (Littelfuse/IXYS *Linear L2*, TO-264) | SOA **garantie** 625 W à `T_C` = 75 °C / `t_p` = 5 s, contre 389 W exigés — marge 1,61 × |
 | `F301` | `Schurter UMT-H` 12,5 A, `3403.0285.11` | 125 VDC, coupure 1000 A en continu ; coordination vérifiée sur la table *Pre-Arcing Time* |
-| `D301` | `SMDJ58A`, 3000 W, DO-214AB | `V_RWM` = 58 V > 56 V ; écrête sous le plafond de 88 V du LM5069 |
+| `D301` | `SMDJ58CA`, 3000 W, DO-214AB | `V_RWM` = 58 V > 56 V ; écrête sous le plafond de 88 V du LM5069 ; **bidirectionnelle** |
 
 Analyse complète, méthode et réserves : section finale de `docs/protection-48v.md`.
 
@@ -25,13 +25,14 @@ Analyse complète, méthode et réserves : section finale de `docs/protection-48
 1. **Les courbes SOA sont des images.** Deux recherches web ont échoué pour cette seule raison. La lecture a été faite par **extraction vectorielle des tracés du PDF**, recalés sur les étiquettes d'axes. Méthode validée trois fois : `I_DM` retrouvé à 140,2 A contre 140 A au tableau, et sur les quatre datasheets la valeur déduite coïncide à moins de 1 % près avec la ligne **SOA garantie** du tableau *Safe Operating Area Specification*.
 2. **Le candidat évident échoue.** L'`IXTH64N10L2` ne tient que 215 W à 75 °C, soit 0,55 × le besoin. Il faut un die environ trois fois plus gros que ce que 4,6 A nominaux laisseraient supposer — conséquence directe et chiffrée du bulk de 15 400 µF conservé.
 3. **Le déclassement de l'équation 19 est devenu inutile** : IXYS publie la courbe directement à `T_C` = 75 °C et garantit une valeur testée à cette température.
-4. **Note (3) des maxima absolus du LM5069** : `GATE` flotte 12 V au-dessus de `VIN`, donc le plafond de service est **88 V**, pas 100 V. C'est ce qui écarte la `SMCJ58A` (93,6 V dès 16 A) au profit de la `SMDJ58A`.
-5. **Un calibre de fusible trop bas romprait la coordination.** À 12,5 A, une limitation de courant LM5069 à 15,4 A pendant 318 ms vaut 1,23 × `In`, pour lequel la datasheet impose ≥ 60 min avant amorçage : ouverture impossible. `F301` est un ultime recours contre un `Q302` en court-circuit, jamais une protection de surcharge.
+4. **La TVS doit être bidirectionnelle.** Une `SMDJ58A` unidirectionnelle, anode sur `GND`, entre en conduction directe sur une inversion d'alimentation, court-circuite la source et fait fondre `F301` — ce qui annule la fonction même de `Q301`. La variante `CA` partage exactement les mêmes caractéristiques électriques et rétablit la cohérence avec le symbole `Device:D_TVS`, déjà bidirectionnel.
+5. **Note (3) des maxima absolus du LM5069** : `GATE` flotte 12 V au-dessus de `VIN`, donc le plafond de service est **88 V**, pas 100 V. C'est ce qui écarte la `SMCJ58A` (93,6 V dès 16 A) au profit du boîtier 3000 W.
+6. **Un calibre de fusible trop bas romprait la coordination.** À 12,5 A, une limitation de courant LM5069 à 15,4 A pendant 318 ms vaut 1,23 × `In`, pour lequel la datasheet impose ≥ 60 min avant amorçage : ouverture impossible. `F301` est un ultime recours contre un `Q302` en court-circuit, jamais une protection de surcharge.
 
 ## Contraintes nouvelles créées par ces choix
 
 - `Q302` doit être **monté sur radiateur** : la SOA suppose le boîtier maintenu à 75 °C. À reporter en Phase E.
-- `Q301` doit tenir **`V_DS` ≥ 100 V**, étant traversé par l'écrêtage de `D301` à 93,6 V. C'est l'objet de B2.9.
+- `Q301` doit **bloquer l'inversion à 56 V plus marge**. Attention : il n'est *pas* contraint à `V_DS` ≥ 100 V par l'écrêtage — il conduit pendant celui-ci, grille tenue 15 V sous sa source, donc son `V_DS` reste voisin de zéro. Première déduction fausse, corrigée. C'est l'objet de B2.9.
 - Rail d'entrée : les calibres UMT-H sont établis sur pistes de 7,5 mm en cuivre 140 µm. Déclassement sinon.
 - `F301` n'a **aucune empreinte KiCad compatible** (`Fuse_Schurter_UMT250` vise 3 × 10,1 mm contre 5,3 × 16 mm). Empreinte locale à créer en D1.4.
 
@@ -43,7 +44,7 @@ Aucun.
 
 `Q301` (B2.9), `D302`, `C110`/`C210`, potentiomètre `RV1`, confirmation par dessin mécanique TI que l'EP du TPA3255DDV vaut 5,2 × 14 mm.
 
-Nouveaux, assumés : stabilité de la boucle de limitation de puissance du LM5069 face aux 540 nC de grille de `Q302`, TI ne spécifiant aucune capacité de grille maximale ; `V_C` de la `SMDJ58A` en dessous de `I_PP`, non spécifiée.
+Nouveaux, assumés : stabilité de la boucle de limitation de puissance du LM5069 face aux 540 nC de grille de `Q302`, TI ne spécifiant aucune capacité de grille maximale ; `V_C` de la `SMDJ58CA` en dessous de `I_PP`, non spécifiée.
 
 Levés cette session : `Q302` et sa courbe SOA, `R_DS(on)` et résistance thermique du MOSFET, `F301`, `D301`.
 
@@ -81,4 +82,4 @@ Levés cette session : `Q302` et sa courbe SOA, `R_DS(on)` et résistance thermi
 
 ## NEXT ACTION
 
-B2.9 — Retenir un P-MOS `Q301` réel vérifiant `V_DS` ≥ 100 V, `I_D` ≥ 12 A continus, `R_DS(on)` faible sous `V_GS` = −15 V (grille clampée par `D302`), en boîtier dissipatif. Renseigner sa `Value` via `kicad-control`, puis enchaîner sur D1.1 en assignant les empreintes désormais débloquées : `D301` → `Diode_SMD:D_SMC`, `Q302` → `Package_TO_SOT_THT:TO-264-3_*`.
+B2.9 — Retenir un P-MOS `Q301` réel bloquant l'inversion à 56 V plus marge, `I_D` ≥ 12 A continus, `R_DS(on)` faible sous `V_GS` = −15 V (grille clampée par `D302`), en boîtier dissipatif. Renseigner sa `Value` via `kicad-control`, puis enchaîner sur D1.1 en assignant les empreintes désormais débloquées : `D301` → `Diode_SMD:D_SMC`, `Q302` → `Package_TO_SOT_THT:TO-264-3_*`.
