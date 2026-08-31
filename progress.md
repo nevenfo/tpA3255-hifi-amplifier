@@ -6,24 +6,24 @@ Phase B — Schéma KiCad.
 
 ## Tâche actuelle
 
-B1.7 — Revoir références, alimentations, nets critiques et connexions inattendues.
+C1 — Gate schématique : ERC, classement, archivage et verdict PASS/FAIL.
 
 ## Dernière tâche validée
 
-B1.6 — Découplages, puissance, filtres LC, sorties et protections ajoutés et corrigés.
+B1.7 — Revue des références, alimentations, nets critiques et connexions inattendues. **B1 est terminée.**
 
-Preuves observées (toutes via `kicad-agentic-mcp` v1.1.3, aucune édition directe de fichier) :
-- 32 composants ajoutés puis corrigés. Découplages TPA3255 conformes à `SLASEA8A` : `C301` 10 µF + `C302` 0.1 µF (`VDD`), `C303` 1 µF (`VBG`), `C304`/`C305` 0.1 µF (`GVDD_AB`/`GVDD_CD`), `C306`-`C309` 0.033 µF (bootstrap `BST_x`→`OUT_x`), `C310`/`C311` 1 µF/100 V (PVDD local), `C312`-`C315` 1500 µF/63 V et `C316`/`C317` 4700 µF/80 V (bulk, ancre EVM ajustable).
-- Valeurs sourcées le 2026-08-31 par lecture directe du PDF `SLASEA8A` rév. A : `C318` 1 µF (`AVDD`), `C319` 1 µF (`DVDD`), `C320` 47 nF (`C_START`) — Figure 29 p. 22 ; `R304` 22 kΩ (`OC_ADJ`, seuil 17.0 A mode CB3C) — Table 4 p. 18. À ne pas confondre avec `R301`, le 22.0 kΩ distinct de `FREQ_ADJ`.
-- `OSC_IOM` (9) et `OSC_IOP` (10) laissées non connectées avec drapeau no-connect (`c0b9bae1`, `d6ecc480`), conformément à la table Pin Functions : « Oscillator synchronization interface. Do not connect if not used. »
-- Filtre de sortie : `L301`-`L304` 15 µH puis `C321`-`C324` 680 nF film (`d06dedf5`, `ecb4ba24`, `dec1e2de`, `ced78652`) de `OUT_A_F`/`OUT_B_F`/`OUT_C_F`/`OUT_D_F` vers `GND`. Borniers `J301`/`J302` entre `OUT_A_F`/`OUT_B_F` et `OUT_C_F`/`OUT_D_F` ; aucune borne haut-parleur reliée à `GND`.
-- Correction d'un écart : le filtre avait d'abord été capturé avec 2 condensateurs différentiels, par interprétation erronée de la règle « sorties BTL jamais reliées à la masse », qui vise les bornes haut-parleur et non le condensateur de filtre. Topologie remise à 4 × 680 nF vers `GND`, seule cohérente avec la coupure calculée 49.8 kHz.
-- Correction d'un second écart : la chaîne de protection était un stub isolé. Le label de `J1` broche 1 portait `PVDD` au lieu de `PVDD_EXT`, court-circuitant la protection. Renommé. Chemin réel désormais : `J1` → `PVDD_EXT` (4 points : `J1.1`, `F301.1`, `D301.A1`, jonction) → `F301` → `PVDD_FUSED` (3 points) → `Q301` → `PVDD` (24 points : bulk, `U6` `PVDD_AB`/`PVDD_CD`, `PWR_FLAG`, `Q301.S`). `PWR_FLAG` reste du côté alimenté.
-- ERC : 25 → **14 avertissements, 0 erreur**. Les 11 « label connecté à une seule broche » de la baseline ont tous disparu. Les 14 restants sont préexistants (mismatch symbole/librairie locale, off-grid sur le bloc alimentation).
-- Persistance vérifiée hors MCP : `HifiAmp_TPA3255.kicad_sch` 241 387 octets, mtime 2026-08-31 11:53:56 +0200, révision MCP `499caba8320b6ab6-241387` ; `C321`-`C324`, `PVDD_EXT`, `PVDD_FUSED` et 4 drapeaux no-connect présents.
-- Aucun gate ERC revendiqué : B1.7 reste à faire avant la Phase C.
+Preuves observées (revue d'inspection pure, aucune mutation, 0 appel d'écriture) :
+- Références : aucune anomalie. 117 lignes BOM, plages cohérentes (1xx gauche, 2xx droite, 3xx puissance, historique alimentation). Aucun doublon, aucun `R?`/`C?`. Les 5 `PWR_FLAG` portent une référence `?`, ce qui est normal pour un symbole virtuel.
+- Rails tracés source → charges : `PVDD_EXT` 3 points (`J1.1`, `F301`, `D301`) → `PVDD_FUSED` 3 points → `PVDD` 17 points avec `PWR_FLAG` ; `BUCK_VIN` 4 points ; `+15V` 7 points depuis `L1` ; `+12V` 10 points depuis `U2` ; `+12V-OA` 9 points depuis `L6` ; `+3V3` 4 points depuis `U3` ; `VMID` 8 points ; `GND` 63 broches. L'absence de `PWR_FLAG` sur `+12V`, `+3V3` et `VMID` est cohérente : ces nets sont pilotés par une sortie active, pas seulement par des broches Power-Input, et l'ERC ne les signale pas.
+- `find_single_pin_nets` : **0 net orphelin**.
+- Chaîne audio tracée de bout en bout sur les deux canaux, symétrie électrique confirmée jusqu'aux borniers. Aucune asymétrie réelle au-delà de l'asymétrie de nommage déjà assumée.
+- Commande confirmée liaison par liaison : `RESET` `U7.3` → `U6.18` ; `FAULT` `U6.19` et `CLIP_OTW` `U6.21` avec `R302`/`R303` vers `+3V3` ; `M1`/`M2` à `GND` ; `FREQ_ADJ` `R301` 22.0 kΩ ; `OC_ADJ` `R304` 22 kΩ.
+- ERC : **0 erreur / 14 avertissements**, tous classés dans les deux catégories attendues — 4 mismatch symbole/librairie locale (`U1`, `U2`, `U7`, `U6`) et 10 off-grid concentrés dans le cluster du bloc alimentation. Aucun avertissement hors catégorie.
+- `find_shorted_nets` remonte 30 « shorts » : tous opposent un rail à un **nom de symbole**, artefact du même mismatch symbole/librairie ; l'outil se déclare lui-même consultatif et l'ERC donne 0 erreur. Aucun court réel.
+- Correction documentaire : le mapping `U3`/`U7` était inversé dans ce fichier. Le schéma et `docs/power-block.md` font foi — `U7` = TPS3802K33 (superviseur RESET), `U3` = TLV1117-33 (3.3 V). Corrigé ici.
+- Anomalie signalée, non corrigée : la chaîne EVM `PVDD` → `R6` 100 kΩ → `C83` 1 µF → `RESET-SW` → `U7.MR` couple la broche MR au rail 48 V. Le continu est bloqué par `C83`, mais la contrainte transitoire au démarrage n'est pas bornée sans la tension absolue maximale de MR ni le dV/dt de `PVDD`. Consigné comme dixième `NEEDS_DATA` dans `docs/architecture.md`.
 
-Réserves consignées en B1.6 :
+Réserves héritées de B1.6 :
 - `F301` (fusible), `D301` (TVS) et `Q301` (MOSFET anti-inversion) gardent `NEEDS_DATA` en Value, couverts par le `NEEDS_DATA` « protection 48 V inversion/surtension et TVS ».
 - Le montage grille-drain auto-polarisé de `Q301` est insuffisant pour un Vgs à 48 V. Signalé, non corrigé faute de source : à trancher avant le gel.
 - Le réseau d'amortissement `10 nF + 3.3 Ω` et le `1 nF` visibles en Figure 29 ne sont pas capturés ; ils restent couverts par le `NEEDS_DATA` EMI/stabilité.
@@ -43,7 +43,7 @@ Limitations observées, consignées sans contournement :
 
 - Toute édition schéma/PCB/librairie reste réservée à `kicad-control`/MCP ; aucun fichier KiCad modifié directement. Aucune redélégation par le worker.
 - Aucun PCB avant gate ERC PASS.
-- Neuf `NEEDS_DATA` centralisés dans `docs/architecture.md`, dont le découplage `VMID` (`C110`/`C210`, Value littéralement `NEEDS_DATA`).
+- Dix `NEEDS_DATA` centralisés dans `docs/architecture.md`, dont le découplage `VMID` (`C110`/`C210`, Value littéralement `NEEDS_DATA`).
 - Une opération de placement MCP est appelée une seule fois puis vérifiée par UUID ; inspecter l'état réel avant toute mutation.
 - Connectivité sans fils : labels dont l'ancre coïncide avec l'extrémité de broche. Ne jamais poser de label hors ancre.
 - Asymétrie de nommage assumée : canal gauche `-VSE`/`+VSE`, canal droit `-VSE_R`/`+VSE_R`. À trancher avant les livrables H2.
@@ -62,4 +62,4 @@ Aucun.
 
 ## NEXT ACTION
 
-B1.7 — Revoir références, alimentations, nets critiques et connexions inattendues : passer en revue l'unicité et la cohérence des références (plages 1xx gauche, 2xx droite, 3xx puissance), la continuité de chaque rail (`PVDD`, `+15V`, `+12V`, `+12V-OA`, `+3V3`, `VMID`, `GND`) depuis sa source jusqu'à ses charges, la présence d'un `PWR_FLAG` par rail alimenté, et l'absence de net à un seul point ou de connexion inattendue. Produire la liste des nets critiques avec leur nombre de points connectés, puis conclure explicitement si B1 est prêt pour le gate ERC de la Phase C.
+C1 — Gate schématique : exécuter `run_erc` une dernière fois, archiver le rapport dans `reports/`, confirmer le classement des 14 avertissements établi en B1.7, puis consigner explicitement PASS ou FAIL du gate. La Phase D reste interdite tant que le gate n'est pas PASS.

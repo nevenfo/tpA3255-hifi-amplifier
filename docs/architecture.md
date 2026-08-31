@@ -157,4 +157,6 @@ L’EVM utilise à la place `10 µH + 1 µF` avec Coilcraft `MA5172-AE`; ces deu
 - `NEEDS_DATA: valeur du condensateur de découplage VMID (C110) ; A1 exige un point milieu fortement découplé mais aucune source ne fixe la capacité.`
 - `NEEDS_DATA: réponse/EMI du filtre LC, stabilité toutes charges et performance OPA1612 dans cette topologie ; validation par simulation ciblée puis prototype/mesure.`
 
+- `NEEDS_DATA: tension absolue maximale de la broche MR du TPS3802K33 et caractéristique de montée de PVDD au power-up ; la chaîne EVM PVDD → R6 100 kΩ → C83 1 µF → RESET-SW couple MR au rail 48 V. Le continu est bloqué par C83, mais la contrainte transitoire au démarrage n'est pas bornée sans ces deux données.`
+
 Ces points interdisent actuellement `PRÊT À FABRIQUER = OUI`, mais n’empêchent pas la capture schématique initiale si les composants non figés sont explicitement marqués.
