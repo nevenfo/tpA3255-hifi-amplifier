@@ -7185,6 +7185,239 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "HifiAmp_TPA3255_Local:LM5069"
+			(pin_numbers)
+			(pin_names
+				(offset 1.016)
+			)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U"
+				(at 0 12.7000 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "LM5069-2"
+				(at 0 -12.7000 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					) hide
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					) hide
+				)
+			)
+			(symbol "LM5069_0_1"
+				(rectangle
+					(start -7.6200 -10.1600)
+					(end 7.6200 10.1600)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(pin input line
+					(at -10.16 7.62 0)
+					(length 2.54)
+					(name "SENSE"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -10.16 3.81 0)
+					(length 2.54)
+					(name "VIN"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -10.16 0 0)
+					(length 2.54)
+					(name "UVLO"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -10.16 -3.81 0)
+					(length 2.54)
+					(name "OVLO"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -10.16 -7.62 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at 10.16 -7.62 180)
+					(length 2.54)
+					(name "TIMER"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 10.16 -3.81 180)
+					(length 2.54)
+					(name "PWR"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin open_collector line
+					(at 10.16 0 180)
+					(length 2.54)
+					(name "PGD"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 10.16 3.81 180)
+					(length 2.54)
+					(name "OUT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at 10.16 7.62 180)
+					(length 2.54)
+					(name "GATE"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "10"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 	)
 	(no_connect
 		(at 309.88 173.99)
@@ -7201,6 +7434,10 @@
 	(no_connect
 		(at 309.88 176.53)
 		(uuid "d6ecc480-478f-4cdb-ac3d-f130a14ad8b8")
+	)
+	(no_connect
+		(at 340.36 420.37)
+		(uuid "fa5a4fd4-ef48-4070-8c0a-f93f4002b10a")
 	)
 	(wire
 		(pts
@@ -9995,16 +10232,6 @@
 		)
 		(uuid "9e875629-d9c2-4184-b62e-df97c75c5e1c")
 	)
-	(label "PVDD_EXT"
-		(at 275.59 320.04 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "c07801b5-6be1-41b1-8b46-993d962f41ac")
-	)
 	(label "GND"
 		(at 283.21 320.04 0)
 		(effects
@@ -10365,16 +10592,6 @@
 		)
 		(uuid "e4136609-bdd3-45f2-b0ec-82c728f4b521")
 	)
-	(label "PVDD"
-		(at 294.64 325.12 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "f0ca1769-b523-41d0-beca-8b1b5255c203")
-	)
 	(label "PVDD_FUSED"
 		(at 294.64 314.96 0)
 		(effects
@@ -10385,7 +10602,17 @@
 		)
 		(uuid "60e940b2-11b5-4a73-841b-e4ba95acc0a7")
 	)
-	(label "PVDD"
+	(label "PVDD_PROT"
+		(at 294.64 325.12 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c3bd493e-5b3e-4ecd-8b52-b34f626a5ed6")
+	)
+	(label "PVDD_PROT"
 		(at 306.07 325.12 0)
 		(effects
 			(font
@@ -10393,7 +10620,277 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "14cf9dac-ba44-42bd-9510-dfe5c034c2ac")
+		(uuid "09d386b4-06a3-4a52-93c6-4359788947e1")
+	)
+	(label "PVDD_PROT"
+		(at 320.04 416.56 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2305bd0a-cdd8-4764-b25d-f76518218666")
+	)
+	(label "PVDD_PROT"
+		(at 299.72 396.24 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "8a2c0715-0f64-4c5a-99b5-a53569b5d681")
+	)
+	(label "PVDD_PROT"
+		(at 312.42 400.05 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c57fc275-0916-483d-a168-2979834174fc")
+	)
+	(label "PVDD_PROT"
+		(at 351.79 403.86 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "40abd64a-0f96-411e-acd5-7dece6fccf6c")
+	)
+	(label "PVDD_SENSE"
+		(at 359.41 403.86 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "dd534a68-d233-466d-8ca0-7ee384a8e654")
+	)
+	(label "PVDD_SENSE"
+		(at 383.54 419.1 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "7b709244-63ee-4c87-a57b-588155128dbd")
+	)
+	(label "PVDD_SENSE"
+		(at 320.04 412.75 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "05ced9bd-4d57-4812-ac9e-6eb29772e2c7")
+	)
+	(label "PVDD"
+		(at 383.54 429.26 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "1ec4fc3d-f681-47ae-aa7c-abd007067640")
+	)
+	(label "PVDD"
+		(at 340.36 416.56 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b5fdbe8a-c7ee-490f-8499-4362d90b2e6e")
+	)
+	(label "HS_GATE"
+		(at 340.36 412.75 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "73b1a9ea-5ca6-4c10-9d47-3b55b111542a")
+	)
+	(label "HS_GATE"
+		(at 375.92 424.18 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "305b3df2-6401-4306-bac3-d865129c77d7")
+	)
+	(label "GND"
+		(at 320.04 427.99 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "748c4b5a-9a00-4974-b07a-0e2be0cf9ea5")
+	)
+	(label "GND"
+		(at 299.72 424.18 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b5fee028-b447-4a66-b60b-8ef3d148b280")
+	)
+	(label "GND"
+		(at 330.2 453.39 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2ea1f048-3921-4031-89c7-fcc9cdfff85a")
+	)
+	(label "GND"
+		(at 349.25 449.58 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "d6a2efa9-f3b3-4032-819c-b9a558f8d3bf")
+	)
+	(label "GND"
+		(at 312.42 407.67 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "ee7e0815-5162-4dd6-8af4-c6768e66fc1d")
+	)
+	(label "LM5069_UVLO"
+		(at 299.72 403.86 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "ae95a898-41f4-4c38-b5ad-e4742984907e")
+	)
+	(label "LM5069_UVLO"
+		(at 299.72 406.4 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "ac88bfcf-e422-4196-a8b6-eec4b5616f0e")
+	)
+	(label "LM5069_UVLO"
+		(at 320.04 420.37 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "41623eed-5639-42f2-9e7d-5e33d88d7cff")
+	)
+	(label "LM5069_OVLO"
+		(at 299.72 414.02 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "03547223-49b1-4f63-9905-0ee3a856f5a3")
+	)
+	(label "LM5069_OVLO"
+		(at 299.72 416.56 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b12672b0-0350-4682-bc56-2743fb328e59")
+	)
+	(label "LM5069_OVLO"
+		(at 320.04 424.18 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "a2991f8d-205f-4622-b3b8-bbb2aa2f5a7f")
+	)
+	(label "LM5069_TIMER"
+		(at 340.36 427.99 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2cd87393-9bbe-4e4f-8d58-592967e2ca2a")
+	)
+	(label "LM5069_TIMER"
+		(at 330.2 445.77 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "348f219f-3458-4482-bb98-bd8a7a6027f3")
+	)
+	(label "LM5069_PWR"
+		(at 340.36 424.18 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "11ce310e-209c-40ac-b7aa-41b4bada1aac")
+	)
+	(label "LM5069_PWR"
+		(at 341.63 449.58 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "0a4b3aac-b3d3-4ee0-bd11-942396dd9e7c")
+	)
+	(label "PVDD_FUSED"
+		(at 275.59 320.04 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "078d05d6-d4e6-48eb-b094-5e23db3b3b1a")
 	)
 	(symbol
 		(lib_id "HifiAmp_TPA3255_Local:LM5010ASD")
@@ -16818,6 +17315,523 @@
 			(project "HifiAmp_TPA3255"
 				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
 					(reference "J4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "HifiAmp_TPA3255_Local:LM5069")
+		(at 330.2 420.37 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ab9fea50-b6d3-4e94-93be-eec8cbca4e01")
+		(property "Reference" "U8"
+			(at 330.2 407.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LM5069-2"
+			(at 330.2 433.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Package_SO:MSOP-10_3x3mm_P0.5mm"
+			(at 330.2 420.37 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				) hide
+			)
+		)
+		(property "Datasheet" ""
+			(at 330.2 420.37 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				) hide
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "U8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Transistor_FET:Q_NMOS_GSD")
+		(at 381 424.18 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a3658334-b3d7-4eeb-b4a7-4f3979f8b97c")
+		(property "Reference" "Q302"
+			(at 386.08 422.275 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "NEEDS_DATA"
+			(at 386.08 424.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 386.08 421.64 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 381 424.18 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "Q302")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 355.6 403.86 90)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "8de78dbe-16f1-4ab3-9006-49518212695d")
+		(property "Reference" "R306"
+			(at 355.6 401.828 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "4m"
+			(at 355.6 403.86 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 355.6 405.638 90)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 355.6 403.86 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "R306")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 299.72 400.05 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3453915a-e839-4a2d-a958-8847b43f10e7")
+		(property "Reference" "R307"
+			(at 301.752 400.05 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "191k"
+			(at 299.72 400.05 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 297.942 400.05 90)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 299.72 400.05 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "R307")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 299.72 410.21 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "9d881ecd-4428-4789-9316-872f15b71dc5")
+		(property "Reference" "R308"
+			(at 301.752 410.21 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "5.11k"
+			(at 299.72 410.21 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 297.942 410.21 90)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 299.72 410.21 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "R308")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 299.72 420.37 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "4d1f09ca-e453-4cf0-88e4-f9160c0d6d5b")
+		(property "Reference" "R309"
+			(at 301.752 420.37 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "9.09k"
+			(at 299.72 420.37 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 297.942 420.37 90)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 299.72 420.37 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "R309")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 345.44 449.58 90)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5f22ea12-1902-4a52-a77f-997785bfe629")
+		(property "Reference" "R310"
+			(at 345.44 447.548 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "147k"
+			(at 345.44 449.58 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 345.44 451.358 90)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 345.44 449.58 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "R310")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 330.2 449.58 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "e395573f-0f4f-4957-be78-609d1e1408a1")
+		(property "Reference" "C325"
+			(at 330.835 447.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "3.9uF"
+			(at 330.835 452.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 331.1652 453.39 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 330.2 449.58 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "C325")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 312.42 403.86 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "d948efc3-6748-491f-b71b-be4c2e62a35e")
+		(property "Reference" "C326"
+			(at 313.055 401.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100nF"
+			(at 313.055 406.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 313.3852 407.67 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 312.42 403.86 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "C326")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 299.72 396.24 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "f2d5fc33-06b3-4cff-8293-b499754e6493")
+		(property "Reference" "#PWR001"
+			(at 299.72 394.335 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 299.72 392.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 299.72 396.24 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 299.72 396.24 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "#PWR001")
 					(unit 1)
 				)
 			)
