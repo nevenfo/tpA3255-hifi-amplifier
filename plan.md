@@ -81,7 +81,7 @@ A1 validée.
 - [x] B1.3 Ajouter entrée/volume/analogique gauche puis inspecter les nets.
 - [x] B1.4 Ajouter entrée/volume/analogique droite puis inspecter les nets.
 - [x] B1.5 Ajouter TPA3255, interface différentielle et contrôles puis inspecter les nets.
-- [ ] B1.6 Ajouter découplages, puissance, filtres LC, sorties et protections.
+- [x] B1.6 Ajouter découplages, puissance, filtres LC, sorties et protections.
 - [ ] B1.7 Revoir références, alimentations, nets critiques et connexions inattendues.
 
 ### Validation

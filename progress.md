@@ -6,24 +6,27 @@ Phase B — Schéma KiCad.
 
 ## Tâche actuelle
 
-B1.6 — Ajouter découplages, puissance, filtres LC, sorties et protections.
+B1.7 — Revoir références, alimentations, nets critiques et connexions inattendues.
 
 ## Dernière tâche validée
 
-B1.5 — TPA3255, interface différentielle et contrôles ajoutés et nets inspectés.
+B1.6 — Découplages, puissance, filtres LC, sorties et protections ajoutés et corrigés.
 
 Preuves observées (toutes via `kicad-agentic-mcp` v1.1.3, aucune édition directe de fichier) :
-- Symbole `TPA3255DDV` créé dans `HifiAmp_TPA3255_Local`, mono-unité 44 broches + PowerPAD (45). Brochage extrait de la datasheet TI `SLASEA8A` rév. A, section 6 « Pin Configuration and Functions », boîtier `DDV` : le diagramme top-view p. 3 fait foi pour numéros et noms, la table p. 4 (colonnes désynchronisées à l'extraction) a été croisée avec Table 1 Mode Selection, Recommended Operating Conditions et Absolute Maximum Ratings pour les types électriques.
-- `U6` placé (UUID `1a25a659`) plus `R301` 22.0 kΩ (`FREQ_ADJ`), `R302`/`R303` 10.0 kΩ (pull-ups `FAULT`/`CLIP_OTW` vers `+3V3`).
-- Câblage vérifié : `INPUT_A`/`INPUT_B`/`INPUT_C`/`INPUT_D` ; `M1`/`M2` à `GND` (BTL stéréo, connexion directe conforme Table 1) ; `RESET` relié à `U3` TPS3802K33 ; `OUT_A`/`OUT_B`/`OUT_C`/`OUT_D` en labels nommés en attente des filtres LC.
-- Alimentations confirmées par inspection : net `PVDD` = 48 V externe, 15 labels dont 6 sur les broches `PVDD_AB` (36/37/38) et `PVDD_CD` (29/30/31) de `U6`, les 9 autres sur le bloc alimentation (`J1` PVDD 48 V IN, `D3`, `R6`, `C39`, `C3`, `C11`, `C4`, `C2`, `PWR_FLAG`). `VDD` (2), `GVDD_AB` (1), `GVDD_CD` (22) sur `+12V`. Broches de masse (12/13/25/26/33/34/41/42) et PowerPAD (45) sur `GND`.
-- ERC : **0 erreur / 25 avertissements** (14 avant B1.5). Delta expliqué : −1 (`Label connected to only one pin: Label 'RESET'` résolu), +11 labels à une seule broche (un par net reporté à B1.6), +1 mismatch symbole/librairie de la même catégorie que `U1`/`U2`/`U7`. Aucune erreur nouvelle.
-- Persistance : `HifiAmp_TPA3255.kicad_sch` 192 536 octets, `HifiAmp_TPA3255.kicad_sym` 15 380 octets, mtime 2026-08-31 11:22:13 +0200, révisions MCP `83a63fbeb7a17d30-192536` et `6da009be53da495c-15380`.
-- Aucun gate ERC revendiqué : B1 n'est pas terminé.
+- 32 composants ajoutés puis corrigés. Découplages TPA3255 conformes à `SLASEA8A` : `C301` 10 µF + `C302` 0.1 µF (`VDD`), `C303` 1 µF (`VBG`), `C304`/`C305` 0.1 µF (`GVDD_AB`/`GVDD_CD`), `C306`-`C309` 0.033 µF (bootstrap `BST_x`→`OUT_x`), `C310`/`C311` 1 µF/100 V (PVDD local), `C312`-`C315` 1500 µF/63 V et `C316`/`C317` 4700 µF/80 V (bulk, ancre EVM ajustable).
+- Valeurs sourcées le 2026-08-31 par lecture directe du PDF `SLASEA8A` rév. A : `C318` 1 µF (`AVDD`), `C319` 1 µF (`DVDD`), `C320` 47 nF (`C_START`) — Figure 29 p. 22 ; `R304` 22 kΩ (`OC_ADJ`, seuil 17.0 A mode CB3C) — Table 4 p. 18. À ne pas confondre avec `R301`, le 22.0 kΩ distinct de `FREQ_ADJ`.
+- `OSC_IOM` (9) et `OSC_IOP` (10) laissées non connectées avec drapeau no-connect (`c0b9bae1`, `d6ecc480`), conformément à la table Pin Functions : « Oscillator synchronization interface. Do not connect if not used. »
+- Filtre de sortie : `L301`-`L304` 15 µH puis `C321`-`C324` 680 nF film (`d06dedf5`, `ecb4ba24`, `dec1e2de`, `ced78652`) de `OUT_A_F`/`OUT_B_F`/`OUT_C_F`/`OUT_D_F` vers `GND`. Borniers `J301`/`J302` entre `OUT_A_F`/`OUT_B_F` et `OUT_C_F`/`OUT_D_F` ; aucune borne haut-parleur reliée à `GND`.
+- Correction d'un écart : le filtre avait d'abord été capturé avec 2 condensateurs différentiels, par interprétation erronée de la règle « sorties BTL jamais reliées à la masse », qui vise les bornes haut-parleur et non le condensateur de filtre. Topologie remise à 4 × 680 nF vers `GND`, seule cohérente avec la coupure calculée 49.8 kHz.
+- Correction d'un second écart : la chaîne de protection était un stub isolé. Le label de `J1` broche 1 portait `PVDD` au lieu de `PVDD_EXT`, court-circuitant la protection. Renommé. Chemin réel désormais : `J1` → `PVDD_EXT` (4 points : `J1.1`, `F301.1`, `D301.A1`, jonction) → `F301` → `PVDD_FUSED` (3 points) → `Q301` → `PVDD` (24 points : bulk, `U6` `PVDD_AB`/`PVDD_CD`, `PWR_FLAG`, `Q301.S`). `PWR_FLAG` reste du côté alimenté.
+- ERC : 25 → **14 avertissements, 0 erreur**. Les 11 « label connecté à une seule broche » de la baseline ont tous disparu. Les 14 restants sont préexistants (mismatch symbole/librairie locale, off-grid sur le bloc alimentation).
+- Persistance vérifiée hors MCP : `HifiAmp_TPA3255.kicad_sch` 241 387 octets, mtime 2026-08-31 11:53:56 +0200, révision MCP `499caba8320b6ab6-241387` ; `C321`-`C324`, `PVDD_EXT`, `PVDD_FUSED` et 4 drapeaux no-connect présents.
+- Aucun gate ERC revendiqué : B1.7 reste à faire avant la Phase C.
 
-Écarts consignés en B1.5 :
-- Réutiliser un nom de symbole supprimé laissait un cache de broches périmé dans `lib_symbols` du `.kicad_sch`, produisant 2 fausses erreurs ERC (broches PVDD de sortie mal typées). Contourné en renommant le symbole `TPA3255B` (champ Value affiché `TPA3255DDV`).
-- Les 4 broches de sortie physiquement dupliquées (39/40 et 27/28) sont typées `passive` au lieu de `power_out`, pour éviter un conflit de pilotes ERC entre broches d'un même demi-pont.
+Réserves consignées en B1.6 :
+- `F301` (fusible), `D301` (TVS) et `Q301` (MOSFET anti-inversion) gardent `NEEDS_DATA` en Value, couverts par le `NEEDS_DATA` « protection 48 V inversion/surtension et TVS ».
+- Le montage grille-drain auto-polarisé de `Q301` est insuffisant pour un Vgs à 48 V. Signalé, non corrigé faute de source : à trancher avant le gel.
+- Le réseau d'amortissement `10 nF + 3.3 Ω` et le `1 nF` visibles en Figure 29 ne sont pas capturés ; ils restent couverts par le `NEEDS_DATA` EMI/stabilité.
 
 ## État de la stack MCP
 
@@ -40,7 +43,7 @@ Limitations observées, consignées sans contournement :
 
 - Toute édition schéma/PCB/librairie reste réservée à `kicad-control`/MCP ; aucun fichier KiCad modifié directement. Aucune redélégation par le worker.
 - Aucun PCB avant gate ERC PASS.
-- Huit `NEEDS_DATA` centralisés dans `docs/architecture.md`, dont le découplage `VMID` (`C110`/`C210`, Value littéralement `NEEDS_DATA`).
+- Neuf `NEEDS_DATA` centralisés dans `docs/architecture.md`, dont le découplage `VMID` (`C110`/`C210`, Value littéralement `NEEDS_DATA`).
 - Une opération de placement MCP est appelée une seule fois puis vérifiée par UUID ; inspecter l'état réel avant toute mutation.
 - Connectivité sans fils : labels dont l'ancre coïncide avec l'extrémité de broche. Ne jamais poser de label hors ancre.
 - Asymétrie de nommage assumée : canal gauche `-VSE`/`+VSE`, canal droit `-VSE_R`/`+VSE_R`. À trancher avant les livrables H2.
@@ -59,4 +62,4 @@ Aucun.
 
 ## NEXT ACTION
 
-B1.6 — Ajouter découplages, puissance, filtres LC, sorties et protections : peupler les 11 nets reportés par B1.5 (`OC_ADJ`, `DVDD`, `AVDD`, `VBG`, `C_START`, `BST_A/B/C/D`) et ajouter, selon `docs/architecture.md` § « Découplage et réservoir » et § « Filtre de sortie », `VDD` 10 µF + 0.1 µF, `VBG` 1 µF, `GVDD_AB`/`GVDD_CD` 0.1 µF chacun, `BST_x`–`OUT_x` 0.033 µF chacun, PVDD 1 µF/100 V par groupe de broches plus bulk, les quatre inductances 15 µH et quatre condensateurs film 680 nF du filtre de sortie, et les deux borniers haut-parleur 2 pôles sans référence commune. Inspecter ensuite les nets et relancer un ERC ; les 11 avertissements « label connecté à une seule broche » doivent disparaître.
+B1.7 — Revoir références, alimentations, nets critiques et connexions inattendues : passer en revue l'unicité et la cohérence des références (plages 1xx gauche, 2xx droite, 3xx puissance), la continuité de chaque rail (`PVDD`, `+15V`, `+12V`, `+12V-OA`, `+3V3`, `VMID`, `GND`) depuis sa source jusqu'à ses charges, la présence d'un `PWR_FLAG` par rail alimenté, et l'absence de net à un seul point ou de connexion inattendue. Produire la liste des nets critiques avec leur nombre de points connectés, puis conclure explicitement si B1 est prêt pour le gate ERC de la Phase C.
