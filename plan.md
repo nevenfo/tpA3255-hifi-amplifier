@@ -98,10 +98,10 @@ B1 validée.
 
 ### Tâches
 
-- [ ] C1.1 Exécuter ERC et archiver le résultat.
-- [ ] C1.2 Classer chaque erreur/avertissement et corriger les problèmes réels via MCP.
-- [ ] C1.3 Relancer ERC et vérifier alimentations, nets critiques, découplages et interfaces.
-- [ ] C1.4 Consigner explicitement PASS/FAIL du gate ; interdire Phase D si FAIL.
+- [x] C1.1 Exécuter ERC et archiver le résultat.
+- [x] C1.2 Classer chaque erreur/avertissement et corriger les problèmes réels via MCP.
+- [x] C1.3 Relancer ERC et vérifier alimentations, nets critiques, découplages et interfaces.
+- [x] C1.4 Consigner explicitement PASS/FAIL du gate ; interdire Phase D si FAIL.
 
 ### Validation
 
