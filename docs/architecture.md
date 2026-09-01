@@ -274,7 +274,158 @@ Deux critères, et ils ne disent pas la même chose :
 
 **`REQ-THERM-2` — l'interface doit valoir 0,6 °C/W ou moins sur les 29 mm² du PowerPAD.** Graisse thermique, feuille de graphite ou indium. **Un pad silicone standard est explicitement exclu.**
 
-**Réserve à porter au choix de l'utilisateur** : l'usage continu à pleine puissance sur 4 Ω exige `RθSA` ≤ 0,37 °C/W à 40 °C, hors d'atteinte en convection naturelle dans un volume raisonnable. Trois issues, à trancher quand le boîtier sera connu : ventilation forcée, ambiante interne maintenue basse, ou acceptation que 4 Ω soit un régime de crête et non un régime continu. **Ce n'est pas un défaut de conception mais une limite physique** : 37 W à évacuer par 29 mm² de contact.
+### `REQ-THERM-3` — le 4 Ω est un régime de crête
+
+**Réserve levée sur arbitrage utilisateur.** L'usage continu à pleine puissance sur 4 Ω exige `RθSA` ≤ 0,37 °C/W à 40 °C, hors d'atteinte en convection naturelle dans un volume raisonnable. Trois issues étaient ouvertes — ventilation forcée, ambiante interne maintenue basse, ou acceptation que 4 Ω soit un régime de crête. **La troisième est retenue.**
+
+**`REQ-THERM-3` — le régime nominal continu est 2 × 100 W sur 8 Ω. Une charge de 4 Ω est admise en régime musical, où le rapport crête/moyenne maintient la dissipation moyenne bien en deçà des 37,4 W, mais pas en sinus continu pleine puissance.**
+
+Ce que cet arbitrage change, et ce qu'il ne change pas :
+
+- **`REQ-THERM-1` reste à 1,0 °C/W** et devient le seul critère d'achat du dissipateur. Sans cet arbitrage il aurait fallu viser 0,37, soit un tout autre objet.
+- **Le dimensionnement électrique reste inchangé.** Il a été établi sur 4 Ω dans tous les cas : fusible 12,5 A, `Q301` à 6,9 A, classe `PWR_48V`, bulk. Le 4 Ω de crête reste donc entièrement couvert côté courant. C'est bien un plafond **thermique** et non électrique.
+- **Le garde-fou est matériel, pas déclaratif.** Si l'utilisateur final maintient malgré tout un sinus 4 Ω pleine puissance, la protection thermique propre au TPA3255 agit : `OTW` à 125 °C de jonction puis coupure. La conséquence d'un dépassement est une mise en sécurité, pas une destruction.
+- **Ce n'était pas un défaut de conception mais une limite physique** : 37 W à évacuer par 29 mm² de contact.
+
+**À reporter en H1.3** parmi les limites non mesurées, et en H2 dans la documentation de la carte : une carte dont le régime nominal est conditionnel doit le dire.
+
+### Rectification de `REQ-THERM-1` — la résistance d'étalement manquait au budget
+
+**Trouvée en E1.7, en cherchant comment fixer le dissipateur.** Le budget de E1.6 enchaîne `RθJC(top)`, l'interface et `RθSA`, et s'arrête là. Il manque un terme, et il n'est pas petit.
+
+Les 22,4 W entrent dans le dissipateur par les **29,02 mm² du PowerPAD**, c'est-à-dire par un point. Un `RθSA` de catalogue, lui, est le plus souvent mesuré **base chauffée uniformément**. Entre les deux se trouve la **résistance d'étalement**, le prix à payer pour répartir un flux ponctuel sur toute la base.
+
+Plancher théorique, source circulaire équivalente de rayon `a` = √(A/π) = 3,04 mm sur un demi-espace, `R` = 1/(4·k·a) :
+
+| Base | `k` | Étalement, **plancher** |
+|---|---|---|
+| Aluminium 6063 | 200 W/m·K | **0,411 °C/W** |
+| Aluminium 1050 | 229 W/m·K | 0,359 °C/W |
+| **Cuivre** | 390 W/m·K | **0,211 °C/W** |
+
+C'est bien un **plancher** : le demi-espace infini est le cas le plus favorable à l'étalement. Une base réelle, d'épaisseur finie et refroidie sur une face, fait pis. Le sens de lecture est donc : *au mieux* 0,41 °C/W en aluminium.
+
+**Forme non ambiguë de l'exigence.** Le budget total au-dessus de la jonction, à 22,4 W, 40 °C d'ambiante et `T_C` ≤ 75 °C, vaut (75 − 40) / 22,4 = **1,5625 °C/W**. C'est cette somme qui est l'invariant :
+
+> **`REQ-THERM-1` (forme rectifiée) — interface + étalement + dissipateur ≤ 1,5625 °C/W**, du dessus du boîtier de `U6` à l'air ambiant interne.
+
+Ce que cela donne selon la manière dont le fabricant a caractérisé la pièce, interface à 0,57 °C/W déduite :
+
+| Hypothèse de caractérisation | `RθSA` admissible |
+|---|---|
+| Pièce mesurée **sur une source de la taille du composant** — l'étalement est déjà dedans | **0,99 °C/W** |
+| Extrusion générique, **base chauffée uniformément**, base aluminium | **0,58 °C/W** |
+| Idem, mais **base ou insert cuivre** | 0,78 °C/W |
+
+**Le « ≤ 1,0 °C/W » de E1.6 n'était donc juste que dans le premier cas.** Pour une extrusion générique, la vraie cible est **0,58 °C/W**, soit une pièce nettement plus grosse que ce que le repère de E1.6 laissait attendre.
+
+**Conséquence de sélection, à appliquer à chaque candidat de la short-list** : lire *comment* le `RθSA` a été obtenu, et pas seulement sa valeur. Une pièce vendue pour un boîtier précis — comme celle de l'EVM, explicitement conçue pour les modules `TAS5624`/`TAS5622` en même boîtier `DDV` — est mesurée source réelle. Une extrusion de catalogue au mètre ne l'est pas.
+
+**Et cela redonne du poids au cuivre.** Passer la base de l'aluminium au cuivre récupère 0,20 °C/W, soit environ 13 % du budget total, sans un centimètre d'encombrement supplémentaire. Un insert cuivre sous une base aluminium est le compromis usuel.
+
+### Ce que fait l'EVM, et pourquoi ça ne suffit pas ici
+
+`SLOU441` nomme sa solution thermique en nomenclature, ce qui donne enfin une référence de départ **et un schéma de fixation** : `H1` = **`ATS-TI1OP-519-C1-R3`**, Advanced Thermal Solutions, *Heat Sink, Vertical*, accompagné de vis **M3 × 5 mm** et d'entretoises **M3 de 25 mm** (`Keystone 24438`).
+
+Sa fiche fabricant, relevée sur `qats.com/DataSheet/ATS-TI1OP-519-C1-R3`, donne :
+
+| Cote | Valeur |
+|---|---|
+| Longueur × largeur × hauteur | **78 × 36 × 35,6 mm** |
+| Fixation | **deux trous taraudés M3**, entraxe **36,8 mm**, profondeur 6 mm |
+| Matière / finition | AL-6063, anodisé noir |
+
+| Vitesse d'air | `RθSA` non canalisé |
+|---|---|
+| **0 (convection naturelle)** | **non publiée** |
+| 1,0 m/s | 2,2 °C/W |
+| 2,0 m/s | 1,6 °C/W |
+| 4,0 m/s | 1,2 °C/W |
+
+**Ce tableau tranche la question.** La fiche annonce pourtant en tête « *optimized for natural convection air cooling* », mais **ne publie aucune valeur à vitesse nulle** : la première ligne mesurée est déjà à 1 m/s d'air forcé. En convection réellement naturelle, `RθSA` est donc supérieur à 2,2 °C/W. Même en soufflant 4 m/s dessus, 1,2 °C/W reste au-dessus des 1,0 exigés.
+
+Conséquence chiffrée, en lui prêtant généreusement ses 2,2 °C/W : `T_C` = 40 + 22,4 × (0,57 + 2,2) = **102 °C**, contre 75 visés. **Le dissipateur de l'EVM est environ trois fois trop petit pour cette carte.** Ce n'est pas une critique de TI : l'EVM est un instrument de paillasse, alimenté 5–14 A et posé à l'air libre, pas un amplificateur en boîtier fermé fonctionnant en continu.
+
+**Ce qu'il faut malgré tout lui reprendre, c'est la mécanique.** Le montage résout le problème que pose un PowerPAD sur le dessus d'un CMS soudé : le dissipateur porte ses propres taraudages M3 et se boulonne **par le dessous, à travers le PCB**, deux vis encadrant la puce. Le circuit imprimé n'a donc pas à supporter le poids ; il fournit la contre-pression. **Contrainte à porter en E1.2 : deux perçages M3 de passage, de part et d'autre de `U6`, à l'entraxe du dissipateur retenu, et le dégagement de composants correspondant.** L'entraxe de 36,8 mm de l'EVM est un ordre de grandeur, pas une valeur à figer avant le choix du modèle.
+
+**La figure 2 de `SLOU441` montre la contrainte que ce montage impose au placement, et elle est lourde.** Le dissipateur occupe un **rectangle entièrement vide** au centre-gauche d'une carte de **160 × 120 mm**, ailettes verticales, sans aucun composant haut sous son emprise. C'est mécaniquement inévitable : la base repose sur le dessus de la puce, donc à environ 1 mm du PCB, et **tout ce qui passe sous elle doit tenir dans cette hauteur** — des 0603 et rien d'autre. **L'emprise au sol du dissipateur est donc une zone d'interdiction de hauteur, pas seulement un dégagement.**
+
+C'est ce qui rend le repère de taille ci-dessous inquiétant plutôt que rassurant, et il faudra le regarder en face en E1.2 : une base de 150 × 100 mm stériliserait 150 cm² sur une carte qui, à l'échelle de l'EVM, en fait 192. Trois issues existent — repousser `U6` en bord de carte et laisser le dissipateur déborder, interposer un bloc épais qui surélève le champ d'ailettes au-dessus des composants, ou choisir un profil à base étroite et ailettes larges. **Le choix du modèle et le plan de placement sont donc un seul et même problème, pas deux.**
+
+À titre de repère d'implantation, l'EVM range ses fonctions ainsi : entrées analogiques à gauche, puce et dissipateur au centre-gauche, filtre LC et bulk à droite, sorties en bord droit.
+
+**Ordre de grandeur visé, pour lire la suite.** À 1,0 °C/W en convection naturelle il faut de l'ordre de 0,15 m² de surface d'ailettes, soit un profil extrudé de la classe **150 × 100 × 40 mm** — environ six fois le volume de celui de l'EVM. C'est un repère de vraisemblance, pas un calcul de dimensionnement : seule une valeur publiée par un fabricant fait foi.
+
+### E1.7 — la solution n'est pas un dissipateur, c'est le coffret
+
+Deux constats de E1.7 se combinent pour disqualifier l'approche « gros dissipateur posé sur la puce » : **l'emprise au sol est une zone d'interdiction de hauteur**, et **la cible corrigée est 0,58 °C/W et non 1,0**. Un profil capable de 0,58 °C/W en convection naturelle fait la taille de la carte entière ; le poser dessus reviendrait à stériliser l'implantation.
+
+**Le déblocage vient d'ailleurs, et il est arithmétique.** Un dissipateur logé *dans* le boîtier évacue vers l'air interne, posé à 40 °C par hypothèse. Un **flanc de coffret** évacue vers l'air de la pièce, à 25 °C. Ces 15 K valent, à 22,4 W, **0,67 °C/W de budget** — davantage que la moitié du budget d'origine. Le budget total passe de 1,562 à **2,232 °C/W**, et après déduction de l'interface et de l'étalement il reste **1,251 °C/W** au lieu de 0,582.
+
+**Le coffret n'est donc pas une contrainte à subir après le dissipateur : c'est le dissipateur.**
+
+#### Donnée fabricant
+
+Modushop / HiFi 2000, gamme *Pesante Dissipante*, document `PESANTE _ DISSIPANTE Thermal info.pdf` publié par le fabricant. Valeurs **par flanc**, convection naturelle, ambiante 25 °C :
+
+| Modèle | Flanc (chacun) | `RθSA` publié |
+|---|---|---|
+| `02/300` — 2U | 300 × 80 × 40 mm | **0,45 °C/W** |
+| `03/300` — 3U | 300 × 120 × 40 mm | 0,41 °C/W |
+| `04/300` — 4U | 300 × 160 × 40 mm | 0,31 °C/W |
+| `04/400` — 4U | 400 × 160 × 40 mm | **0,23 °C/W** |
+
+Le coffret en porte **deux**. Un seul suffit ici, ce qui laisse le second disponible pour l'alimentation ou simplement inutilisé.
+
+Cotes de la gamme, relevées sur le catalogue fabricant : hauteurs **2U = 80 mm, 3U = 120, 4U = 165, 5U = 210** hors tout ; profondeurs 300 ou 400 mm ; **largeur intérieure utile entre les deux dissipateurs de 360 mm, identique sur tous les modèles** ; façade aluminium usinée de 10 mm ; embase intérieure pré-percée disponible en option (`01/05`), solidaire des flancs.
+
+#### Ce que donne le budget
+
+Chaîne complète, `T_A` = 25 °C extérieurs, interface graisse 0,57 et étalement aluminium 0,411 :
+
+| Modèle | Total | `T_C` atteint | Marge sur les 2,232 |
+|---|---|---|---|
+| `02/300` | 1,431 | **57,1 °C** | 0,801 °C/W |
+| `03/300` | 1,391 | 56,2 °C | 0,841 |
+| `04/300` | 1,291 | 53,9 °C | 0,941 |
+| `04/400` | 1,211 | 52,1 °C | 1,021 |
+
+**Même le plus petit modèle passe, et il passe largement** : 57 °C de boîtier contre 75 visés. Le critère strict de E1.6 — préserver la validité de toutes les courbes TI — est donc tenable sans rien concéder, ce qui n'était pas acquis il y a une heure.
+
+#### Ce que la marge doit payer : la liaison
+
+Il reste à conduire la chaleur du dessus de `U6` jusqu'au flanc. C'est là que part la marge, et une barre de liaison coûte cher :
+
+| Barre aluminium (`k` = 200) | Résistance |
+|---|---|
+| 30 mm de long, section 10 × 60 mm | 0,250 °C/W |
+| 50 mm, section 10 × 60 | 0,417 °C/W |
+| 80 mm, section 12 × 60 | 0,556 °C/W |
+| 60 mm, section 6 × 40 | **1,250 °C/W** |
+
+**La leçon est nette : courte et épaisse, ou rien.** Les 0,801 °C/W disponibles avec le `02/300` financent une barre de 50 mm en section 10 × 60, pas une équerre mince de 60 mm en 6 × 40, qui à elle seule dépasserait le budget. Les jonctions supplémentaires, elles, sont négligeables : à la graisse sur 60 × 20 mm, une interface vaut 0,014 °C/W — la pénalité des 29 mm² du PowerPAD ne se paie qu'une fois.
+
+Deux architectures en découlent, et il faut en choisir une **avant** de placer :
+
+- **Carte à plat sur l'embase, `U6` relié au flanc par une barre courte.** Impose `U6` près du bord de carte, côté flanc retenu, et une barre massive. Coût thermique : 0,25 à 0,42 °C/W, finançable.
+- **Carte montée verticalement contre le flanc, `U6` pressé dessus.** Chemin thermique le plus court possible, aucune barre, mais impose une hauteur de coffret supérieure à la hauteur de carte — donc 4U si la carte fait 120 mm comme l'EVM — et une maîtrise fine du plan de contact.
+
+#### Le point qu'il ne faut pas rater : la masse
+
+Le PowerPAD est `GND`. Le presser contre un flanc de coffret **relie la masse du signal au châssis**, et par lui à la terre de protection si le coffret y est raccordé. Ce n'est pas anodin sur un amplificateur à entrées asymétriques : c'est la boucle de masse classique. Trois issues, à trancher en même temps que l'architecture mécanique :
+
+- **Assumer châssis = `GND`**, avec un point de masse unique et une liaison à la terre par réseau de découplage. Thermiquement gratuit.
+- **Isoler par une céramique haute conductivité.** Un intercalaire **AlN** de 0,5 mm (`k` ≈ 170 W/m·K) coûte 0,101 °C/W sur 29 mm², compatible avec `REQ-THERM-2` et avec les marges ci-dessus. Le silicone reste exclu, il vaudrait 8,61.
+- **Isoler la barre du flanc** plutôt que la puce de la barre, sur une surface bien plus grande donc à coût thermique quasi nul.
+
+**Le `NEEDS_DATA` dissipateur/boîtier est levé au sens du critère de sélection** : la famille est identifiée, sourcée, et chiffrée avec marge. Restent trois arbitrages utilisateur — modèle de coffret, architecture mécanique, traitement de la masse — qui conditionnent le contour de carte et donc E1.2.
+
+#### Réserves honnêtes
+
+- Les `RθSA` Modushop sont des **valeurs de catalogue fabricant**, données à 25 °C avec un exemple de montage TO3-P sur mica ; le document ne publie ni la puissance d'essai ni l'élévation de référence. Crédibles, non tracées à un rapport de mesure.
+- Le catalogue Boyd « board level » signale que **ses** valeurs en convection naturelle supposent **75 K d'élévation** du dissipateur. Une convection naturelle est d'autant moins efficace que l'élévation est faible ; à 32 K d'élévation, une valeur publiée à 75 K est optimiste d'environ 20 %. La marge dégagée plus haut absorbe cet ordre de grandeur, mais il faut le savoir.
+- Le calcul de la barre est une conduction 1-D. Il ignore l'étalement supplémentaire à l'entrée du flanc, où une barre de 60 mm alimente un panneau de 300. Deuxième raison de garder de la marge.
+- **Fischer Elektronik est resté inaccessible** — 403 sur toutes les pages produit, y compris avec un en-tête de navigateur, et les miroirs distributeurs ne servent pas de PDF exploitable. Le `SK 47/100/SA` annoncé à 0,45–1,05 °C/W par les distributeurs **n'a pas pu être vérifié à la source primaire** et n'est donc pas retenu comme candidat.
 
 ### Ce qui ne va pas sur ce dissipateur
 
@@ -290,7 +441,7 @@ Deux critères, et ils ne disent pas la même chose :
 - `NEEDS_DATA: référence exacte des condensateurs 680 nF de sortie.` **Partiellement levé en D1.9** : le diélectrique, la tension et la **boîte sont figés** — WIMA MKP4, 18 × 8 mm sur 15 de haut, pas de 15 mm, empreinte standard attribuée. Ne manquent que les quatre derniers caractères de la référence `MKP4F036804F00`, qui codent tolérance et conditionnement. Sans effet sur l'implantation ; à clore en H2 avec la BOM.
 - `NEEDS_DATA: protection 48 V inversion/surtension et TVS ; le clamp doit rester compatible avec le maximum absolu TPA3255.` **Les composants sont figés — `F301`, `D301` = `SMDJ58CA`, `Q301` = `IPP330P10NM`, `U8` = `LM5069-2`, `Q302` = `IXTK200N10L2` — mais l'exigence telle qu'elle est écrite n'est pas satisfaite et ne peut pas l'être.** Aucune TVS du commerce ne clampe sous le maximum absolu du TPA3255 : le facteur de clamp exigé vaut 1,19 à 1,23 pour 1,3 minimum offert par la technologie, et ce constat ne change pas avec le maximum absolu rectifié à 69 V — il empire, cf. `docs/protection-48v.md`. **La réponse du projet est architecturale et non composant** : la TVS est cantonnée aux transitoires rapides, la surtension soutenue est coupée activement par le `LM5069`, et le respect des conditions recommandées vient de `REQ-PSU-1`. À reformuler en exigence de vérification plutôt qu'en donnée manquante.
 - `NEEDS_DATA: common-mode garanti du TPA3255 ; non spécifié explicitement, mitigé par les condensateurs de liaison EVM.`
-- `NEEDS_DATA: dissipateur, pression/interface thermique, boîtier, ventilation et température ambiante.`
+- `NEEDS_DATA: dissipateur, pression/interface thermique, boîtier, ventilation et température ambiante.` **Trois des cinq volets sont clos.** L'**interface** est spécifiée par `REQ-THERM-2` — graisse, graphite ou indium, pad silicone exclu ; l'absence d'isolation électrique à assurer, le PowerPAD étant `GND` et le dissipateur porté au même potentiel, autorise le contact direct et rend cette exigence tenable. La **ventilation** est close par `REQ-THERM-3` : convection naturelle, 4 Ω en crête seulement. L'**ambiante** est fixée à 40 °C internes, hypothèse de calcul de `REQ-THERM-1`. Restent le **dissipateur** et le **boîtier** eux-mêmes, dont les cotes conditionnent E1.2, et la **pression de montage**, qui ne se vérifiera qu'au prototype.
 - ~~`NEEDS_DATA: valeur du condensateur de découplage VMID (C110)`~~ — **levé en D1.5 par le calcul, aucune source extérieure n'était nécessaire.** `VMID` vaut `+12V-OA` / 2 = 6 V, produit par `R105`/`R106` de 10,0 kΩ, donc une source de Thévenin de 5 kΩ qui polarise quatre entrées non inverseuses (`U4` broches 3 et 5, `U5` broches 3 et 5). Ce sont **le bruit thermique et la réjection de rail** qui fixent la capacité, pas une valeur de datasheet : 5 kΩ produisent 9 nV/√Hz, soit huit fois le bruit propre de l'OPA1612, et ce bruit passe en entier dans le gain non inverseur s'il n'est pas court-circuité. `C110` et `C210` sont en parallèle sur `VMID`, 10 µF chacun, pour un coude à 1,6 Hz nominal et environ 3 Hz une fois pris le déclassement sous 6 V continus — sous la bande audio dans les deux cas. La tension nominale est portée à 25 V précisément pour contenir ce déclassement. Deux condensateurs et non un seul : `U4` et `U5` sont éloignés, chacun doit avoir le sien au plus près. Le temps d'établissement qui en découle, 5 τ ≈ 250 ms, reste à croiser avec la temporisation de mute en Phase F.
 - `NEEDS_DATA: réponse/EMI du filtre LC, stabilité toutes charges et performance OPA1612 dans cette topologie ; validation par simulation ciblée puis prototype/mesure.`
 
