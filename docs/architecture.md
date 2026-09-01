@@ -427,18 +427,67 @@ Le PowerPAD est `GND`. Le presser contre un flanc de coffret **relie la masse du
 - Le calcul de la barre est une conduction 1-D. Il ignore l'étalement supplémentaire à l'entrée du flanc, où une barre de 60 mm alimente un panneau de 300. Deuxième raison de garder de la marge.
 - **Fischer Elektronik est resté inaccessible** — 403 sur toutes les pages produit, y compris avec un en-tête de navigateur, et les miroirs distributeurs ne servent pas de PDF exploitable. Le `SK 47/100/SA` annoncé à 0,45–1,05 °C/W par les distributeurs **n'a pas pu être vérifié à la source primaire** et n'est donc pas retenu comme candidat.
 
+### Arbitrages rendus, et contour qui en découle
+
+Trois choix utilisateur closent E1.7 et ouvrent E1.2 :
+
+1. **Coffret Modushop `03/300`, 3U.** Flancs 300 × 120 × 40 mm à **0,41 °C/W** chacun. Hors tout 120 mm de haut, 300 de profond ; **largeur intérieure entre flancs 360 mm**. Façade aluminium usinée de 10 mm, embase intérieure pré-percée `01/05` en option.
+2. **Carte à plat sur l'embase, `U6` en bord de carte, relié au flanc par une barre aluminium courte et massive.** Cible : 30 à 40 mm de long, section 10 × 60 mm, soit 0,25 à 0,33 °C/W.
+3. **Isolation électrique reportée à la jonction barre/flanc**, sur environ 60 × 20 mm au lieu des 29 mm² du PowerPAD. La masse signal reste ainsi flottante par rapport au châssis, pour un coût thermique de 0,07 à 0,21 °C/W selon le pad.
+
+Chaîne complète retenue, `T_A` = 25 °C extérieurs :
+
+| Poste | Valeur |
+|---|---|
+| Interface graisse sur PowerPAD | 0,570 |
+| Étalement dans la barre (Al) | 0,411 |
+| Barre 30–40 mm, section 10 × 60 | 0,250 à 0,333 |
+| Isolation barre/flanc | 0,070 à 0,208 |
+| Flanc `03/300` | 0,410 |
+| **Total** | **1,711 à 1,932** |
+| Budget disponible | **2,232** |
+
+`T_C` atterrit entre **63 et 68 °C**, sous les 75 visés, avec 0,30 à 0,52 °C/W de marge. **Le montage tient, mais la marge n'est plus confortable** : c'est la barre et son isolation qui la consomment. Deux conséquences pour E1.2 — **la barre doit être aussi courte que le placement le permet**, et un pad d'isolation à `k` ≥ 3 W/m·K est préférable à un pad standard.
+
+#### Contour de carte
+
+**200 × 150 mm.** Le raisonnement : l'EVM tient un jeu comparable mais plus léger sur 160 × 120, et cette carte y ajoute tout le bloc de protection 48 V — `Q302` en TO-264, `Q301` en TO-220, le fusible, le shunt et le `LM5069` — ainsi qu'un bulk plus gros. Le coffret offrant 360 × 285 mm utiles, rien n'oblige à serrer : une carte au large se route mieux et se refroidit mieux. **Le contour n'est pas contraint par le coffret, il est contraint par le placement**, et il pourra être resserré une fois E1.5 passée.
+
+Deux points restent à fixer plus tard, faute de données :
+
+- **Perçages de fixation** : l'embase `01/05` est pré-percée, mais son plan de perçage n'est pas publié. Trous à ajouter une fois le plan obtenu ou l'embase mesurée. `NEEDS_DATA` mineur, sans effet sur le placement.
+- **Orientation dans le coffret** : entrées RCA, sorties haut-parleur et entrée 48 V sur le panneau arrière ; `J4` vers la façade, où le potentiomètre est monté. `U6` contre un flanc, donc en bord latéral — ce qui impose de séparer l'analogique bas niveau du bord opposé.
+
 ### Ce qui ne va pas sur ce dissipateur
 
 - **Les quatre inductances, 3,1 W au total**, dissipent dans le PCB et l'air, pas dans le dissipateur de `U6`.
 - `Q301` (0,70 W) et `Q302` peuvent partager le même dissipateur ou en avoir un propre. Leur contribution en régime établi est inférieure à 1 W et ne change pas les valeurs ci-dessus. Le besoin de `Q302` n'est d'ailleurs pas un régime établi mais **transitoire** : sa SOA suppose le boîtier à 75 °C au moment de l'événement, ce qu'un dissipateur garantit en maintenant basse la température de départ.
 - ~~`NEEDS_DATA: traitement de la broche 45 (PowerPad) du symbole.`~~ — **tranché en D1.3, comme le demandait cette note.** La broche 45 **reste câblée à `GND` au schéma**, ce qui est correct au sens de TI : le PowerPAD est bien une masse, simplement raccordée par le dissipateur et non par le PCB. L'empreinte garde ses 44 pastilles, conformes au land pattern. **Conséquence à connaître avant E1.2 : l'import vers le PCB signalera une broche sans pastille. C'est attendu et ce n'est pas un défaut à corriger** ; supprimer la broche du symbole serait au contraire une erreur, elle documente une liaison électrique réelle.
 
+### Références validées en E1.7
+
+**`SLPX472M080H3P3`, `C316`/`C317`.** Décodée champ par champ contre la clé du catalogue Cornell Dubilier, puis recoupée sur la ligne du tableau :
+
+| Champ | Lecture |
+|---|---|
+| `SLPX` | série snap-in **85 °C**, 3000 h — **et non `SLP`, qui est la série 105 °C** |
+| `472` | 4700 µF |
+| `M` | ±20 % |
+| `080` | 80 Vdc |
+| `H3` | **ø35 × 30 mm** |
+| `P` | polarisé |
+| `3` | manchon PVC ou PET |
+
+La ligne du tableau donne ESR ≤ **0,071 Ω** à 25 °C et une ondulation admissible d'au moins **4,12 Arms** à 85 °C. **La cote de 30 mm portée depuis D1 est confirmée**, ce qui n'allait pas de soi : le catalogue `SLP`, ouvert en premier, ne propose en 4700 µF/80 V que du ø30 × 45 et du ø35 × 35, **tous deux plus hauts**. C'est bien la série `SLPX` qui livre le boîtier court.
+
+**Point à porter au dossier** : `SLPX` étant une série **85 °C** et non 105 °C, sa durée de vie garantie est de 3000 h à 85 °C. À 40 °C d'ambiante interne l'extrapolation usuelle donne un ordre de grandeur très supérieur, mais **le poste mérite d'être revu en H1** si l'ambiante interne réelle s'écarte de l'hypothèse.
+
 ## NEEDS_DATA avant gel final
 
 - `NEEDS_DATA: référence et caractéristiques garanties de l’alimentation externe 48 V ; nécessaires pour ripple, fusible, bulk, connecteur et puissance continue.` **Partiellement cadré en D1.13** : le volet tension est désormais borné par `REQ-PSU-1` (sortie ≤ 53,5 V en toutes conditions), qui devient un critère de sélection et non plus une donnée manquante. Restent ouverts le ripple, le courant continu garanti et le comportement au démarrage.
 - `NEEDS_DATA: choix mécanique du potentiomètre double 10 kΩ logarithmique ; nécessaire pour empreinte et durée de vie.`
 - ~~`NEEDS_DATA: références exactes des inductances 15 µH`~~ — **levé en D1.10.** `PA6331-AE` Coilcraft, même famille que le `MA5172-AE` de la nomenclature EVM : 15 µH, DCR 31 mΩ, `I_sat` 20 A, `I_rms` 9,8 A. Tore traversant debout ø28,6 × 12,3 mm, empreinte locale créée. Reste à reconfirmer l'approvisionnement en H2.
-- `NEEDS_DATA: référence exacte des condensateurs 680 nF de sortie.` **Partiellement levé en D1.9** : le diélectrique, la tension et la **boîte sont figés** — WIMA MKP4, 18 × 8 mm sur 15 de haut, pas de 15 mm, empreinte standard attribuée. Ne manquent que les quatre derniers caractères de la référence `MKP4F036804F00`, qui codent tolérance et conditionnement. Sans effet sur l'implantation ; à clore en H2 avec la BOM.
+- ~~`NEEDS_DATA: référence exacte des condensateurs 680 nF de sortie.`~~ — **levé en E1.7 à la source primaire.** Le catalogue WIMA MKP 4 porte la ligne `MKP4F036804F00_ _ _ _` à 0,68 µF, cotes **L 18 × W 8 × H 15 mm, pas 15 mm** : la boîte figée en D1.9 est confirmée au document fabricant. **Les quatre caractères manquants ne sont pas une donnée à trouver** : le catalogue précise qu'ils complètent la référence par la **tolérance de capacité** et le **conditionnement**, choisis à la commande. Il n'y a donc plus rien à décoder, seulement à trancher en H2. *Réserve* : la lettre `F` désigne la colonne 250 VDC / 160 VAC du tableau, lecture déduite de la position de colonne et non d'une clé explicite.
 - `NEEDS_DATA: protection 48 V inversion/surtension et TVS ; le clamp doit rester compatible avec le maximum absolu TPA3255.` **Les composants sont figés — `F301`, `D301` = `SMDJ58CA`, `Q301` = `IPP330P10NM`, `U8` = `LM5069-2`, `Q302` = `IXTK200N10L2` — mais l'exigence telle qu'elle est écrite n'est pas satisfaite et ne peut pas l'être.** Aucune TVS du commerce ne clampe sous le maximum absolu du TPA3255 : le facteur de clamp exigé vaut 1,19 à 1,23 pour 1,3 minimum offert par la technologie, et ce constat ne change pas avec le maximum absolu rectifié à 69 V — il empire, cf. `docs/protection-48v.md`. **La réponse du projet est architecturale et non composant** : la TVS est cantonnée aux transitoires rapides, la surtension soutenue est coupée activement par le `LM5069`, et le respect des conditions recommandées vient de `REQ-PSU-1`. À reformuler en exigence de vérification plutôt qu'en donnée manquante.
 - `NEEDS_DATA: common-mode garanti du TPA3255 ; non spécifié explicitement, mitigé par les condensateurs de liaison EVM.`
 - `NEEDS_DATA: dissipateur, pression/interface thermique, boîtier, ventilation et température ambiante.` **Trois des cinq volets sont clos.** L'**interface** est spécifiée par `REQ-THERM-2` — graisse, graphite ou indium, pad silicone exclu ; l'absence d'isolation électrique à assurer, le PowerPAD étant `GND` et le dissipateur porté au même potentiel, autorise le contact direct et rend cette exigence tenable. La **ventilation** est close par `REQ-THERM-3` : convection naturelle, 4 Ω en crête seulement. L'**ambiante** est fixée à 40 °C internes, hypothèse de calcul de `REQ-THERM-1`. Restent le **dissipateur** et le **boîtier** eux-mêmes, dont les cotes conditionnent E1.2, et la **pression de montage**, qui ne se vérifiera qu'au prototype.
