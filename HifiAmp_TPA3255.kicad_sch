@@ -15989,7 +15989,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_SO:HTSSOP-44-1EP_6.1x14mm_P0.635mm_EP5.2x14mm_Mask4.31x8.26mm"
+		(property "Footprint" "Package_SO:HTSSOP-44_6.1x14mm_P0.635mm_TopEP4.14x7.01mm"
 			(at 340.36 180.34 0)
 			(hide yes)
 			(effects
