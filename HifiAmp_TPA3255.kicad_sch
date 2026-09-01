@@ -17322,7 +17322,7 @@
 				)
 			)
 		)
-		(property "Value" "15uH"
+		(property "Value" "15uH/20A"
 			(at 255.905 345.44 90)
 			(effects
 				(font
@@ -17330,7 +17330,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Inductor_SMD:L_Wuerth_HCI-1350"
+		(property "Footprint" "HifiAmp_TPA3255_Local:L_Toroid_Vertical_L28.6mm_W12.3mm_P10.00mm_Coilcraft_PA6331"
 			(at 254 345.44 0)
 			(hide yes)
 			(effects
@@ -17373,7 +17373,7 @@
 				)
 			)
 		)
-		(property "Value" "15uH"
+		(property "Value" "15uH/20A"
 			(at 268.605 345.44 90)
 			(effects
 				(font
@@ -17381,7 +17381,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Inductor_SMD:L_Wuerth_HCI-1350"
+		(property "Footprint" "HifiAmp_TPA3255_Local:L_Toroid_Vertical_L28.6mm_W12.3mm_P10.00mm_Coilcraft_PA6331"
 			(at 266.7 345.44 0)
 			(hide yes)
 			(effects
@@ -17424,7 +17424,7 @@
 				)
 			)
 		)
-		(property "Value" "15uH"
+		(property "Value" "15uH/20A"
 			(at 281.305 345.44 90)
 			(effects
 				(font
@@ -17432,7 +17432,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Inductor_SMD:L_Wuerth_HCI-1350"
+		(property "Footprint" "HifiAmp_TPA3255_Local:L_Toroid_Vertical_L28.6mm_W12.3mm_P10.00mm_Coilcraft_PA6331"
 			(at 279.4 345.44 0)
 			(hide yes)
 			(effects
@@ -17475,7 +17475,7 @@
 				)
 			)
 		)
-		(property "Value" "15uH"
+		(property "Value" "15uH/20A"
 			(at 294.005 345.44 90)
 			(effects
 				(font
@@ -17483,7 +17483,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Inductor_SMD:L_Wuerth_HCI-1350"
+		(property "Footprint" "HifiAmp_TPA3255_Local:L_Toroid_Vertical_L28.6mm_W12.3mm_P10.00mm_Coilcraft_PA6331"
 			(at 292.1 345.44 0)
 			(hide yes)
 			(effects
