@@ -17629,7 +17629,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "680nF film"
+		(property "Value" "680nF/250V MKP"
 			(at 254.635 383.54 0)
 			(effects
 				(font
@@ -17638,7 +17638,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "HifiAmp_TPA3255_Local:CF_Film_Box_P5.00mm_7.2x3.5mm"
+		(property "Footprint" "Capacitor_THT:C_Rect_L18.0mm_W8.0mm_P15.00mm_FKS3_FKP3"
 			(at 254.9652 384.81 0)
 			(hide yes)
 			(effects
@@ -17682,7 +17682,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "680nF film"
+		(property "Value" "680nF/250V MKP"
 			(at 267.335 383.54 0)
 			(effects
 				(font
@@ -17691,7 +17691,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "HifiAmp_TPA3255_Local:CF_Film_Box_P5.00mm_7.2x3.5mm"
+		(property "Footprint" "Capacitor_THT:C_Rect_L18.0mm_W8.0mm_P15.00mm_FKS3_FKP3"
 			(at 267.6652 384.81 0)
 			(hide yes)
 			(effects
@@ -17735,7 +17735,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "680nF film"
+		(property "Value" "680nF/250V MKP"
 			(at 280.035 383.54 0)
 			(effects
 				(font
@@ -17744,7 +17744,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "HifiAmp_TPA3255_Local:CF_Film_Box_P5.00mm_7.2x3.5mm"
+		(property "Footprint" "Capacitor_THT:C_Rect_L18.0mm_W8.0mm_P15.00mm_FKS3_FKP3"
 			(at 280.3652 384.81 0)
 			(hide yes)
 			(effects
@@ -17788,7 +17788,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "680nF film"
+		(property "Value" "680nF/250V MKP"
 			(at 292.735 383.54 0)
 			(effects
 				(font
@@ -17797,7 +17797,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "HifiAmp_TPA3255_Local:CF_Film_Box_P5.00mm_7.2x3.5mm"
+		(property "Footprint" "Capacitor_THT:C_Rect_L18.0mm_W8.0mm_P15.00mm_FKS3_FKP3"
 			(at 293.0652 384.81 0)
 			(hide yes)
 			(effects

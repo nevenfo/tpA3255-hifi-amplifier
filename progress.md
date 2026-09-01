@@ -6,21 +6,22 @@ Phase D. **GATE C2 = PASS**, revérifié après chaque écriture : ERC à 15 vio
 
 ## Tâche actuelle
 
-D1.2 — Vérifier boîtiers fabricant, orientations, courants et contraintes d'assemblage.
+D1.10 — Requalifier l'empreinte des quatre inductances de sortie `L301` à `L304`.
 
 ## Dernière tâche validée
 
-**D1.11 = PASS.** Les six bulks sont instruits : un défaut corrigé, une empreinte confirmée juste.
+**D1.9 = PASS.** Sur `C321` à `C324`, **le pas de 5 mm était faux autant que l'épaisseur**.
 
-- **`C312` à `C315`** portaient `CP_Radial_D16.0mm_P7.50mm`, soit **2 mm de trop peu en diamètre**. La nomenclature du kit TI `TPA3255EVM` (`SLOU441`, p. 14) — l'ancre déclarée du bulk — donne pour ce poste `EEU-FC1J152` Panasonic en **ø18 mm**. Corrigées en `Capacitor_THT:CP_Radial_D18.0mm_P7.50mm`, librairie standard, pas inchangé. Écriture MCP relue au fichier par le principal, positions inchangées.
-- **`C316`/`C317`** : `CP_Radial_D35.0mm_P10.00mm_SnapIn` **validée**. La BOM donne `SLPX472M080H3P3` Cornell Dubilier, « D35 × L30 » ; la clé CDE type SLP décodée au catalogue redonne bien H = ø35 et 3 = 30 mm ; le diagramme « PC Board Mounting Holes » du même catalogue impose **pas 10,0 mm et deux trous ø2,0 ± 0,1**, identiques au Vishay 058. **Le perçage de 2,0 mm n'est donc pas un jeu nul sur une broche de 2,0 mm : c'est la cote prescrite par les deux fabricants.**
-- **Méthode qui a payé : remonter à la nomenclature du kit d'évaluation servant d'ancre au design, plutôt que chercher une série au hasard.** Elle donne le boîtier réel de chaque poste et sert de point d'entrée pour décoder la clé du fabricant.
+- La BOM du `TPA3255EVM` (`SLOU441`, p. 14) tranche le diélectrique : l'EVM équipe ce poste d'un `PHE426HB7100JR06` KEMET, **film polypropylène**, 1 µF/250 V au pas de 17,5 mm.
+- Le catalogue WIMA `MKP4`, extrait et lu, **contredit l'idée qu'un MKP n'existerait pas sous 250 V** : la série se catalogue dès 100 VDC. Pour 0,68 µF elle donne une boîte `4F` de **8 × 15 × 18 mm au pas de 15 mm, identique en 100 et en 250 VDC**. Le calibre supérieur étant sans coût mécanique, **250 V retenu**.
+- Empreinte : `Capacitor_THT:C_Rect_L18.0mm_W8.0mm_P15.00mm_FKS3_FKP3`, librairie standard, description renvoyant elle-même au catalogue WIMA. `Value` passée à `680nF/250V MKP`. Écriture MCP relue au fichier, positions inchangées, ERC inchangé.
+- **Le 680 nF du projet, face au 1 µF de l'EVM, est confirmé sain** : avec 15 µH il donne 49,8 kHz de coupure contre 50,3 kHz pour le couple 10 µH / 1 µF, pour une impédance caractéristique de 4,7 Ω au lieu de 3,16 — mieux adaptée à 4-8 Ω.
+- `CF_Film_Box_P5.00mm_7.2x3.5mm` n'ayant plus d'utilisateur, **elle est supprimée**. La librairie locale ne garde que le fusible, son entrée `fp-lib-table` reste justifiée.
 
 ## Défauts ouverts
 
-- **D1.9 — `C321` à `C324` portent une empreinte impossible.** 3,5 mm d'épaisseur supposée, jamais lue. Le filtre étant référencé à `GND` en aval de chaque demi-pont, il voit tout le rail et TI impose un calibre 100 V ; or sous 100 V une boîte de 3,5 mm au pas de 5 mm ne loge que 0,15 à 0,22 µF, et le 680 nF mesure 5 × 10 × 7,2 mm. Ne pas re-supposer : la référence est `NEEDS_DATA`, et le diélectrique est à trancher d'abord (MKP polypropylène attendu sur un filtre Class-D, pas MKS polyester), ce qui peut déplacer le pas. **`SLOU441` contient la BOM de l'EVM et donnera très probablement la référence de ce poste : à exploiter en premier.**
-- **D1.10 — `L301` à `L304` portent `L_Wuerth_HCI-1350` sans MPN**, alors que l'inductance 15 µH est `NEEDS_DATA`. Le boîtier 1350 est très probablement trop petit : 342 µJ stockés contre 750 µJ exigés. **Même remarque : exploiter la BOM `SLOU441` avant toute recherche de série.**
-- **D1.8 déverrouillé, plus aucun arbitrage requis.** `CF_Film_Box_P5.00mm_7.2x3.5mm` était redondante dès sa création : la librairie standard contient `C_Rect_L7.2mm_W3.5mm_P5.00mm_FKS2_FKP2_MKS2_MKP2`, courtyard correct de 7,7 × 4,0 mm contre 7,6 × 2,6 au local. Suppression à la fermeture de D1.9. Le fusible `Fuse_Schurter_UMT-H_5.3x16mm` reste justifié, son défaut purement cosmétique.
+- **D1.10 — `L301` à `L304` portent `Inductor_SMD:L_Wuerth_HCI-1350` sans MPN**, alors que l'inductance 15 µH est `NEEDS_DATA`. Le boîtier 1350 (12,8 × 12,8 × 4,7 mm) est trop petit : 342 µJ stockés contre 750 µJ exigés. **Piste forte trouvée et déjà lue à la source** : la BOM de l'EVM donne `MA5172-AE` Coilcraft pour ce poste, et sa datasheet (Coilcraft document 943, `https://www.coilcraft.com/pdfs/ma5172.pdf`, déjà téléchargée) catalogue dans la même famille **`PA6331-AE` : 15 µH, DCR 31 mΩ, `I_sat` 20 A, `I_rms` 9,8 A à 20 °C d'échauffement et 14,2 A à 40 °C** — soit exactement le cahier des charges, sur une pièce conçue pour les étages Class-D TI. **C'est un composant traversant**, corps 28,6 × 12,3 mm : aucune empreinte standard ne conviendra, une empreinte locale sera nécessaire et devra être justifiée. Reste à lire précisément l'entraxe des broches, leur diamètre et la hauteur sur le dessin coté.
+- **D1.8, reliquat cosmétique.** Le volet film est clos ; ne reste que les graphiques de `Fuse_Schurter_UMT-H_5.3x16mm`, sans effet DRC ni fabrication. L'empreinte locale reste justifiée : le standard `Fuse_Schurter_UMT250` vise un corps 3 × 10,1 mm, pastilles à ± 4,25 contre ± 6,875 mm.
 - **`J1`, bornier MaiXu MX126-5.0 : calibre en courant toujours non instruit.** 4,6 A continus et 10 A transitoires attendus. Sa seule datasheet connue est celle que cite l'empreinte KiCad, hébergée par LCSC, **et LCSC refuse `curl`**.
 
 ## Blocage actif
@@ -29,8 +30,9 @@ Aucun.
 
 ## Contraintes portées en Phase E
 
-- **Bulk : `C312` à `C315` gagnent 2 mm de courtyard chacun** (16,16 → 18,16 mm), hauteur nominale 35 mm. `C316`/`C317` : ø35 mais **30 mm de haut seulement**, et non les 50 mm que suggère la description de l'empreinte KiCad — plus favorable qu'attendu sous capot.
-- `C325` culmine à **18 mm** : composant film le plus encombrant.
+- **Films de sortie : la boîte passe de 7,2 × 3,5 à 18 × 8 mm sur 15 de haut**, courtyard de 18,5 × 8,5 mm, quatre fois. C'est le plus gros changement d'encombrement de la phase.
+- **Bulk : `C312` à `C315` gagnent 2 mm de courtyard chacun** (16,16 → 18,16 mm), hauteur nominale 35 mm. `C316`/`C317` : ø35 mais **30 mm de haut seulement**, et non les 50 mm que suggère la description de l'empreinte KiCad.
+- `C325` culmine à **18 mm**.
 - **`R306` est un shunt à deux bornes, pas Kelvin.** Les liaisons vers `VIN` et `SENSE` doivent partir des **bords intérieurs** des pastilles, le courant de puissance entrant par les bords extérieurs. Repli : `WSK25122L000FEA`, quatre bornes, même boîtier 2512.
 - `Q302` doit être monté sur radiateur : sa SOA suppose le boîtier à 75 °C.
 - `Q301` : courant continu plafonné à 6,9 A avec la surface de cuivre de référence de sa datasheet, 6 cm² en 70 µm.
@@ -40,9 +42,9 @@ Aucun.
 
 ## NEEDS_DATA ouverts
 
-`RV1` (mécanique du potentiomètre), EP du TPA3255DDV à 5,2 × 14 mm à confirmer sur dessin mécanique TI, alimentation externe 48 V, **films 680 nF (bloque D1.9) et inductances 15 µH (bloque D1.10)**, dissipateur et thermique, réponse/EMI du filtre LC, common-mode du TPA3255, broche MR du TPS3802K33, calibre en courant du bornier `J1`.
+`RV1` (mécanique du potentiomètre), EP du TPA3255DDV à 5,2 × 14 mm à confirmer sur dessin mécanique TI, alimentation externe 48 V, **inductances 15 µH (bloque D1.10, candidat sérieux `PA6331-AE`)**, dissipateur et thermique, réponse/EMI du filtre LC, common-mode du TPA3255, broche MR du TPS3802K33, calibre en courant du bornier `J1`.
 
-Candidats d'ancrage **non inscrits au schéma** tant que la clé fabricant n'est pas décodée : `EEU-FC1J152` (Panasonic, ø18) pour `C312` à `C315` ; `SLPX472M080H3P3` (CDE) pour `C316`/`C317`, sachant que le catalogue SLP courant ne liste pas ce code et donne à 80 V `SLP472M080E4P3` en 30 × 45 et `SLP472M080H5P3` en 35 × 35.
+Candidats d'ancrage **non inscrits au schéma** tant que la clé fabricant n'est pas décodée jusqu'au bout : `EEU-FC1J152` (Panasonic, ø18) pour `C312` à `C315` ; `SLPX472M080H3P3` (CDE) pour `C316`/`C317` ; `MKP4F036804F00` + quatre caractères de tolérance et conditionnement pour `C321` à `C324`.
 
 Assumés : stabilité de la boucle de limitation de puissance du LM5069 face aux 540 nC de grille de `Q302` ; `V_C` de la `SMDJ58CA` sous `I_PP` ; pas de 7,5 mm du boîtier ø18, inchangé par la correction mais non relu chez Panasonic.
 
@@ -51,10 +53,11 @@ Assumés : stabilité de la boucle de limitation de puissance du LM5069 face aux
 - Toute édition schéma/PCB/librairie passe par `kicad-control`/MCP. Lecture hors MCP pour vérifier seulement.
 - **Les rapports d'agents sont systématiquement vérifiés par le principal avant tout verdict.**
 - **`kicad-cli.exe` est utilisable directement** (`sch erc`, `sch export netlist`) et fournit une preuve indépendante du MCP, sans GUI. Chemin : `C:/Users/FlowUP/AppData/Local/Programs/KiCad/10.0/bin/`.
+- **La nomenclature du kit d'évaluation qui sert d'ancre au design est la première source à ouvrir** pour tout poste dont la référence manque : elle donne le boîtier réel et le diélectrique, et sert de point d'entrée pour décoder la clé du fabricant. Elle a résolu D1.9, D1.11 et débloqué D1.10 en une seule lecture.
 - **Avant de créer une empreinte locale, épuiser la librairie standard.** Sur les deux locales créées jusqu'ici, une seule était nécessaire.
 - **Lire les cotes par extraction du PDF fabricant, pas par recherche web ni par listing distributeur.** `pymupdf` installé, `pdftotext` dans `/mingw64/bin`. **Toujours contrôler si un tracé est à l'échelle** : celui de Schurter ne l'est pas. **Et toujours vérifier à quelle figure appartient une cote** : le « ø2 ± 0,1 » des snap-in est une cote de perçage, pas de broche.
 - **Une référence ne se valide pas sur son aspect, mais en la décodant champ par champ contre la clé du fabricant, puis en recoupant la boîte obtenue avec le tableau de la valeur visée.**
-- **Serveurs qui servent le PDF à `curl`** : ti.com/lit, vishay.com/docs, content.kemet.com, cde.com, tdk-electronics.tdk.com, Infineon. **Serveurs qui refusent ou ne répondent pas** : Littelfuse, DigiKey, LCSC, nichicon.co.jp, rubycon.co.jp, industrial.panasonic.com (timeout complet).
+- **Serveurs qui servent le PDF à `curl`** : ti.com/lit, vishay.com/docs, content.kemet.com, cde.com, coilcraft.com/pdfs, wima.de, tdk-electronics.tdk.com, Infineon. **Serveurs qui refusent ou ne répondent pas** : Littelfuse, DigiKey, LCSC, nichicon.co.jp, rubycon.co.jp, industrial.panasonic.com (timeout complet), coilcraft.com hors `/pdfs` (403).
 - Aucune mutation géométrique : la connectivité repose sur la coïncidence label/ancre.
 - TVS cantonnée aux transitoires rapides ; la protection en surtension est active, par `LM5069`.
 - Bulk maintenu à 15 400 µF sur arbitrage utilisateur ; `Q302` choisi en conséquence.
@@ -70,7 +73,7 @@ Assumés : stabilité de la boucle de limitation de puissance du LM5069 face aux
 - `save_project` / `open_project` échouent hors GUI : `Connection refused`. Les écritures sont fichier et persistées ; prouver par relecture.
 - Attributs `on_board` / `in_bom` / `dnp` inaccessibles ; `edit_schematic_component` ne gère que Reference/Value/Footprint/Datasheet plus des propriétés personnalisées.
 - **`edit_schematic_component` accepte `uuid` en plus de `reference`** : seul moyen d'adresser un symbole quand plusieurs partagent le même repère.
-- **`create_footprint` impose ses propres graphiques** et aucun outil ne les édite après coup.
+- **`create_footprint` impose ses propres graphiques** et aucun outil ne les édite après coup : point dur pour D1.10, qui exigera une empreinte locale.
 - `add_power_symbol` : `power_net` désigne le nom du symbole de librairie, pas le net cible.
 - `get_schematic_component` / `get_component_nets` exigent un chemin absolu et mésattribuent les broches `power_in`.
 - Outils de `load_toolset` accessibles seulement via `kicad_invoke`. Sortie tronquée au-delà d'environ 72 000 caractères.
@@ -78,12 +81,12 @@ Assumés : stabilité de la boucle de limitation de puissance du LM5069 face aux
 
 ## Fichiers / zones utiles
 
-- `HifiAmp_TPA3255.kicad_pro`, `.kicad_sch`, `.kicad_pcb`, `.kicad_sym` (symbole `LM5069` local), `sym-lib-table`, `fp-lib-table`
-- `HifiAmp_TPA3255_Local.pretty/` : `Fuse_Schurter_UMT-H_5.3x16mm` (justifiée), `CF_Film_Box_P5.00mm_7.2x3.5mm` (à supprimer, D1.9)
+- `HifiAmp_TPA3255.kicad_pro`, `.kicad_sch`, `.kicad_pcb` (**vide, aucune empreinte placée** : les changements d'empreinte n'imposent aucune resynchronisation), `.kicad_sym`, `sym-lib-table`, `fp-lib-table`
+- `HifiAmp_TPA3255_Local.pretty/` : ne contient plus que `Fuse_Schurter_UMT-H_5.3x16mm`
 - `docs/architecture.md`, `docs/power-block.md`, `docs/protection-48v.md`
 - Librairies KiCad : `C:/Users/FlowUP/AppData/Local/Programs/KiCad/10.0/share/kicad/footprints`
-- PDF déjà téléchargés, dans le scratchpad de session : `slou441.pdf` (BOM EVM TPA3255, p. 14), `SLP.pdf` (CDE), `058059pll-si.pdf` (Vishay), `KEM_A4082_ALC80.pdf`.
+- PDF déjà téléchargés, dans le scratchpad de session : `slou441.pdf` (BOM EVM TPA3255, p. 14-15), `ma5172.pdf` (Coilcraft doc 943), `e_WIMA_MKP_4.pdf`, `SLP.pdf` (CDE), `058059pll-si.pdf` (Vishay), `KEM_A4082_ALC80.pdf`.
 
 ## NEXT ACTION
 
-D1.9 — exploiter la BOM du `TPA3255EVM` (`SLOU441`, p. 14, PDF déjà présent dans le scratchpad) pour lire la référence réelle des quatre films `680 nF` du filtre de sortie et leur diélectrique, puis décoder cette référence contre la clé de son fabricant pour en tirer l'épaisseur de boîte et le pas. Corriger ensuite `C321` à `C324` avec le membre correspondant de la famille standard `Capacitor_THT:C_Rect_L7.2mm_W*_P5.00mm_FKS2_FKP2_MKS2_MKP2`, relire au fichier, revérifier l'ERC à 15 violations et 0 erreur, puis supprimer l'empreinte locale `CF_Film_Box_P5.00mm_7.2x3.5mm` devenue sans utilisateur. Enchaîner sur D1.10 par la même voie.
+D1.10 — sur le dessin coté de `ma5172.pdf` (Coilcraft doc 943, déjà dans le scratchpad), relever pour `PA6331-AE` l'entraxe des broches, leur diamètre et la hauteur du corps, en contrôlant d'abord si le tracé est à l'échelle. Vérifier ensuite qu'aucune empreinte de la librairie standard ne couvre cette géométrie ; si aucune ne convient, créer l'empreinte locale via le MCP en sachant que `create_footprint` impose ses graphiques et qu'aucun outil ne les édite après coup. Assigner `L301` à `L304`, porter `Value` à `15uH` avec le calibre en courant, relire au fichier, revérifier l'ERC à 15 violations et 0 erreur. Le `NEEDS_DATA` sur l'inductance tombe si `PA6331-AE` est retenue.
