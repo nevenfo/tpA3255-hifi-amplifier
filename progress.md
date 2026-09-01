@@ -6,11 +6,18 @@ Phase D. **GATE C2 = PASS**, revérifié après chaque écriture : ERC à 15 vio
 
 ## Tâche actuelle
 
-D1.13 — Trancher la fenêtre de tension où le TPA3255 travaille hors spécification. **Toutes les tâches de fond de D1 sont closes** ; restent D1.13, D1.14 et le reliquat cosmétique D1.8.
+D1.13 — Trancher la fenêtre de tension où le TPA3255 travaille hors spécification. **C'est la seule tâche de fond encore ouverte en D1**, avec le reliquat cosmétique D1.8. Elle attend un arbitrage utilisateur et dépend du `NEEDS_DATA` alimentation externe.
 
 ## Dernière tâche validée
 
-**D1.3 = PASS, et la tâche se retourne : il n'y a pas de vias thermiques à concevoir sous le TPA3255.**
+**D1.14 = PASS. Diagnostic livré, et il est rassurant : aucun écart de brochage.**
+
+- Les deux copies de chacun des cinq symboles — cache `lib_symbols` du schéma et `.kicad_sym` — ont été comparées par **égalité d'arbre S-expression**, après neutralisation du seul nom racine. `LM5010ASD` 330 feuilles, `LM2940IMP_12_FIXED` 169, `TPS3802K33` 192, `LM5069` 307, `TPA3255B` 1112 : **identiques des deux côtés, feuille à feuille**. **Aucune vérification antérieure n'est remise en cause** — c'était la question de fond.
+- **Piste de la version de format testée et infirmée.** Migrer une copie de la librairie par `kicad-cli sym upgrade --force` laisse **exactement les mêmes 15 violations**. Copie abandonnée, librairie restaurée par `git checkout`.
+- **Les cinq avertissements sont donc cosmétiques et restent dans la baseline.** Dernière piste — faire réécrire le cache du schéma par KiCad — **non retenue sans arbitrage** : elle passe un outil de migration sur le cœur du projet pour un gain purement cosmétique.
+- **Reliquats confirmés inutilisés** : `TPA3255DDV`, `TPA3255DDV_TEST`, `TPA3255` dans le cache et `LM2940IMP-12` dans la librairie, **zéro `lib_id` les référençant**. Non supprimés : KiCad les nettoie lui-même à la première sauvegarde depuis l'interface.
+
+**Avant elle, D1.3 = PASS, et la tâche s'est retournée : il n'y a pas de vias thermiques à concevoir sous le TPA3255.**
 
 - `U6` portait l'empreinte **d'un autre boîtier** : taguée `Texas_DDW0044B`, elle posait une 45ᵉ pastille de 5,2 × 14 mm **sous** le composant. Le TPA3255 est en `DDV0044D`, dont la datasheet dit que *« the PowerPAD is located on the top side of the device for convenient thermal coupling to the heat sink »*, et dont le land pattern TI ne montre que **44 pastilles**. Le plan coté donne un pad exposé de **7,01 × 4,14 mm nominal**, pas 5,2 × 14. Corrigé en `Package_SO:HTSSOP-44_6.1x14mm_P0.635mm_TopEP4.14x7.01mm`, taguée `Texas_DDV0044D`.
 - **Preuve chiffrée : `RθJC(bot)` est donné `n/a`** — TI ne caractérise même pas la voie par le dessous — quand `RθJA` tombe de **50,7 à 2,4 °C/W** avec un dissipateur sur le dessus, facteur 21, « only path for dissipation is to the heatsink ».
@@ -28,7 +35,6 @@ D1.13 — Trancher la fenêtre de tension où le TPA3255 travaille hors spécifi
 ## Défauts ouverts
 
 - **D1.13 — fenêtre de 53,5 à 56,4 V où une charge de 4 Ω est hors spécification sans que rien ne coupe.** TI plafonne `PVDD` à 53,5 V absolus sous 4 Ω, contre 56,5 V sous ≥ 6 Ω et seulement avec un seuil de surintensité réduit ; le projet vise 4 à 8 Ω et le `LM5069` coupe à 56,4 V. Le raisonnement en place — `Q302` isole le TPA3255 en surtension — ne couvre pas cette bande. Trois issues : abaisser `V_OVH` vers 52 V, restreindre la charge à ≥ 6 Ω, ou démontrer que l'alimentation retenue ne peut pas atteindre 53,5 V. **Dépend du `NEEDS_DATA` alimentation externe ; arbitrage utilisateur probable.**
-- **D1.14 — les cinq `lib_symbol_mismatch` sont un tiers de la baseline et ne sont pas diagnostiqués.** Ils portent sur `LM5010ASD`, `LM2940IMP_12_FIXED`, `TPS3802K33`, `LM5069` et `TPA3255B` : la copie embarquée dans le schéma diverge de la librairie, et l'écart peut être anodin comme porter sur un brochage. Reliquats à traiter dans le même mouvement : le cache du schéma contient encore `TPA3255DDV`, `TPA3255DDV_TEST` et `TPA3255`, absents du `.kicad_sym` et inutilisés, et la librairie garde `LM2940IMP-12` alors que `U2` utilise `LM2940IMP_12_FIXED`.
 - **D1.8, reliquat cosmétique.** Le volet film est clos ; ne restent que les graphiques de `Fuse_Schurter_UMT-H_5.3x16mm`, sans effet DRC ni fabrication. L'empreinte locale reste justifiée : le standard `Fuse_Schurter_UMT250` vise un corps 3 × 10,1 mm, pastilles à ± 4,25 contre ± 6,875 mm. **À revoir à la lumière de D1.10** : le générateur produit des graphiques corrects quand les cotes le sont, donc une recréation propre est peut-être plus simple qu'une correction.
 
 ## Blocage actif
@@ -105,4 +111,4 @@ Assumés : stabilité de la boucle de limitation de puissance du LM5069 face aux
 
 ## NEXT ACTION
 
-D1.14 — diagnostiquer les cinq `lib_symbol_mismatch`, qui sont un tiers de la baseline C2 et n'ont jamais été instruits. Pour chacun des cinq symboles, comparer la copie embarquée dans la section `lib_symbols` du `.kicad_sch` à celle du `.kicad_sym`, **broche à broche d'abord** — numéro, nom, type électrique — puis champs de propriétés, et classer l'écart : anodin ou portant sur le brochage. Un écart de brochage remettrait en cause des vérifications déjà faites et doit être signalé immédiatement. Ne rien réécrire avant d'avoir le diagnostic des cinq. Traiter ensuite les reliquats inutilisés, en montrant d'abord qu'aucun composant n'y renvoie. **D1.13 est laissée en attente : elle dépend du `NEEDS_DATA` alimentation externe et appelle un arbitrage utilisateur.**
+D1.13 — instruire la fenêtre de 53,5 à 56,4 V, puis **la porter à l'utilisateur : c'est un arbitrage, pas une correction**. Établir d'abord les faits manquants sans rien modifier : relire dans `docs/protection-48v.md` d'où viennent les 56 V de régime permanent maximal — tolérance d'alimentation supposée ou autre — et vérifier si le seuil `V_OVH` de 56,4 V a été choisi pour une raison qui interdirait de l'abaisser, sachant que `R307` à `R309` forment le diviseur et qu'un seuil plus bas doit rester au-dessus des 48 V nominaux plus la tolérance de l'alimentation. Présenter ensuite les trois issues chiffrées : abaisser `V_OVH` vers 52 V, restreindre la charge admissible à ≥ 6 Ω, ou démontrer que l'alimentation retenue ne peut pas atteindre 53,5 V. **Ne modifier aucun composant avant la réponse.** D1 sera alors close, hors reliquat cosmétique D1.8, et la Phase E pourra s'ouvrir avec un jeu d'encombrements enfin fiable.
