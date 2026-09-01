@@ -378,7 +378,7 @@ Le rôle de `F301` est donc précisément borné : **ultime recours contre un `Q
 
 Deux conséquences à reporter :
 
-- Les calibres de cette famille sont établis sur carte d'essai à pistes de **7,5 mm en cuivre de 140 µm** pour le calibre 12,5 A. Le rail d'entrée devra s'en approcher, faute de quoi un déclassement s'applique.
+- Les calibres de cette famille sont établis sur carte d'essai à pistes de **7,5 mm en cuivre de 140 µm** pour le calibre 12,5 A. Le rail d'entrée devra s'en approcher, faute de quoi un déclassement s'applique. — **Instruit avant E1.1, et sans conséquence : le cuivre reste standard à 35 µm.** C'est une condition de mesure IEC 60127, pas une exigence de conception, et la coordination établie ci-dessus tolère un déclassement du calibre jusqu'à 7,4 A — soit 41 % — avant que la crête musicale de 9,3 A ne franchisse le seuil de 1,25 × `In`. Le raisonnement complet et les largeurs IPC-2221 figurent dans `docs/architecture.md`, section « Épaisseur de cuivre ».
 - **Aucune empreinte KiCad existante ne convient** : `Fuse_Schurter_UMT250` vise un corps de 3 × 10,1 mm, pastilles 2 × 3,75 mm à ± 4,25 mm, contre 5,3 × 16 mm ici. Empreinte locale à créer, à rattacher à D1.4.
 
 ## `D301` — TVS

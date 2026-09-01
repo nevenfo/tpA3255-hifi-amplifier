@@ -2,40 +2,22 @@
 
 ## Phase actuelle
 
-Phase D. **GATE C2 = PASS**, revérifié après chaque écriture : ERC à 15 violations et 0 erreur, jeu identique à la baseline C2 (10 `endpoint_off_grid`, 5 `lib_symbol_mismatch`).
+**Phase E — PCB 4 couches.** `GATE C2 = PASS` inchangée : ERC à 15 violations et 0 erreur, jeu identique à la baseline C2 (10 `endpoint_off_grid`, 5 `lib_symbol_mismatch`, tous instruits et cosmétiques). Aucun fichier KiCad de connectivité n'a été touché depuis.
 
 ## Tâche actuelle
 
-D1.13 — Trancher la fenêtre de tension où le TPA3255 travaille hors spécification. **C'est la seule tâche de fond encore ouverte en D1**, avec le reliquat cosmétique D1.8. Elle attend un arbitrage utilisateur et dépend du `NEEDS_DATA` alimentation externe.
+E1.1 — créer le PCB 4 couches et documenter stack-up, règles et classes de nets. Non commencée. Le `.kicad_pcb` est **vide, aucune empreinte placée**.
 
 ## Dernière tâche validée
 
-**D1.14 = PASS. Diagnostic livré, et il est rassurant : aucun écart de brochage.**
+**D1 est CLOSE. Toutes les empreintes sont attribuées et revues contre leurs sources fabricant.**
 
-- Les deux copies de chacun des cinq symboles — cache `lib_symbols` du schéma et `.kicad_sym` — ont été comparées par **égalité d'arbre S-expression**, après neutralisation du seul nom racine. `LM5010ASD` 330 feuilles, `LM2940IMP_12_FIXED` 169, `TPS3802K33` 192, `LM5069` 307, `TPA3255B` 1112 : **identiques des deux côtés, feuille à feuille**. **Aucune vérification antérieure n'est remise en cause** — c'était la question de fond.
-- **Piste de la version de format testée et infirmée.** Migrer une copie de la librairie par `kicad-cli sym upgrade --force` laisse **exactement les mêmes 15 violations**. Copie abandonnée, librairie restaurée par `git checkout`.
-- **Les cinq avertissements sont donc cosmétiques et restent dans la baseline.** Dernière piste — faire réécrire le cache du schéma par KiCad — **non retenue sans arbitrage** : elle passe un outil de migration sur le cœur du projet pour un gain purement cosmétique.
-- **Reliquats confirmés inutilisés** : `TPA3255DDV`, `TPA3255DDV_TEST`, `TPA3255` dans le cache et `LM2940IMP-12` dans la librairie, **zéro `lib_id` les référençant**. Non supprimés : KiCad les nettoie lui-même à la première sauvegarde depuis l'interface.
+- **D1.13 = PASS**, sur arbitrage utilisateur. La fenêtre 53,5–56,4 V est fermée **par une spécification d'alimentation, pas par un composant**. Exigence `REQ-PSU-1` dans `docs/architecture.md` : sortie de l'alimentation 48 V ≤ 53,5 V en toutes conditions, 3,1 V de marge pour une régulée à ± 5 %. Rien n'est modifié : `V_OVH` reste 56,4 V, `OC_ADJ` reste 22 kΩ, la charge reste 4–8 Ω. Deux rectifications de fond au passage : **53,5 V est une borne de conditions recommandées et non un maximum absolu**, lequel vaut **69 V** et non les 65 V portés depuis B2.4 ; et **abaisser `V_OVH` est arithmétiquement impossible**, la fenêtre à couvrir valant ± 3 % contre ± 6 % de dispersion spécifiée du seuil. Le `LM5069` ne peut être qu'une protection de **défaut** d'alimentation.
+- **D1.8 = PASS.** La note « aucun outil MCP n'édite les graphiques après coup » était **fausse** : `set_footprint_graphics` existe. Repère de broche 1 supprimé, sérigraphie ramenée autour du corps. Vérifié au fichier par le principal : dégagement de **0,240 mm** contre 0,20 exigés, rien hors courtyard, cuivre/pâte/masque/`descr` intacts, `F301` résout toujours. `kicad-cli fp export svg` trace les deux empreintes locales sans avertissement.
 
-**Avant elle, D1.3 = PASS, et la tâche s'est retournée : il n'y a pas de vias thermiques à concevoir sous le TPA3255.**
+## Décision prise avant E1.1
 
-- `U6` portait l'empreinte **d'un autre boîtier** : taguée `Texas_DDW0044B`, elle posait une 45ᵉ pastille de 5,2 × 14 mm **sous** le composant. Le TPA3255 est en `DDV0044D`, dont la datasheet dit que *« the PowerPAD is located on the top side of the device for convenient thermal coupling to the heat sink »*, et dont le land pattern TI ne montre que **44 pastilles**. Le plan coté donne un pad exposé de **7,01 × 4,14 mm nominal**, pas 5,2 × 14. Corrigé en `Package_SO:HTSSOP-44_6.1x14mm_P0.635mm_TopEP4.14x7.01mm`, taguée `Texas_DDV0044D`.
-- **Preuve chiffrée : `RθJC(bot)` est donné `n/a`** — TI ne caractérise même pas la voie par le dessous — quand `RθJA` tombe de **50,7 à 2,4 °C/W** avec un dissipateur sur le dessus, facteur 21, « only path for dissipation is to the heatsink ».
-- **Le `NEEDS_DATA` annonçant un EP de 5,2 × 14 mm est infirmé, pas confirmé.** Le dissipateur devient le point dimensionnant unique du thermique du TPA3255.
-- **Écart connu et voulu, à reporter en Phase E** : le symbole a 45 broches, la broche 45 étant `EP_45` câblée à `GND` — correct au sens de TI — alors que l'empreinte n'en a que 44. L'import PCB signalera une broche sans pastille : **c'est attendu**, la mise à la masse du PowerPAD passant par le dissipateur, hors PCB.
-
-**Avant elle, D1.2, D1.10, D1.12, D1.9 et D1.11 = PASS.** Le bornier `J1` a été clos sur le dessin fabricant MaiXu : 300 V / 10 A en UL, 250 V / 15 A en IEC, perçage ø1,30 au pas 5,00 conforme à l'empreinte.
-
-- **Inductances.** La BOM du `TPA3255EVM` donne `MA5172-AE` Coilcraft, et sa datasheet (document Coilcraft 943) catalogue dans la même famille **`PA6331-AE` : 15 µH, DCR 31 mΩ, `I_sat` 20 A, `I_rms` 9,8 A à 20 °C d'échauffement** — exactement le cahier des charges. **Retenue sur arbitrage utilisateur.** La réserve énergétique était fondée : la pièce réelle est un **tore traversant debout de ø28,6 × 12,3 mm**, là où le `HCI-1350` supposé mesurait 12,8 × 12,8 × 4,7 mm.
-- **Le tracé de la datasheet n'est pas à l'échelle** : 2,836 pt/mm en vue de face contre 2,463 en profil, 15 % d'écart. Les étiquettes font foi, comme chez Schurter. Entraxe **10,0 ± 0,5 mm**, broches 0,96 à 1,07 mm.
-- Aucune empreinte standard ne convenait : le `Bourns_5700` a la bonne longueur mais 11,43 mm d'entraxe, hors tolérance ; le `Pulse_D` a le bon pas mais un courtyard trop court de 1,9 mm. D'où la **deuxième empreinte locale justifiée du projet**, `L_Toroid_Vertical_L28.6mm_W12.3mm_P10.00mm_Coilcraft_PA6331`, créée par le MCP et relue au fichier.
-- **Les graphiques imposés par `create_footprint` sont corrects cette fois** : courtyard à 0,25 mm autour de l'élément le plus extérieur — les pastilles, non le corps — et sérigraphie à 0,15 mm hors du corps sans recouvrir les pastilles. Ce sont les conventions KLC, meilleures que les cotes que le principal avait commandées. **La leçon de `CF_Film_Box` se précise : le générateur n'était pas en cause, les cotes qu'on lui donnait l'étaient.**
-- **D1.12** : `fp-lib-table` déclarait la librairie locale par un chemin absolu Windows — un clone du dépôt ailleurs aurait cassé la résolution des deux empreintes locales sans avertissement. Remplacé par `${KIPRJMOD}/…`. `sym-lib-table` utilisait déjà cette forme, donc l'incohérence était isolée, et l'ERC prouve que KiCad résout bien la variable ici puisqu'il charge le symbole local `LM5069` déclaré de la même façon.
-
-## Défauts ouverts
-
-- **D1.13 — fenêtre de 53,5 à 56,4 V où une charge de 4 Ω est hors spécification sans que rien ne coupe.** TI plafonne `PVDD` à 53,5 V absolus sous 4 Ω, contre 56,5 V sous ≥ 6 Ω et seulement avec un seuil de surintensité réduit ; le projet vise 4 à 8 Ω et le `LM5069` coupe à 56,4 V. Le raisonnement en place — `Q302` isole le TPA3255 en surtension — ne couvre pas cette bande. Trois issues : abaisser `V_OVH` vers 52 V, restreindre la charge à ≥ 6 Ω, ou démontrer que l'alimentation retenue ne peut pas atteindre 53,5 V. **Dépend du `NEEDS_DATA` alimentation externe ; arbitrage utilisateur probable.**
-- **D1.8, reliquat cosmétique.** Le volet film est clos ; ne restent que les graphiques de `Fuse_Schurter_UMT-H_5.3x16mm`, sans effet DRC ni fabrication. L'empreinte locale reste justifiée : le standard `Fuse_Schurter_UMT250` vise un corps 3 × 10,1 mm, pastilles à ± 4,25 contre ± 6,875 mm. **À revoir à la lumière de D1.10** : le générateur produit des graphiques corrects quand les cotes le sont, donc une recréation propre est peut-être plus simple qu'une correction.
+**Cuivre standard 35 µm sur les quatre couches.** Les « 7,5 mm en 140 µm » du fusible sont une condition de mesure IEC 60127, pas une exigence : IPC-2221 ne demande que 2,47 mm à 35 µm pour les 4,6 A nominaux, et la coordination du fusible tolère un déclassement jusqu'à 7,4 A, soit 41 %, avant que la crête musicale de 9,3 A ne devienne critique. **Le cuivre épais serait de surcroît nuisible** : 140 µm ne tient pas les intervalles de 0,235 mm du HTSSOP-44 au pas 0,635 mm de `U6`. Rail `PVDD` à tracer à 7,5 mm là où le placement le permet, jamais moins de 2,5 mm. Détail : `docs/architecture.md`, section « Épaisseur de cuivre ».
 
 ## Blocage actif
 
@@ -43,59 +25,44 @@ Aucun.
 
 ## Contraintes portées en Phase E
 
-- **Le TPA3255 se refroidit uniquement par le dessus.** Aucun via thermique sous le boîtier n'a d'objet, `RθJC(bot)` étant `n/a`. Prévoir le dégagement mécanique du dissipateur au-dessus de `U6`, et sa mise à la masse, qui porte la liaison `GND` du PowerPAD. **L'import PCB signalera la broche 45 sans pastille : c'est attendu, ce n'est pas un défaut à corriger.**
-- **Inductances : quatre tores debout de ø28,6 mm, épaisseur 12,3 mm, soit environ 29 mm de hauteur au-dessus du PCB.** Pertes cuivre ≈ 0,8 W chacune à 5 A RMS, **3,1 W au total**, à ajouter au bilan thermique.
-- **Films de sortie : la boîte passe de 7,2 × 3,5 à 18 × 8 mm sur 15 de haut**, courtyard de 18,5 × 8,5 mm, quatre fois.
-- **Bulk : `C312` à `C315` gagnent 2 mm de courtyard chacun** (16,16 → 18,16 mm), hauteur nominale 35 mm. `C316`/`C317` : ø35 mais **30 mm de haut seulement**, et non les 50 mm que suggère la description de l'empreinte KiCad.
-- `C325` culmine à **18 mm**.
-- **`R306` est un shunt à deux bornes, pas Kelvin.** Les liaisons vers `VIN` et `SENSE` doivent partir des **bords intérieurs** des pastilles, le courant de puissance entrant par les bords extérieurs. Repli : `WSK25122L000FEA`, quatre bornes, même boîtier 2512.
-- `Q302` doit être monté sur radiateur : sa SOA suppose le boîtier à 75 °C.
-- `Q301` : courant continu plafonné à 6,9 A avec la surface de cuivre de référence de sa datasheet, 6 cm² en 70 µm.
-- Rail d'entrée : les calibres UMT-H supposent des pistes de 7,5 mm en cuivre 140 µm. Déclassement sinon.
-- `C110`/`C210` imposent un établissement de `VMID` en 5 τ ≈ 250 ms, à croiser avec la temporisation de mute en Phase F.
-- Connectique déportée en JST XH : deuxième famille à approvisionner à côté des MaiXu MX126-5.0, et pince à sertir nécessaire.
-- **Le câble d'alimentation 48 V doit rester entre 0,5 et 2,5 mm²** : c'est la plage que le bornier `J1` accepte.
+- **`U6` se refroidit uniquement par le dessus**, `RθJC(bot)` = `n/a`. Aucun via thermique sous le boîtier. Prévoir le dégagement mécanique du dissipateur et sa mise à la masse, qui porte la liaison `GND` du PowerPAD. **L'import PCB signalera la broche 45 sans pastille : c'est attendu, ce n'est pas un défaut.**
+- **Hauteurs** : inductances, quatre tores debout ø28,6 mm sur ≈ 29 mm de haut, **3,1 W de pertes cuivre au total** ; films de sortie 18 × 8 mm sur 15 de haut, courtyard 18,5 × 8,5 ; `C312`–`C315` ø18 sur 35 mm ; `C316`/`C317` ø35 sur **30 mm seulement** ; `C325` à 18 mm.
+- **`R306` est un shunt à deux bornes, pas Kelvin.** Liaisons `VIN` et `SENSE` depuis les **bords intérieurs** des pastilles, courant de puissance par les bords extérieurs. Repli : `WSK25122L000FEA`, quatre bornes, même 2512.
+- `Q302` sur radiateur : sa SOA suppose le boîtier à 75 °C. `Q301` : 6,9 A continus avec 6 cm² de cuivre en 70 µm **sur son net de drain**, pas une surface libre.
+- `C110`/`C210` imposent un établissement de `VMID` en 5 τ ≈ 250 ms, à croiser avec le mute en Phase F.
+- Connectique déportée JST XH 2,5 mm : deuxième famille à approvisionner, pince à sertir nécessaire. Câble 48 V entre **0,5 et 2,5 mm²**, plage du bornier `J1`.
 
 ## NEEDS_DATA ouverts
 
-`RV1` (mécanique du potentiomètre), alimentation externe 48 V, **dissipateur et thermique — désormais le point dimensionnant unique du refroidissement du TPA3255**, réponse/EMI du filtre LC, common-mode du TPA3255, broche MR du TPS3802K33.
-
-**Levé : l'EP du TPA3255.** Il ne fait pas 5,2 × 14 mm et n'est pas sous le boîtier : 7,01 × 4,14 mm nominal, sur la face supérieure.
-
-**Levé : l'inductance de sortie.** `PA6331-AE` est figée sur arbitrage utilisateur ; reste à confirmer en H2 qu'elle est toujours approvisionnable.
-
-Candidats d'ancrage **non inscrits au schéma** tant que la clé fabricant n'est pas décodée jusqu'au bout : `EEU-FC1J152` (Panasonic, ø18) pour `C312` à `C315` ; `SLPX472M080H3P3` (CDE) pour `C316`/`C317` ; `MKP4F036804F00` plus quatre caractères de tolérance et conditionnement pour `C321` à `C324`.
-
-Assumés : stabilité de la boucle de limitation de puissance du LM5069 face aux 540 nC de grille de `Q302` ; `V_C` de la `SMDJ58CA` sous `I_PP` ; pas de 7,5 mm du boîtier ø18, inchangé par la correction mais non relu chez Panasonic.
+- **Dissipateur, interface et pression thermiques, boîtier, ventilation, ambiante** — point dimensionnant unique du refroidissement de `U6`, et préalable au contour de carte.
+- Alimentation 48 V : **volet tension clos par `REQ-PSU-1`** ; restent ripple, courant continu garanti, comportement au démarrage.
+- `RV1` (mécanique du potentiomètre), réponse/EMI du filtre LC, common-mode du TPA3255, broche MR du TPS3802K33.
+- Fabricant de PCB non choisi. Sans effet sur la décision cuivre.
+- Références à finir de décoder, **non inscrites au schéma** : `EEU-FC1J152` pour `C312`–`C315`, `SLPX472M080H3P3` pour `C316`/`C317`, `MKP4F036804F00` + 4 caractères pour `C321`–`C324`.
 
 ## Décisions actives
 
-- Toute édition schéma/PCB/librairie passe par `kicad-control`/MCP. Lecture hors MCP pour vérifier seulement. **Les tables de librairies, elles, s'éditent directement** : ce sont des fichiers de configuration, sans connectivité à corrompre.
+- Toute édition schéma/PCB/librairie passe par `kicad-control`/MCP ; lecture hors MCP pour vérifier seulement. **Les tables de librairies s'éditent directement**, ce sont des fichiers de configuration.
 - **Les rapports d'agents sont systématiquement vérifiés par le principal avant tout verdict.**
-- **`kicad-cli.exe` est utilisable directement** (`sch erc`, `sch export netlist`) et fournit une preuve indépendante du MCP, sans GUI. Chemin : `C:/Users/FlowUP/AppData/Local/Programs/KiCad/10.0/bin/`.
-- **La nomenclature du kit d'évaluation qui sert d'ancre au design est la première source à ouvrir** pour tout poste dont la référence manque : elle donne le boîtier réel et le diélectrique, et sert de point d'entrée pour décoder la clé du fabricant. Elle a résolu D1.9, D1.10 et D1.11 en une seule lecture.
-- **Avant de créer une empreinte locale, épuiser la librairie standard.** Sur les trois locales créées, deux étaient nécessaires.
-- **`create_footprint` produit des graphiques conformes aux conventions KLC quand les cotes fournies sont justes.** L'échec de `CF_Film_Box` venait des cotes, pas du générateur. Lui donner les cotes du corps et le laisser calculer les marges.
-- **Lire les cotes par extraction du PDF fabricant, pas par recherche web ni par listing distributeur.** `pymupdf` installé, `pdftotext` dans `/mingw64/bin`. **Toujours contrôler si un tracé est à l'échelle** : ni celui de Schurter ni celui de Coilcraft ne le sont ; se mesure en comparant, sur les vecteurs du PDF, l'échelle déduite de deux cotes différentes. **Et toujours vérifier à quelle figure appartient une cote** : le « ø2 ± 0,1 » des snap-in est une cote de perçage, pas de broche.
-- **Une référence ne se valide pas sur son aspect, mais en la décodant champ par champ contre la clé du fabricant, puis en recoupant la boîte obtenue avec le tableau de la valeur visée.**
-- **Serveurs qui servent le PDF à `curl`** : ti.com/lit, vishay.com/docs, content.kemet.com, cde.com, coilcraft.com/pdfs, wima.de, tdk-electronics.tdk.com, Infineon, **`wmsc.lcsc.com`**. **Serveurs qui refusent ou ne répondent pas** : Littelfuse, DigiKey, `www.lcsc.com` et `datasheet.lcsc.com`, nichicon.co.jp, rubycon.co.jp, industrial.panasonic.com (timeout complet), coilcraft.com hors `/pdfs` (403).
-- **Un PDF sans couche texte se lit quand même** : `pdftoppm` n'est pas installé, donc l'outil de lecture d'image du harness ne prend pas le PDF directement ; le rendre en PNG par `pymupdf` (`page.get_pixmap(dpi=200)`) puis lire le PNG. C'est ainsi qu'a été lu le plan MaiXu.
+- **`kicad-cli.exe` est utilisable directement** et fournit une preuve indépendante du MCP, sans GUI : `sch erc`, `sch export netlist`, `fp export svg`. Chemin : `C:/Users/FlowUP/AppData/Local/Programs/KiCad/10.0/bin/`.
+- **La nomenclature du kit d'évaluation est la première source à ouvrir** pour tout poste dont la référence manque.
+- **Avant de créer une empreinte locale, épuiser la librairie standard.** Deux des trois locales créées étaient nécessaires.
+- **`create_footprint` dérive la sérigraphie de l'enveloppe des pastilles, pas du corps.** Donner les cotes justes du corps corrige le `F.Fab` mais **pas** la sérigraphie dès que les pastilles débordent le corps ; reprendre alors par **`set_footprint_graphics`**, qui existe.
+- **Lire les cotes par extraction du PDF fabricant**, jamais par recherche web ni listing distributeur. **Toujours contrôler si un tracé est à l'échelle** — ni Schurter ni Coilcraft ne le sont — et **à quelle figure appartient une cote**.
+- **Une référence se valide en la décodant champ par champ contre la clé du fabricant**, puis en recoupant la boîte obtenue avec le tableau de la valeur visée.
+- **Serveurs qui servent le PDF à `curl`** : ti.com/lit, **schurter.com/datasheet**, vishay.com/docs, content.kemet.com, cde.com, coilcraft.com/pdfs, wima.de, tdk-electronics.tdk.com, Infineon, `wmsc.lcsc.com`. **Refusent** : Littelfuse, DigiKey, `www.lcsc.com`, `datasheet.lcsc.com`, nichicon.co.jp, rubycon.co.jp, industrial.panasonic.com, coilcraft.com hors `/pdfs`.
+- **PDF sans couche texte** : `pdftoppm` absent ; rendre en PNG par `pymupdf` (`page.get_pixmap(dpi=200)`) puis lire le PNG.
 - Aucune mutation géométrique : la connectivité repose sur la coïncidence label/ancre.
-- TVS cantonnée aux transitoires rapides ; la protection en surtension est active, par `LM5069`.
-- Bulk maintenu à 15 400 µF sur arbitrage utilisateur ; `Q302` choisi en conséquence.
-- Connectique déportée : JST XH 2,5 mm, vertical par défaut, sur arbitrage utilisateur.
+- Bulk maintenu à 15 400 µF sur arbitrage utilisateur ; `Q302` choisi en conséquence. TVS cantonnée aux transitoires rapides.
 - Asymétrie de nommage assumée : `-VSE`/`+VSE` à gauche, `-VSE_R`/`+VSE_R` à droite. À trancher avant H2.
 - Instantanés PDF automatiques du MCP (`*_pre_delete_*.pdf`) exclus par `.gitignore`.
-- Réserve consignée non tranchée : à 100 V un P-canal reste environ trois fois moins bon qu'un N-canal ; l'alternative serait un contrôleur de diode idéale (`LM74700`, `LM5050`) pilotant un N-canal. Non retenue, la topologie P-MOS est tranchée et 0,70 W est acceptable.
 
 ## État de la stack MCP
 
 `kicad-agentic-mcp` v1.1.3. Ne pas restaurer `v1.1.2`. Analyse dans `reports/MCP_BUG-documenttype-routing-eeschema.md`.
 
 - `save_project` / `open_project` échouent hors GUI : `Connection refused`. Les écritures sont fichier et persistées ; prouver par relecture.
-- Attributs `on_board` / `in_bom` / `dnp` inaccessibles ; `edit_schematic_component` ne gère que Reference/Value/Footprint/Datasheet plus des propriétés personnalisées.
-- **`edit_schematic_component` accepte `uuid` en plus de `reference`** : seul moyen d'adresser un symbole quand plusieurs partagent le même repère.
-- **`create_footprint` impose ses propres graphiques** et aucun outil ne les édite après coup — mais ces graphiques sont corrects, voir les décisions actives.
+- Attributs `on_board` / `in_bom` / `dnp` inaccessibles ; `edit_schematic_component` ne gère que Reference/Value/Footprint/Datasheet plus des propriétés personnalisées, et **accepte `uuid` en plus de `reference`** — seul moyen d'adresser un symbole quand plusieurs partagent le même repère.
 - `add_power_symbol` : `power_net` désigne le nom du symbole de librairie, pas le net cible.
 - `get_schematic_component` / `get_component_nets` exigent un chemin absolu et mésattribuent les broches `power_in`.
 - Outils de `load_toolset` accessibles seulement via `kicad_invoke`. Sortie tronquée au-delà d'environ 72 000 caractères.
@@ -103,12 +70,11 @@ Assumés : stabilité de la boucle de limitation de puissance du LM5069 face aux
 
 ## Fichiers / zones utiles
 
-- `HifiAmp_TPA3255.kicad_pro`, `.kicad_sch`, `.kicad_pcb` (**vide, aucune empreinte placée** : les changements d'empreinte n'imposent aucune resynchronisation), `.kicad_sym`, `sym-lib-table`, `fp-lib-table`
+- `HifiAmp_TPA3255.kicad_pro`, `.kicad_sch`, `.kicad_pcb` (vide), `.kicad_sym`, `sym-lib-table`, `fp-lib-table` (chemins en `${KIPRJMOD}`)
 - `HifiAmp_TPA3255_Local.pretty/` : `Fuse_Schurter_UMT-H_5.3x16mm` et `L_Toroid_Vertical_L28.6mm_W12.3mm_P10.00mm_Coilcraft_PA6331`
-- `docs/architecture.md`, `docs/power-block.md`, `docs/protection-48v.md`
-- Librairies KiCad : `C:/Users/FlowUP/AppData/Local/Programs/KiCad/10.0/share/kicad/footprints`
-- PDF déjà téléchargés, dans le scratchpad de session : `slou441.pdf` (BOM EVM TPA3255, p. 14-15), `ma5172.pdf` (Coilcraft doc 943), `e_WIMA_MKP_4.pdf`, `SLP.pdf` (CDE), `058059pll-si.pdf` (Vishay), `KEM_A4082_ALC80.pdf`.
+- `docs/architecture.md` (`REQ-PSU-1`, stack-up, épaisseur de cuivre, NEEDS_DATA), `docs/power-block.md`, `docs/protection-48v.md`
+- PDF du scratchpad de session : `tpa3255.pdf` (`SLASEA8A`), `umth.pdf` (Schurter UMT-H).
 
 ## NEXT ACTION
 
-D1.13 — instruire la fenêtre de 53,5 à 56,4 V, puis **la porter à l'utilisateur : c'est un arbitrage, pas une correction**. Établir d'abord les faits manquants sans rien modifier : relire dans `docs/protection-48v.md` d'où viennent les 56 V de régime permanent maximal — tolérance d'alimentation supposée ou autre — et vérifier si le seuil `V_OVH` de 56,4 V a été choisi pour une raison qui interdirait de l'abaisser, sachant que `R307` à `R309` forment le diviseur et qu'un seuil plus bas doit rester au-dessus des 48 V nominaux plus la tolérance de l'alimentation. Présenter ensuite les trois issues chiffrées : abaisser `V_OVH` vers 52 V, restreindre la charge admissible à ≥ 6 Ω, ou démontrer que l'alimentation retenue ne peut pas atteindre 53,5 V. **Ne modifier aucun composant avant la réponse.** D1 sera alors close, hors reliquat cosmétique D1.8, et la Phase E pourra s'ouvrir avec un jeu d'encombrements enfin fiable.
+E1.1 — créer le PCB 4 couches via `kicad-control`. Poser le stack-up L1 signaux/puissance, L2 plan `GND` continu, L3 distribution `PVDD`/12 V/3,3 V, L4 signaux et plans locaux, en **35 µm sur les quatre couches**. Définir ensuite les classes de nets et leurs largeurs : `PVDD` et retour de puissance à 7,5 mm cible et 2,5 mm plancher, sorties haut-parleur sur le même calibre, 12 V et 3,3 V intermédiaires, analogique et logique au défaut. **Ne pas tracer le contour de carte** : il dépend du dissipateur et du boîtier, qui restent en `NEEDS_DATA`. Valider en relisant le `.kicad_pcb` au fichier, hors MCP, et en confirmant que `kicad-cli` le relit sans erreur.
