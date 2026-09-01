@@ -100,13 +100,13 @@ C1 PASS ; décisions utilisateur du 2026-08-31 ; sourcing fabricant de la protec
 
 ### Tâches
 
-- [ ] B2.1 Déporter `RV1` hors carte : ajouter un connecteur de volume, recâbler les nets et sortir `RV1` du périmètre PCB. *(Connecteur `J4` créé et nets vérifiés ; reste l'exclusion PCB, voir B2.8.)*
+- [x] B2.1 Déporter `RV1` hors carte : ajouter un connecteur de volume, recâbler les nets et sortir `RV1` du périmètre PCB. *(Connecteur `J4` créé et nets vérifiés ; exclusion PCB faite en B2.8.)*
 - [x] B2.2 Convertir les entrées `J2`/`J3` en connecteur de câblage vers RCA de châssis, avec retour de masse maîtrisé.
 - [x] B2.3 Corriger `Q301` : clamp Zener de grille et résistance de grille dimensionnés pour un rail 48 V. L'anti-inversion reste une fonction distincte du hot-swap, la diode de structure d'un MOSFET N côté haut conduisant en inversion.
 - [x] B2.4 Dimensionner l'étage `LM5069` sur équations de datasheet : seuils de sous-tension et de surtension avec marge sous 65 V, résistance de shunt, limitation de puissance et temporisateur de défaut.
 - [x] B2.5 Vérifier la SOA du MOSFET de hot-swap pendant la charge des 15 400 µF, contre la courbe SOA de la référence retenue. *(`Q302` = `IXTK200N10L2`, SOA garantie 625 W à 75 °C contre 389 W exigés, marge 1,61 ×.)*
 - [x] B2.6 Capturer le bloc `LM5069` au schéma : contrôleur, MOSFET série, shunt et réseau de programmation.
-- [ ] B2.8 Exclure `RV1` du circuit imprimé (attribut `on_board` à `no`) et supprimer la propriété parasite `exclude_from_board` laissée sur ce symbole. **Aucun des 202 outils MCP n'expose ces opérations** : action manuelle dans l'interface KiCad, ou traitement au moment de la génération du PCB.
+- [x] B2.8 Exclure `RV1` du circuit imprimé (attribut `on_board` à `no`) et supprimer la propriété parasite `exclude_from_board` laissée sur ce symbole. *(PASS, par le MCP seul. Le blocage consigné ici — aucun outil n'écrivait `on_board` ni ne supprimait une propriété — a été levé dans Konnect v1.1.4 : `edit_schematic_component` accepte désormais `in_bom`, `on_board` et `dnp` comme attributs natifs du bloc symbole, et `fields: {"clé": null}` retire une propriété. La correction a été faite en un appel, `RV1` adressé par `uuid`. Diff du schéma : une ligne changée, `(on_board yes)` en `(on_board no)`, et les dix lignes du `(property "exclude_from_board" "")` supprimées ; rien d'autre dans le fichier n'a bougé. ERC identique avant et après, 0 erreur et 15 avertissements, inchangé depuis la porte C2. Script rejouable : `scripts/live-b28-on-board.ps1` du dépôt Konnect.)*
 - [x] B2.7 Figer `F301` et `D301` sur des références réelles, la TVS étant explicitement cantonnée aux transitoires rapides et non à la protection en surtension. *(`F301` = `Schurter UMT-H` 12,5 A `3403.0285.11` ; `D301` = `SMDJ58CA`, bidirectionnelle pour ne pas annuler l'anti-inversion.)*
 
 - [x] B2.9 Figer `Q301` sur une référence réelle : P-MOS bloquant l'inversion à 56 V plus marge, `I_D` ≥ 12 A continus, `R_DS(on)` faible sous `V_GS` = −15 V, boîtier dissipatif. *(`IPP330P10NM`, Infineon OptiMOS TO-220-3, −100 V / 33 mΩ.)*

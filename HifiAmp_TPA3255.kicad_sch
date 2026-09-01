@@ -13467,7 +13467,7 @@
 		(at 60.96 170.18 0)
 		(unit 1)
 		(in_bom yes)
-		(on_board yes)
+		(on_board no)
 		(dnp no)
 		(uuid "44e1a6f1-937d-4a04-8d4b-a0855126f41d")
 		(property "Reference" "RV1"
@@ -13502,15 +13502,6 @@
 				(font
 					(size 1.27 1.27)
 				)
-			)
-		)
-		(property "exclude_from_board" ""
-			(at 60.96 170.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
 			)
 		)
 		(instances
