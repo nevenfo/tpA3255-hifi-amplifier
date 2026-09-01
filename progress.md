@@ -6,11 +6,15 @@
 
 ## Tâche actuelle
 
-E1.1 — créer le PCB 4 couches et documenter stack-up, règles et classes de nets. Non commencée. Le `.kicad_pcb` est **vide, aucune empreinte placée**.
+E1.2 — placer la puissance Class-D : bootstrap, découplages, bulk et thermique. Non commencée. Le `.kicad_pcb` porte ses 4 couches et ses règles, mais **aucune empreinte n'y est placée et le contour n'est pas tracé**.
 
 ## Dernière tâche validée
 
-**D1 est CLOSE. Toutes les empreintes sont attribuées et revues contre leurs sources fabricant.**
+**E1.1 = PASS.** Quatre couches cuivre — `F.Cu` signal, `In1.Cu` power, `In2.Cu` mixed, `B.Cu` signal — sur 1,6 mm. Huit classes de nets et **71 affectations** sans doublon, dimensionnées sur IPC-2221. Règles globales : 0,20 mm de piste et d'isolation, via ø0,60, perçage 0,30, anneau 0,15. Contour **délibérément non tracé**. Vérifié au fichier par le principal, et `kicad-cli pcb drc` ne remonte que `invalid_outline`, la condition voulue.
+
+**Incident MCP au passage, consigné dans `reports/MCP_BUG-setup-tokens-kicad-pcb.md` : `set_design_rules` et `set_active_layer` rendent le `.kicad_pcb` illisible par KiCad, sans qu'aucun retour d'outil ne le signale.** Récupéré par `git checkout` du seul `.kicad_pcb`, sans risque puisqu'il était vide de connectivité.
+
+**Avant elle, D1 est CLOSE. Toutes les empreintes sont attribuées et revues contre leurs sources fabricant.**
 
 - **D1.13 = PASS**, sur arbitrage utilisateur. La fenêtre 53,5–56,4 V est fermée **par une spécification d'alimentation, pas par un composant**. Exigence `REQ-PSU-1` dans `docs/architecture.md` : sortie de l'alimentation 48 V ≤ 53,5 V en toutes conditions, 3,1 V de marge pour une régulée à ± 5 %. Rien n'est modifié : `V_OVH` reste 56,4 V, `OC_ADJ` reste 22 kΩ, la charge reste 4–8 Ω. Deux rectifications de fond au passage : **53,5 V est une borne de conditions recommandées et non un maximum absolu**, lequel vaut **69 V** et non les 65 V portés depuis B2.4 ; et **abaisser `V_OVH` est arithmétiquement impossible**, la fenêtre à couvrir valant ± 3 % contre ± 6 % de dispersion spécifiée du seuil. Le `LM5069` ne peut être qu'une protection de **défaut** d'alimentation.
 - **D1.8 = PASS.** La note « aucun outil MCP n'édite les graphiques après coup » était **fausse** : `set_footprint_graphics` existe. Repère de broche 1 supprimé, sérigraphie ramenée autour du corps. Vérifié au fichier par le principal : dégagement de **0,240 mm** contre 0,20 exigés, rien hors courtyard, cuivre/pâte/masque/`descr` intacts, `F301` résout toujours. `kicad-cli fp export svg` trace les deux empreintes locales sans avertissement.
@@ -37,12 +41,14 @@ Aucun.
 - **Dissipateur, interface et pression thermiques, boîtier, ventilation, ambiante** — point dimensionnant unique du refroidissement de `U6`, et préalable au contour de carte.
 - Alimentation 48 V : **volet tension clos par `REQ-PSU-1`** ; restent ripple, courant continu garanti, comportement au démarrage.
 - `RV1` (mécanique du potentiomètre), réponse/EMI du filtre LC, common-mode du TPA3255, broche MR du TPS3802K33.
-- Fabricant de PCB non choisi. Sans effet sur la décision cuivre.
+- Fabricant de PCB non choisi. Sans effet sur la décision cuivre ; les règles globales ont été posées conservatrices en conséquence.
+- **Épaisseur de cuivre par couche : aucun outil MCP ne l'expose**, et le `.kicad_pcb` n'a pas de bloc `stackup` explicite. À rendre explicite dans Board Setup et sur la commande au fabricant avant les livrables.
 - Références à finir de décoder, **non inscrites au schéma** : `EEU-FC1J152` pour `C312`–`C315`, `SLPX472M080H3P3` pour `C316`/`C317`, `MKP4F036804F00` + 4 caractères pour `C321`–`C324`.
 
 ## Décisions actives
 
-- Toute édition schéma/PCB/librairie passe par `kicad-control`/MCP ; lecture hors MCP pour vérifier seulement. **Les tables de librairies s'éditent directement**, ce sont des fichiers de configuration.
+- Toute édition schéma/PCB/librairie passe par `kicad-control`/MCP ; lecture hors MCP pour vérifier seulement. **Les fichiers de configuration s'éditent directement** — `sym-lib-table`, `fp-lib-table`, et le `.kicad_pro` : aucune connectivité à corrompre.
+- **`set_design_rules` et `set_active_layer` sont PROSCRITS.** Ils écrivent des jetons invalides dans le bloc `(setup ...)` du `.kicad_pcb` et le rendent illisible par KiCad, sans qu'aucun retour d'outil ne signale l'échec ; aucun outil MCP ne sait nettoyer. Les règles globales se posent dans le `.kicad_pro`, sous `board.design_settings.rules`.
 - **Les rapports d'agents sont systématiquement vérifiés par le principal avant tout verdict.**
 - **`kicad-cli.exe` est utilisable directement** et fournit une preuve indépendante du MCP, sans GUI : `sch erc`, `sch export netlist`, `fp export svg`. Chemin : `C:/Users/FlowUP/AppData/Local/Programs/KiCad/10.0/bin/`.
 - **La nomenclature du kit d'évaluation est la première source à ouvrir** pour tout poste dont la référence manque.
@@ -77,4 +83,4 @@ Aucun.
 
 ## NEXT ACTION
 
-E1.1 — créer le PCB 4 couches via `kicad-control`. Poser le stack-up L1 signaux/puissance, L2 plan `GND` continu, L3 distribution `PVDD`/12 V/3,3 V, L4 signaux et plans locaux, en **35 µm sur les quatre couches**. Définir ensuite les classes de nets et leurs largeurs : `PVDD` et retour de puissance à 7,5 mm cible et 2,5 mm plancher, sorties haut-parleur sur le même calibre, 12 V et 3,3 V intermédiaires, analogique et logique au défaut. **Ne pas tracer le contour de carte** : il dépend du dissipateur et du boîtier, qui restent en `NEEDS_DATA`. Valider en relisant le `.kicad_pcb` au fichier, hors MCP, et en confirmant que `kicad-cli` le relit sans erreur.
+E1.2 — importer les empreintes du schéma vers le PCB via `kicad-control`, puis placer le bloc de puissance Class-D. **Trois choses sont à savoir avant de commencer.** L'import signalera la **broche 45 de `U6` sans pastille** : c'est attendu, le PowerPAD se raccorde par le dissipateur, ne pas « corriger ». Le **contour de carte reste non tracé**, donc le placement se fait en coordonnées relatives, groupes fonctionnels d'abord, sans se caler sur un bord qui n'existe pas encore. Et le **dissipateur reste en `NEEDS_DATA`** : il dimensionne le dégagement mécanique au-dessus de `U6`, donc **placer `U6` en premier et lui réserver de la marge**, plutôt que de le contraindre en fin de placement. Valider en relisant le `.kicad_pcb` au fichier et en confirmant que `kicad-cli pcb drc` ne remonte toujours que `invalid_outline`.

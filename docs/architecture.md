@@ -192,6 +192,33 @@ Une piste de 2,5 mm en cuivre standard suffit donc, avec un échauffement de 10 
 **4. Et le cuivre épais serait activement nuisible ici.** Le `U6` est un HTSSOP-44 au pas de **0,635 mm**, pastilles de 0,4 mm séparées de 0,235 mm. La gravure d'un cuivre de 140 µm ne tient pas des intervalles de cette finesse : le facteur de gravure croît avec l'épaisseur. Spécifier 140 µm sur les couches externes rendrait le composant principal irroutable. **À confirmer auprès du fabricant retenu**, mais la contrainte est structurelle, pas commerciale.
 
 **Ce qui est donc retenu pour E1.1** : 35 µm sur les quatre couches, rail d'entrée `PVDD` tracé à **7,5 mm là où le placement le permet** — cela ne coûte que de la surface et récupère la condition de largeur du banc IEC, à défaut de son épaisseur —, et jamais moins de 2,5 mm. Le choix du fabricant reste ouvert et ne conditionne pas ce point.
+
+### Règles et classes de nets posées en E1.1
+
+Couches cuivre : `F.Cu` signal, `In1.Cu` **power**, `In2.Cu` **mixed**, `B.Cu` signal. Carte de 1,6 mm.
+
+Règles globales, volontairement conservatrices puisque le fabricant n'est pas choisi : piste minimale 0,20 mm, isolation minimale 0,20 mm, via minimal ø0,60 mm, perçage traversant minimal 0,30 mm, anneau minimal 0,15 mm.
+
+Les huit classes ci-dessous sont dimensionnées sur **IPC-2221 en couche externe, cuivre 35 µm, échauffement 10 °C** : 4,6 A demandent 2,47 mm, 5,0 A demandent 2,77 mm, 2,0 A demandent 0,78 mm, 1,0 A demande 0,30 mm.
+
+| Classe | Piste | Isolation | Nets | Raison |
+|---|---|---|---|---|
+| `PWR_48V` | 2,50 mm | 0,50 mm | 4 | **Plancher, pas cible.** La cible au routage reste 7,5 mm |
+| `PWR_OUT` | 3,00 mm | 0,50 mm | 12 | Sorties de puissance, avant et après filtre |
+| `PWR_AUX` | 0,80 mm | 0,25 mm | 9 | 12 V, 3,3 V, 15 V et nœud de commutation du buck |
+| `GATE_DRIVE` | 0,50 mm | 0,25 mm | 7 | Bootstraps et grilles |
+| `SENSE` | 0,25 mm | 0,25 mm | 8 | Prises de mesure, dont `/PVDD_SENSE` |
+| `ANALOG` | 0,25 mm | 0,25 mm | 20 | Chaîne faible bruit |
+| `GND` | 0,50 mm | 0,25 mm | 1 | Liaisons hors plan |
+| `Default` | 0,25 mm | 0,20 mm | 10 | Logique et contrôle |
+
+Trois points ne se déduisent pas du tableau et doivent survivre au routage :
+
+- **L'isolation de 0,50 mm des nets de puissance est dimensionnée sur 93,6 V**, le pic atteint pendant un écrêtage de la TVS `D301`, et non sur les 48 V nominaux.
+- **`/PVDD_SENSE` est délibérément en `SENSE` et non en `PWR_48V`.** C'est la prise de mesure du shunt `R306` de 4 mΩ : une piste large y ajouterait du cuivre en série et fausserait le seuil de limitation.
+- **`/SW` et `/OUT_A` à `/OUT_D` sont des nœuds de commutation.** Leur contrainte est d'être **courts**, ce qui relève du placement et qu'aucune classe ne peut exprimer.
+
+**Réserve d'outillage sur ce point.** Aucun outil MCP n'expose l'épaisseur de cuivre par couche, et le `.kicad_pcb` ne porte donc aucun bloc `stackup` explicite : KiCad applique son défaut. **À rendre explicite dans Board Setup avant toute génération de fichiers de fabrication**, et à reporter sur la commande au fabricant.
 - ~~`NEEDS_DATA: traitement de la broche 45 (PowerPad) du symbole.`~~ — **tranché en D1.3, comme le demandait cette note.** La broche 45 **reste câblée à `GND` au schéma**, ce qui est correct au sens de TI : le PowerPAD est bien une masse, simplement raccordée par le dissipateur et non par le PCB. L'empreinte garde ses 44 pastilles, conformes au land pattern. **Conséquence à connaître avant E1.2 : l'import vers le PCB signalera une broche sans pastille. C'est attendu et ce n'est pas un défaut à corriger** ; supprimer la broche du symbole serait au contraire une erreur, elle documente une liaison électrique réelle.
 
 ## NEEDS_DATA avant gel final
