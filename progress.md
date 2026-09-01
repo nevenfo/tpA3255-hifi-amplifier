@@ -6,11 +6,13 @@
 
 ## Tâche actuelle
 
-E1.2 — placer la puissance Class-D : bootstrap, découplages, bulk et thermique. Non commencée. Le `.kicad_pcb` porte ses 4 couches et ses règles, mais **aucune empreinte n'y est placée et le contour n'est pas tracé**.
+E1.2 — placer la puissance Class-D. **Bloquée sur donnée utilisateur** : le placement réclame les cotes du dissipateur et du boîtier. E1.6 a produit le critère d'achat, pas la pièce.
 
 ## Dernière tâche validée
 
-**E1.1 = PASS.** Quatre couches cuivre — `F.Cu` signal, `In1.Cu` power, `In2.Cu` mixed, `B.Cu` signal — sur 1,6 mm. Huit classes de nets et **71 affectations** sans doublon, dimensionnées sur IPC-2221. Règles globales : 0,20 mm de piste et d'isolation, via ø0,60, perçage 0,30, anneau 0,15. Contour **délibérément non tracé**. Vérifié au fichier par le principal, et `kicad-cli pcb drc` ne remonte que `invalid_outline`, la condition voulue.
+**E1.6 = PASS.** Exigence thermique chiffrée, le `NEEDS_DATA` dissipateur devient un critère d'achat. Dissipation de `U6` lue sur la figure 10 de `SLASEA8A` par extraction vectorielle, tracé contrôlé à l'échelle : **22,4 W** à 2 × 100 W sur 8 Ω, **37,4 W** sur 4 Ω. Les 22,4 W donnent 89,9 % de rendement, **soit exactement les 90 % postulés sans preuve depuis l'origine** pour établir les 4,6 A du rail. **Le point dur n'est pas le dissipateur mais l'interface** : 29,02 mm² de PowerPAD, donc un pad silicone standard vaudrait 8,61 °C/W, plus que tout le budget. D'où `REQ-THERM-1` (`RθSA` ≤ 1,0 °C/W) et `REQ-THERM-2` (interface ≤ 0,6 °C/W, pad silicone exclu) dans `docs/architecture.md`.
+
+**Avant elle, E1.1 = PASS.** Quatre couches cuivre — `F.Cu` signal, `In1.Cu` power, `In2.Cu` mixed, `B.Cu` signal — sur 1,6 mm. Huit classes de nets et **71 affectations** sans doublon, dimensionnées sur IPC-2221. Règles globales : 0,20 mm de piste et d'isolation, via ø0,60, perçage 0,30, anneau 0,15. Contour **délibérément non tracé**. Vérifié au fichier par le principal, et `kicad-cli pcb drc` ne remonte que `invalid_outline`, la condition voulue.
 
 **Incident MCP au passage, consigné dans `reports/MCP_BUG-setup-tokens-kicad-pcb.md` : `set_design_rules` et `set_active_layer` rendent le `.kicad_pcb` illisible par KiCad, sans qu'aucun retour d'outil ne le signale.** Récupéré par `git checkout` du seul `.kicad_pcb`, sans risque puisqu'il était vide de connectivité.
 
@@ -38,7 +40,7 @@ Aucun.
 
 ## NEEDS_DATA ouverts
 
-- **Dissipateur, interface et pression thermiques, boîtier, ventilation, ambiante** — point dimensionnant unique du refroidissement de `U6`, et préalable au contour de carte.
+- **Dissipateur et boîtier — SEUL BLOCAGE de la Phase E.** Le critère est désormais chiffré (`REQ-THERM-1` : `RθSA` ≤ 1,0 °C/W ; `REQ-THERM-2` : interface ≤ 0,6 °C/W), mais **le placement réclame des cotes** : dimensions du dissipateur retenu, entraxe de fixation, et dimensions **intérieures** du boîtier. Réserve à trancher avec l'utilisateur : le continu pleine puissance sur 4 Ω exigerait `RθSA` ≤ 0,37 °C/W, hors convection naturelle.
 - Alimentation 48 V : **volet tension clos par `REQ-PSU-1`** ; restent ripple, courant continu garanti, comportement au démarrage.
 - `RV1` (mécanique du potentiomètre), réponse/EMI du filtre LC, common-mode du TPA3255, broche MR du TPS3802K33.
 - Fabricant de PCB non choisi. Sans effet sur la décision cuivre ; les règles globales ont été posées conservatrices en conséquence.
@@ -83,4 +85,6 @@ Aucun.
 
 ## NEXT ACTION
 
-E1.2 — importer les empreintes du schéma vers le PCB via `kicad-control`, puis placer le bloc de puissance Class-D. **Trois choses sont à savoir avant de commencer.** L'import signalera la **broche 45 de `U6` sans pastille** : c'est attendu, le PowerPAD se raccorde par le dissipateur, ne pas « corriger ». Le **contour de carte reste non tracé**, donc le placement se fait en coordonnées relatives, groupes fonctionnels d'abord, sans se caler sur un bord qui n'existe pas encore. Et le **dissipateur reste en `NEEDS_DATA`** : il dimensionne le dégagement mécanique au-dessus de `U6`, donc **placer `U6` en premier et lui réserver de la marge**, plutôt que de le contraindre en fin de placement. Valider en relisant le `.kicad_pcb` au fichier et en confirmant que `kicad-cli pcb drc` ne remonte toujours que `invalid_outline`.
+**Obtenir de l'utilisateur les cotes du dissipateur et du boîtier**, seul blocage restant de la Phase E : dimensions et entraxe de fixation du dissipateur retenu contre `REQ-THERM-1`, et dimensions intérieures du boîtier. Trancher au passage la réserve du 4 Ω continu, qui exige `RθSA` ≤ 0,37 °C/W — ventilation forcée, ambiante basse, ou 4 Ω admis en crête seulement.
+
+Dès ces cotes reçues, enchaîner E1.2 : importer les empreintes via `kicad-control`, tracer le contour, puis placer. **Trois choses à savoir avant de commencer.** L'import signalera la **broche 45 de `U6` sans pastille** : c'est attendu, le PowerPAD se raccorde par le dissipateur, ne pas « corriger ». **Placer `U6` en premier** avec son dégagement de dissipateur, plutôt que de le contraindre en fin de placement. Et valider en relisant le `.kicad_pcb` au fichier, `kicad-cli pcb drc` ne devant plus remonter `invalid_outline` une fois le contour tracé.

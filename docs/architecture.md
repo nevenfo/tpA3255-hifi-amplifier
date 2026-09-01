@@ -219,6 +219,67 @@ Trois points ne se déduisent pas du tableau et doivent survivre au routage :
 - **`/SW` et `/OUT_A` à `/OUT_D` sont des nœuds de commutation.** Leur contrainte est d'être **courts**, ce qui relève du placement et qu'aucune classe ne peut exprimer.
 
 **Réserve d'outillage sur ce point.** Aucun outil MCP n'expose l'épaisseur de cuivre par couche, et le `.kicad_pcb` ne porte donc aucun bloc `stackup` explicite : KiCad applique son défaut. **À rendre explicite dans Board Setup avant toute génération de fichiers de fabrication**, et à reporter sur la commande au fabricant.
+
+## Exigence thermique du dissipateur — `REQ-THERM-1`
+
+Le `NEEDS_DATA` dissipateur ne pouvait pas être levé sans donnée extérieure, mais il pouvait être **chiffré**. Ce qui suit transforme une case vide en critère d'achat.
+
+### Ce que `U6` dissipe réellement
+
+Lu sur la **figure 10 de `SLASEA8A`**, *System Power Loss vs Output Power*, BTL, `PVDD` = 51 V, `T_C` = 75 °C, THD+N = 10 %. C'est un tracé : les valeurs sont obtenues par **extraction vectorielle** des courbes du PDF, recalées sur les graduations. Le tracé **est à l'échelle**, contrôlé sur deux paires de graduations indépendantes par axe : 0,26492 contre 0,26500 pt/W en abscisse, 1,2240 contre 1,2250 pt/W en ordonnée. Les trois courbes s'identifient sans ambiguïté par leur extension en abscisse — 632 W, 461 W et 359 W —, ce que recoupe la figure 7.
+
+| Puissance de sortie, deux canaux | 4 Ω | 6 Ω | 8 Ω |
+|---|---|---|---|
+| 100 W | 21,6 W | 17,0 W | **14,4 W** |
+| 200 W | 37,4 W | 28,2 W | **22,4 W** |
+| 300 W | 53,9 W | 34,9 W | 25,2 W |
+
+**Recoupement qui valide la lecture** : à 200 W sur 8 Ω, 22,4 W de pertes donnent un rendement de **89,9 %**, soit exactement les « 90 % » que ce document postulait pour établir les 4,6 A du rail. La courbe confirme donc une hypothèse posée bien plus tôt sans preuve.
+
+**Ce que le recoupement révèle aussi** : sur 4 Ω, le rendement tombe à **84,2 %** et le courant d'entrée monte à **4,95 A**. Sans conséquence — le fusible est à 12,5 A, `Q301` tient 6,9 A —, sauf une nuance de routage : à 4,95 A, le plancher de 2,50 mm de la classe `PWR_48V` produit 11,5 °C d'échauffement au lieu de 9,8. La cible de tracé étant 7,5 mm, où l'échauffement tombe à 1,9 °C, le point est sans portée pratique.
+
+### Le point dur n'est pas le dissipateur, c'est l'interface
+
+Le PowerPAD du `DDV0044D` mesure 7,01 × 4,14 mm, soit **29,02 mm²**. C'est très peu, et la résistance d'interface est inversement proportionnelle à cette surface :
+
+| Interface | Conductivité | Épaisseur | Résistance |
+|---|---|---|---|
+| Pad silicone standard | 1 W/m·K | 0,25 mm | **8,61 °C/W** |
+| Pad chargé céramique | 3 W/m·K | 0,25 mm | 2,87 °C/W |
+| **Graisse thermique** | 3 W/m·K | 0,05 mm | **0,57 °C/W** |
+| Feuille de graphite | 25 W/m·K | 0,05 mm | 0,07 °C/W |
+| Feuille d'indium | 80 W/m·K | 0,05 mm | 0,02 °C/W |
+
+**Un pad silicone standard consommerait à lui seul, 8,61 °C/W, plus que la totalité du budget thermique.** Sur 29 mm², l'interface n'est pas un détail de montage : c'est le premier poste. Le reste de ce paragraphe suppose de la **graisse thermique**, soit 0,57 °C/W.
+
+### Budget
+
+Chaîne : `T_J` = `T_A` + `P` × (`RθJC(top)` + `R_TIM` + `RθSA`), avec **`RθJC(top)` = 0,36 °C/W** (`SLASEA8A` § 7.4, colonne JEDEC 4 couches). Rappel de D1.3 : `RθJC(bot)` est `n/a`, il n'existe pas d'autre voie.
+
+Deux critères, et ils ne disent pas la même chose :
+
+- **`T_J` ≤ 125 °C**, seuil d'`OTW`. C'est la limite dure : au-delà, `CLIP_OTW` passe bas.
+- **`T_C` ≤ 75 °C**, condition dans laquelle TI a caractérisé *toutes* les courbes de puissance, la figure 33 comprise. C'est le critère à retenir, plus strict, car il préserve la validité de tout ce qui a été utilisé pour dimensionner cette carte.
+
+`RθSA` maximal admissible, **interface de 0,57 °C/W déjà déduite** :
+
+| Cas | `T_A` = 25 °C | `T_A` = 40 °C |
+|---|---|---|
+| 2 × 100 W sur 8 Ω (22,4 W) | 1,66 °C/W | **0,99 °C/W** |
+| 2 × 100 W sur 4 Ω (37,4 W) | 0,77 °C/W | **0,37 °C/W** |
+
+### `REQ-THERM-1`
+
+**Le dissipateur de `U6` doit présenter `RθSA` ≤ 1,0 °C/W en convection naturelle**, monté à la graisse thermique ou mieux, pour l'usage nominal 2 × 100 W sur 8 Ω à 40 °C d'ambiante interne.
+
+**`REQ-THERM-2` — l'interface doit valoir 0,6 °C/W ou moins sur les 29 mm² du PowerPAD.** Graisse thermique, feuille de graphite ou indium. **Un pad silicone standard est explicitement exclu.**
+
+**Réserve à porter au choix de l'utilisateur** : l'usage continu à pleine puissance sur 4 Ω exige `RθSA` ≤ 0,37 °C/W à 40 °C, hors d'atteinte en convection naturelle dans un volume raisonnable. Trois issues, à trancher quand le boîtier sera connu : ventilation forcée, ambiante interne maintenue basse, ou acceptation que 4 Ω soit un régime de crête et non un régime continu. **Ce n'est pas un défaut de conception mais une limite physique** : 37 W à évacuer par 29 mm² de contact.
+
+### Ce qui ne va pas sur ce dissipateur
+
+- **Les quatre inductances, 3,1 W au total**, dissipent dans le PCB et l'air, pas dans le dissipateur de `U6`.
+- `Q301` (0,70 W) et `Q302` peuvent partager le même dissipateur ou en avoir un propre. Leur contribution en régime établi est inférieure à 1 W et ne change pas les valeurs ci-dessus. Le besoin de `Q302` n'est d'ailleurs pas un régime établi mais **transitoire** : sa SOA suppose le boîtier à 75 °C au moment de l'événement, ce qu'un dissipateur garantit en maintenant basse la température de départ.
 - ~~`NEEDS_DATA: traitement de la broche 45 (PowerPad) du symbole.`~~ — **tranché en D1.3, comme le demandait cette note.** La broche 45 **reste câblée à `GND` au schéma**, ce qui est correct au sens de TI : le PowerPAD est bien une masse, simplement raccordée par le dissipateur et non par le PCB. L'empreinte garde ses 44 pastilles, conformes au land pattern. **Conséquence à connaître avant E1.2 : l'import vers le PCB signalera une broche sans pastille. C'est attendu et ce n'est pas un défaut à corriger** ; supprimer la broche du symbole serait au contraire une erreur, elle documente une liaison électrique réelle.
 
 ## NEEDS_DATA avant gel final
