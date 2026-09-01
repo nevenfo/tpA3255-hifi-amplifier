@@ -456,6 +456,17 @@ Vérifications :
 - **Limitation de courant LM5069** : 15,4² × 33 mΩ = 7,8 W pendant au plus 422 ms, soit 3,3 J. Avec `R_thJC` = 0,5 °C/W et une impédance thermique transitoire inférieure à cette valeur sur une telle durée, l'échauffement de jonction reste inférieur à 5 °C. Sans enjeu.
 - **Aucune contrainte SOA** : contrairement à `Q302`, `Q301` ne travaille jamais en régime linéaire. Il est soit passant, soit bloqué.
 
+#### Vérification D1.2 de la donnée thermique, et deux conditions qui n'avaient pas été relevées
+
+Table 2 et table 3 de la datasheet relues au rendu de page : `I_D` = −6,9 A à `V_GS` = −10 V et `T_A` = 25 °C sous `R_thJA` = 40 °C/W, `R_thJC` = 0,5 °C/W, `R_thJA` = 62 °C/W en empreinte minimale, `V_GS` = ± 20 V, `P_tot` = 300 W à `T_C` = 25 °C. Le chiffre de 6,9 A est donc exact et correctement attribué à ce boîtier TO-220. La note 2 en précise cependant deux conditions qui deviennent des contraintes d'implantation :
+
+- **Les 6 cm² de cuivre sont ceux du drain**, « 6 cm² (one layer, 70 µm thick) copper area for **drain** connection ». Ce n'est donc pas une surface libre : elle doit appartenir au plan de drain, c'est-à-dire au nœud aval de `Q301`. Une surface équivalente placée sur un autre net ne vaut rien.
+- **La carte est supposée verticale, en air calme** (« PCB is vertical in still air »). Un montage à plat convecte moins bien et rend les 6,9 A optimistes. À trancher avec l'orientation du châssis.
+
+Deux recoupements passent au passage : la Zener de grille de 15 V reste sous les ± 20 V admis et au-delà des −10 V du `R_DS(on)` spécifié, donc les 33 mΩ maximum s'appliquent ; et 4,6 A² × 33 mΩ = 0,70 W, exactement la dissipation retenue.
+
+Avec `R_thJC` = 0,5 °C/W, un radiateur change entièrement l'échelle du problème : la limite passe de 6,9 A convectifs à un plafond fixé par le boîtier. C'est l'argument qui rend le radiateur préférable plutôt que simplement prudent.
+
 **Contrainte d'implantation** : la datasheet plafonne le courant continu à **6,9 A** avec la seule surface de cuivre de référence, soit 6 cm² sur une couche de 70 µm donnant `R_thJA` = 40 °C/W. Les 4,6 A nominaux passent, mais la tenue des crêtes à 9,3 A repose sur leur brièveté. Prévoir au minimum cette surface, un radiateur restant préférable.
 
 Une variante CMS existe dans le guide de sélection Infineon, `IPB320P10LM` en D²PAK à 32 mΩ, si le traversant pose problème. Chiffre issu du guide seul ; sa datasheet n'a pas été lue.
