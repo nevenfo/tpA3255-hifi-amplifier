@@ -53,6 +53,18 @@ TI publie 150 W/8 Ω à 1 % THD+N en BTL ; 2 × 100 W/8 Ω est donc dans l’env
 
 Le rôle de l’OPA1612 est donc précisément : buffer faible bruit, conversion SE→différentielle, adaptation d’impédance et filtrage RF. Il ne réalise ni le réglage de volume ni l’amplification de puissance.
 
+## Connectique de liaison au châssis
+
+Trois liaisons quittent la carte vers des organes montés sur le châssis : `J2` et `J3`, deux points chacun, vers les embases RCA d'entrée, et `J4`, six points, vers le potentiomètre de volume déporté hors carte (voir B2.1). **Famille retenue sur arbitrage utilisateur : JST XH au pas de 2,5 mm**, en version verticale par défaut, l'orientation définitive relevant du placement en Phase E.
+
+| Repère | Points | Empreinte | Vers |
+|---|---|---|---|
+| `J2` | 2 | `JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical` | RCA gauche : `RCA_L`, `GND` |
+| `J3` | 2 | `JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical` | RCA droite : `RCA_R`, `GND` |
+| `J4` | 6 | `JST_XH_B6B-XH-A_1x06_P2.50mm_Vertical` | potentiomètre : `VOL_L_IN`, `VOL_L`, `GND`, `VOL_R_IN`, `VOL_R`, `GND` |
+
+Ce qui décide ici n'est pas l'encombrement mais le **détrompage**. `J4` porte six conducteurs dont deux masses, et un faisceau de volume rebranché à l'envers après un démontage enverrait l'entrée du potentiomètre sur la masse et son curseur sur l'entrée : panne silencieuse, sans destruction, donc difficile à diagnostiquer. Le boîtier XH est à la fois détrompé et verrouillé par ergot, ce qu'une barrette à vis ne procure pas. La contrepartie assumée est le besoin d'une pince à sertir, et une deuxième famille de connecteur à approvisionner à côté des MaiXu MX126-5.0 déjà employés pour `J1`, `J301` et `J302` — mais ces trois-là véhiculent de la puissance, pas du signal.
+
 ## Niveaux et gains
 
 - Gain TPA3255 fixe : 21.5 dB, soit 11.89 V/V.

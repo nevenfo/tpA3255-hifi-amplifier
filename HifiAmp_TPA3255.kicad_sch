@@ -13382,7 +13382,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical"
 			(at 30.48 170.18 0)
 			(hide yes)
 			(effects
@@ -14799,7 +14799,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical"
 			(at 30.48 259.08 0)
 			(hide yes)
 			(effects
@@ -17160,7 +17160,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "HifiAmp_TPA3255_Local:Fuse_Schurter_UMT-H_5.3x16mm"
 			(at 264.922 320.04 90)
 			(hide yes)
 			(effects
@@ -17963,7 +17963,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_JST:JST_XH_B6B-XH-A_1x06_P2.50mm_Vertical"
 			(at 15.24 209.55 0)
 			(hide yes)
 			(effects

@@ -2,34 +2,39 @@
 
 ## Phase actuelle
 
-Phase D. **GATE C2 = PASS**, revérifié : ERC à 15 warnings et 0 erreur, jeu de messages identique à la baseline de C2.
+Phase D. **GATE C2 = PASS**, revérifié après chaque écriture : ERC à 15 warnings et 0 erreur, jeu de messages strictement identique à la baseline de C2.
 
 ## Tâche actuelle
 
-D1.4 — Empreintes locales. Quatre composants restent sans empreinte : `F301`, `J2`, `J3`, `J4`.
+D1.2 — Vérifier boîtiers fabricant, orientations, courants et contraintes d'assemblage.
 
 ## Dernière tâche validée
 
-**D1.5 est terminée.** Les neuf passifs du bloc de protection sont assignés, et `C110`/`C210` ont été traités dans la foulée. Il ne reste que quatre composants sans empreinte, tous dans D1.4.
+**D1.1, D1.4 et D1.5 sont terminées. Plus aucun composant du schéma n'est sans empreinte.** Les cinq `PWR_FLAG` n'en requièrent pas, et `RV1` est volontairement hors carte (B2.1, B2.8).
 
 Validation :
 
-- Les six empreintes de librairie ont été vérifiées présentes **sur disque**, pas via `search_footprints`.
-- ERC relancé par `kicad-cli` avant et après écriture : 15 warnings, 0 erreur, même jeu de messages.
-- Netlist exporté et relu : la topologie confirme le rôle de chaque passif, notamment `PVDD_PROT` → `R306` → `PVDD_SENSE` avec `VIN` et `SENSE` de `U8` de part et d'autre du shunt.
-- Les quatre écritures MCP ont été relues au fichier par le principal.
+- Inventaire refait en itérant sur les blocs `(symbol` de premier niveau du fichier, pas via le MCP.
+- Toutes les empreintes de librairie contrôlées présentes **sur disque**, `search_footprints` n'indexant pas tout.
+- Netlist exporté et relu : `PVDD_PROT` → `R306` → `PVDD_SENSE`, avec `VIN` et `SENSE` de `U8` bien de part et d'autre du shunt.
+- ERC relancé par `kicad-cli` après chaque lot d'écritures.
+- Toutes les écritures MCP relues au fichier par le principal. Un agent a rapporté un succès sans avoir rien écrit : c'est la relecture qui l'a détecté.
 
-### Trois défauts trouvés dans le travail initial, non signalés par son auteur
+### Trois défauts trouvés dans le travail D1.5 initial, non signalés par son auteur
 
-1. **Une référence fabricant inventée.** `C325` portait `MKS2C044701O00KSSD` : le code de tolérance « O » n'existe pas chez WIMA et la référence n'est présente chez aucun distributeur. Remplacée par `MKS2B044701K00KSSD`, 4,7 µF / 50 V / ± 10 %, attestée. La variante 63 V réellement commercialisée est à ± 20 % et devait être écartée : elle ramène la marge de démarrage à × 1,25, sous le × 1,30 que la conception s'est fixé. **C'est la tolérance qui choisit ce composant, pas la tension.**
-2. **Un changement électrique silencieux.** `C325` était passé de 3,9 à 4,7 µF sans que la documentation suive, qui annonçait encore 3,9 µF en dix endroits et tous les chiffres dérivés. Le choix est bon — 3,9 µF est E24 et absent des séries film — mais il allonge `t_flt` de 20,5 %. Recalculé et documenté : marge au démarrage × 1,41 au lieu de × 1,30, exposition SOA de `Q302` portée de 318 à 422 ms.
-3. **`C326` sans tension nominale** alors qu'il est le condensateur le plus contraint du schéma : il découple `VIN` de `U8` sur `PVDD_PROT`, qui atteint 93,6 V en écrêtage. Porté à `100nF/250V`.
+1. **Une référence fabricant inventée.** `C325` portait `MKS2C044701O00KSSD` : le code de tolérance « O » n'existe pas chez WIMA, la référence n'est chez aucun distributeur. Remplacée par `MKS2B044701K00KSSD`, 4,7 µF / 50 V / ± 10 %. La variante 63 V réellement commercialisée est à ± 20 % et devait être écartée : elle ramène la marge de démarrage à × 1,25, sous le × 1,30 fixé. **C'est la tolérance qui choisit ce composant, pas la tension.**
+2. **Un changement électrique silencieux.** `C325` était passé de 3,9 à 4,7 µF sans que la documentation suive, qui annonçait encore 3,9 µF en dix endroits avec tous les chiffres dérivés. Le choix est bon — 3,9 µF est E24, absent des séries film — mais il allonge `t_flt` de 20,5 %. Recalculé : marge au démarrage × 1,41 au lieu de × 1,30, exposition SOA de `Q302` portée de 318 à 422 ms, toujours très loin dans une courbe garantie à 5 s.
+3. **`C326` sans tension nominale** alors qu'il découple `VIN` de `U8` sur `PVDD_PROT`, le nœud le plus contraint du schéma, qui atteint 93,6 V en écrêtage. Porté à `100nF/250V`.
 
 ### Ce qui dimensionne réellement ces passifs
 
 Ce n'est presque jamais la puissance, c'est la **tension**. `R305` et `R307` voient 78,6 V et 87,1 V à leurs bornes pendant un écrêtage de `D301` : un 0603, tenu à 50 V, serait violé, d'où le 0805. `R308`, `R309` et `R310` ne voient que quelques volts et restent en 0603. Seul `R306` est dimensionné par la puissance, 0,95 W pendant ≤ 422 ms contre 1 W admis à 70 °C.
 
-Contrôle qui recoupe le brochage au netlist : `R307` + `R308` + `R309` = 205,2 kΩ, donc à 56 V la prise `UVLO` est à 3,88 V (seuil 2,5 V, franchi) et `OVLO` à 2,48 V, juste sous son seuil. L'ordre du diviseur est donc bien celui qui déclenche légèrement au-dessus de 56 V.
+Contrôle qui recoupe le brochage au netlist : `R307` + `R308` + `R309` = 205,2 kΩ, donc à 56 V la prise `UVLO` est à 3,88 V (seuil 2,5 V, franchi) et `OVLO` à 2,48 V, juste sous son seuil. L'ordre du diviseur est bien celui qui déclenche légèrement au-dessus de 56 V.
+
+### Méthode qui a débloqué le fusible
+
+La recherche web a rendu les chiffres du dessin d'implantation Schurter **sans pouvoir les attribuer** à une cote, les légendes n'étant pas extractibles. L'attribution a été faite en extrayant la géométrie vectorielle du PDF : les deux pastilles, leurs arêtes et les flèches de cote. Le tracé s'est révélé **non à l'échelle** — rapport pastille/écartement mesuré à 0,312 contre 0,375 aux étiquettes —, donc les étiquettes font foi. Trois recoupements indépendants les confirment : l'écart de 10,00 mm encadre les 9,80 mm de céramique nue, chaque pastille couvre 2,70 des 2,80 mm de terminaison, et déborde de 1,05 mm en bout. Un tracé pris à l'échelle aurait amputé le recouvrement de 20 %.
 
 ## Contraintes nouvelles créées par ces choix
 
@@ -38,11 +43,17 @@ Contrôle qui recoupe le brochage au netlist : `R307` + `R308` + `R309` = 205,2 
 - `Q302` doit être monté sur radiateur : sa SOA suppose le boîtier à 75 °C. À reporter en Phase E.
 - `Q301` : courant continu plafonné à 6,9 A avec la seule surface de cuivre de référence de sa datasheet, 6 cm² en 70 µm.
 - Rail d'entrée : les calibres UMT-H supposent des pistes de 7,5 mm en cuivre 140 µm. Déclassement sinon.
-- `F301` n'a aucune empreinte KiCad compatible (`Fuse_Schurter_UMT250` vise 3 × 10,1 mm contre 5,3 × 16 mm). Empreinte locale à créer en D1.4.
+- Connectique déportée en JST XH : une deuxième famille à approvisionner à côté des MaiXu MX126-5.0, et une pince à sertir nécessaire.
 
 ## Blocage actif
 
 Aucun.
+
+## Deux défauts ouverts
+
+**D1.6, bloquant pour la Phase E.** Cinq `PWR_FLAG` portent la référence `?` au lieu de `#FLG0x`. Sans effet ERC, mais `kicad-cli` signale déjà « erreurs de numérotation » et KiCad refuse « Update PCB from schematic » sur un schéma non annoté. La correction par MCP est incertaine : les cinq symboles partagent la même référence `?`, donc l'adressage par repère est ambigu.
+
+**D1.8, en attente d'un arbitrage utilisateur.** Les deux empreintes locales ont des graphiques imposés par le générateur `create_footprint` du MCP. Sur `CF_Film_Box_P5.00mm_7.2x3.5mm`, utilisée par `C321` à `C324`, le **courtyard fait 2,6 mm pour un corps de 3,5 mm** : le DRC ne signalera pas un composant placé trop près en Phase E. Sur `Fuse_Schurter_UMT-H_5.3x16mm`, cuivre, pâte, masque et courtyard sont exacts, mais le générateur ajoute un repère de broche 1 sur un composant non polarisé, dont le cercle tombe hors du courtyard. **Aucun outil MCP n'édite les lignes, rectangles, textes ou tags d'une empreinte de bibliothèque** — `edit_footprint_pad` ne touche que les pastilles, les toolsets `pcb_*` n'opèrent que sur un `.kicad_pcb`. Corriger exige soit une dérogation ponctuelle à la règle « toute édition de librairie passe par le MCP », soit une version du MCP exposant l'édition des graphiques. **Question posée à l'utilisateur, sans réponse à ce jour.**
 
 ## NEEDS_DATA ouverts
 
@@ -55,12 +66,14 @@ Levés en D1.5 : `D302` (`BZT52C15`), `C110` et `C210` (10 µF/25 V, levés **pa
 ## Décisions actives
 
 - Toute édition schéma/PCB/librairie passe par `kicad-control`/MCP. Lecture hors MCP pour vérifier seulement.
-- **Les rapports d'agents sont systématiquement vérifiés par le principal avant tout verdict.** Confirmé une fois de plus en D1.5 : une référence fabricant inventée est passée dans le fichier faute de ce contrôle.
+- **Les rapports d'agents sont systématiquement vérifiés par le principal avant tout verdict.** Confirmé deux fois en D1.5/D1.4 : une référence fabricant inventée est passée dans le fichier faute de ce contrôle, et un agent a rapporté une assignation qu'il n'avait pas faite.
 - **`kicad-cli.exe` est utilisable directement** (`sch erc`, `sch export netlist`) et fournit une preuve indépendante du MCP, sans GUI. Chemin : `C:/Users/FlowUP/AppData/Local/Programs/KiCad/10.0/bin/`.
-- **Outillage** : `pymupdf` installé, `pdftotext` dans `/mingw64/bin`. Les serveurs Littelfuse et DigiKey refusent les requêtes automatisées ; les miroirs tiers fonctionnent, mais l'identité de tout PDF récupéré doit être contrôlée sur son en-tête.
+- **Lire les dessins cotés par extraction vectorielle du PDF, pas par recherche web.** `pymupdf` est installé, `pdftotext` est dans `/mingw64/bin`. Méthode validée sur les courbes SOA puis sur le dessin d'implantation Schurter. **Toujours contrôler si le tracé est à l'échelle** avant d'en déduire une cote : celui de Schurter ne l'est pas.
+- Les serveurs Littelfuse et DigiKey refusent les requêtes automatisées ; les miroirs tiers fonctionnent, mais l'identité de tout PDF récupéré doit être contrôlée sur son en-tête.
 - Aucune mutation géométrique : la connectivité repose sur la coïncidence label/ancre.
 - TVS cantonnée aux transitoires rapides ; la protection en surtension est active, par `LM5069`.
 - Bulk maintenu à 15 400 µF sur arbitrage utilisateur ; `Q302` choisi en conséquence.
+- Connectique déportée : JST XH 2,5 mm, vertical par défaut, sur arbitrage utilisateur.
 - Asymétrie de nommage assumée : `-VSE`/`+VSE` à gauche, `-VSE_R`/`+VSE_R` à droite. À trancher avant H2.
 - Instantanés PDF automatiques du MCP (`*_pre_delete_*.pdf`) exclus par `.gitignore`.
 
@@ -70,6 +83,7 @@ Levés en D1.5 : `D302` (`BZT52C15`), `C110` et `C210` (10 µF/25 V, levés **pa
 
 - `save_project` / `open_project` échouent hors GUI : `Connection refused`. Les écritures sont fichier et persistées ; prouver par relecture.
 - Attributs `on_board` / `in_bom` / `dnp` inaccessibles ; `edit_schematic_component` ne gère que Reference/Value/Footprint/Datasheet plus des propriétés personnalisées.
+- **`create_footprint` impose ses propres graphiques** : `F.Fab` chanfreiné, `F.SilkS` plein avec cercle de broche 1, textes à ± 4,05, pas de `tags`. Non paramétrable, et aucun outil ne les édite après coup.
 - `add_power_symbol` : `power_net` désigne le nom du symbole de librairie, pas le net cible.
 - `get_schematic_component` / `get_component_nets` exigent un chemin absolu et mésattribuent les broches `power_in`.
 - Outils de `load_toolset` accessibles seulement via `kicad_invoke`.
@@ -80,13 +94,10 @@ Levés en D1.5 : `D302` (`BZT52C15`), `C110` et `C210` (10 µF/25 V, levés **pa
 ## Fichiers / zones utiles
 
 - `HifiAmp_TPA3255.kicad_pro`, `.kicad_sch`, `.kicad_pcb`
-- `HifiAmp_TPA3255.kicad_sym` (symbole `LM5069` local), `sym-lib-table`, `fp-lib-table`, `HifiAmp_TPA3255_Local.pretty/`
+- `HifiAmp_TPA3255.kicad_sym` (symbole `LM5069` local), `sym-lib-table`, `fp-lib-table`
+- `HifiAmp_TPA3255_Local.pretty/` : `CF_Film_Box_P5.00mm_7.2x3.5mm`, `Fuse_Schurter_UMT-H_5.3x16mm`
 - `docs/architecture.md`, `docs/power-block.md`, **`docs/protection-48v.md`**
 - Librairies KiCad : `C:/Users/FlowUP/AppData/Local/Programs/KiCad/10.0/share/kicad/footprints`
-
-## Défaut ouvert, bloquant pour la Phase E
-
-Cinq `PWR_FLAG` portent la référence `?` au lieu de `#FLG0x`. Sans effet ERC, mais `kicad-cli` signale déjà « erreurs de numérotation » et KiCad refuse « Update PCB from schematic » sur un schéma non annoté. Ouvert en D1.6. La correction par MCP est incertaine : les cinq symboles partagent la même référence `?`, donc l'adressage par repère est ambigu.
 
 ## Réserve de conception consignée, non tranchée
 
@@ -94,4 +105,4 @@ Cinq `PWR_FLAG` portent la référence `?` au lieu de `#FLG0x`. Sans effet ERC, 
 
 ## NEXT ACTION
 
-D1.4 — Créer les empreintes locales manquantes et clore les quatre derniers composants. Deux natures différentes : `F301` exige une **empreinte locale** dans `HifiAmp_TPA3255_Local.pretty/`, aucune empreinte KiCad ne couvrant le corps 5,3 × 16 mm du Schurter UMT-H ; `J2`, `J3` et `J4` n'attendent qu'un **choix de famille de connecteur**, deux points pour `J2`/`J3` vers les RCA de châssis et six points pour `J4` vers le potentiomètre déporté. Ce choix relève de la préférence d'assemblage de l'utilisateur (barrette à vis, JST XH, Molex KK) et doit lui être posé avant d'assigner quoi que ce soit.
+D1.2 — Vérifier boîtiers fabricant, orientations, courants et contraintes d'assemblage sur les empreintes désormais toutes assignées. Trois points sont déjà identifiés comme non triviaux et doivent être traités en priorité : **D1.7**, confirmer sur le dessin coté WIMA que l'épaisseur de corps du `MKS2B044701K00KSSD` vaut bien 7,2 mm, cote prise comme maximum de la série MKS2 au pas de 5 mm mais non lue à la source, une erreur donnant un composant qui n'entre pas dans son empreinte ; l'orientation verticale de `Q301` et `Q302`, retenue par défaut, la variante à semelle plaquée dépendant du radiateur ; et les boîtiers traversants des bulks `C312` à `C317`, dont l'encombrement conditionne le placement en Phase E.

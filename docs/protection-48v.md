@@ -242,6 +242,28 @@ Contrôle du diviseur de seuils, qui recoupe le brochage relevé au netlist : `R
 
 Si ce tracé se révèle impraticable au routage, la solution est un shunt Kelvin à quatre bornes de la série **WSK** — `WSK25122L000FEA` existe dans le même boîtier 2512 —, qui rend la mesure indépendante du cuivre. Non retenue à ce stade : la contrainte de tracé est tenable et le composant deux bornes est moins cher.
 
+### Empreinte locale du fusible `F301` (D1.4)
+
+Aucune empreinte KiCad ne couvre le corps de l'UMT-H : `Fuse_Schurter_UMT250` vise 3 × 10,1 mm contre 5,3 × 16 mm ici. L'empreinte `HifiAmp_TPA3255_Local:Fuse_Schurter_UMT-H_5.3x16mm` a donc été créée à partir du dessin *Recommended Solder Pad Layout* de `typ_UMT-H.pdf`.
+
+| Cote | Valeur |
+|---|---|
+| Pastille | 3,75 × 5,60 mm, CMS |
+| Écart entre bords intérieurs | 10,00 mm |
+| Entraxe | 13,75 mm |
+| Envergure hors tout | 17,50 mm |
+| Corps | 15,40 × 5,35 × 3,20 mm |
+
+**Le tracé de la datasheet n'est pas à l'échelle** : mesuré sur les vecteurs du PDF, le rapport pastille/écartement vaut 0,312 alors que les étiquettes donnent 0,375. Ce sont les étiquettes qui font foi, et trois recoupements indépendants confirment qu'elles sont cohérentes entre elles :
+
+- l'écart de 10,00 mm entre pastilles encadre les 9,80 mm de céramique nue du corps, soit 15,40 moins deux terminaisons de 2,80 ;
+- chaque pastille recouvre 2,70 des 2,80 mm de terminaison, et déborde de 1,05 mm en bout, ce qui est le débord usuel pour former un congé ;
+- la pastille est plus large que le corps de 0,125 mm de chaque côté, valeur également usuelle.
+
+Un tracé pris à l'échelle aurait donné des pastilles de 3,12 mm, donc un recouvrement de terminaison amputé de 20 %.
+
+Réserve sur cette empreinte : cuivre, pâte, masque et courtyard sont aux cotes exactes ci-dessus, mais les graphiques ont été imposés par le générateur du MCP, qui ne les laisse pas régler. Il en résulte un **repère de broche 1 sur un composant qui n'est pas polarisé** — un fusible n'a pas de sens — dont le cercle de sérigraphie tombe de surcroît hors du courtyard, et une sérigraphie à 0,15 mm des pastilles au lieu des 0,2 mm recommandés. Aucun de ces points n'affecte le cuivre. Suivi en D1.8.
+
 ### Réserve ouverte
 
 L'épaisseur de corps de `C325` est prise à 7,2 mm, valeur maximale de la série MKS2 au pas de 5 mm, ce qui conduit à l'empreinte `W7.2mm`. La cote n'a pas été lue sur le dessin coté WIMA lui-même. **À confirmer en D1.2**, où une erreur se traduirait par un composant qui n'entre pas dans son empreinte.
