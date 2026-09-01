@@ -18369,7 +18369,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "4.7uF"
+		(property "Value" "4.7uF/63V"
 			(at 330.835 452.12 0)
 			(effects
 				(font
@@ -18378,7 +18378,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:C_Rect_L7.2mm_W7.2mm_P5.00mm_FKS2_FKP2_MKS2_MKP2"
+		(property "Footprint" "Capacitor_THT:C_Rect_L7.2mm_W11.0mm_P5.00mm_FKS2_FKP2_MKS2_MKP2"
 			(at 331.1652 453.39 0)
 			(hide yes)
 			(effects
@@ -18396,7 +18396,7 @@
 				)
 			)
 		)
-				(property "MPN" "MKS2B044701K00KSSD"
+				(property "MPN" "MKS2C044701O00KSSD"
 			(at 330.2 449.58 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)

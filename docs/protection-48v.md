@@ -172,14 +172,25 @@ Critère de non-coupure au démarrage, vérifié en croisant les pires cas des d
 
 Arrondir vers le haut ne dégrade rien et améliore le seul critère contraignant : `t_flt` s'allonge de 20,5 %, ce qui écarte davantage le démarrage de la coupure. En regard, la seule contre-partie est l'allongement de l'exposition SOA de `Q302`, traité à la section suivante et sans effet sur la conclusion.
 
-La tolérance, elle, n'est pas libre. Deux variantes MKS2 4,7 µF sont réellement commercialisées :
+La tolérance, elle, n'est pas libre. La série MKS2 se catalogue en ± 20 %, ± 10 % et ± 5 % ; au pas de 5 mm et en 4,7 µF, les deux premières s'opposent ainsi :
 
 | Référence | Tension | Tolérance | `t_flt,min` | Marge au démarrage |
 |---|---|---|---|---|
-| `MKS2B044701K00KSSD` | 50 V | ± 10 % | 132 ms | **× 1,41 — retenue** |
-| `MKS2C044701M00KSSD` | 63 V | ± 20 % | 118 ms | × 1,25 — rejetée |
+| `MKS2C044701O00KSSD` | 63 V | ± 10 % | 132 ms | **× 1,41 — retenue** |
+| `MKS2C044701O00MSSD` | 63 V | ± 20 % | 118 ms | × 1,25 — rejetée |
 
-La variante à ± 20 % retombe **sous** la marge × 1,30 que cette conception s'est fixée. La tension nominale, elle, n'est pas un critère : la broche `TIMER` ne dépasse pas 4 V, et 50 V laissent déjà un facteur 12.
+La variante à ± 20 % retombe **sous** la marge × 1,30 que cette conception s'est fixée. La tension nominale n'est pas un critère de choix ici : la broche `TIMER` ne dépasse pas 4 V, et les 63 V du plus petit calibre de la série laissent déjà un facteur 15.
+
+#### Lire une référence WIMA, et l'erreur que cela corrige
+
+Une référence WIMA compte 18 caractères. **Les champs 11-12 codent la boîte et le pas ; le champ 15, lui seul, code la tolérance** :
+
+`MKS2` · `C0` · `4470` · `1O` · `00` · `K` · `S` · `SD`
+= MKS2 · 63 VDC · 4,7 µF · boîte 11 × 18 × 7,2 mm au pas 5 mm · version standard · ± 10 % · vrac · broches 6-2.
+
+Le `O` appartient donc au **code de boîte `1O`** et n'a jamais été un code de tolérance. Une lecture antérieure l'avait pris pour tel et en avait conclu que `MKS2C044701O00KSSD` était une référence inventée. C'est l'inverse : cette référence figure telle quelle au catalogue WIMA, et c'est la substitution alors introduite qui n'existe pas. `MKS2B044701K00KSSD` cumule deux impossibilités — `B0` n'est pas un code de tension WIMA, la MKS2 s'étendant de 63 à 630 VDC sans aucun calibre 50 V, et sa boîte `1K` de 7,2 × 13 mm ne loge que 2,2 µF sous 63 V. Même défaut sur `MKS2C044701M00KSSD`, dont la boîte `1M` de 8,5 × 14 mm est celle du 1,5 µF.
+
+La leçon est réutilisable : **une référence passive ne se valide pas sur son seul aspect, mais en la décodant champ par champ contre la clé du fabricant, puis en recoupant la boîte obtenue avec le tableau de la valeur visée.** Ici les deux contrôles se contredisaient et la référence saine avait été écartée au profit d'une référence fausse.
 
 ## Exigence SOA imposée au MOSFET — point dur de cette conception
 
@@ -230,7 +241,7 @@ Ces passifs avaient été ajoutés en B2.3, B2.4 et B2.6 sans jamais recevoir d'
 | `R308` | 5,11 kΩ 1 % | — | `R_0603` | 1,4 V seulement : bas du diviseur |
 | `R309` | 9,09 kΩ 1 % | — | `R_0603` | 2,5 V seulement : bas du diviseur |
 | `R310` | 147 kΩ 1 % | — | `R_0603` | broche `PWR`, quelques volts |
-| `C325` | 4,7 µF ± 10 % | `MKS2B044701K00KSSD` | `C_Rect_L7.2mm_W7.2mm_P5.00mm` | film obligatoire, voir plus haut |
+| `C325` | 4,7 µF ± 10 % 63 V | `MKS2C044701O00KSSD` | `C_Rect_L7.2mm_W11.0mm_P5.00mm` | film obligatoire ; corps 11 × 18 × 7,2 mm, voir plus haut |
 | `C326` | 100 nF **250 V** | — | `C_1206` | 93,6 V en écrêtage sur `VIN` de `U8` |
 | `D302` | 15 V, 0,5 W | `BZT52C15` | `D_SOD-123` | 12 mW dissipés au pire ; marge 40 × |
 
@@ -264,9 +275,13 @@ Un tracé pris à l'échelle aurait donné des pastilles de 3,12 mm, donc un rec
 
 Réserve sur cette empreinte : cuivre, pâte, masque et courtyard sont aux cotes exactes ci-dessus, mais les graphiques ont été imposés par le générateur du MCP, qui ne les laisse pas régler. Il en résulte un **repère de broche 1 sur un composant qui n'est pas polarisé** — un fusible n'a pas de sens — dont le cercle de sérigraphie tombe de surcroît hors du courtyard, et une sérigraphie à 0,15 mm des pastilles au lieu des 0,2 mm recommandés. Aucun de ces points n'affecte le cuivre. Suivi en D1.8.
 
-### Réserve ouverte
+### Réserve levée en D1.7 — le corps de `C325` fait 11 mm, non 7,2 mm
 
-L'épaisseur de corps de `C325` est prise à 7,2 mm, valeur maximale de la série MKS2 au pas de 5 mm, ce qui conduit à l'empreinte `W7.2mm`. La cote n'a pas été lue sur le dessin coté WIMA lui-même. **À confirmer en D1.2**, où une erreur se traduirait par un composant qui n'entre pas dans son empreinte.
+L'épaisseur avait été supposée à 7,2 mm, « valeur maximale de la série MKS2 au pas de 5 mm », sans lecture à la source. Le catalogue WIMA a été extrait et lu : au pas de 5 mm, la cote constante de la série est la **longueur** `L` = 7,2 mm, jamais l'épaisseur. Les tableaux donnent les boîtes en `W × H × L`, et le 4,7 µF mesure **`W` = 11 mm, `H` = 18 mm, `L` = 7,2 mm** au pas de 5 mm, sous 63 V comme sous 100 V, broches de 0,5 mm.
+
+L'empreinte `C_Rect_L7.2mm_W7.2mm_P5.00mm_FKS2_FKP2_MKS2_MKP2` était donc trop étroite de 3,8 mm : le composant n'y serait pas entré. Elle est remplacée par `C_Rect_L7.2mm_W11.0mm_P5.00mm_FKS2_FKP2_MKS2_MKP2`, présente dans la librairie KiCad standard — aucune empreinte locale n'est nécessaire, et D1.8 ne s'en trouve pas alourdi.
+
+À reporter en Phase E : `C325` culmine à **18 mm**, contre 13 mm pour la boîte supposée. C'est le composant film le plus encombrant de la carte, et cette hauteur est à croiser avec le dégagement disponible sous le capot.
 
 ## Brochage VSSOP-10 (DGS), section 6 de la datasheet
 
