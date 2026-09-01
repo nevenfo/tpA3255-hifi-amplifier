@@ -8,26 +8,34 @@ Document de conception pour `F301` (fusible), `D301` (TVS) et `Q301` (anti-inver
 |---|---|---|
 | Rail nominal | 48 VDC, source capable de 10 A transitoires | `docs/architecture.md` |
 | PVDD recommandé TPA3255 | 18 – 53,5 V | datasheet TI |
-| **PVDD maximum absolu TPA3255** | **65 V** | datasheet TI |
+| **PVDD maximum absolu TPA3255** | **69 V** | datasheet TI `SLASEA8A`, § 7.1, ligne `PVDD_X to GND` |
 | Bulk total en aval | ≈ 15 400 µF (4 × 1500 µF/63 V + 2 × 4700 µF/80 V) | `docs/architecture.md` |
 | Courant continu estimé | ≈ 4,6 A (200 W de sortie, rendement 90 %, à 48 V) | calcul |
 
 ## Résultat majeur : aucune TVS passive ne satisfait la contrainte
 
-La fenêtre utile est bornée par le rail en bas et par le maximum absolu en haut. Le facteur de clamp exigé serait :
+La fenêtre utile est bornée en bas par la tension de veille que la TVS doit tolérer sans conduire, et en haut par le maximum absolu.
 
-`V_C / V_RWM < 65 / 48 = 1,354`
+Or les TVS silicium à avalanche présentent un facteur de clamp `V_C / V_RWM` de **1,3 à 1,6**, quelles que soient la tension nominale, la puissance de crête ou la famille — y compris les séries automobiles conçues pour le load dump 48 V.
 
-Or les TVS silicium à avalanche présentent un facteur de clamp de **1,3 à 1,6**, quelles que soient la tension nominale, la puissance de crête ou la famille — y compris les séries automobiles conçues pour le load dump 48 V. 1,354 se situe à la borne basse extrême de la technologie.
+Le rapport disponible dépend entièrement de la borne basse retenue, et c'est là qu'une première rédaction s'est trompée :
+
+| `V_RWM` retenu | Facteur disponible vers 69 V | Verdict |
+|---|---|---|
+| 48 V, égal au rail nominal | 1,44 | Dans la plage de la technologie — **mais inutilisable** : une TVS ne doit pas avoir son `V_RWM` au niveau du rail qu'elle surveille, sous peine de conduire en service |
+| 56 V, maximum légitime du rail | **1,23** | **Sous la borne basse de la technologie** |
+| 58 V, standoff finalement retenu pour `D301` | **1,19** | Idem, plus défavorable encore |
+
+**Le facteur exigé est donc de 1,19 à 1,23, et non les 1,354 d'une première rédaction qui prenait 48 V pour borne basse.** La contrainte est plus dure que ce qui avait été écrit, et la conclusion ci-dessous en sort renforcée, non affaiblie.
 
 Relevés de datasheet :
 
 | P/N | Fabricant | `V_RWM` | `V_C` max | `I_PP` | Verdict |
 |---|---|---|---|---|---|
-| `SMCJ48A` | Littelfuse, 1500 W | 48 V | **77,4 V** | 19,4 A | dépasse 65 V |
-| `SLD8S48A` | Littelfuse, load dump 7 kW | 48 V | **77,4 V** | 89,7 A | dépasse 65 V malgré 7 kW |
+| `SMCJ48A` | Littelfuse, 1500 W | 48 V | **77,4 V** | 19,4 A | dépasse 69 V |
+| `SLD8S48A` | Littelfuse, load dump 7 kW | 48 V | **77,4 V** | 89,7 A | dépasse 69 V malgré 7 kW |
 | `1.5KE51A` | Littelfuse/Diotec, 1500 W | 43,6 V | 70,1 V | 21,7 A | `V_RWM` déjà sous 48 V, conduirait en service |
-| `P6KE51A` | 600 W | 43,6 V | 70,1 V | 8,9 A | idem, et clamp toujours > 65 V |
+| `P6KE51A` | 600 W | 43,6 V | 70,1 V | 8,9 A | idem, et clamp toujours > 69 V |
 
 Piège de nommage écarté : `SM30T35CAY`, `SMC30J30CA` et `SMC3K30CAHM3-57` annoncent un clamp à 48,4 V, mais leur `V_RWM` réel vaut **30 V** (`V_BR` min 33,3 V). Sur un rail 48 V elles conduiraient en permanence. À ne pas retenir.
 
@@ -140,7 +148,7 @@ Cibles : `V_UVH` = 40 V, `V_UVL` = 36 V, `V_OVH` = 56 V.
 | `V_OVL` (reprise) | 52,3 V |
 | hystérésis UV / OV | 4,0 V / 4,1 V |
 
-Vérification de la marge, seule qui compte ici : en cumulant le seuil interne `OVLOTH` à son maximum de 2,6 V et les résistances à 1 %, `V_OVH` pire cas atteint **59,9 V**, soit **5,1 V (8 %) sous le maximum absolu de 65 V** du TPA3255. La reprise à 52,3 V reste au-dessus d'une alimentation 48 V à +5 % (50,4 V), donc pas de battement en fonctionnement normal.
+Vérification de la marge, seule qui compte ici : en cumulant le seuil interne `OVLOTH` à son maximum de 2,6 V et les résistances à 1 %, `V_OVH` pire cas atteint **59,8 V**, soit **9,2 V (13 %) sous le maximum absolu de 69 V** du TPA3255. La reprise à 52,3 V reste au-dessus d'une alimentation 48 V à +5 % (50,4 V), donc pas de battement en fonctionnement normal.
 
 ## Limitation de courant
 
@@ -498,3 +506,61 @@ Le schéma ne contient que ces deux transistors : le défaut est entièrement ci
 
 - `IPP330P10NM` — https://www.infineon.com/dgdl/Infineon-IPP330P10NM-DataSheet-v02_00-EN.pdf
 - Infineon, *P-channel MOSFETs Selection guide 2023* — https://www.infineon.com/assets/row/public/documents/24/66/infineon-productselectionguide-p-channel-mosfets-productselectionguide-en.pdf
+
+## D1.13 — La fenêtre 53,5 à 56,4 V : instruction du défaut
+
+### Ce que dit vraiment la datasheet
+
+Relecture directe de `SLASEA8A` (février 2016, révision A d'octobre 2016), tableaux 7.1 et 7.3.
+
+| Grandeur | Valeur | Tableau |
+|---|---|---|
+| `PVDD_X to GND`, **maximum absolu** | −0,3 à **69 V** | 7.1 *Absolute Maximum Ratings* |
+| `PVDD_x` sous `R_L` = 4 Ω | 18 / **51** / **53,5 V** | 7.3 *Recommended Operating Conditions* |
+| `PVDD_x` sous `R_L` ≥ 6 Ω | 18 / 53,5 / **56,5 V** | 7.3, note (1) |
+
+Note (1), citée mot pour mot : *« For load impedance ≥6Ω PVDD can be increased, provided a reduced over-current threshold is set »*.
+
+**Point de cadrage décisif : 53,5 V est une borne de *conditions recommandées*, pas un maximum absolu.** Le tableau 7.1 le dit explicitement : franchir les conditions recommandées ne fait pas sortir des *stress ratings*, cela fait sortir du domaine où TI garantit le fonctionnement. La bande 53,5 → 56,4 V se situe **12,6 V sous le maximum absolu de 69 V**. Le risque n'est donc pas la destruction immédiate mais la perte de garantie, et le mécanisme physique est nommé par la note (1) : c'est un problème de **courant de sortie**, pas de tenue en tension.
+
+Ce mécanisme se recoupe avec le réglage retenu : `OC_ADJ` = 22 kΩ, soit **17,0 A en CB3C**, c'est-à-dire le **seuil le plus haut** du tableau 4. C'est cohérent avec 4 Ω sous 53,5 V, et c'est exactement le réglage que la note (1) demanderait de réduire pour monter le rail.
+
+### Pourquoi abaisser `V_OVH` ne résout rien
+
+L'issue « abaisser `V_OVH` vers 52 V » a été chiffrée et **elle est arithmétiquement impossible**, indépendamment des valeurs de résistances choisies.
+
+Le seuil de surtension du `LM5069` a une dispersion propre. En reprenant le diviseur en place et les tolérances déjà retenues — `OVLOTH` de 2,5 V typique à 2,6 V maximum, résistances à 1 % :
+
+| Borne | Multiplicateur du nominal | Sur les 56,4 V actuels |
+|---|---|---|
+| `V_OVH` maximum (`OVLOTH` 2,6 V, résistances défavorables) | **× 1,060** | 59,8 V |
+| `V_OVH` minimum, **hypothèse optimiste** : comparateur exact à 2,5 V, seules les résistances dispersent | **× 0,981** | 55,4 V |
+
+La datasheet ne spécifie **aucun minimum** pour `OVLOTH` — la colonne est vide. La borne basse ci-dessus est donc un plancher optimiste, pas une garantie.
+
+Le calcul s'enchaîne alors sans échappatoire :
+
+1. Pour garantir `V_OVH` ≤ 53,5 V dans le pire cas, il faut un nominal ≤ **53,5 / 1,060 = 50,5 V**.
+2. À ce nominal, et **même en créditant le comparateur d'une précision parfaite**, le seuil réel peut descendre à **49,5 V**.
+3. Or une alimentation 48 V à +5 % délivre **50,4 V**, et à +3 % encore **49,4 V**. La protection couperait donc **en fonctionnement normal**.
+4. Et la reprise est pire : l'hystérésis vaut `I_HYS × R1`, soit **2,3 à 5,7 V** selon la dispersion du courant d'hystérésis (12 à 30 µA). Après une coupure, le seuil de reprise tomberait entre 43,8 et 47,2 V — **sous le rail nominal de 48 V**. L'appareil ne redémarrerait jamais.
+
+**La cause est structurelle, pas un mauvais choix de valeurs.** La fenêtre à couvrir, de 50,4 V (rail maximal) à 53,5 V (limite TI), vaut ± 3 % autour de 52 V. La dispersion spécifiée du seuil vaut ± 6 %. **On demande à un comparateur deux fois trop dispersé de tenir dans la fenêtre.** Aucun diviseur ne le peut.
+
+Corollaire à retenir : **le `LM5069` ne peut pas être l'organe qui fait respecter les conditions recommandées du TPA3255.** Il est, et ne peut être, qu'une protection contre un *défaut* d'alimentation. Le respect des 53,5 V doit venir d'ailleurs.
+
+### Issue retenue, sur arbitrage utilisateur
+
+**Borner l'alimentation par spécification, et conserver la charge 4 Ω.** L'exigence `REQ-PSU-1` est inscrite dans `docs/architecture.md` : la sortie de l'alimentation 48 V doit rester **≤ 53,5 V en toutes conditions**. Une alimentation régulée à ± 5 % plafonne à 50,4 V, soit **3,1 V de marge**.
+
+**Aucun composant n'est modifié.** `V_OVH` reste à 56,4 V, `OC_ADJ` reste à 22 kΩ, la charge admissible reste 4 à 8 Ω.
+
+Ce qui change est le **statut** du seuil de surtension : il cesse d'être présenté comme le garant des conditions recommandées du TPA3255 — rôle qu'il ne peut pas tenir, cf. ci-dessus — pour redevenir ce qu'il est, une protection contre un défaut d'alimentation, dimensionnée sous le maximum absolu de 69 V avec 9,2 V de marge au pire cas.
+
+**Résidu assumé et tracé.** Une panne d'alimentation produisant 53,5 à 56,4 V laisse la carte fonctionner hors conditions recommandées sans qu'aucune protection ne coupe. Trois raisons rendent ce résidu acceptable :
+
+- la bande reste **12,6 V sous le maximum absolu** de 69 V ;
+- la limite franchie porte sur le **courant de sortie** et non sur la tenue en tension, comme l'établit la note (1) du tableau 7.3 ;
+- l'`OCP` interne du TPA3255 — 17,0 A en CB3C, cycle par cycle — ainsi que l'`OTW` à 125 °C et l'`OTSD` restent **pleinement actifs** dans cette bande.
+
+Les deux issues écartées sont conservées ici pour mémoire : réduire `OC_ADJ` de 22 à 24 kΩ (17,0 → 15,7 A) attaquerait le mécanisme physique mais rognerait la réserve de crête sur 4 Ω sans être exigé ; restreindre la charge à ≥ 6 Ω fermerait la porte aux enceintes 4 Ω, contredirait `docs/architecture.md`, et **ne suffirait de toute façon pas** au pire cas de tolérance, le `LM5069` pouvant couper à 59,8 V contre un plafond TI de 56,5 V.

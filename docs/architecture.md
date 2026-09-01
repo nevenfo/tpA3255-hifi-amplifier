@@ -27,6 +27,16 @@ Les datasheets ont été vérifiées comme documents officiels TI actuels au 202
 
 Le PCB n’accepte aucun secteur. La source nominale retenue pour dimensionnement est `48 VDC`, capable de `10 A` transitoires. La puissance réellement continue dépendra de l’alimentation, du dissipateur, de la ventilation et de la température ambiante.
 
+### Exigence opposable sur l’alimentation externe (D1.13)
+
+**`REQ-PSU-1` — la tension de sortie de l’alimentation 48 V doit rester ≤ 53,5 V en toutes conditions**, à vide comme en charge, tolérance de fabrication, dérive thermique et régulation de charge incluses.
+
+Ce n’est pas une préférence mais la condition à laquelle le TPA3255 reste dans ses *Recommended Operating Conditions* sur une charge de 4 Ω (`SLASEA8A`, tableau 7.3). Toute alimentation régulée 48 V à ± 5 % délivre au plus 50,4 V et laisse **3,1 V de marge** ; l’exigence est donc satisfaite par construction par les alimentations du commerce, mais elle doit être **vérifiée sur la datasheet du modèle retenu** et non supposée.
+
+**Ce que cette exigence remplace.** Le seuil de surtension du `LM5069`, réglé à 56,4 V, **ne peut pas** faire respecter cette limite : sa dispersion spécifiée vaut ± 6 % pour une fenêtre à couvrir de ± 3 %, et l’abaisser provoquerait des coupures en service. La démonstration complète figure dans `docs/protection-48v.md`, section « D1.13 ». Le `LM5069` est donc, et reste, une protection contre un **défaut** d’alimentation ; le respect des conditions recommandées vient de `REQ-PSU-1`.
+
+**Résidu assumé.** Une panne d’alimentation produisant 53,5 à 56,4 V laisserait la carte fonctionner hors conditions recommandées sans coupure. Ce résidu est accepté : la bande reste **12,6 V sous le maximum absolu de 69 V**, la limite franchie porte sur le courant de sortie et non sur la tenue en tension, et l’`OCP` interne du TPA3255 (17,0 A en CB3C) ainsi que l’`OTW`/`OTSD` restent actifs dans cette bande.
+
 ## Puissance et mode TPA3255
 
 - `U_PWR = TPA3255DDV`, HTSSOP-44 `DDV`, PowerPAD supérieur destiné au couplage à un dissipateur et à la masse selon TI.
@@ -34,7 +44,7 @@ Le PCB n’accepte aucun secteur. La source nominale retenue pour dimensionnemen
 - Canal gauche : charge entre `OUT_A` et `OUT_B`.
 - Canal droit : charge entre `OUT_C` et `OUT_D`.
 - `PBTL` est exclu : c’est un mode mono et ne répond pas au besoin stéréo.
-- `PVDD` nominal 48 V, dans la plage TI 18–53.5 V. L’option jusqu’à 56.5 V pour charge ≥6 Ω n’est pas utilisée, puisque la carte doit accepter 4 Ω.
+- `PVDD` nominal 48 V, dans la plage TI 18–53.5 V pour 4 Ω (18 / 51 / 53.5 V min-typ-max, tableau 7.3). L’option jusqu’à 56.5 V pour charge ≥6 Ω n’est pas utilisée, puisque la carte doit accepter 4 Ω ; elle exigerait de surcroît un seuil de surintensité réduit (note 1 du même tableau), donc de modifier `OC_ADJ`. Le respect de la borne 53.5 V est assuré par `REQ-PSU-1`, pas par le `LM5069`. Maximum absolu `PVDD_X to GND` : **69 V** (tableau 7.1).
 - `VDD`, `GVDD_AB` et `GVDD_CD` reçoivent 12 V. `AVDD` et `DVDD` internes n’alimentent aucune charge externe.
 - `FREQ_ADJ = 22.0 kΩ`, cible de commutation nominale 450 kHz, suivant l’EVM.
 
@@ -163,7 +173,7 @@ L’EVM utilise à la place `10 µH + 1 µF` avec Coilcraft `MA5172-AE`; ces deu
 
 ## NEEDS_DATA avant gel final
 
-- `NEEDS_DATA: référence et caractéristiques garanties de l’alimentation externe 48 V ; nécessaires pour ripple, fusible, bulk, connecteur et puissance continue.`
+- `NEEDS_DATA: référence et caractéristiques garanties de l’alimentation externe 48 V ; nécessaires pour ripple, fusible, bulk, connecteur et puissance continue.` **Partiellement cadré en D1.13** : le volet tension est désormais borné par `REQ-PSU-1` (sortie ≤ 53,5 V en toutes conditions), qui devient un critère de sélection et non plus une donnée manquante. Restent ouverts le ripple, le courant continu garanti et le comportement au démarrage.
 - `NEEDS_DATA: choix mécanique du potentiomètre double 10 kΩ logarithmique ; nécessaire pour empreinte et durée de vie.`
 - `NEEDS_DATA: références exactes des inductances 15 µH et condensateurs 680 nF ; nécessaires pour saturation, DCR, pertes et empreintes.`
 - `NEEDS_DATA: protection 48 V inversion/surtension et TVS ; le clamp doit rester compatible avec le maximum absolu TPA3255.`
