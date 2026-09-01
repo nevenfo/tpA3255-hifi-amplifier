@@ -13158,7 +13158,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "ed004e23-f919-4e8a-b494-cd6cb8b1b22e")
-		(property "Reference" "?"
+		(property "Reference" "#FLG01"
 			(at 25.4 81.915 0)
 			(hide yes)
 			(effects
@@ -13196,7 +13196,7 @@
 		(instances
 			(project "HifiAmp_TPA3255"
 				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
-					(reference "?")
+					(reference "#FLG01")
 					(unit 1)
 				)
 			)
@@ -13210,7 +13210,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "4c06a882-7faf-48f1-939a-813e3805a215")
-		(property "Reference" "?"
+		(property "Reference" "#FLG02"
 			(at 25.4 94.615 0)
 			(hide yes)
 			(effects
@@ -13248,7 +13248,7 @@
 		(instances
 			(project "HifiAmp_TPA3255"
 				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
-					(reference "?")
+					(reference "#FLG02")
 					(unit 1)
 				)
 			)
@@ -13262,7 +13262,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "354c029e-9bbf-4930-9f68-573ea627e0cd")
-		(property "Reference" "?"
+		(property "Reference" "#FLG03"
 			(at 147.32 85.725 0)
 			(hide yes)
 			(effects
@@ -13300,7 +13300,7 @@
 		(instances
 			(project "HifiAmp_TPA3255"
 				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
-					(reference "?")
+					(reference "#FLG03")
 					(unit 1)
 				)
 			)
@@ -13314,7 +13314,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "a9ac3890-a6df-48da-b099-4955143a8035")
-		(property "Reference" "?"
+		(property "Reference" "#FLG04"
 			(at 73.66 104.775 0)
 			(hide yes)
 			(effects
@@ -13352,7 +13352,7 @@
 		(instances
 			(project "HifiAmp_TPA3255"
 				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
-					(reference "?")
+					(reference "#FLG04")
 					(unit 1)
 				)
 			)
@@ -14731,7 +14731,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "0804cdb8-d401-44fd-952e-231aeae68e80")
-		(property "Reference" "?"
+		(property "Reference" "#FLG05"
 			(at 167.64 147.955 0)
 			(hide yes)
 			(effects
@@ -14769,7 +14769,7 @@
 		(instances
 			(project "HifiAmp_TPA3255"
 				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
-					(reference "?")
+					(reference "#FLG05")
 					(unit 1)
 				)
 			)

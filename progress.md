@@ -10,7 +10,7 @@ D1.2 — Vérifier boîtiers fabricant, orientations, courants et contraintes d'
 
 ## Dernière tâche validée
 
-**D1.1, D1.4 et D1.5 sont terminées. Plus aucun composant du schéma n'est sans empreinte.** Les cinq `PWR_FLAG` n'en requièrent pas, et `RV1` est volontairement hors carte (B2.1, B2.8).
+**D1.1, D1.4, D1.5 et D1.6 sont terminées. Plus aucun composant du schéma n'est sans empreinte, et le schéma est intégralement annoté.** Les six `PWR_FLAG` ne requièrent pas d'empreinte, et `RV1` est volontairement hors carte (B2.1, B2.8).
 
 Validation :
 
@@ -36,6 +36,16 @@ Contrôle qui recoupe le brochage au netlist : `R307` + `R308` + `R309` = 205,2 
 
 La recherche web a rendu les chiffres du dessin d'implantation Schurter **sans pouvoir les attribuer** à une cote, les légendes n'étant pas extractibles. L'attribution a été faite en extrayant la géométrie vectorielle du PDF : les deux pastilles, leurs arêtes et les flèches de cote. Le tracé s'est révélé **non à l'échelle** — rapport pastille/écartement mesuré à 0,312 contre 0,375 aux étiquettes —, donc les étiquettes font foi. Trois recoupements indépendants les confirment : l'écart de 10,00 mm encadre les 9,80 mm de céramique nue, chaque pastille couvre 2,70 des 2,80 mm de terminaison, et déborde de 1,05 mm en bout. Un tracé pris à l'échelle aurait amputé le recouvrement de 20 %.
 
+### D1.6 — le défaut d'annotation était plus grave que consigné
+
+Les cinq `PWR_FLAG` à référence `?` n'étaient pas une gêne cosmétique : ils étaient **exportés au netlist comme six composants réels nommés `?`**, que « Update PCB from schematic » aurait tenté de placer sur la carte, sans empreinte. Annotés `#FLG01` à `#FLG05`, ils en sont désormais exclus comme tout symbole à préfixe `#`.
+
+Ce qui a débloqué l'écriture : **`edit_schematic_component` accepte un paramètre `uuid`**, alternatif à `reference`. C'est ce qui lève l'ambiguïté quand plusieurs symboles partagent un repère, et c'est réutilisable pour tout adressage ambigu.
+
+Preuve retenue : netlist exporté avant et après, 74 nets de part et d'autre, aucun net créé ni supprimé, aucun nœud de composant réel déplacé, et pour seule différence les cinq `?.1` retirés de `/+12V-OA`, `/PVDD`, `/GND`, `/+15V` et `/BUCK_VIN`. `kicad-cli` ne signale plus « erreurs de numérotation ».
+
+Les références `U4` et `U5` apparaissent trois fois chacune et **ne sont pas un défaut** : ce sont les unités des AOP doubles.
+
 ## Contraintes nouvelles créées par ces choix
 
 - **`R306` est un shunt à deux bornes, pas Kelvin.** À 4 mΩ, le cuivre des pastilles s'ajoute à la valeur mesurée. Les liaisons vers `VIN` et `SENSE` doivent partir des **bords intérieurs** des pastilles, le courant de puissance entrant par les bords extérieurs. Repli si le routage l'interdit : `WSK25122L000FEA`, quatre bornes, même boîtier 2512.
@@ -49,11 +59,9 @@ La recherche web a rendu les chiffres du dessin d'implantation Schurter **sans p
 
 Aucun.
 
-## Deux défauts ouverts
+## Défaut ouvert
 
-**D1.6, bloquant pour la Phase E.** Cinq `PWR_FLAG` portent la référence `?` au lieu de `#FLG0x`. Sans effet ERC, mais `kicad-cli` signale déjà « erreurs de numérotation » et KiCad refuse « Update PCB from schematic » sur un schéma non annoté. La correction par MCP est incertaine : les cinq symboles partagent la même référence `?`, donc l'adressage par repère est ambigu.
-
-**D1.8, en attente d'un arbitrage utilisateur.** Les deux empreintes locales ont des graphiques imposés par le générateur `create_footprint` du MCP. Sur `CF_Film_Box_P5.00mm_7.2x3.5mm`, utilisée par `C321` à `C324`, le **courtyard fait 2,6 mm pour un corps de 3,5 mm** : le DRC ne signalera pas un composant placé trop près en Phase E. Sur `Fuse_Schurter_UMT-H_5.3x16mm`, cuivre, pâte, masque et courtyard sont exacts, mais le générateur ajoute un repère de broche 1 sur un composant non polarisé, dont le cercle tombe hors du courtyard. **Aucun outil MCP n'édite les lignes, rectangles, textes ou tags d'une empreinte de bibliothèque** — `edit_footprint_pad` ne touche que les pastilles, les toolsets `pcb_*` n'opèrent que sur un `.kicad_pcb`. Corriger exige soit une dérogation ponctuelle à la règle « toute édition de librairie passe par le MCP », soit une version du MCP exposant l'édition des graphiques. **Question posée à l'utilisateur, sans réponse à ce jour.**
+**D1.8, en attente d'un arbitrage utilisateur.** Les deux empreintes locales ont des graphiques imposés par le générateur `create_footprint` du MCP. Sur `CF_Film_Box_P5.00mm_7.2x3.5mm`, utilisée par `C321` à `C324`, le **courtyard fait 2,6 mm pour un corps de 3,5 mm** : le DRC ne signalera pas un composant placé trop près en Phase E. Sur `Fuse_Schurter_UMT-H_5.3x16mm`, cuivre, pâte, masque et courtyard sont exacts, mais le générateur ajoute un repère de broche 1 sur un composant non polarisé, dont le cercle tombe hors du courtyard. **Aucun outil MCP n'édite les lignes, rectangles, textes ou tags d'une empreinte de bibliothèque** — `edit_footprint_pad` ne touche que les pastilles, les toolsets `pcb_*` n'opèrent que sur un `.kicad_pcb`. Corriger exige soit une dérogation ponctuelle à la règle « toute édition de librairie passe par le MCP », soit une version du MCP exposant l'édition des graphiques.
 
 ## NEEDS_DATA ouverts
 
@@ -87,6 +95,7 @@ Levés en D1.5 : `D302` (`BZT52C15`), `C110` et `C210` (10 µF/25 V, levés **pa
 - `add_power_symbol` : `power_net` désigne le nom du symbole de librairie, pas le net cible.
 - `get_schematic_component` / `get_component_nets` exigent un chemin absolu et mésattribuent les broches `power_in`.
 - Outils de `load_toolset` accessibles seulement via `kicad_invoke`.
+- **`edit_schematic_component` accepte `uuid` en plus de `reference`** : seul moyen d'adresser un symbole quand plusieurs partagent le même repère.
 - `search_footprints` n'indexe pas toute la librairie globale : vérifier sur disque.
 - Sortie MCP tronquée au-delà d'environ 72 000 caractères.
 - **Piège de relecture hors MCP** : le `.kicad_sch` contient une section `lib_symbols` avant les instances. Une recherche naïve de `(property "Reference" ...)` suivie d'une fenêtre de caractères déborde sur le symbole voisin et rend des valeurs fausses. Itérer sur les blocs `(symbol` de premier niveau à parenthèses équilibrées.
