@@ -161,16 +161,31 @@ La conduction est donc garantie jusqu'à 12,1 A, ce qui couvre le pire cas de co
 - Plafond imposé par la datasheet : `R_PWR` ≤ 150 kΩ, soit `P_LIM` ≤ ≈ 305 W.
 - **Retenu : `R_PWR` = 147 kΩ → `P_LIM` = 299 W**, volontairement proche du plafond (voir justification ci-dessous).
 - Équation 12, avec `C_OUT` = 15 400 µF : `t_start` = 69 ms typique, **94 ms** en pire cas (`P_LIM` à −24 %, `I_LIM` minimal).
-- Équation 13 : **`C_TIMER` = 3,9 µF**.
-- Équation 14 : `t_flt` = 122 ms au minimum, 184 ms typique, 318 ms au maximum.
+- Équation 13 : `C_TIMER` = 3,9 µF calculé, **arrondi à 4,7 µF** — voir ci-dessous.
+- Équation 14, à 4,7 µF nominal : `t_flt` = 147 ms au minimum, 222 ms typique, 383 ms au maximum. Avec la tolérance de ± 10 % du condensateur retenu : **132 ms au minimum, 422 ms au maximum**.
 
-Critère de non-coupure au démarrage, vérifié en croisant les pires cas des deux côtés (et non typique contre typique comme dans l'exemple TI) : `t_flt,min` = 122 ms > `t_start,max` = 94 ms, **marge × 1,30**.
+Critère de non-coupure au démarrage, vérifié en croisant les pires cas des deux côtés (et non typique contre typique comme dans l'exemple TI) : `t_flt,min` = 132 ms > `t_start,max` = 94 ms, **marge × 1,41**. À 3,9 µF exact la marge n'aurait valu que × 1,30.
+
+### Pourquoi 4,7 µF et non les 3,9 µF calculés
+
+`C_TIMER` est un condensateur film, et non céramique : à 4 V de seuil sur un diélectrique X7R de 4,7 µF, le déclassement sous tension continue atteint 30 à 50 %, ce qui ferait passer `t_flt,min` **sous** `t_start,max` et provoquerait des coupures au démarrage. Or 3,9 µF est une valeur E24, absente des séries film ; la série WIMA MKS2 au pas de 5 mm suit E6 et s'arrête à 4,7 µF, qui est donc à la fois la valeur disponible et la plus proche par le haut.
+
+Arrondir vers le haut ne dégrade rien et améliore le seul critère contraignant : `t_flt` s'allonge de 20,5 %, ce qui écarte davantage le démarrage de la coupure. En regard, la seule contre-partie est l'allongement de l'exposition SOA de `Q302`, traité à la section suivante et sans effet sur la conclusion.
+
+La tolérance, elle, n'est pas libre. Deux variantes MKS2 4,7 µF sont réellement commercialisées :
+
+| Référence | Tension | Tolérance | `t_flt,min` | Marge au démarrage |
+|---|---|---|---|---|
+| `MKS2B044701K00KSSD` | 50 V | ± 10 % | 132 ms | **× 1,41 — retenue** |
+| `MKS2C044701M00KSSD` | 63 V | ± 20 % | 118 ms | × 1,25 — rejetée |
+
+La variante à ± 20 % retombe **sous** la marge × 1,30 que cette conception s'est fixée. La tension nominale, elle, n'est pas un critère : la broche `TIMER` ne dépasse pas 4 V, et 50 V laissent déjà un facteur 12.
 
 ## Exigence SOA imposée au MOSFET — point dur de cette conception
 
 Méthode de la section 9.2.1.2.5 : en défaut, le MOSFET subit `V_DS` = `V_IN,MAX` et `I_D` = `P_LIM` / `V_IN,MAX` pendant `t_flt`.
 
-**Pire cas : 56 V et 5,34 A pendant 318 ms.** Avec la marge de 1,3 × recommandée par TI, le MOSFET doit tenir **6,95 A sous 56 V pendant 318 ms, soit 389 W en mode linéaire**.
+**Pire cas : 56 V et 5,34 A pendant 422 ms.** Avec la marge de 1,3 × recommandée par TI, le MOSFET doit tenir **6,95 A sous 56 V pendant 422 ms, soit 389 W en mode linéaire**. La puissance exigée ne dépend que de `P_LIM`, donc l'arrondi de `C_TIMER` allonge la durée sans déplacer les 389 W.
 
 C'est une contrainte sévère, et elle est **structurelle, non un défaut de réglage**. La datasheet l'énonce directement en section 9.2.1.1 :
 
@@ -184,7 +199,7 @@ Effet du bulk sur la durée d'exposition, à `P_LIM` maximal :
 
 | Bulk | `t_start` pire cas | `C_TIMER` | Exposition SOA |
 |---|---|---|---|
-| 15 400 µF (actuel) | 94 ms | 3,9 µF | 389 W pendant **318 ms** |
+| 15 400 µF (actuel) | 94 ms | 4,7 µF | 389 W pendant **422 ms** |
 | 8 200 µF | 52 ms | 2,2 µF | 377 W pendant **179 ms** |
 | 4 700 µF | 29 ms | 1,2 µF | 390 W pendant **98 ms** |
 
@@ -197,11 +212,39 @@ Effet du bulk sur la durée d'exposition, à `P_LIM` maximal :
 | `R1` / `R2` / `R3` (seuils) | 191 kΩ / 5,11 kΩ / 9,09 kΩ, 1 % | 21 à 24 |
 | `R_SNS` | 4 mΩ | 1 |
 | `R_PWR` | 147 kΩ | 9 |
-| `C_TIMER` | 3,9 µF | 13 |
+| `C_TIMER` | 4,7 µF ± 10 %, film | 13 |
 | `U8` | `LM5069-2`, VSSOP-10 | — |
 | `Q302` | `IXTK200N10L2`, TO-264 | 19, SOA garantie |
 | `F301` | `Schurter UMT-H` 12,5 A, `3403.0285.11` | coordination LM5069 |
 | `D301` | `SMDJ58CA`, DO-214AB | plafond 88 V, note (3) |
+
+## Passifs du bloc de protection — boîtiers et références (D1.5)
+
+Ces passifs avaient été ajoutés en B2.3, B2.4 et B2.6 sans jamais recevoir d'empreinte. Le point à retenir est que **ce n'est presque jamais la puissance qui dimensionne leur boîtier, mais la tension** : le nœud `PVDD_PROT` fonctionne à 48 V, monte à 56 V en régime permanent maximal et atteint 93,6 V pendant un écrêtage de `D301`.
+
+| Repère | Valeur | Référence | Empreinte | Ce qui dimensionne le boîtier |
+|---|---|---|---|---|
+| `R305` | 100 kΩ | — | `R_0805` | **78,6 V** aux bornes en écrêtage. Un 0603, tenu à 50 V, serait violé |
+| `R306` | 4 mΩ 1 % | `WSL25124L000FEA` | `R_2512` | 0,95 W pendant ≤ 422 ms ; 1 W admis à 70 °C |
+| `R307` | 191 kΩ 1 % | — | `R_0805` | **87,1 V** aux bornes en écrêtage. Même raison que `R305` |
+| `R308` | 5,11 kΩ 1 % | — | `R_0603` | 1,4 V seulement : bas du diviseur |
+| `R309` | 9,09 kΩ 1 % | — | `R_0603` | 2,5 V seulement : bas du diviseur |
+| `R310` | 147 kΩ 1 % | — | `R_0603` | broche `PWR`, quelques volts |
+| `C325` | 4,7 µF ± 10 % | `MKS2B044701K00KSSD` | `C_Rect_L7.2mm_W7.2mm_P5.00mm` | film obligatoire, voir plus haut |
+| `C326` | 100 nF **250 V** | — | `C_1206` | 93,6 V en écrêtage sur `VIN` de `U8` |
+| `D302` | 15 V, 0,5 W | `BZT52C15` | `D_SOD-123` | 12 mW dissipés au pire ; marge 40 × |
+
+Contrôle du diviseur de seuils, qui recoupe le brochage relevé au netlist : `R307` + `R308` + `R309` = 205,2 kΩ, donc à 56 V la prise `UVLO` est à 3,88 V (seuil 2,5 V, franchi) et la prise `OVLO` à 2,48 V, **juste sous** son seuil de 2,5 V. L'ordre `PVDD_PROT` → `R307` → `UVLO` → `R308` → `OVLO` → `R309` → `GND` est donc bien celui qui produit le déclenchement en surtension légèrement au-dessus de 56 V établi plus haut.
+
+### Contrainte de tracé créée par `R306`, à reporter en Phase E
+
+`WSL25124L000FEA` est un shunt à **deux bornes**, pas à quatre. À 4 mΩ, quelques milliohms de cuivre dans les pastilles s'ajoutent directement à la valeur mesurée et faussent le seuil de limitation. Les liaisons vers `VIN` et `SENSE` de `U8` doivent donc partir des **bords intérieurs des deux pastilles**, en pistes fines dédiées, et le courant de puissance entrer et sortir par les bords extérieurs.
+
+Si ce tracé se révèle impraticable au routage, la solution est un shunt Kelvin à quatre bornes de la série **WSK** — `WSK25122L000FEA` existe dans le même boîtier 2512 —, qui rend la mesure indépendante du cuivre. Non retenue à ce stade : la contrainte de tracé est tenable et le composant deux bornes est moins cher.
+
+### Réserve ouverte
+
+L'épaisseur de corps de `C325` est prise à 7,2 mm, valeur maximale de la série MKS2 au pas de 5 mm, ce qui conduit à l'empreinte `W7.2mm`. La cote n'a pas été lue sur le dessin coté WIMA lui-même. **À confirmer en D1.2**, où une erreur se traduirait par un composant qui n'entre pas dans son empreinte.
 
 ## Brochage VSSOP-10 (DGS), section 6 de la datasheet
 
@@ -231,9 +274,9 @@ Trois contrôles indépendants valident la méthode :
 
 ## `Q302` — MOSFET de hot-swap
 
-Exigence à satisfaire, établie plus haut : **389 W, soit 6,95 A sous 56 V, pendant 318 ms**, marge 1,3 × de TI incluse ; 299 W sans cette marge.
+Exigence à satisfaire, établie plus haut : **389 W, soit 6,95 A sous 56 V, pendant 422 ms**, marge 1,3 × de TI incluse ; 299 W sans cette marge.
 
-Comparaison sur la valeur **garantie** à `T_C` = 75 °C et `t_p` = 5 s, donc plus sévère que les 318 ms réellement subies :
+Comparaison sur la valeur **garantie** à `T_C` = 75 °C et `t_p` = 5 s, donc plus sévère que les 422 ms réellement subies — l'impulsion est 11,8 × plus courte que le point d'essai, si bien que la comparaison reste valable *a fortiori* :
 
 | Référence | Boîtier | `R_DS(on)` | `R_thJC` | SOA garantie à 75 °C | Verdict sur 389 W |
 |---|---|---|---|---|---|
@@ -282,7 +325,7 @@ Coordination avec le LM5069, vérifiée sur la table *Pre-Arcing Time* de la dat
 |---|---|---|
 | Régime nominal | 4,6 A = 0,37 × `In` | aucune |
 | Crête musicale sur 4 Ω | 9,3 A = 0,74 × `In` | aucune |
-| Limitation de courant LM5069, ≤ 318 ms | ≤ 15,4 A = 1,23 × `In` | **≥ 60 min avant amorçage** : ouverture impossible |
+| Limitation de courant LM5069, ≤ 422 ms | ≤ 15,4 A = 1,23 × `In` | **≥ 60 min avant amorçage** : ouverture impossible |
 | Disjoncteur LM5069 | 20 à 32,5 A | l'électronique coupe la première |
 | `Q302` défaillant en court-circuit | ≥ 125 A = 10 × `In` | 10 à 100 ms |
 
@@ -351,7 +394,7 @@ Le symbole déjà en place, `Device:D_TVS`, est bidirectionnel : ce choix rétab
 
 ## `Q301` — P-MOS d'anti-inversion
 
-Exigences réunies : bloquer 56 V en inversion avec marge, conduire 4,6 A en continu avec des crêtes musicales à 9,3 A et jusqu'à 15,4 A pendant au plus 318 ms si le LM5069 limite, tolérer un `V_GS` clampé à 15 V par `D302`, et dissiper peu.
+Exigences réunies : bloquer 56 V en inversion avec marge, conduire 4,6 A en continu avec des crêtes musicales à 9,3 A et jusqu'à 15,4 A pendant au plus 422 ms si le LM5069 limite, tolérer un `V_GS` clampé à 15 V par `D302`, et dissiper peu.
 
 **Retenu : `IPP330P10NM`** — Infineon OptiMOS, P-canal, TO-220-3. Valeurs lues sur la datasheet *Final Data Sheet* Rev. 2.0 du 2021-05-10, dépourvue de couche texte et donc lue par rendu de page.
 
@@ -373,7 +416,7 @@ Vérifications :
 - **Blocage en inversion** : 100 V contre les 56 V que la source peut appliquer à l'envers, marge 1,79 ×.
 - **`V_GS`** : la Zener `D302` de 15 V clampe à 15,75 V au pire de sa tolérance de 5 %, contre ±20 V admis. Marge 1,27 ×.
 - **Conduction nominale** : 4,6² × 33 mΩ = 0,70 W.
-- **Limitation de courant LM5069** : 15,4² × 33 mΩ = 7,8 W pendant au plus 318 ms, soit 2,5 J. Avec `R_thJC` = 0,5 °C/W et une impédance thermique transitoire inférieure à cette valeur sur une telle durée, l'échauffement de jonction reste inférieur à 4 °C. Sans enjeu.
+- **Limitation de courant LM5069** : 15,4² × 33 mΩ = 7,8 W pendant au plus 422 ms, soit 3,3 J. Avec `R_thJC` = 0,5 °C/W et une impédance thermique transitoire inférieure à cette valeur sur une telle durée, l'échauffement de jonction reste inférieur à 5 °C. Sans enjeu.
 - **Aucune contrainte SOA** : contrairement à `Q302`, `Q301` ne travaille jamais en régime linéaire. Il est soit passant, soit bloqué.
 
 **Contrainte d'implantation** : la datasheet plafonne le courant continu à **6,9 A** avec la seule surface de cuivre de référence, soit 6 cm² sur une couche de 70 µm donnant `R_thJA` = 40 °C/W. Les 4,6 A nominaux passent, mais la tenue des crêtes à 9,3 A repose sur leur brièveté. Prévoir au minimum cette surface, un radiateur restant préférable.
