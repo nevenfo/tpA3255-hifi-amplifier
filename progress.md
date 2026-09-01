@@ -6,11 +6,13 @@ Phase D. **GATE C2 = PASS**, revérifié après chaque écriture : ERC à 15 vio
 
 ## Tâche actuelle
 
-D1.2 — Vérifier boîtiers fabricant, orientations, courants et contraintes d'assemblage. Il ne reste que le calibre en courant du bornier `J1`.
+D1.3 — Vérifier le HTSSOP du TPA3255, le PowerPAD et la stratégie de vias thermiques. **Dernière tâche de fond de D1** ; ne reste ensuite que le reliquat cosmétique D1.8.
 
 ## Dernière tâche validée
 
-**D1.10 = PASS, et D1.12 avec elle.**
+**D1.2 = PASS.** Le dernier point ouvert était le bornier `J1`, et le dessin fabricant de CIXI MAIXU (`MX126-5.0-XXP`) a fini par être obtenu : `www.lcsc.com` et `datasheet.lcsc.com` refusent `curl`, **mais `wmsc.lcsc.com` sert le fichier**. Il n'a aucune couche texte et `pdftoppm` n'est pas installé : **rendu en PNG à 200 dpi par `pymupdf`, puis lu comme une image**. Il donne **300 V / 10 A en calibre UL, 250 V / 15 A en calibre IEC**, plage de fil 26 à 14 AWG. Les 4,6 A continus passent avec un facteur 2,2, les 10 A transitoires restent sous le calibre IEC. **L'empreinte est confirmée à la source** : perçage ø1,30 mm au pas de 5,00 mm, exactement ce que porte `TerminalBlock_MaiXu_MX126-5.0-02P_1x02_P5.00mm`.
+
+**Avant elle, D1.10 = PASS et D1.12 avec elle.**
 
 - **Inductances.** La BOM du `TPA3255EVM` donne `MA5172-AE` Coilcraft, et sa datasheet (document Coilcraft 943) catalogue dans la même famille **`PA6331-AE` : 15 µH, DCR 31 mΩ, `I_sat` 20 A, `I_rms` 9,8 A à 20 °C d'échauffement** — exactement le cahier des charges. **Retenue sur arbitrage utilisateur.** La réserve énergétique était fondée : la pièce réelle est un **tore traversant debout de ø28,6 × 12,3 mm**, là où le `HCI-1350` supposé mesurait 12,8 × 12,8 × 4,7 mm.
 - **Le tracé de la datasheet n'est pas à l'échelle** : 2,836 pt/mm en vue de face contre 2,463 en profil, 15 % d'écart. Les étiquettes font foi, comme chez Schurter. Entraxe **10,0 ± 0,5 mm**, broches 0,96 à 1,07 mm.
@@ -20,7 +22,6 @@ D1.2 — Vérifier boîtiers fabricant, orientations, courants et contraintes d'
 
 ## Défauts ouverts
 
-- **`J1`, bornier MaiXu MX126-5.0 : calibre en courant non instruit.** 4,6 A continus et 10 A transitoires attendus. Sa seule datasheet connue est celle que cite l'empreinte KiCad, hébergée par LCSC, **et LCSC refuse `curl`**. C'est le dernier point ouvert de D1.2.
 - **D1.8, reliquat cosmétique.** Le volet film est clos ; ne restent que les graphiques de `Fuse_Schurter_UMT-H_5.3x16mm`, sans effet DRC ni fabrication. L'empreinte locale reste justifiée : le standard `Fuse_Schurter_UMT250` vise un corps 3 × 10,1 mm, pastilles à ± 4,25 contre ± 6,875 mm. **À revoir à la lumière de D1.10** : le générateur produit des graphiques corrects quand les cotes le sont, donc une recréation propre est peut-être plus simple qu'une correction.
 
 ## Blocage actif
@@ -39,10 +40,11 @@ Aucun.
 - Rail d'entrée : les calibres UMT-H supposent des pistes de 7,5 mm en cuivre 140 µm. Déclassement sinon.
 - `C110`/`C210` imposent un établissement de `VMID` en 5 τ ≈ 250 ms, à croiser avec la temporisation de mute en Phase F.
 - Connectique déportée en JST XH : deuxième famille à approvisionner à côté des MaiXu MX126-5.0, et pince à sertir nécessaire.
+- **Le câble d'alimentation 48 V doit rester entre 0,5 et 2,5 mm²** : c'est la plage que le bornier `J1` accepte.
 
 ## NEEDS_DATA ouverts
 
-`RV1` (mécanique du potentiomètre), EP du TPA3255DDV à 5,2 × 14 mm à confirmer sur dessin mécanique TI, alimentation externe 48 V, dissipateur et thermique, réponse/EMI du filtre LC, common-mode du TPA3255, broche MR du TPS3802K33, calibre en courant du bornier `J1`.
+`RV1` (mécanique du potentiomètre), EP du TPA3255DDV à 5,2 × 14 mm à confirmer sur dessin mécanique TI, alimentation externe 48 V, dissipateur et thermique, réponse/EMI du filtre LC, common-mode du TPA3255, broche MR du TPS3802K33.
 
 **Levé : l'inductance de sortie.** `PA6331-AE` est figée sur arbitrage utilisateur ; reste à confirmer en H2 qu'elle est toujours approvisionnable.
 
@@ -60,7 +62,8 @@ Assumés : stabilité de la boucle de limitation de puissance du LM5069 face aux
 - **`create_footprint` produit des graphiques conformes aux conventions KLC quand les cotes fournies sont justes.** L'échec de `CF_Film_Box` venait des cotes, pas du générateur. Lui donner les cotes du corps et le laisser calculer les marges.
 - **Lire les cotes par extraction du PDF fabricant, pas par recherche web ni par listing distributeur.** `pymupdf` installé, `pdftotext` dans `/mingw64/bin`. **Toujours contrôler si un tracé est à l'échelle** : ni celui de Schurter ni celui de Coilcraft ne le sont ; se mesure en comparant, sur les vecteurs du PDF, l'échelle déduite de deux cotes différentes. **Et toujours vérifier à quelle figure appartient une cote** : le « ø2 ± 0,1 » des snap-in est une cote de perçage, pas de broche.
 - **Une référence ne se valide pas sur son aspect, mais en la décodant champ par champ contre la clé du fabricant, puis en recoupant la boîte obtenue avec le tableau de la valeur visée.**
-- **Serveurs qui servent le PDF à `curl`** : ti.com/lit, vishay.com/docs, content.kemet.com, cde.com, coilcraft.com/pdfs, wima.de, tdk-electronics.tdk.com, Infineon. **Serveurs qui refusent ou ne répondent pas** : Littelfuse, DigiKey, LCSC, nichicon.co.jp, rubycon.co.jp, industrial.panasonic.com (timeout complet), coilcraft.com hors `/pdfs` (403).
+- **Serveurs qui servent le PDF à `curl`** : ti.com/lit, vishay.com/docs, content.kemet.com, cde.com, coilcraft.com/pdfs, wima.de, tdk-electronics.tdk.com, Infineon, **`wmsc.lcsc.com`**. **Serveurs qui refusent ou ne répondent pas** : Littelfuse, DigiKey, `www.lcsc.com` et `datasheet.lcsc.com`, nichicon.co.jp, rubycon.co.jp, industrial.panasonic.com (timeout complet), coilcraft.com hors `/pdfs` (403).
+- **Un PDF sans couche texte se lit quand même** : `pdftoppm` n'est pas installé, donc l'outil de lecture d'image du harness ne prend pas le PDF directement ; le rendre en PNG par `pymupdf` (`page.get_pixmap(dpi=200)`) puis lire le PNG. C'est ainsi qu'a été lu le plan MaiXu.
 - Aucune mutation géométrique : la connectivité repose sur la coïncidence label/ancre.
 - TVS cantonnée aux transitoires rapides ; la protection en surtension est active, par `LM5069`.
 - Bulk maintenu à 15 400 µF sur arbitrage utilisateur ; `Q302` choisi en conséquence.
@@ -92,4 +95,4 @@ Assumés : stabilité de la boucle de limitation de puissance du LM5069 face aux
 
 ## NEXT ACTION
 
-D1.2 — clore le dernier point ouvert : le calibre en courant du bornier MaiXu MX126-5.0 de `J1`, qui porte 4,6 A continus et 10 A transitoires. La datasheet que cite l'empreinte KiCad est hébergée par LCSC, qui refuse `curl` ; chercher donc une autre voie — page fabricant MaiXu, ou catalogue d'un bornier au pas de 5 mm mécaniquement identique dont le calibre soit publié par un fabricant accessible, en disant clairement dans le plan que la preuve est alors indirecte. Si aucune voie ne donne un chiffre à la source, laisser `J1` en `NEEDS_DATA` explicite plutôt que de supposer un calibre, et enchaîner sur D1.3, dernière tâche ouverte de D1 : HTSSOP du TPA3255, PowerPAD et stratégie de vias thermiques.
+D1.3 — vérifier le boîtier du TPA3255 sur le dessin mécanique TI : le `DDV` est un HTSSOP-44 à PowerPAD exposé, dont le `NEEDS_DATA` ouvert annonce un EP de 5,2 × 14 mm à confirmer. Contrôler que l'empreinte portée au schéma est bien celle de ce boîtier et que son pad thermique correspond à la cote lue, puis établir la stratégie de vias thermiques à partir de la note d'application TI sur le PowerPAD — nombre, diamètre, pas et remplissage — en la reliant au bilan de pertes déjà connu : les 3,1 W des quatre inductances s'ajoutent aux pertes du TPA3255 lui-même. `ti.com/lit` sert les PDF à `curl`.
