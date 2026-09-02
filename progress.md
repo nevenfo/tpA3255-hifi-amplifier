@@ -2,30 +2,33 @@
 
 ## Phase actuelle
 
-**Phase E — PCB 4 couches.** `GATE C2 = PASS`. **Nouvelle baseline : 16 violations, 0 erreur** — 10 `endpoint_off_grid` et 6 `lib_symbol_mismatch`. Le seizième est arrivé avec le symbole local créé en E1.8 et rejoint les cinq que le projet porte déjà pour ses autres symboles locaux.
+**Phase E — PCB 4 couches.** `GATE C2 = PASS`. Baseline ERC : **16 violations, 0 erreur** — 10 `endpoint_off_grid` et 6 `lib_symbol_mismatch`, ces derniers étant le prix des symboles locaux du projet. Baseline DRC : **138 violations, 254 non-connectés, `schematic_parity` = 0**.
 
 ## Tâche actuelle
 
-**E1.2 — placer la puissance Class-D.** Contour, import et placement faits. **Ne reste que les deux perçages M3** de fixation de la barre, désormais débloqués : E1.8 est passée, donc plus aucune resynchronisation n'est prévue avant leur ajout.
+**E1.9 — la règle DRC d'isolation interne aux boîtiers à pas fin.** Doit faire tomber les 42 violations `clearance`, toutes intra-empreinte. Non commencée.
 
 ## Dernière tâche validée
 
-**E1.8 = PASS — le tab de `U3` est raccordé.** Symbole local `TLV1117_33_FIXED` créé dans `HifiAmp_TPA3255.kicad_sym`, copie du `Regulator_Linear:TLV1117-33` augmentée d'une **broche 4 `TAB` de type `passive`, superposée exactement sur la broche 2 `VO`**. `U3` y est repointé sans bouger.
+**E1.2 = PASS, close par ses deux perçages M3.** `H1` en `(285.000, 163.000)` et `H2` en `(285.000, 187.000)`, entraxe 24 mm, encadrant `U6` — **motif validé par l'utilisateur** contre les variantes 30 mm et trois points. Empreintes `MountingHole:MountingHole_3.2mm_M3`, `F.Cu`, rotation 0, sans net ni symbole au schéma.
+
+**Deux défauts de `add_mounting_hole` corrigés au passage** : l'outil forge un `fpid` `MountingHole:MountingHole_3.2mm` inexistant en bibliothèque, et écrit `(size 3.7 3.7)` pour un `(drill 3.2)` — soit un anneau de cuivre flottant de 0,25 mm sur toutes les couches, sous la vis et la barre d'aluminium nu. Le second défaut avait échappé au rapport d'agent, vu à la relecture du fichier. Corrigé par `place_component` en IPC avec l'empreinte réelle, qui pose `(size 3.2 3.2)`, cuivre nul, courtyard compris.
 
 Validation, tenue au fichier par le principal :
 
-- `pad 4` de `U3` porte **`/+3V3`**, et **plus aucune pastille numérotée de la carte n'est sans équipotentielle**.
-- Les **21 placements de E1.2 sont intacts**, 122 empreintes, 74 nets, contour intact, `schematic_parity` toujours **0**.
-- Non-connectés **253 → 254** : exactement la pastille nouvellement raccordée, pas encore routée. Preuve arithmétique que le raccordement a pris.
-- ERC **15 → 16 violations, 0 erreur** ; l'écart est un `lib_symbol_mismatch` de plus, de la même nature que les cinq préexistants.
-- `U2` et `LM2940IMP_12_FIXED` intacts.
+- MD5 du `.kicad_pcb` `1dc8f28c…` → `2eba885c…` : l'enregistrement a bien eu lieu.
+- 124 empreintes, exactement deux références `H*` sans doublon, coordonnées, couche et rotation exactes, aucun net.
+- Les **21 placements de E1.2 intacts au micron**, les 101 empreintes du bloc d'import inchangées.
+- `kicad-cli pcb drc` : `schematic_parity` toujours **0**, 254 non-connectés inchangés, et **aucune des 138 violations n'implique `H1` ni `H2`**.
 
-**Avant elle** : E1.2 étape 2 = PASS (21 empreintes placées, DRC 391 → 137), E1.2 étape 1 = PASS (import de 122 empreintes connectées), E1.7, E1.6, E1.1 = PASS, D1 CLOSE.
+**Avant elle** : E1.8, E1.7, E1.6, E1.1 = PASS, D1 CLOSE.
 
 ## Décisions actives
 
 - **`U6` en rotation 180°, centre `(285, 175)`.** Les deux flancs du `HTSSOP-44` ne sont pas interchangeables : côté `x < 0` du symbole tout le bas niveau, côté `x > 0` toute la puissance — six `PVDD`, `OUT_A`–`D`, quatre `BST`, six `GND`. La rotation 180° tourne la puissance vers l'intérieur de la carte et laisse le bas niveau échapper vers la lisière droite.
 - **La barre de liaison est dressée** : 10 mm d'épaisseur dans le plan de la carte, 60 mm de hauteur. Section de conduction inchangée à 600 mm², donc **0,250 à 0,333 °C/W inchangés**, mais l'ombre portée tombe à une bande de 10 mm. **Exigence non négociable qui en découle : la barre doit s'élargir en pied côté flanc pour y présenter au moins 1200 mm²**, sans quoi le terme d'isolation double et la marge tombe à 0,09 °C/W.
+- **Fixation de la barre arrêtée** : deux M3 de passage en `(285, 163)` et `(285, 187)`, **entraxe 24 mm**, encadrant `U6`. Deux vis et non une, pour empêcher la barre de pivoter sur le PowerPAD. **La barre se termine donc en pied élargi** côté `U6` : la lame de 10 mm s'ouvre à ≈ 30 mm de large sur `x` de 280 à 291, pour y porter deux taraudages au même entraxe. La zone d'interdiction s'élargit d'autant : `x` ∈ [280, 291], `y` ∈ [160, 190] côté `U6`. Aucun site de composant n'y tombe — voisin le plus proche `C303` à 8 mm, `U6` à 12 mm de chaque trou.
+- **Les règles DRC personnalisées vivent dans `<projet>.kicad_dru`**, jamais dans `board.design_settings.rules` du `.kicad_pro`, qui ne porte que des minima numériques. Le plan affirmait le contraire ; corrigé.
 - **Zone d'interdiction de composants** : `x` ∈ [280, 300], `y` ∈ [169, 181]. Pas seulement une limite de hauteur — une pièce d'aluminium nu à 1,2 mm du cuivre n'est pas acceptable au-dessus de pastilles. Les découplages bas niveau sont donc rangés au-dessus de `y` = 166,5 et au-dessous de `y` = 183,5.
 - **Contour arrêté à 200 × 150 mm**, `(100,100)`–`(300,250)`, contraint par le placement et non par le coffret ; resserrable après E1.5.
 - **Arbitrages de E1.7 rendus** : coffret **Modushop `03/300` 3U**, carte à plat, isolation reportée à la jonction barre/flanc. Chaîne 1,711 à 1,932 °C/W pour 2,232 de budget — à recorriger selon la réserve du pied de barre ci-dessus.
@@ -82,25 +85,19 @@ Aucun.
 
 ## Fichiers / zones utiles
 
-- `HifiAmp_TPA3255.kicad_pcb` — 122 empreintes connectées, contour 200 × 150, **21 placées**, 101 encore dans le bloc d'import `x` 221,7..321,0 / `y` 200,1..298,8
+- `HifiAmp_TPA3255.kicad_pcb` — **124 empreintes**, contour 200 × 150, **21 placées + H1/H2**, 101 encore dans le bloc d'import `x` 221,7..321,0 / `y` 200,1..298,8
+- `HifiAmp_TPA3255.kicad_dru` — **à créer en E1.9**, n'existe pas encore
 - `HifiAmp_TPA3255.kicad_sym` — contient `LM2940IMP_12_FIXED`, le **précédent à reproduire pour E1.8**
 - `HifiAmp_TPA3255.kicad_pro`, `.kicad_sch`, `sym-lib-table`, `fp-lib-table`
 - `docs/architecture.md` — « E1.2 — le placement retourne la section de la barre », « Arbitrages rendus, et contour qui en découle », « E1.7 — la solution n'est pas un dissipateur, c'est le coffret »
-- **État KiCad actuel** : processus `kicad.exe` PID 25092, éditeur de PCB ouvert depuis le gestionnaire, schéma fermé.
-
-## Motif de fixation proposé pour la barre — à valider avant perçage
-
-Établi géométriquement contre le placement effectif, mais **c'est un choix libre, pas une contrainte forcée** : la carte fixe l'interface, la barre sera usinée pour s'y conformer. À trancher avant de percer.
-
-- **Deux trous M3 de passage en `(285, 163)` et `(285, 187)`**, soit un **entraxe de 24 mm**, encadrant `U6` perpendiculairement à l'axe de la barre. Vérifié libre de tout composant placé et de toute pastille : les découplages bas niveau sont à `x` ≥ 291,5, les bootstrap à `x` ≤ 274,2.
-- **La barre se termine donc en pied élargi côté `U6`** : la lame de 10 mm s'ouvre à ≈ 30 mm de large sur `x` de 280 à 291, pour porter deux taraudages M3 au même entraxe. Deux vis plutôt qu'une, pour répartir la pression sur le PowerPAD — une seule laisserait la barre pivoter.
-- **La zone d'interdiction s'élargit en conséquence** à `x` ∈ [280, 291], `y` ∈ [160, 190] côté `U6`, et reste `x` ∈ [280, 300], `y` ∈ [169, 181] au-delà. Aucun site de composant n'y tombe.
-- Repère : l'entraxe de 36,8 mm du dissipateur de l'EVM était un ordre de grandeur, jamais une valeur à figer.
+- **État KiCad actuel** : processus `kicad.exe` **PID 14180**, éditeur de PCB ouvert depuis le gestionnaire, **schéma fermé** — fermé par `WM_CLOSE` sur son handle Win32 pour lever le « document context is ambiguous » qui bloquait `save_project`. Le titre de fenêtre porte un `*` tant que des modifications live ne sont pas enregistrées : c'est un indicateur fiable.
 
 ## NEXT ACTION
 
-**Clore E1.2 — ajouter les deux perçages M3 de fixation de la barre**, au motif proposé ci-dessus une fois validé : `(285, 163)` et `(285, 187)`, entraxe 24 mm. Ce sont des empreintes sans symbole au schéma : à n'ajouter que maintenant, E1.8 ayant consommé la dernière resynchronisation prévue. Toute resynchronisation ultérieure devra **décocher « supprimer les empreintes sans symbole »**, sans quoi elles disparaîtraient.
+**E1.9 — écrire la règle DRC d'isolation interne aux boîtiers à pas fin.** Créer `HifiAmp_TPA3255.kicad_dru` avec une règle `clearance` de **0,15 mm** conditionnée aux paires de pastilles d'une **même empreinte**, via `A.memberOfFootprint('U6') && B.memberOfFootprint('U6')` et de même pour `U1` et `U8`. Abaisser conjointement `min_clearance` de `0.2` à `0.15` dans `board.design_settings.rules` du `.kicad_pro`, sans quoi le plancher absolu annule la règle sur les 8 cas à 0,150 mm ; les classes de nets restent inchangées à 0,25 et 0,50 mm.
 
-Valider par relecture du fichier — deux trous mécaniques présents, hors de l'emprise des composants placés — et par `kicad-cli pcb drc --format json` : `schematic_parity` doit rester à 0 et les 21 placements de E1.2 rester intacts.
+Écarts réels à couvrir : `0,235 mm` × 26, `0,200 mm` × 8, `0,150 mm` × 8, sur `U6` (26), `U1` (8), `U8` (8).
 
-Enchaîner ensuite sur **E1.9**, la règle DRC d'isolation pastille-à-pastille interne aux boîtiers à pas fin, qui doit faire tomber les 42 violations `clearance` restantes.
+Valider par `kicad-cli pcb drc --format json` : **les 42 violations `clearance` tombent à 0**, le total passe de 138 à 96, `schematic_parity` reste à 0, les 254 non-connectés sont inchangés, et aucune violation nouvelle n'apparaît — en particulier aucune entre empreintes distinctes.
+
+Le `.kicad_pro` étant un fichier de configuration, il s'édite directement ; mais **KiCad l'a ouvert**, donc le fermer avant l'édition pour qu'il ne l'écrase pas.
