@@ -458,6 +458,20 @@ Deux points restent à fixer plus tard, faute de données :
 - **Perçages de fixation** : l'embase `01/05` est pré-percée, mais son plan de perçage n'est pas publié. Trous à ajouter une fois le plan obtenu ou l'embase mesurée. `NEEDS_DATA` mineur, sans effet sur le placement.
 - **Orientation dans le coffret** : entrées RCA, sorties haut-parleur et entrée 48 V sur le panneau arrière ; `J4` vers la façade, où le potentiomètre est monté. `U6` contre un flanc, donc en bord latéral — ce qui impose de séparer l'analogique bas niveau du bord opposé.
 
+### E1.2 — le placement retourne la section de la barre
+
+Trois faits géométriques, établis en plaçant `U6`, obligent à préciser l'orientation de la barre. Ils ne changent pas les chiffres de la chaîne thermique, mais ils changent la pièce.
+
+**1. `U6` ne peut pas être collé au bord.** Le `HTSSOP-44` porte 22 broches de chaque côté, et les deux côtés ne sont pas interchangeables : côté `x < 0` du symbole se trouve **tout le bas niveau** — `INPUT_A`–`D`, `GVDD`, `VDD`, `DVDD`, `AVDD`, `RESET`, `FAULT`, `VBG`, `CLIP_OTW`, `OSC`, `FREQ_ADJ`, `OC_ADJ`, `C_START` — et côté `x > 0` **toute la puissance** : six `PVDD`, `OUT_A`–`D`, quatre `BST`, six `GND`. Le boîtier doit donc être posé à **rotation 180°**, puissance vers l'intérieur de la carte, ce qui laisse le bas niveau échapper vers la lisière droite. Une lisière de moins de 10 mm ne suffirait pas à sortir 22 broches : `U6` est centré en `(285, 175)`, à 10,25 mm du bord.
+
+**2. Une barre couchée stériliserait la lisière.** La face inférieure de la barre repose sur le dessus de `U6`, donc à ≈ **1,2 mm** du circuit imprimé. Une barre de 60 mm de large posée à plat projetterait sur la carte une ombre d'environ **60 × 20 mm** à cette hauteur. Deux conséquences, et la seconde est rédhibitoire : aucun composant plus haut que 1,2 mm n'y tiendrait, et surtout **une pièce d'aluminium nu à 1,2 mm du cuivre** n'est pas acceptable au-dessus de pastilles et de vias.
+
+**3. La section tourne de 90°, pas la surface.** La solution est de dresser la barre : **10 mm d'épaisseur dans le plan de la carte, 60 mm de hauteur**, au lieu de l'inverse. La section de conduction reste **600 mm²** et la longueur reste 30 à 40 mm, donc **les 0,250 à 0,333 °C/W de la barre sont inchangés**. Ce qui change est l'ombre portée : elle tombe à **10 mm de large**, soit `x` de 280 à 300 et `y` de 169 à 181 — une bande qui ne contient que `U6` et des échappées de pistes, **aucun site de composant**. Les pistes qui passent dessous sont couvertes par le vernis épargne et séparées de 1,2 mm d'air ; le placement, lui, tient les composants hors de la bande.
+
+**Réserve à ne pas oublier, et elle coûte de la marge.** Le budget de E1.7 chiffre l'isolation barre/flanc **sur 60 × 20 mm**, soit 1200 mm², d'où 0,070 à 0,208 °C/W. Une barre dressée de 10 mm d'épaisseur ne présenterait au flanc que 600 mm² et **doublerait ce terme**, à 0,14–0,42 °C/W : le total passerait de 1,711–1,932 à **1,78–2,14** pour un budget de 2,232, ce qui tient encore mais ne laisse plus que 0,09 °C/W dans le cas défavorable. **Exigence à porter à la pièce : la barre doit s'élargir en pied à son extrémité côté flanc, pour y présenter au moins 1200 mm² de contact.** Un pied rapporté ou une extrémité usinée en T suffit ; c'est la seule cote de la barre qui n'est pas négociable.
+
+**Contrainte de placement qui en découle, appliquée en E1.2** : la bande `x` ∈ [280, 300], `y` ∈ [169, 181] est une **zone d'interdiction de composants**, pas seulement de hauteur. Les découplages du côté bas niveau sont donc rangés en deux groupes, au-dessus de `y` = 166,5 et au-dessous de `y` = 183,5, et rejoignent leurs broches par des pistes qui passent sous la barre.
+
 ### Ce qui ne va pas sur ce dissipateur
 
 - **Les quatre inductances, 3,1 W au total**, dissipent dans le PCB et l'air, pas dans le dissipateur de `U6`.
