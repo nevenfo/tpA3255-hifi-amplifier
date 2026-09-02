@@ -88,9 +88,18 @@ Aucun.
 - `docs/architecture.md` — « E1.2 — le placement retourne la section de la barre », « Arbitrages rendus, et contour qui en découle », « E1.7 — la solution n'est pas un dissipateur, c'est le coffret »
 - **État KiCad actuel** : processus `kicad.exe` PID 25092, éditeur de PCB ouvert depuis le gestionnaire, schéma fermé.
 
+## Motif de fixation proposé pour la barre — à valider avant perçage
+
+Établi géométriquement contre le placement effectif, mais **c'est un choix libre, pas une contrainte forcée** : la carte fixe l'interface, la barre sera usinée pour s'y conformer. À trancher avant de percer.
+
+- **Deux trous M3 de passage en `(285, 163)` et `(285, 187)`**, soit un **entraxe de 24 mm**, encadrant `U6` perpendiculairement à l'axe de la barre. Vérifié libre de tout composant placé et de toute pastille : les découplages bas niveau sont à `x` ≥ 291,5, les bootstrap à `x` ≤ 274,2.
+- **La barre se termine donc en pied élargi côté `U6`** : la lame de 10 mm s'ouvre à ≈ 30 mm de large sur `x` de 280 à 291, pour porter deux taraudages M3 au même entraxe. Deux vis plutôt qu'une, pour répartir la pression sur le PowerPAD — une seule laisserait la barre pivoter.
+- **La zone d'interdiction s'élargit en conséquence** à `x` ∈ [280, 291], `y` ∈ [160, 190] côté `U6`, et reste `x` ∈ [280, 300], `y` ∈ [169, 181] au-delà. Aucun site de composant n'y tombe.
+- Repère : l'entraxe de 36,8 mm du dissipateur de l'EVM était un ordre de grandeur, jamais une valeur à figer.
+
 ## NEXT ACTION
 
-**Clore E1.2 — ajouter les deux perçages M3 de fixation de la barre**, de part et d'autre de `U6`, à l'entraxe de la barre retenue, avec leur dégagement. Ce sont des empreintes sans symbole au schéma : à n'ajouter que maintenant, E1.8 ayant consommé la dernière resynchronisation prévue. Toute resynchronisation ultérieure devra **décocher « supprimer les empreintes sans symbole »**, sans quoi elles disparaîtraient.
+**Clore E1.2 — ajouter les deux perçages M3 de fixation de la barre**, au motif proposé ci-dessus une fois validé : `(285, 163)` et `(285, 187)`, entraxe 24 mm. Ce sont des empreintes sans symbole au schéma : à n'ajouter que maintenant, E1.8 ayant consommé la dernière resynchronisation prévue. Toute resynchronisation ultérieure devra **décocher « supprimer les empreintes sans symbole »**, sans quoi elles disparaîtraient.
 
 Valider par relecture du fichier — deux trous mécaniques présents, hors de l'emprise des composants placés — et par `kicad-cli pcb drc --format json` : `schematic_parity` doit rester à 0 et les 21 placements de E1.2 rester intacts.
 
