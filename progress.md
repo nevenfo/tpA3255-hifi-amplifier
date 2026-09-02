@@ -2,25 +2,25 @@
 
 ## Phase actuelle
 
-**Phase E — PCB 4 couches.** `GATE C2 = PASS` inchangée, revérifiée cette session : `kicad-cli sch erc` remonte 15 violations, 0 erreur, jeu identique à la baseline C2.
+**Phase E — PCB 4 couches.** `GATE C2 = PASS`. **Nouvelle baseline : 16 violations, 0 erreur** — 10 `endpoint_off_grid` et 6 `lib_symbol_mismatch`. Le seizième est arrivé avec le symbole local créé en E1.8 et rejoint les cinq que le projet porte déjà pour ses autres symboles locaux.
 
 ## Tâche actuelle
 
-**E1.2 — placer la puissance Class-D.** Deux étapes sur trois franchies : contour + import, puis placement du bloc de puissance. Reste les deux perçages M3 de la barre, volontairement différés après E1.8.
+**E1.2 — placer la puissance Class-D.** Contour, import et placement faits. **Ne reste que les deux perçages M3** de fixation de la barre, désormais débloqués : E1.8 est passée, donc plus aucune resynchronisation n'est prévue avant leur ajout.
 
 ## Dernière tâche validée
 
-**E1.2 étape 2 = PASS — bloc de puissance placé.** 21 empreintes posées : `U6` en `(285, 175)` **rotation 180°**, bootstrap `C306`–`C309`, découplages `PVDD` `C310`/`C311`, découplages bas niveau `C301`–`C305`/`C318`–`C320`, bulk `C312`–`C317`.
+**E1.8 = PASS — le tab de `U3` est raccordé.** Symbole local `TLV1117_33_FIXED` créé dans `HifiAmp_TPA3255.kicad_sym`, copie du `Regulator_Linear:TLV1117-33` augmentée d'une **broche 4 `TAB` de type `passive`, superposée exactement sur la broche 2 `VO`**. `U3` y est repointé sans bouger.
 
-Validation, tenue au fichier par le principal indépendamment du rapport d'agent :
+Validation, tenue au fichier par le principal :
 
-- L'empreinte **MD5 du `.kicad_pcb` a changé** — l'enregistrement a bien eu lieu, ce que le seul retour d'outil n'aurait pas prouvé.
-- Les **21 positions et angles relus sont exacts**, sans écart à la table.
-- Les **101 autres empreintes n'ont pas bougé** : toutes encore dans le bloc d'import.
-- 122 empreintes, 122 références distinctes, contour `Edge.Cuts` intact.
-- `kicad-cli pcb drc` : violations **391 → 137**, `schematic_parity` reste **0**, 253 non-connectés inchangés puisque rien n'est routé.
+- `pad 4` de `U3` porte **`/+3V3`**, et **plus aucune pastille numérotée de la carte n'est sans équipotentielle**.
+- Les **21 placements de E1.2 sont intacts**, 122 empreintes, 74 nets, contour intact, `schematic_parity` toujours **0**.
+- Non-connectés **253 → 254** : exactement la pastille nouvellement raccordée, pas encore routée. Preuve arithmétique que le raccordement a pris.
+- ERC **15 → 16 violations, 0 erreur** ; l'écart est un `lib_symbol_mismatch` de plus, de la même nature que les cinq préexistants.
+- `U2` et `LM2940IMP_12_FIXED` intacts.
 
-**Avant elle** : E1.2 étape 1 = PASS (import des 122 empreintes connectées, 74 nets), E1.7 = PASS, E1.6 = PASS, E1.1 = PASS, D1 CLOSE.
+**Avant elle** : E1.2 étape 2 = PASS (21 empreintes placées, DRC 391 → 137), E1.2 étape 1 = PASS (import de 122 empreintes connectées), E1.7, E1.6, E1.1 = PASS, D1 CLOSE.
 
 ## Décisions actives
 
@@ -51,6 +51,7 @@ Aucun.
 4. **Un seul document ouvert à la fois.** Schéma et PCB ouverts ensemble donnent `KiCad document context is ambiguous: expected exactly one PCB or schematic handler, found 2`. Fermer l'autre fenêtre par son handle Win32 suffit — la fenêtre du gestionnaire, elle, ne compte pas comme handler.
 5. `kicad_common.json` porte déjà `api.enable_server = true` ; il manquait seulement le processus.
 6. **Toujours prouver un enregistrement par le MD5 du fichier**, jamais par le retour de `save_project`.
+7. **Ne jamais lancer KiCad depuis le shell de l'agent : il est élevé, KiCad hérite du jeton administrateur, et UIPI bloque alors silencieusement tout clic et toute frappe** venant d'une session d'automatisation non élevée — les appels rapportent un faux succès. **Lancer par `explorer.exe <chemin du projet>`**, qui s'exécute avec le jeton utilisateur normal. Contrôler le résultat en lisant le `TokenElevation` du processus : il doit valoir `normal`.
 
 ## État de la stack MCP
 
@@ -89,8 +90,8 @@ Aucun.
 
 ## NEXT ACTION
 
-**E1.8 — raccorder le tab de `U3` à `/+3V3`.** Reproduire le précédent `LM2940IMP_12_FIXED` : créer un symbole local `TLV1117_33_FIXED` dans `HifiAmp_TPA3255.kicad_sym` portant la quatrième broche du `DCY`, y repointer `U3`, puis resynchroniser le PCB.
+**Clore E1.2 — ajouter les deux perçages M3 de fixation de la barre**, de part et d'autre de `U6`, à l'entraxe de la barre retenue, avec leur dégagement. Ce sont des empreintes sans symbole au schéma : à n'ajouter que maintenant, E1.8 ayant consommé la dernière resynchronisation prévue. Toute resynchronisation ultérieure devra **décocher « supprimer les empreintes sans symbole »**, sans quoi elles disparaîtraient.
 
-Séquence KiCad imposée : fermer l'éditeur de PCB, ouvrir l'éditeur de schéma **depuis le gestionnaire** pour n'avoir qu'un seul handler, faire l'édition, refermer, rouvrir l'éditeur de PCB depuis le gestionnaire, relancer « Mise à jour du PCB à partir du Schéma » — cette fois **en décochant « supprimer les empreintes sans symbole »** n'est pas nécessaire, aucune empreinte hors schéma n'existe encore.
+Valider par relecture du fichier — deux trous mécaniques présents, hors de l'emprise des composants placés — et par `kicad-cli pcb drc --format json` : `schematic_parity` doit rester à 0 et les 21 placements de E1.2 rester intacts.
 
-Valider par : `pad 4` de `U3` portant `/+3V3` à la relecture du fichier, `schematic_parity` toujours à 0, ERC toujours à 15 violations / 0 erreur, et les 21 placements de E1.2 intacts. Enchaîner ensuite sur les deux perçages M3 pour clore E1.2, puis E1.9.
+Enchaîner ensuite sur **E1.9**, la règle DRC d'isolation pastille-à-pastille interne aux boîtiers à pas fin, qui doit faire tomber les 42 violations `clearance` restantes.
