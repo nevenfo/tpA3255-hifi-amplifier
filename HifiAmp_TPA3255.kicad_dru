@@ -1,0 +1,19 @@
+(version 1)
+
+# Isolation pastille-a-pastille INTERNE aux boitiers a pas fin.
+#
+# Les 42 violations "clearance" du DRC n'opposent jamais deux empreintes
+# distinctes : elles opposent deux pastilles d'un meme boitier, dont l'ecart
+# est impose par le pas du composant et non par le placement. HTSSOP-44 a
+# 0,635 mm de pas laisse 0,235 mm entre pastilles ; WSON-10 et MSOP-10 a
+# 0,5 mm descendent a 0,150 mm. Les isolations de classes de nets posees en
+# E1.1 (0,25 mm en general, 0,50 mm sur les classes de puissance) sont donc
+# plus exigeantes que ce que la geometrie des composants permet.
+#
+# 0,150 mm reste tres au-dessus des capacites courantes d'un fabricant : ce
+# n'est pas un defaut de fabricabilite, c'est la regle qui etait mal cadree.
+# L'isolation entre empreintes distinctes n'est pas touchee.
+
+(rule "Isolation interne aux boitiers a pas fin"
+	(constraint clearance (min 0.15mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && ((A.memberOfFootprint('U1') && B.memberOfFootprint('U1')) || (A.memberOfFootprint('U6') && B.memberOfFootprint('U6')) || (A.memberOfFootprint('U8') && B.memberOfFootprint('U8')))"))
