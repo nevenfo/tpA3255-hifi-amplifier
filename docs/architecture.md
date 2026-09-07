@@ -644,29 +644,51 @@ et elle diffère d'un canal à l'autre. **À corriger : replacer les quatre en m
 `C310`/`C311`, le découplage `PVDD`, respectent le miroir **à 0,2 mm près** (178,3 contre 171,9
 pour 171,7 attendu) — à aligner en même temps, pour le même coût.
 
-### Le constat dominant : le pont BTL est déséquilibré à l'intérieur de chaque voie
+### Le constat dominant : la translation des selfs contredit le miroir du brochage
 
-C'est l'écart le plus lourd, et il n'est pas inter-voies mais **intra-voie**. Les quatre sorties
-de `U6` quittent toutes le même flanc, à `x` = 281,288. Ensuite :
+**Rectification d'une première lecture.** Comparer les seuls écarts en `x` — 5,3 mm d'un côté,
+41,3 mm de l'autre — donnait à croire que le déséquilibre était purement intra-voie et que les
+deux voies restaient comparables. C'est faux. En mesurant les trajets réels, centre à centre,
+la conclusion s'inverse.
 
-| Moitié de pont | Self | `x` de la self | Trajet jusqu'à la self |
+Chaîne mesurée : pastille `OUT` de `U6` → self → bornier. Les condensateurs `C321`–`C324` sont
+en dérivation sur `GND`, pas en série, et ne rallongent donc pas le trajet.
+
+| Moitié de pont | `OUT` → self | self → bornier | **Total** |
 | --- | --- | --- | --- |
-| A (voie L) | `L301` | 276 | **5,3 mm** |
-| B (voie L) | `L302` | 240 | **41,3 mm** |
-| C (voie R) | `L303` | 276 | **5,3 mm** |
-| D (voie R) | `L304` | 240 | **41,3 mm** |
+| A (voie L) | 16,73 | 54,92 | **71,65** |
+| B (voie L) | 45,47 | 46,39 | **91,86** |
+| C (voie R) | 38,32 | 59,54 | **97,86** |
+| D (voie R) | 58,28 | 33,12 | **91,40** |
 
-Les deux voies sont **rigoureusement comparables entre elles** — c'est la symétrie L/R, et elle
-est acquise. Mais à l'intérieur de chaque voie, une moitié du pont parcourt **36 mm de plus que
-l'autre** avant son filtre. En BTL, les deux moitiés forment la sortie différentielle : un tel
-déséquilibre de longueur, sur un signal PWM commuté sous forte intensité, se paie en écart de
-temps de propagation et en dissymétrie de rayonnement du mode commun.
+Ce que ces quatre nombres disent :
 
-C'était un choix assumé en E1.3 — « déployer les quatre filtres depuis le flanc de dix
-millimètres du composant ». La géométrie l'impose en partie : quatre chaînes de filtrage et deux
-borniers doivent sortir d'un seul flanc. **La question que E1.5 doit trancher n'est donc pas
-« est-ce symétrique » — ça ne l'est pas — mais « peut-on rapprocher `L301` et `L302` d'un `x`
-commun sans casser ce qui est déjà acquis ».** Elle reste ouverte.
+- **Les deux voies ne sont pas comparables.** La voie R totalise 189,3 mm contre 163,5 mm pour
+  la voie L : **25,7 mm de cuivre de sortie en plus**, soit environ 16 %.
+- **Le déséquilibre intra-voie n'est pas uniforme non plus** : 20,2 mm d'écart entre les deux
+  moitiés du pont gauche, mais seulement 6,5 mm à droite.
+- **Aucun des deux appariements ne tient** : par numéro, A↔C dérive de 26,2 mm ; par miroir,
+  A↔D de 19,8 mm. Seul B↔D tombe juste, à 0,5 mm — par coïncidence de géométrie, pas par
+  construction.
+
+**La cause est structurelle, et c'est le point à retenir.** Les pastilles de sortie de `U6` sont
+disposées en **miroir** autour de `y` = 175, tandis que les selfs sont placées en **translation**
+(0 ; +17). Composer un miroir avec une translation ne peut pas produire quatre trajets appariés :
+l'écart exact de (0 ; +17) entre `L301`/`L303` et entre `L302`/`L304` est donc **géométriquement
+irréprochable et électriquement trompeur**. C'est précisément le piège que la note « le brochage
+est un miroir » sert à éviter.
+
+**Conséquence pour la suite.** La question n'est pas « rapprocher `L301` et `L302` d'un `x`
+commun », comme une lecture en `x` seul le suggérait. Elle est : **faut-il replacer les quatre
+selfs en miroir autour de `y` = 175, à l'image du brochage, plutôt qu'en deux rangées
+translatées ?** Un placement miroir apparierait A↔D et B↔C par construction, mais renverrait les
+deux borniers dans des positions non symétriques, et se heurte à la zone interdite de la barre de
+liaison — `x` ∈ [280, 291] sur `y` ∈ [160, 190]. L'arbitrage n'est pas gratuit et reste ouvert.
+
+**Ordre de grandeur, pour ne pas surestimer l'enjeu.** Ces longueurs sont des distances centre à
+centre sur un routage qui n'existe pas encore ; elles majorent ou minorent le cuivre final selon
+le chemin retenu. Elles suffisent à établir un écart de structure, pas à chiffrer une
+dissymétrie. Le chiffrage se fera sur le routage réel, en F1.
 
 ### Ordre en `x` des condensateurs de sortie
 

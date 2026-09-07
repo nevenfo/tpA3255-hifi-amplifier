@@ -15,9 +15,9 @@ corrections qu'elle a démontrées, puis le retour des courants et les masses.
 
 **E1.5, tranche « symétrie mesurée » = PASS**, en lecture seule. Les 18 paires analogiques sont
 à **(0 ; +40 ; 0°) exact** ; les selfs à (0 ; +17) exact ; condensateurs de sortie et borniers à
-(−22 ; 0) exact. **Trois écarts établis** — `VMID` décentré, bootstraps hors miroir, pont BTL
-déséquilibré en intra-voie. Détail complet : `docs/architecture.md`, section « E1.5 — symétrie
-mesurée du placement ».
+(−22 ; 0) exact. **Trois écarts établis** — `VMID` décentré, bootstraps hors miroir, et la
+translation des selfs qui contredit le miroir du brochage. Détail complet :
+`docs/architecture.md`, section « E1.5 — symétrie mesurée du placement ».
 
 Validation :
 
@@ -38,6 +38,10 @@ Placement figé, budgets thermiques et pilotage KiCad sont dans `docs/architectu
   Toute vérification de symétrie de sortie qui apparie par numéro est fausse.
 - **La symétrie de la carte n'est pas un vecteur unique** : (0 ; +40) en analogique, (0 ; +17)
   aux selfs, (−22 ; 0) aux sorties. Aucun contrôle par translation globale.
+- **Un écart géométrique exact peut être électriquement faux.** Les selfs sont à (0 ; +17)
+  exact, mais composée avec un brochage en miroir cette translation donne des trajets
+  pastille→self→bornier de 71,7 / 91,9 / 97,9 / 91,4 mm : **25,7 mm de cuivre en plus sur la
+  voie droite**. Ne jamais conclure la symétrie d'une sortie sur le seul vecteur de placement.
 - **Barre de liaison** : 10 × 60 mm, 600 mm², **pied élargi ≥ 1200 mm² non négociable**. M3 en
   (285, 163) et (285, 187). **Zones interdites** : `x` ∈ [280, 291], `y` ∈ [160, 190] ; et
   `x` ∈ [280, 300], `y` ∈ [169, 181].
