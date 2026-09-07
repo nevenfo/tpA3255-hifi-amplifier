@@ -3,33 +3,32 @@
 ## Phase actuelle
 
 **Phase E — PCB 4 couches.** `GATE C2 = PASS`, baseline ERC 16 violations / 0 erreur. DRC
-courant : **105 violations, 254 non-connectés, `schematic_parity` = 0** — **toutes de la
+courant : **106 violations, 254 non-connectés, `schematic_parity` = 0** — **toutes de la
 sérigraphie**, normales avant routage. Aucune `clearance`, aucun `courtyards_overlap`, aucun
 `lib_footprint_mismatch`.
 
 ## Tâche actuelle
 
-**E1.5 — revue du placement.** Tranches « symétrie mesurée », « corrective » et « retour des
-courants et masses » closes. Reste **la rotation de `C308`/`C309`**, puis clearances et
-manufacturabilité.
+**E1.5 — revue du placement.** Quatre tranches closes. Restent **clearances et
+manufacturabilité**.
 
 ## Dernière tâche validée
 
-**E1.5, tranche « retour des courants et masses » = PASS**, en lecture seule. Fait dominant :
-**un seul net de masse, `/GND`, et aucune zone dessinée** — la séparation sera géométrique,
-décidée en F1, avec **35,76 mm** de marge. Trois découvertes : `C308`/`C309` **croisés** (seules
-les positions avaient été mises en miroir, pas les orientations) ; **les deux borniers de sortie
-croisés** ; **160 mm d'entrées analogiques** dont le filtre est à la mauvaise extrémité. Détail
-et contraintes F1 : `docs/architecture.md`.
+**E1.5, tranche « rotation des bootstraps croisés » = PASS.** `C308` et `C309` passent de 90° à
+**270°**, sans déplacement : centres identiques au micron, sommes à 350 préservées. `C306`/`C307`
+inchangés — les tourner les croiserait.
 
 Validation :
 
-- Les trois questions posées reçoivent une réponse **mesurée**, aucune estimée.
-- Chaque croisement est établi par **test d'intersection des segments**, pas par une aire.
-- `.kicad_pcb` **identique au bit près** — MD5 `a0a35c1636a56b0deb7c7934052899ff`, `git diff` vide.
+- **Test d'intersection rejoué** sur les six condensateurs voisins de `U6` — quatre bootstraps
+  plus `C310`/`C311` — **zéro croisement**.
+- 124 empreintes, les **122 autres intactes** ; `C306`/`C307` toujours à 90° ;
+  `pad_prop_heatsink` de `U1` présent.
+- DRC : **106 violations, toutes de sérigraphie**, 254 non-connectés, `schematic_parity` = 0,
+  **aucune `clearance` ni `courtyards_overlap`**.
 
-**Avant elle** : E1.5 « corrective » et « symétrie mesurée » ; E1.4 (`698e925`) ; E1.10 ; E1.3 ;
-E1.9, E1.2, E1.8, E1.7, E1.6, E1.1 = PASS.
+**Avant elle** : E1.5 « retour des courants et masses », « corrective » et « symétrie mesurée » ;
+E1.4 (`698e925`) ; E1.10 ; E1.3 ; E1.9, E1.2, E1.8, E1.7, E1.6, E1.1 = PASS.
 
 ## Décisions actives
 
@@ -54,6 +53,8 @@ Placement figé, budgets thermiques et pilotage KiCad sont dans `docs/architectu
   `pad_prop_heatsink`, seule occurrence de la carte. **À vérifier après tout déplacement d'un
   circuit intégré à pad exposé.**
 - **Une contrainte d'encombrement se valide au DRC, pas au calcul de courtyard.**
+- **L'IPC écrit une rotation de 270° sous la forme `-90`.** Équivalent modulo 360, mais un
+  contrôle qui chercherait littéralement `270` conclurait à tort à un échec.
 - **Un DRC de comparaison se lance dans le répertoire du projet**, sinon la baseline est fausse.
   Binaire : `C:/Users/FlowUP/AppData/Local/Programs/KiCad/10.0/bin/kicad-cli.exe`.
 - Toute édition schéma/PCB/librairie passe par `kicad-control`/MCP ; **les fichiers de
@@ -72,7 +73,7 @@ Hors périmètre du placement, aucune ne bloque la prochaine action : **permuter
 ## Fichiers / zones utiles
 
 - `HifiAmp_TPA3255.kicad_pcb` — 124 empreintes **toutes placées**, MD5
-  `a0a35c1636a56b0deb7c7934052899ff` ; `.kicad_dru` porte la règle d'isolation intra-empreinte
+  `eb5273ac4252b64fd97f4bd90b058fd9` ; `.kicad_dru` porte la règle d'isolation intra-empreinte
   de E1.9 ; `.kicad_sym` les symboles locaux
 - **`docs/kicad-operations.md`** — pilotage KiCad, à lire avant toute manipulation de la carte
 - `docs/architecture.md` — placement figé, symétrie mesurée, tranche corrective, retour des
@@ -80,19 +81,22 @@ Hors périmètre du placement, aucune ne bloque la prochaine action : **permuter
 
 ## NEXT ACTION
 
-**E1.5, tranche « rotation des bootstraps croisés ».** L'éditeur de PCB étant ouvert, reprendre
-via `kicad-control`/MCP. **Deux rotations, aucun déplacement** :
+**E1.5, tranche « clearances et manufacturabilité »**, en **lecture seule** — mesure au fichier,
+aucune écriture, `.kicad_pcb` identique au bit près à la fin (`git diff` vide).
 
-| Réf. | Orientation actuelle | Cible |
-| --- | --- | --- |
-| `C308` | 90° | **270°** |
-| `C309` | 90° | **270°** |
+Quatre contrôles, chacun conclu par une mesure :
 
-`C306` et `C307` **ne bougent pas** : déjà dans le bon sens, les tourner les croiserait. Les
-centres de `C308` (273,5 ; 173,5) et `C309` (273,5 ; 169,6) restent **identiques au micron**.
+1. **Les 106 violations de sérigraphie**, seul poste non vide du DRC. Établir combien relèvent de
+   références chevauchant une pastille — donc illisibles après fabrication — et combien sont sans
+   conséquence. C'est le dernier poste qui pourrait masquer un vrai défaut avant routage.
+2. **Isolation des tensions élevées** : le rail `PVDD` est à 48 V et les sorties commutent à cette
+   amplitude. Mesurer les distances les plus courtes entre un net de puissance et un net de
+   signal, et les confronter à la règle d'isolation portée par `.kicad_dru`.
+3. **Distance au contour** de toutes les empreintes — contour 200 × 150, `(100,100)`–`(300,250)` —
+   et respect des deux zones interdites par la barre de liaison.
+4. **Manufacturabilité** : empreintes trop proches pour la pose automatique, et cohérence des
+   côtés de pose.
 
-Valider par relecture — les 2 orientations, les **124 centres inchangés**, `pad_prop_heatsink`
-à 1 — puis par le **test d'intersection** rejoué sur les quatre bootstraps : les quatre doivent
-ressortir **simples**, aucun croisé. Enfin `kicad-cli pcb drc --format json` depuis le répertoire
-du projet : `schematic_parity` = 0, 254 non-connectés, **aucune `clearance`, aucun
-`courtyards_overlap`**, `lib_footprint_mismatch` = 0. Seul le compte de sérigraphie peut varier.
+Livrable : une section dans `docs/architecture.md`, chaque conclusion adossée à une mesure citée,
+et ce qui doit passer en contrainte F1 inscrit explicitement. **E1.5 se clôt avec cette tranche**
+si aucun défaut bloquant n'apparaît.

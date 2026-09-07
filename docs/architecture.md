@@ -896,3 +896,15 @@ l'utilisateur**, inscrite comme telle : elle n'est ni gratuite ni sans effet sur
 >    `y` = 229) doivent revenir à la masse de puissance de `U6` — environ 48 mm — **sans emprunter
 >    le plan analogique**.
 > 4. **Bootstraps** : après rotation de `C308`/`C309`, router les quatre boucles **sans via**.
+
+### Rotation appliquée
+
+`C308` et `C309` sont passés de 90° à 270°, **sans déplacement** — centres inchangés au micron,
+donc les sommes à 350 de la tranche corrective sont intactes. Le test d'intersection rejoué sur
+les six condensateurs du voisinage de `U6` — quatre bootstraps plus `C310`/`C311` — donne
+**zéro croisement**. DRC : 106 violations, toutes de sérigraphie, `schematic_parity` = 0, aucune
+`clearance`, aucun `courtyards_overlap`.
+
+> **Détail qui compte pour les contrôles futurs** : l'IPC écrit cette orientation **`-90`**, pas
+> `270`. Les deux sont équivalents modulo 360, mais un contrôle qui chercherait littéralement
+> `270` conclurait à tort que la rotation n'a pas pris.
