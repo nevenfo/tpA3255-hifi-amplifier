@@ -998,3 +998,41 @@ Les cinq objets de l'unité ont reçu une réponse mesurée : symétrie, retour 
 clearances, manufacturabilité. Trois défauts ont été trouvés et deux corrigés dans la carte — les
 positions puis les orientations que le miroir de `U6` rendait fausses. Les deux qui restent sont
 inscrits comme décisions à porter à l'utilisateur, et aucun ne bloque le routage.
+
+## E1.12 — les condensateurs d'entrée passent à la charge
+
+Les quatre 100 pF du filtre anti-repliement quittent le bloc analogique pour les broches d'entrée
+de `U6`. Leur résistance série de 100 Ω reste où elle était, près des amplis opérationnels : c'est
+la topologie correcte — **résistance à la source, condensateur à la charge** — et elle shunte à la
+masse le bruit capté sur les 160 mm de traversée, juste avant le circuit.
+
+| Réf. | Avant | Après | Distance pastille → broche |
+| --- | --- | --- | --- |
+| `C106` | (126 ; 159,5) | **(291,5 ; 182,0)** | 3,51 mm |
+| `C107` | (132 ; 159,5) | **(295,0 ; 182,0)** | 6,53 mm |
+| `C206` | (126 ; 199,5) | **(295,0 ; 168,63)** | 6,54 mm |
+| `C207` | (132 ; 199,5) | **(291,5 ; 168,64)** | 3,50 mm |
+
+**Le couloir disponible est étroit parce que les deux zones réservées se composent** : sous
+`x` = 291 c'est toute la bande `y` 160..190 qui est fermée, et jusqu'à `x` = 300 la bande
+`y` 169..181 l'est aussi — or les quatre broches d'entrée débouchent précisément dans la seconde.
+Il ne restait donc que `x` ≥ 291,5 **et** `y` hors [169, 181]. Les quatre positions y tiennent,
+avec au moins 2,5 mm de tout voisin.
+
+### La symétrie est redéfinie, pas perdue
+
+Ces quatre condensateurs ne relèvent plus de la translation (0 ; +40) du bloc analogique. Ils
+suivent désormais **le miroir du brochage de `U6`** : `C106`+`C207` somment à **350,64** et
+`C107`+`C206` à **350,63**, exactement comme les broches `INPUT_A`+`INPUT_D` et
+`INPUT_B`+`INPUT_C` qu'ils desservent. **C'est la relation à vérifier pour eux** — un contrôle qui
+leur appliquerait encore (0 ; +40) conclurait à tort que la symétrie est rompue.
+
+### Preuve
+
+DRC après déplacement : **112 violations, toutes de sérigraphie** (90 `silk_overlap`, 22
+`silk_over_copper`), **aucune `clearance`, aucun `courtyards_overlap`** — c'était le seul risque
+réel, les cibles étant bordées par `C302`, `R301`, `C304` et `R302`. 254 non-connectés inchangés,
+124 empreintes, et **seules ces quatre-là ont bougé** depuis la baseline. Le compte de sérigraphie
+monte de 106 à 112 : six chevauchements de plus dans une bande déjà dense, cosmétiques, à traiter
+avec le reste après F1.
+

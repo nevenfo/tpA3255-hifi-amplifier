@@ -3,34 +3,33 @@
 ## Phase actuelle
 
 **Phase E — PCB 4 couches.** Baseline ERC 16 violations / 0 erreur (`GATE C2`). DRC courant :
-**106 violations toutes de sérigraphie**, 254 non-connectés, aucune `clearance`, aucun
-`courtyards_overlap`, aucun `lib_footprint_mismatch`. Parité réelle : **3**, et non 0.
+**112 violations toutes de sérigraphie**, 254 non-connectés, aucune `clearance`, aucun
+`courtyards_overlap`, aucun `lib_footprint_mismatch`. Parité **7** — 3 de baseline plus les 4
+pastilles des borniers en attente de propagation.
 
 ## Tâche actuelle
 
 **E1.11 — permuter les broches de `J301`/`J302`.** Schéma corrigé et validé ; **la propagation au
-PCB est bloquée** et exige une action de l'utilisateur. E1 était close ; E1.11 et E1.12 l'ont
-rouverte sur décision utilisateur.
+PCB est bloquée** et exige une action de l'utilisateur. **E1.12 est close.** C'est la seule tâche
+ouverte de la phase.
 
 ## Dernière tâche validée
 
-**E1.11, tranche « schéma » = PASS.** Les quatre étiquettes sont permutées aux broches de `J301`
-et `J302`, **et elles seules** — `L301`–`L304` et `C321`–`C324` gardent leurs nets, ce qui est la
-vérification qui compte : permuter là aurait annulé la correction.
+**E1.12 = PASS.** Les quatre condensateurs d'entrée sont devant les broches de `U6` : `C106`
+(291,5 ; 182,0), `C107` (295,0 ; 182,0), `C206` (295,0 ; 168,63), `C207` (291,5 ; 168,64), au
+micron et sans rotation. **3,50 à 6,54 mm** de leur broche au lieu de 160.
 
 Validation :
 
-- ERC **inchangé à 16 violations / 0 erreur**, exactement la baseline `GATE C2`.
-- Au schéma : `J301` broche 1 = `OUT_B_F`, broche 2 = `OUT_A_F` ; `J302` broche 1 = `OUT_D_F`,
-  broche 2 = `OUT_C_F`.
-- `.kicad_pcb` **non modifié** — la permutation n'est pas propagée, c'est le blocage actif.
+- DRC **112 violations toutes de sérigraphie**, **aucune `clearance` ni `courtyards_overlap`** —
+  le seul risque réel, les cibles étant bordées par `C302`, `R301`, `C304`, `R302`.
+- 124 empreintes, **seules ces quatre déplacées** ; `pad_prop_heatsink` à 1 ; 254 non-connectés.
+- **Symétrie redéfinie et vérifiée** : `C106`+`C207` = 350,64 et `C107`+`C206` = 350,63, le miroir
+  du brochage. Les quatre hors des deux zones interdites, par test explicite.
 
-**Découverte de la tâche, plus importante qu'elle** : `schematic_parity` **n'avait jamais été
-mesuré** — option désactivée par défaut, champ à `0` quand le test n'a pas tourné. Révélé par un
-**test négatif**. Détail : `docs/kicad-operations.md`.
-
-**Avant elle** : **E1 close** — E1.5 en cinq tranches, E1.4, E1.10, E1.3, E1.9, E1.2, E1.8, E1.7,
-E1.6, E1.1 = PASS.
+**Avant elle** : E1.11 tranche « schéma » (ERC 16 / 0 inchangé, et la découverte que
+`schematic_parity` n'avait jamais tourné) ; **E1 close** — E1.5 en cinq tranches, E1.4, E1.10,
+E1.3, E1.9, E1.2, E1.8, E1.7, E1.6, E1.1 = PASS.
 
 ## Décisions actives
 
@@ -93,5 +92,6 @@ faite, reprendre sans rien redemander et valider :
   `lib_footprint_mismatch` à **0**.
 - 124 empreintes intactes au micron, 254 non-connectés, aucune `clearance`.
 
-**E1.12 ne dépend pas de ce déblocage et peut le précéder** : déplacer `C106`, `C107`, `C206`,
-`C207` aux quatre positions déjà établies dans `plan.md`.
+Ensuite **F1.1** — router les boucles de commutation, l'alimentation Class-D et les découplages.
+Les quatre boucles de bootstrap **d'abord et sans via** : E1.5 a retiré le dernier croisement qui
+en aurait imposé un, ce serait le perdre que de router autrement.
