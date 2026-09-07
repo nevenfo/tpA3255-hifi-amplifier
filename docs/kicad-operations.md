@@ -111,3 +111,53 @@ de premier niveau à parenthèses équilibrées.
 l'échelle **et les conditions de mesure**. **PDF sans couche texte** : rendre en PNG par
 `pymupdf`. **Écrire l'extraction dans un fichier UTF-8 avant affichage** — la console Windows
 casse sur les accents.
+
+## `schematic_parity` : une preuve qui n'en était pas une
+
+**Le champ `schematic_parity` du rapport JSON vaut `0` quand le test n'a pas tourné**, et rien ne
+distingue ce zéro d'un zéro mérité. Le test de parité PCB ↔ schéma est une **option désactivée
+par défaut** :
+
+```
+kicad-cli pcb drc --schematic-parity --format json --output <rapport> <carte>
+```
+
+Sans `--schematic-parity`, la commande ne charge même pas le schéma. Toutes les mesures de ce
+projet antérieures à E1.11 ont omis l'option : le `schematic_parity = 0` cité comme preuve dans
+`plan.md` et `progress.md` signifiait **« test non exécuté »**, pas « aucun écart ». La preuve
+était vide.
+
+**La vraie baseline est 3 écarts, tous explicables** — mesurée sur le schéma d'origine, carte
+inchangée :
+
+| Type | Objet | Explication |
+| --- | --- | --- |
+| `net_conflict` | `U6`, pin 45 `/GND` sans pastille | le PowerPAD du TPA3255 est **sur le dessus** du boîtier (établi en E1.7) : il n'a pas de pastille cuivre côté PCB, et le symbole déclare pourtant la broche |
+| `extra_footprint` | `H1` | trou de fixation mécanique, sans symbole au schéma |
+| `extra_footprint` | `H2` | idem |
+
+Aucun des trois n'est un défaut. Mais ils étaient invisibles, et un vrai écart le serait resté :
+c'est précisément ce qui rend l'omission grave. **Toute validation qui cite `schematic_parity`
+doit désormais passer `--schematic-parity` et se comparer à 3, pas à 0.**
+
+> **La leçon générale** : un compteur à zéro dans un rapport ne prouve rien tant qu'on n'a pas
+> vérifié que la mesure a eu lieu. Le contrôle qui l'a révélé était un test négatif — modifier le
+> schéma sans propager, et constater que le rapport continuait d'afficher `0`. Un contrôle qui ne
+> sait pas échouer ne vaut rien, et le seul moyen de le savoir est de le faire échouer exprès.
+
+## Propager le schéma vers le PCB : aucune voie automatisable
+
+Il n'existe **ni commande `kicad-cli`, ni outil MCP** qui réalise « Mettre à jour le PCB depuis le
+schéma ». `kicad-cli pcb import` n'importe que des formats non-KiCad ; `kicad-cli sch export
+netlist` produit bien une netlist, mais rien ne l'importe dans le `.kicad_pcb`. Côté MCP, aucune
+capacité de forward-annotation n'est exposée.
+
+**Conséquence pratique** : toute modification de netlist faite au schéma — permutation de
+broches, ajout de composant, changement d'affectation — laisse la carte en retard, et seule une
+action de l'utilisateur dans l'éditeur de PCB (`Outils → Mettre à jour le PCB depuis le schéma`)
+la rattrape. C'est la seconde opération de ce projet à devoir passer par l'utilisateur, après
+l'ouverture de l'éditeur.
+
+**Ce qu'il faut vérifier après cette mise à jour**, parce que c'est l'opération qui a déjà causé
+les deux régressions connues du projet : `pad_prop_heatsink` de `U1` (perdu en E1.10) et les
+`lib_footprint_mismatch` (introduits en E1.3). Relever la baseline avant, la comparer après.

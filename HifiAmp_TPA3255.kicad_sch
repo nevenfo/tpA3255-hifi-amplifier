@@ -7418,9 +7418,7 @@
 				)
 			)
 		)
-	
-		(symbol
-			"Transistor_FET:Q_PMOS_GDS"
+		(symbol "Transistor_FET:Q_PMOS_GDS"
 			(pin_names
 				(offset 0)
 				(hide yes)
@@ -7739,9 +7737,7 @@
 			)
 			(embedded_fonts no)
 		)
-	
-		(symbol
-			"Transistor_FET:Q_NMOS_GDS"
+		(symbol "Transistor_FET:Q_NMOS_GDS"
 			(pin_names
 				(offset 0)
 				(hide yes)
@@ -8060,9 +8056,7 @@
 			)
 			(embedded_fonts no)
 		)
-	
-		(symbol
-			"HifiAmp_TPA3255_Local:TLV1117_33_FIXED"
+		(symbol "HifiAmp_TPA3255_Local:TLV1117_33_FIXED"
 			(pin_numbers)
 			(pin_names
 				(offset 1.016)
@@ -11092,46 +11086,6 @@
 		(uuid "ced5b4d6-5f87-4a27-bdb9-2f465d87cf02")
 	)
 	(label "OUT_A_F"
-		(at 248.92 364.49 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "f9d8f058-aa9b-4988-96fd-4d75c61b1344")
-	)
-	(label "OUT_B_F"
-		(at 248.92 367.03 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "524170b0-2450-40f7-8eca-65f6007de423")
-	)
-	(label "OUT_C_F"
-		(at 261.62 364.49 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "1317f757-75fa-4637-a216-5630b0bb0e95")
-	)
-	(label "OUT_D_F"
-		(at 261.62 367.03 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "8f51a679-67d5-473a-baaa-fde5cc52e036")
-	)
-	(label "OUT_A_F"
 		(at 254 377.19 0)
 		(effects
 			(font
@@ -11660,6 +11614,46 @@
 			(justify left bottom)
 		)
 		(uuid "078d05d6-d4e6-48eb-b094-5e23db3b3b1a")
+	)
+	(label "OUT_B_F"
+		(at 248.92 364.49 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "cb154d89-ed8d-46e0-a66b-888f4840ba90")
+	)
+	(label "OUT_A_F"
+		(at 248.92 367.03 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "28926d72-d3df-40f2-b52e-372965a096ff")
+	)
+	(label "OUT_D_F"
+		(at 261.62 364.49 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "de490009-e15a-4f7c-82be-60e940f5424c")
+	)
+	(label "OUT_C_F"
+		(at 261.62 367.03 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "f48cb83f-b99a-4845-a889-8e6c22684c2f")
 	)
 	(symbol
 		(lib_id "HifiAmp_TPA3255_Local:LM5010ASD")
@@ -17296,13 +17290,23 @@
 				)
 			)
 		)
-				(property "MPN" "3403.0285.11"
+		(property "MPN" "3403.0285.11"
 			(at 266.7 320.04 0)
-			(effects (font (size 1.27 1.27)) (hide yes))
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
 		)
-				(property "Manufacturer" "Schurter"
+		(property "Manufacturer" "Schurter"
 			(at 266.7 320.04 0)
-			(effects (font (size 1.27 1.27)) (hide yes))
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
 		)
 		(instances
 			(project "HifiAmp_TPA3255"
@@ -17355,13 +17359,23 @@
 				)
 			)
 		)
-				(property "MPN" "SMDJ58CA"
+		(property "MPN" "SMDJ58CA"
 			(at 279.4 320.04 0)
-			(effects (font (size 1.27 1.27)) (hide yes))
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
 		)
-				(property "Manufacturer" "Littelfuse"
+		(property "Manufacturer" "Littelfuse"
 			(at 279.4 320.04 0)
-			(effects (font (size 1.27 1.27)) (hide yes))
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
 		)
 		(instances
 			(project "HifiAmp_TPA3255"
@@ -17416,13 +17430,23 @@
 				)
 			)
 		)
-				(property "MPN" "IPP330P10NM"
+		(property "MPN" "IPP330P10NM"
 			(at 292.1 320.04 0)
-			(effects (font (size 1.27 1.27)) (hide yes))
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
 		)
-				(property "Manufacturer" "Infineon"
+		(property "Manufacturer" "Infineon"
 			(at 292.1 320.04 0)
-			(effects (font (size 1.27 1.27)) (hide yes))
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
 		)
 		(instances
 			(project "HifiAmp_TPA3255"
@@ -18044,9 +18068,14 @@
 				)
 			)
 		)
-				(property "MPN" "BZT52C15"
+		(property "MPN" "BZT52C15"
 			(at 309.88 325.12 0)
-			(effects (font (size 1.27 1.27)) (hide yes))
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
 		)
 		(instances
 			(project "HifiAmp_TPA3255"
@@ -18203,13 +18232,23 @@
 				)
 			)
 		)
-				(property "MPN" "IXTK200N10L2"
+		(property "MPN" "IXTK200N10L2"
 			(at 381 424.18 0)
-			(effects (font (size 1.27 1.27)) (hide yes))
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
 		)
-				(property "Manufacturer" "Littelfuse/IXYS"
+		(property "Manufacturer" "Littelfuse/IXYS"
 			(at 381 424.18 0)
-			(effects (font (size 1.27 1.27)) (hide yes))
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
 		)
 		(instances
 			(project "HifiAmp_TPA3255"
@@ -18262,9 +18301,14 @@
 				)
 			)
 		)
-				(property "MPN" "WSL25124L000FEA"
+		(property "MPN" "WSL25124L000FEA"
 			(at 355.6 403.86 0)
-			(effects (font (size 1.27 1.27)) (hide yes))
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
 		)
 		(instances
 			(project "HifiAmp_TPA3255"
@@ -18523,9 +18567,14 @@
 				)
 			)
 		)
-				(property "MPN" "MKS2C044701O00KSSD"
+		(property "MPN" "MKS2C044701O00KSSD"
 			(at 330.2 449.58 0)
-			(effects (font (size 1.27 1.27)) (hide yes))
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
 		)
 		(instances
 			(project "HifiAmp_TPA3255"
