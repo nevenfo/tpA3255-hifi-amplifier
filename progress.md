@@ -9,26 +9,29 @@ sérigraphie**, normales avant routage. Aucune `clearance`, aucun `courtyards_ov
 
 ## Tâche actuelle
 
-**E1.5 — revue du placement.** Quatre tranches closes. Restent **clearances et
-manufacturabilité**.
+**E1 est close** — les dix tâches de l'unité sont validées. La suite est **F1, le routage**, mais
+deux décisions utilisateur la conditionnent (voir plus bas).
 
 ## Dernière tâche validée
 
-**E1.5, tranche « rotation des bootstraps croisés » = PASS.** `C308` et `C309` passent de 90° à
-**270°**, sans déplacement : centres identiques au micron, sommes à 350 préservées. `C306`/`C307`
-inchangés — les tourner les croiserait.
+**E1.5, tranche « clearances et manufacturabilité » = PASS**, en lecture seule, **et E1.5 est
+close** — donc **E1 aussi**. Les 106 violations de sérigraphie **n'en sont que deux** :
+`C312`/`C313` et `C314`/`C315` produisent 73 des 87 `silk_overlap`, et 15 des 19
+`silk_over_copper` sont des champs de référence sur pastille. Aucune ne touche le cuivre.
+Contour : marge minimale **1,78 mm**. Isolation : les seules valeurs serrées sont **internes aux
+boîtiers** (0,200 mm sur `U1`), l'inter-composants remontant à **0,950 mm**. Manufacturabilité :
+**124 empreintes toutes sur `F.Cu`**, une seule face de pose, 100 CMS et 24 traversants.
 
 Validation :
 
-- **Test d'intersection rejoué** sur les six condensateurs voisins de `U6` — quatre bootstraps
-  plus `C310`/`C311` — **zéro croisement**.
-- 124 empreintes, les **122 autres intactes** ; `C306`/`C307` toujours à 90° ;
-  `pad_prop_heatsink` de `U1` présent.
-- DRC : **106 violations, toutes de sérigraphie**, 254 non-connectés, `schematic_parity` = 0,
-  **aucune `clearance` ni `courtyards_overlap`**.
+- Les quatre contrôles reçoivent une réponse **mesurée**, le compte de sérigraphie étant
+  **décomposé par origine** et non simplement constaté.
+- `.kicad_pcb` **identique au bit près** — MD5 `eb5273ac4252b64fd97f4bd90b058fd9`, `git diff` vide.
+- **Réparation de continuité** : `E1.3` était déclarée close par sa dernière tranche mais restait
+  décochée, avec un libellé annonçant « 48 des 124 empreintes » que E1.4 contredisait. Corrigée.
 
-**Avant elle** : E1.5 « retour des courants et masses », « corrective » et « symétrie mesurée » ;
-E1.4 (`698e925`) ; E1.10 ; E1.3 ; E1.9, E1.2, E1.8, E1.7, E1.6, E1.1 = PASS.
+**Avant elle** : les cinq tranches de E1.5 ; E1.4 (`698e925`) ; E1.10 ; E1.3 en quatre tranches ;
+E1.9, E1.2, E1.8, E1.7, E1.6, E1.1 = PASS.
 
 ## Décisions actives
 
@@ -81,22 +84,21 @@ Hors périmètre du placement, aucune ne bloque la prochaine action : **permuter
 
 ## NEXT ACTION
 
-**E1.5, tranche « clearances et manufacturabilité »**, en **lecture seule** — mesure au fichier,
-aucune écriture, `.kicad_pcb` identique au bit près à la fin (`git diff` vide).
+**F1.1 — router les boucles de commutation, l'alimentation Class-D et les découplages.** C'est la
+seule tranche de F1 qu'**aucune des deux décisions en attente n'affecte** : elle porte sur
+`PVDD`, `GND` et les bootstraps autour de `U6`, pas sur les sorties ni sur les entrées
+analogiques. Elle peut donc commencer sans arbitrage.
 
-Quatre contrôles, chacun conclu par une mesure :
+Ordre imposé par la revue : **les quatre boucles de bootstrap d'abord, et sans via** — E1.5 a
+retiré le dernier croisement qui en aurait imposé un, ce serait le perdre que de router
+autrement. Puis `PVDD`/`GND` entre `C310`/`C311` et les pastilles 29–31 et 36–38 de `U6`, puis la
+liaison au bulk.
 
-1. **Les 106 violations de sérigraphie**, seul poste non vide du DRC. Établir combien relèvent de
-   références chevauchant une pastille — donc illisibles après fabrication — et combien sont sans
-   conséquence. C'est le dernier poste qui pourrait masquer un vrai défaut avant routage.
-2. **Isolation des tensions élevées** : le rail `PVDD` est à 48 V et les sorties commutent à cette
-   amplitude. Mesurer les distances les plus courtes entre un net de puissance et un net de
-   signal, et les confronter à la règle d'isolation portée par `.kicad_dru`.
-3. **Distance au contour** de toutes les empreintes — contour 200 × 150, `(100,100)`–`(300,250)` —
-   et respect des deux zones interdites par la barre de liaison.
-4. **Manufacturabilité** : empreintes trop proches pour la pose automatique, et cohérence des
-   côtés de pose.
+Valider par `kicad-cli pcb drc --format json` depuis le répertoire du projet : `schematic_parity`
+= 0, **aucune `clearance`**, aucun `courtyards_overlap`, et le compte de non-connectés qui
+**décroît** du nombre de pastilles effectivement routées — c'est la preuve arithmétique que le
+routage a pris, celle qui avait déjà servi en E1.8.
 
-Livrable : une section dans `docs/architecture.md`, chaque conclusion adossée à une mesure citée,
-et ce qui doit passer en contrainte F1 inscrit explicitement. **E1.5 se clôt avec cette tranche**
-si aucun défaut bloquant n'apparaît.
+**Avant F1.2 et F1.3**, les deux décisions listées plus haut doivent être tranchées : router les
+sorties puis permuter les borniers, ou router l'analogique puis déplacer les condensateurs
+d'entrée, serait à refaire deux fois.

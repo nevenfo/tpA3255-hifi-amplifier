@@ -908,3 +908,93 @@ les six condensateurs du voisinage de `U6` — quatre bootstraps plus `C310`/`C3
 > **Détail qui compte pour les contrôles futurs** : l'IPC écrit cette orientation **`-90`**, pas
 > `270`. Les deux sont équivalents modulo 360, mais un contrôle qui chercherait littéralement
 > `270` conclurait à tort que la rotation n'a pas pris.
+
+## E1.5 — clearances et manufacturabilité
+
+Dernière tranche de la revue, en lecture seule. Elle porte sur le seul poste encore non vide du
+DRC — la sérigraphie — et sur ce que le placement engage pour la fabrication.
+
+### Les 106 violations de sérigraphie n'en sont que deux
+
+Elles se répartissent en 87 `silk_overlap` et 19 `silk_over_copper`, et leur concentration est
+frappante :
+
+| Origine | Nombre | Nature |
+| --- | --- | --- |
+| `C312`/`C313` et `C314`/`C315` | **73 des 87** `silk_overlap` | contours des bulk 1500 µF qui se recoupent |
+| autres paires | 14 | traits contre traits, un ou deux par paire |
+| champ de référence sur pastille | **15 des 19** `silk_over_copper` | texte imprimé sur cuivre |
+| trait de contour sur pastille | 4 | `L301`–`L304`, `C321` |
+
+**Aucune ne touche le cuivre ni la connectivité.** Les 73 premières sont un artefact de deux
+paires d'électrolytiques dont les cercles de sérigraphie se recouvrent : cosmétique, sans effet
+sur la pose. Les 15 secondes rendront quinze références partiellement illisibles, le fabricant
+rognant la sérigraphie qui déborde sur une pastille.
+
+La correction est un redimensionnement ou un déplacement des champs de référence. Elle est
+**cosmétique et se fait juste avant la fabrication**, une fois le routage figé — refaire ce
+travail maintenant serait à refaire après F1, puisque le routage déplace les champs qui gênent.
+Ce qui compte pour E1.5 est établi : **le compte de sérigraphie ne masque aucun défaut de
+cuivre.**
+
+### Contour et zones réservées
+
+**Marge minimale au contour : 1,78 mm**, atteinte par `R301`–`R304` (pad 2, `x` = 297,8) contre
+le bord droit à `x` = 300. Aucune pastille ne sort du contour, et aucune n'approche les bords à
+moins de ce qui reste confortable pour une découpe standard.
+
+Les deux zones réservées à la barre de liaison ne contiennent que ce qu'elles doivent :
+`x` ∈ [280, 291], `y` ∈ [160, 190] porte `U6`, `H1` et `H2` — le circuit que la barre couvre et
+les deux trous qui la fixent ; `x` ∈ [280, 300], `y` ∈ [169, 181] ne porte que `U6`. **Aucun
+composant n'a été posé dans la réservation.**
+
+### Isolation — les seules valeurs serrées sont imposées par les boîtiers
+
+En séparant les nets de puissance (`PVDD`, les quatre `OUT` et leurs sorties filtrées, les rails
+de protection) des nets de signal et de masse :
+
+| Cas | Distance minimale | Où |
+| --- | --- | --- |
+| **Intra-empreinte** | **0,200 mm** | `U1` pad 10 `BUCK_VIN` ↔ pad 11 `GND` |
+| | 0,235 mm | `U6`, chaque `OUT` contre la pastille `GND` voisine |
+| **Inter-composants** | **0,950 mm** | `C311` pad 1 `PVDD` ↔ `C310` pad 2 `GND` |
+
+La lecture est nette : **les distances serrées sont toutes internes à un boîtier**, donc fixées
+par le fabricant du composant et non par le placement — c'est exactement ce que la règle
+d'isolation intra-empreinte de E1.9 a acté dans `.kicad_dru`, et le DRC ne signale aucune
+`clearance`. Dès qu'on passe d'un composant à un autre, la distance remonte à près d'un
+millimètre, soit **quatre fois la plus serrée des distances internes**, pour un rail à 48 V.
+
+> **Reste à faire en F1** : confronter ces distances à la table d'isolation applicable
+> (IPC-2221, selon revêtement et altitude) pour chiffrer la marge. La mesure ci-dessus établit
+> que le placement ne crée pas de point serré ; elle ne remplace pas la vérification normative,
+> qui porte de toute façon sur les pistes, pas encore tracées.
+
+### Manufacturabilité
+
+**Les 124 empreintes sont sur `F.Cu`** : une seule face de pose, donc un seul passage de
+refusion, sans colle ni retournement. C'est le cas le plus simple et le moins cher.
+
+Le montage se répartit en **100 CMS et 24 traversants**, ces derniers étant sans exception des
+composants de puissance ou de connectique — bulk, MOSFET, MKP de sortie, les quatre selfs,
+borniers, RCA et l'entrée 48 V. Ils demanderont une reprise sélective ou manuelle après refusion,
+ce qui est la conséquence attendue des choix de composants, pas du placement.
+
+L'entraxe le plus serré entre deux empreintes est de **2,50 mm** centre à centre (`C102`/`R102`,
+`C202`/`R202`, `C320`/`C318`), et l'absence de `courtyards_overlap` au DRC confirme qu'aucune
+paire ne gêne la pose.
+
+> **Écueil de méthode, le second de cette revue.** Une première mesure d'isolation soustrayait
+> les demi-dimensions des pastilles **sur les deux axes à la fois**, ce qui produisait des
+> distances négatives là où les pastilles sont simplement alignées — jusqu'à −0,35 mm sur `U6`,
+> c'est-à-dire un chevauchement qui n'existe pas. La distance entre deux rectangles se calcule
+> **axe par axe, avec un plancher à zéro**, puis par la norme des deux écarts. Comme pour l'aire
+> de boucle, la métrique commode donnait un résultat qui contredisait le DRC : quand les deux
+> divergent, c'est la métrique maison qu'il faut corriger.
+
+### E1.5 est close
+
+Les cinq objets de l'unité ont reçu une réponse mesurée : symétrie, retour des courants, masses,
+clearances, manufacturabilité. Trois défauts ont été trouvés et deux corrigés dans la carte — les
+positions puis les orientations que le miroir de `U6` rendait fausses. Les deux qui restent sont
+inscrits comme décisions à porter à l'utilisateur, et aucun ne bloque le routage.
