@@ -571,3 +571,106 @@ Elles ne bougent plus ; `progress.md` n'en garde qu'un renvoi.
   des bandes interdites, au prix de 5 à 10 mm de piste passant sous la barre.
 - **Bande `x` 100..155 réservée à l'analogique bas niveau**, au bord opposé de `U6`, comme
   l'exige l'orientation dans le coffret.
+
+## E1.5 — symétrie mesurée du placement
+
+Mesure faite au fichier, sans rien écrire : positions et rotations extraites du `.kicad_pcb`,
+paires appariées, écarts calculés. Ce qui suit est ce que la géométrie dit, pas ce que
+l'intention prétend.
+
+### Ce qui est acquis
+
+**Les deux voies analogiques bas niveau sont exactement translatées.** Les **18 paires**
+existantes — `U4`/`U5`, les 16 paires `1xx`/`2xx`, et `J2`/`J3` — présentent toutes un écart de
+**(0 ; +40 ; 0°)**, sans exception et sans tolérance : `dx` = 0, `dy` = 40, rotation identique.
+La promesse posée en E1.4 tient donc à la mesure.
+
+**Les étages de sortie sont symétriques entre voies**, sur trois blocs :
+
+| Bloc | Paires L↔R | Écart mesuré |
+| --- | --- | --- |
+| Selfs de filtrage | `L301`/`L303`, `L302`/`L304` | (0 ; +17) exact |
+| Condensateurs de sortie | `C321`/`C323`, `C322`/`C324` | (−22 ; 0) exact |
+| Borniers haut-parleur | `J301`/`J302` | (−22 ; 0) exact |
+
+**La symétrie n'est pas un vecteur unique** : (0 ; +40) en analogique, (0 ; +17) aux selfs,
+(−22 ; 0) aux sorties. Ce n'est pas un défaut — chaque étage a sa propre contrainte
+d'encombrement — mais cela interdit de vérifier la carte par une seule translation globale.
+
+### `R105`/`R106` — la référence commune est décentrée
+
+Le diviseur `+12V-OA` → `/VMID` → `/GND` n'a **pas** de jumeau en série 200, et c'est
+**délibéré** : `VMID` est porté par `U4` **et** `U5`. Une référence unique est le bon choix —
+deux diviseurs séparés introduiraient un écart de tension de mode commun entre voies, qu'aucun
+appariement de résistances ne rattraperait.
+
+Mais le placement, lui, est asymétrique. `R105` (118 ; 152) et `R106` (118 ; 155) sont **dans la
+voie gauche**, alors que le milieu géométrique des deux voies est `y` = 165. Le chemin `VMID`
+vers `U4` est court, celui vers `U5` est plus long d'environ **35 mm**. Une référence partagée
+par deux voies devrait être équidistante des deux : la remonter vers `y` ≈ 165 égaliserait les
+deux chemins sans rien coûter, la zone étant libre.
+
+### `C306`–`C309` — les bootstraps ignorent le miroir du brochage
+
+**Le brochage de `U6` est un miroir, pas un escalier.** `U6` est en (285 ; 175) à 180°, et ses
+pastilles sont symétriques autour de `y` = 175 :
+
+| Net | `y` global | Net miroir | `y` global | Symétrie |
+| --- | --- | --- | --- | --- |
+| `BST_A` | 181,667 | `BST_D` | 168,333 | ±6,667 |
+| `BST_B` | 181,032 | `BST_C` | 168,968 | ±6,032 |
+| `OUT_A` | 179,127 | `OUT_D` | 170,873 | ±4,127 |
+| `OUT_B` | 175,952 | `OUT_C` | 174,048 | ±0,952 |
+
+Les paires miroir sont donc **A↔D et B↔C**, et non A↔C et B↔D comme la numérotation le
+suggère. Or les quatre condensateurs de bootstrap sont posés en escalier irrégulier —
+`C306` 180,4 ; `C307` 176,5 ; `C308` 172 ; `C309` 168 — de pas 3,9 puis 4,5 puis 4,0.
+
+L'écart au miroir attendu est de **1,6 mm pour A/D** et **1,5 mm pour B/C**. Il se lit encore
+mieux sur la distance de chaque condensateur à son propre pad `BST` et à son pad `OUT` :
+
+| Réf. | vers `BST` | vers `OUT` | Lecture |
+| --- | --- | --- | --- |
+| `C306` (A) | 1,27 | 1,27 | équilibré |
+| `C307` (B) | **4,53** | 0,55 | rejeté loin de `BST_B` |
+| `C308` (C) | 3,03 | 2,05 | intermédiaire |
+| `C309` (D) | 0,33 | 2,87 | collé à `BST_D` |
+
+Les deux moitiés d'une même paire miroir n'ont donc pas la même géométrie de boucle. Sur un
+nœud de bootstrap — commutation rapide, `dv/dt` élevé — c'est la surface de boucle qui compte,
+et elle diffère d'un canal à l'autre. **À corriger : replacer les quatre en miroir autour de
+`y` = 175**, chacun à distance égale de son couple `BST`/`OUT`.
+
+`C310`/`C311`, le découplage `PVDD`, respectent le miroir **à 0,2 mm près** (178,3 contre 171,9
+pour 171,7 attendu) — à aligner en même temps, pour le même coût.
+
+### Le constat dominant : le pont BTL est déséquilibré à l'intérieur de chaque voie
+
+C'est l'écart le plus lourd, et il n'est pas inter-voies mais **intra-voie**. Les quatre sorties
+de `U6` quittent toutes le même flanc, à `x` = 281,288. Ensuite :
+
+| Moitié de pont | Self | `x` de la self | Trajet jusqu'à la self |
+| --- | --- | --- | --- |
+| A (voie L) | `L301` | 276 | **5,3 mm** |
+| B (voie L) | `L302` | 240 | **41,3 mm** |
+| C (voie R) | `L303` | 276 | **5,3 mm** |
+| D (voie R) | `L304` | 240 | **41,3 mm** |
+
+Les deux voies sont **rigoureusement comparables entre elles** — c'est la symétrie L/R, et elle
+est acquise. Mais à l'intérieur de chaque voie, une moitié du pont parcourt **36 mm de plus que
+l'autre** avant son filtre. En BTL, les deux moitiés forment la sortie différentielle : un tel
+déséquilibre de longueur, sur un signal PWM commuté sous forte intensité, se paie en écart de
+temps de propagation et en dissymétrie de rayonnement du mode commun.
+
+C'était un choix assumé en E1.3 — « déployer les quatre filtres depuis le flanc de dix
+millimètres du composant ». La géométrie l'impose en partie : quatre chaînes de filtrage et deux
+borniers doivent sortir d'un seul flanc. **La question que E1.5 doit trancher n'est donc pas
+« est-ce symétrique » — ça ne l'est pas — mais « peut-on rapprocher `L301` et `L302` d'un `x`
+commun sans casser ce qui est déjà acquis ».** Elle reste ouverte.
+
+### Ordre en `x` des condensateurs de sortie
+
+`C321` (A) 268, `C323` (C) 246, `C322` (B) 224, `C324` (D) 202 : les deux voies **s'entrelacent**
+au lieu d'être groupées. La symétrie L/R est respectée — (−22 ; 0) exact — mais les retours de
+`OUT_A_F`/`OUT_B_F` d'une part et `OUT_C_F`/`OUT_D_F` d'autre part se croisent dans la même
+bande de carte. À examiner avec le retour des courants, tranche suivante de E1.5.
