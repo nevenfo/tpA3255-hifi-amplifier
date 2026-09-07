@@ -55,6 +55,15 @@ l'automatisation reprend ensuite normalement par le canal IPC, qui n'est pas aff
 observé : session **RDP** (`RDP-Tcp#0`) — une session distante déconnectée ou verrouillée
 suffit à produire ce blocage.
 
+**Issue vérifiée.** Le contournement a fonctionné tel quel : l'éditeur de PCB ouvert par
+l'utilisateur, un lot de cinq déplacements est passé par IPC en un seul appel — `atomic=true`,
+`verify=auto` — suivi d'un `save_project`, **sans aucun refus**. Deux enseignements. Le blocage
+`SendInput` **n'atteint pas l'IPC** : il ne coûte que l'ouverture de la fenêtre, jamais le
+pilotage. Et il **ne survit pas à la session** : une session neuve avec l'éditeur déjà ouvert
+n'en garde aucune trace. Avant de rouvrir un blocage GUI hérité d'une session précédente, donc,
+vérifier d'abord si la fenêtre nécessaire n'est pas déjà là — `Get-Process` sur `kicad` et son
+`MainWindowTitle` suffisent à le dire.
+
 ## Preuve indépendante du MCP
 
 `kicad-cli.exe` — `sch erc`, `pcb drc --format json` — depuis

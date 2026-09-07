@@ -578,6 +578,10 @@ Mesure faite au fichier, sans rien écrire : positions et rotations extraites du
 paires appariées, écarts calculés. Ce qui suit est ce que la géométrie dit, pas ce que
 l'intention prétend.
 
+> **État décrit : celui d'avant la tranche corrective.** Les mesures ci-dessous sont la
+> photographie qui a servi à décider. Deux des trois écarts ont depuis été corrigés dans la
+> carte — voir « Tranche corrective » en fin de section pour les positions en vigueur.
+
 ### Ce qui est acquis
 
 **Les deux voies analogiques bas niveau sont exactement translatées.** Les **18 paires**
@@ -717,3 +721,48 @@ le routage sait absorber.
 au lieu d'être groupées. La symétrie L/R est respectée — (−22 ; 0) exact — mais les retours de
 `OUT_A_F`/`OUT_B_F` d'une part et `OUT_C_F`/`OUT_D_F` d'autre part se croisent dans la même
 bande de carte. À examiner avec le retour des courants, tranche suivante de E1.5.
+
+## E1.5 — tranche corrective
+
+Deux des trois écarts établis par la mesure étaient **gratuits** : rien dans l'encombrement ne
+les imposait, ils ne coûtaient qu'un déplacement. Ils ont été corrigés. Le troisième — la
+translation des selfs — ne l'est pas, et ne peut pas l'être : la grille 2 × 2 est imposée par le
+courtyard, la démonstration est ci-dessus, et il part au routage sous forme de contrainte F1.
+
+**Cinq déplacements, tous en `y`, aucun en `x`, aucune rotation** :
+
+| Réf. | `y` avant | `y` après | Ce que cela règle |
+| --- | --- | --- | --- |
+| `C308` | 172 | **173,5** | somme A+D portée à 350 exact |
+| `C309` | 168 | **169,6** | somme B+C portée à 350 exact |
+| `C311` | 171,9 | **171,7** | même miroir pour `PVDD` |
+| `R105` | 152 | **163,5** | `VMID` recentré à `y` = 165 |
+| `R106` | 155 | **166,5** | entraxe 3 mm conservé |
+
+**Le critère est la somme, pas la distance.** Les pastilles de `U6` étant en miroir autour de
+`y` = 175, deux bootstraps appariés sont au miroir l'un de l'autre si et seulement si leurs
+ordonnées **somment à 350**. C'est pourquoi `C306` (180,4) et `C307` (176,5) ne bougent pas :
+ce sont eux qui fixent la cible, leurs partenaires qui s'y alignent. Corriger en déplaçant les
+quatre aurait déplacé le miroir sans le rendre plus vrai.
+
+**`R105`/`R106` restent partagés entre les deux voies** — c'est le bon choix électrique, un
+diviseur `VMID` unique évite un écart de tension entre canaux. Ce qui était fautif n'était pas le
+partage mais la position, posée dans la voie gauche. À `y` = 165, le diviseur est à mi-distance de
+`U4` (145) et `U5` (185), et les deux chemins de référence deviennent égaux.
+
+### Preuve
+
+Relecture IPC après écriture, puis DRC en ligne de commande depuis le répertoire du projet :
+
+- Les **5 positions cibles au micron**, `x` et orientation inchangés.
+- **124 empreintes**, les **119 autres intactes** en position et en orientation — `L301`–`L304`,
+  `C306` et `C307` compris. `pad_prop_heatsink` de `U1` toujours présent.
+- DRC : **105 violations, toutes de sérigraphie** (86 `silk_overlap`, 19 `silk_over_copper`),
+  254 non-connectés, `schematic_parity` = 0, `lib_footprint_mismatch` = 0.
+- **Aucune `clearance`, aucun `courtyards_overlap`.**
+
+Ce dernier point était le seul risque réel de la tranche : l'entraxe le plus serré descend à
+**3,0 mm** entre `C307` et `C308`, pour des 0603 en rotation 90°. Il est validé par l'absence de
+violation au DRC — c'est-à-dire par le vérificateur qui connaît les courtyards réels — et non par
+un calcul de courtyard fait à la main, qui n'aurait prouvé que la cohérence de son propre modèle.
+

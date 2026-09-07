@@ -3,29 +3,33 @@
 ## Phase actuelle
 
 **Phase E — PCB 4 couches.** `GATE C2 = PASS`, baseline ERC 16 violations / 0 erreur. DRC
-courant : **104 violations, 254 non-connectés, `schematic_parity` = 0** — **toutes de la
-sérigraphie**, normales avant routage. Plus aucun `lib_footprint_mismatch`.
+courant : **105 violations, 254 non-connectés, `schematic_parity` = 0** — **toutes de la
+sérigraphie**, normales avant routage. Aucune `clearance`, aucun `courtyards_overlap`, aucun
+`lib_footprint_mismatch`.
 
 ## Tâche actuelle
 
-**E1.5 — revue du placement.** Tranche « symétrie mesurée » close, question des selfs tranchée.
-Reste la tranche corrective, **bloquée**, puis le retour des courants et les masses.
+**E1.5 — revue du placement.** Tranches « symétrie mesurée » et « corrective » closes. Reste
+**le retour des courants et les masses**, en lecture seule.
 
 ## Dernière tâche validée
 
-**E1.5, tranche « symétrie mesurée » = PASS**, en lecture seule. Les 18 paires analogiques sont
-à **(0 ; +40 ; 0°) exact** ; selfs à (0 ; +17) ; sorties et borniers à (−22 ; 0). **Trois écarts
-établis** — `VMID` décentré, bootstraps hors miroir, translation des selfs contredisant le
-miroir du brochage. Détail : `docs/architecture.md`, section « E1.5 — symétrie mesurée ».
+**E1.5, tranche « corriger les deux écarts gratuits » = PASS.** Cinq déplacements par IPC, tous
+en `y` : `C308` → 173,5 ; `C309` → 169,6 ; `C311` → 171,7 ; `R105` → 163,5 ; `R106` → 166,5. Les
+bootstraps somment désormais à 350, miroir exact du brochage de `U6` ; `VMID` est à mi-distance
+des deux voies. Détail : `docs/architecture.md`, section « E1.5 — tranche corrective ».
 
 Validation :
 
-- Couverture complète : 18 paires analogiques, 4 blocs de sortie, aucun apparié omis.
-- Chaque écart distingue le **délibéré** de l'**erreur**.
-- `.kicad_pcb` **identique au bit près** — `cmp` positif, `git diff` vide.
+- Les 5 positions cibles **au micron**, `x` et orientation inchangés.
+- **124 empreintes**, les **119 autres intactes** — `L301`–`L304`, `C306`, `C307` compris ;
+  `pad_prop_heatsink` de `U1` toujours présent.
+- DRC : **105 violations, toutes de sérigraphie** (86 `silk_overlap`, 19 `silk_over_copper`),
+  254 non-connectés, `schematic_parity` = 0, **aucune `clearance` ni `courtyards_overlap`** —
+  ce qui valide l'entraxe le plus serré, 3,0 mm entre `C307` et `C308`.
 
-**Avant elle** : E1.4 (`698e925`), placement clos ; E1.10 ; E1.3 en quatre tranches ; E1.9,
-E1.2, E1.8, E1.7, E1.6, E1.1 = PASS.
+**Avant elle** : E1.5 « symétrie mesurée » ; E1.4 (`698e925`), placement clos ; E1.10 ; E1.3 en
+quatre tranches ; E1.9, E1.2, E1.8, E1.7, E1.6, E1.1 = PASS.
 
 ## Décisions actives
 
@@ -47,6 +51,7 @@ Placement figé, budgets thermiques et pilotage KiCad sont dans `docs/architectu
 - **Un déplacement IPC peut perdre une propriété de pastille** : `U1` a perdu ainsi son
   `pad_prop_heatsink`, seule occurrence de la carte. **À vérifier après tout déplacement d'un
   circuit intégré à pad exposé.**
+- **Une contrainte d'encombrement se valide au DRC, pas au calcul de courtyard.**
 - **Un DRC de comparaison se lance dans le répertoire du projet**, sinon la baseline est fausse.
   Binaire : `C:/Users/FlowUP/AppData/Local/Programs/KiCad/10.0/bin/kicad-cli.exe`.
 - Toute édition schéma/PCB/librairie passe par `kicad-control`/MCP ; **les fichiers de
@@ -54,53 +59,37 @@ Placement figé, budgets thermiques et pilotage KiCad sont dans `docs/architectu
 
 ## Blocage actif
 
-**L'automatisation GUI est morte dans cette session, donc l'IPC KiCad est inatteignable** — et
-`move_component` n'existe qu'en IPC.
-
-- **Symptôme** : `SetForegroundWindow`, `ui_click` et le clavier échouent — `False` avec
-  `GetLastWin32Error = 0`, ou `SendInput was blocked`.
-- **Cause probable** : blocage `SendInput` au niveau de la **session entière**, contexte
-  `RDP-Tcp#0`.
-- **Faits exclus** : pas l'élévation de KiCad — la même activation échoue sur une fenêtre
-  Firefox non élevée. Pas le MCP, pas le lancement. Deux canaux ont échoué : coordonnées, puis
-  UIA sémantique.
-- **Prochaine tentative** : **l'utilisateur ouvre l'éditeur de PCB lui-même** depuis le
-  gestionnaire de projet, déjà ouvert. L'IPC n'est pas affecté et reprend ensuite. Détail dans
-  `docs/kicad-operations.md`, section « Quand l'automatisation GUI est morte ».
-- **État préservé** : `.kicad_pcb` intact, MD5 `fab35539c5b160087172270bafa3e7bd`. Aucun
-  éditeur ouvert, donc aucune ambiguïté IPC.
+Aucun. Le blocage GUI de la session précédente est **levé et l'issue vérifiée** : l'éditeur de
+PCB étant ouvert, l'IPC a exécuté le lot de cinq déplacements sans aucun refus. Le blocage
+`SendInput` n'atteint pas l'IPC et ne survit pas à la session. Voir `docs/kicad-operations.md`,
+section « Quand l'automatisation GUI est morte ».
 
 ## Fichiers / zones utiles
 
-- `HifiAmp_TPA3255.kicad_pcb` — 124 empreintes **toutes placées** ; `.kicad_dru` porte la règle
-  d'isolation intra-empreinte de E1.9 ; `.kicad_sym` les symboles locaux
+- `HifiAmp_TPA3255.kicad_pcb` — 124 empreintes **toutes placées**, MD5
+  `a0a35c1636a56b0deb7c7934052899ff` ; `.kicad_dru` porte la règle d'isolation intra-empreinte
+  de E1.9 ; `.kicad_sym` les symboles locaux
 - **`docs/kicad-operations.md`** — pilotage KiCad, à lire avant toute manipulation de la carte
-- `docs/architecture.md` — placement figé, symétrie mesurée, `NEEDS_DATA`, budgets thermiques
+- `docs/architecture.md` — placement figé, symétrie mesurée, tranche corrective, `NEEDS_DATA`,
+  budgets thermiques
 
 ## NEXT ACTION
 
-**E1.5, tranche « corriger les deux écarts gratuits ».** Dès l'éditeur de PCB ouvert, reprendre
-via `kicad-control`/MCP. Cinq déplacements, tous en `y`, aucun en `x`, aucune rotation :
+**E1.5, tranche « retour des courants et masses »**, en **lecture seule** — mesure au fichier,
+aucune écriture, `.kicad_pcb` identique au bit près à la fin (`cmp` et `git diff` vides).
 
-| Réf. | `y` actuel | `y` cible |
-| --- | --- | --- |
-| `C308` | 172 | **173,5** |
-| `C309` | 168 | **169,6** |
-| `C311` | 171,9 | **171,7** |
-| `R105` | 152 | **163,5** |
-| `R106` | 155 | **166,5** |
+Trois questions à trancher, chacune par une mesure et non par une intention :
 
-`C308`/`C309` portent les sommes A+D et B+C à 350 exactement, soit le miroir des bootstraps
-autour de `y` = 175 ; `C311` fait de même pour `PVDD` ; `R105`/`R106` recentrent `VMID` à
-`y` = 165, entraxe 3 mm conservé. `C306` (180,4) et `C307` (176,5) ne bougent pas. **Ne pas
-toucher `L301`–`L304`.** Zone `VMID` libre : seuls `C106`/`C107` occupent `x` 105..135 /
-`y` 158..178.
+1. **Les boucles de commutation de `U6`** — pour chacun des quatre demi-ponts, la surface de la
+   boucle `PVDD` → pastille → découplage → `GND`. Ce sont elles qui rayonnent ; `C311`
+   vient d'être déplacé, sa boucle est donc à remesurer.
+2. **L'entrelacement des condensateurs de sortie**, question laissée ouverte par la tranche
+   précédente : `C321` (A) 268, `C323` (C) 246, `C322` (B) 224, `C324` (D) 202. La symétrie L/R
+   est exacte, mais les retours `OUT_A_F`/`OUT_B_F` et `OUT_C_F`/`OUT_D_F` **se croisent dans la
+   même bande de carte**. Établir si le croisement est réel au niveau des retours ou seulement
+   apparent dans l'ordre en `x`, et s'il se corrige au placement ou au routage.
+3. **La séparation des masses** — où passe la frontière entre masse de puissance et masse
+   analogique, et si le placement actuel la rend réalisable en un point unique.
 
-**Point à surveiller** : l'entraxe le plus serré devient **3,0 mm** entre `C307` et `C308`, pour
-des 0603 en rotation 90°. À confirmer par l'absence de `courtyards_overlap` au DRC, **pas** par
-le calcul de courtyard.
-
-Valider par relecture — les 5 positions au micron, **les 119 autres intactes**, 124 empreintes,
-`pad_prop_heatsink` à 1 — puis par `kicad-cli pcb drc --format json` depuis le répertoire du
-projet : `schematic_parity` = 0, 254 non-connectés, **aucune `clearance`, aucun
-`courtyards_overlap`**, `lib_footprint_mismatch` = 0. Seul le compte de sérigraphie peut varier.
+Livrable : une section dans `docs/architecture.md`, chaque conclusion adossée à une mesure
+citée, et les contraintes de routage qui en découlent inscrites explicitement pour F1.
