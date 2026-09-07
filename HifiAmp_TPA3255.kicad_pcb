@@ -244,7 +244,7 @@
 	(footprint "Capacitor_SMD:C_0805_2012Metric"
 		(layer "F.Cu")
 		(uuid "00a0d424-d70d-44ed-8c1d-8fb9c6192bb1")
-		(at 226.175 283.725)
+		(at 178 126)
 		(descr "Capacitor SMD 0805 (2012 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf, https://docs.google.com/spreadsheets/d/1BsfQQcO9C6DZCsRaXUlFlo91Tg2WpOkGARC1WS5S8t0/edit?usp=sharing)")
 		(tags "capacitor")
 		(property "Reference" "C84"
@@ -307,12 +307,6 @@
 		(path "/a0e0e309-a2f0-44ef-8c3b-f40259f62af9")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -8140,7 +8134,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "0fa31323-b991-4931-9bb2-f15efe3af946")
-		(at 257.635 279.885)
+		(at 297 162)
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "R303"
@@ -8203,12 +8197,6 @@
 		(path "/94bd427a-42ff-4633-9a92-42659706235a")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -9742,7 +9730,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "18930609-0bae-499f-aec3-dfca6874de91")
-		(at 257.635 274.865)
+		(at 297 184)
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "R301"
@@ -9805,12 +9793,6 @@
 		(path "/72b0c94f-4eea-4c8c-a7cc-cfaa8752457f")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -14304,7 +14286,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "27c9b750-8bda-4e25-b7b7-4ff46f21b615")
-		(at 257.635 277.375)
+		(at 297 165)
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "R302"
@@ -14367,12 +14349,6 @@
 		(path "/cfd3f832-af90-4b2f-a6cd-f9e57c42b20e")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -16128,7 +16104,7 @@
 	(footprint "Capacitor_SMD:C_0805_2012Metric"
 		(layer "F.Cu")
 		(uuid "463d026a-10d1-4fbd-adf0-87bb18a48671")
-		(at 226.175 280.715)
+		(at 178 129)
 		(descr "Capacitor SMD 0805 (2012 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf, https://docs.google.com/spreadsheets/d/1BsfQQcO9C6DZCsRaXUlFlo91Tg2WpOkGARC1WS5S8t0/edit?usp=sharing)")
 		(tags "capacitor")
 		(property "Reference" "C83"
@@ -16191,12 +16167,6 @@
 		(path "/070ee1bd-d665-4f02-8382-05e85ea9e7b8")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -22762,7 +22732,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "6173947d-bf74-45fc-ad7d-b756d3688f6c")
-		(at 249.615 282.395)
+		(at 178 132)
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "R6"
@@ -22825,12 +22795,6 @@
 		(path "/5f5eeba6-b5e0-4da5-a9ff-b9ba0622363c")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -23072,7 +23036,7 @@
 	(footprint "Capacitor_SMD:C_0805_2012Metric"
 		(layer "F.Cu")
 		(uuid "681bec12-0ba0-4179-914e-1c9e4ab32910")
-		(at 221.725 292.755)
+		(at 166 130)
 		(descr "Capacitor SMD 0805 (2012 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf, https://docs.google.com/spreadsheets/d/1BsfQQcO9C6DZCsRaXUlFlo91Tg2WpOkGARC1WS5S8t0/edit?usp=sharing)")
 		(tags "capacitor")
 		(property "Reference" "C67"
@@ -23135,12 +23099,6 @@
 		(path "/2471f7d3-ed8b-457f-8baa-70b4035cb8fa")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -26443,7 +26401,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "95716b9f-7d51-4a15-9216-5f06a2f5249a")
-		(at 249.615 284.905)
+		(at 162 129)
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "R26"
@@ -26506,12 +26464,6 @@
 		(path "/8a48a5a0-b260-46f8-9ba0-9246b85b76a7")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -40624,7 +40576,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "bdda931c-69f8-4127-bd97-2786b4a956d7")
-		(at 257.635 282.395)
+		(at 297 187)
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "R304"
@@ -40687,12 +40639,6 @@
 		(path "/efc36453-2828-40f8-b4d5-535f343457b6")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -40782,7 +40728,7 @@
 	(footprint "Package_TO_SOT_SMD:SOT-353_SC-70-5"
 		(layer "F.Cu")
 		(uuid "c1034767-33bf-46ca-a387-18bd036e393f")
-		(at 309.395 252.55)
+		(at 172 130)
 		(descr "SOT, 5 Pin (https://home.jeita.or.jp/tsc/std-pdf/ED-7500A.pdf#page=171, JEDEC MO-203, variant AA, https://www.jedec.org/document_search?search_api_views_fulltext=MO-203)")
 		(tags "SOT TO_SOT_SMD SC-88A SOT-353 SC-70-5")
 		(property "Reference" "U7"
@@ -40844,12 +40790,6 @@
 		(path "/249b3127-cf84-45ab-af59-ce4b1d3a1512")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "4" "5" "1" "2" "3")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -48578,7 +48518,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "fe96ae03-4fc3-4366-b922-4f088bee364e")
-		(at 249.615 287.415)
+		(at 162 132)
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "R32"
@@ -48641,12 +48581,6 @@
 		(path "/08d20ce2-50ef-46a4-847b-042023b3241a")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
