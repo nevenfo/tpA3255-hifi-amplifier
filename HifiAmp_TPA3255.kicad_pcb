@@ -402,7 +402,7 @@
 	(footprint "Inductor_SMD:L_Wuerth_WE-PD-Typ-M-Typ-S"
 		(layer "F.Cu")
 		(uuid "013646d5-0bcb-4fe4-9b9c-238c9bd87ba3")
-		(at 291.785 297.425)
+		(at 162 139)
 		(descr "Shielded Power Inductor, Wuerth Elektronik, WE-PD, SMT, Typ M, Typ S, https://katalog.we-online.com/pbs/datasheet/744778005.pdf")
 		(tags "Choke Shielded Power Inductor WE-PD TypM TypS Wuerth")
 		(property "Reference" "L6"
@@ -457,12 +457,6 @@
 		(path "/4ce74107-dc1c-4ef9-a10d-5e00b6ea57be")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -6636,7 +6630,7 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "01c52354-4d81-43c3-be93-3599f1a276e9")
-		(at 262.465 273.225)
+		(at 183 179)
 		(descr "Capacitor SMD 1210 (3225 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "C3"
@@ -6699,12 +6693,6 @@
 		(path "/ba59167e-fa3d-4289-992c-b3a4f4253870")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -7556,7 +7544,7 @@
 	(footprint "Inductor_SMD:L_Wuerth_WE-PD2-Typ-MS"
 		(layer "F.Cu")
 		(uuid "0606c2f6-a968-4d3c-a7ca-e6050df32545")
-		(at 319.905 249.325)
+		(at 170 162)
 		(descr "Power Inductor, Wuerth Elektronik, WE-PD2, SMD, Typ MS, https://katalog.we-online.com/pbs/datasheet/744774022.pdf")
 		(tags "Choke Power Inductor WE-PD2 TypMS Wuerth")
 		(property "Reference" "L1"
@@ -7611,12 +7599,6 @@
 		(path "/6367b6cb-39c3-4b9e-8179-e02914793e12")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -9208,7 +9190,7 @@
 	(footprint "Package_TO_SOT_SMD:SOT-223"
 		(layer "F.Cu")
 		(uuid "15619404-6511-4359-994f-59b3ecec7724")
-		(at 312.345 202.2)
+		(at 174 149)
 		(descr "module CMS SOT223 4 pins")
 		(tags "CMS SOT")
 		(property "Reference" "U2"
@@ -9262,12 +9244,6 @@
 		(path "/3075924f-21f3-40d8-9408-a1a94a64161c")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2" "3" "4")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -9312,7 +9288,7 @@
 		)
 		(fp_poly
 			(pts
-				(xy -3.13 -3.31) (xy -3.37 -3.64) (xy -2.89 -3.64) (xy -3.13 -3.31)
+				(xy -3.13 -3.31) (xy -3.37 -3.64) (xy -2.89 -3.64)
 			)
 			(stroke
 				(width 0.12)
@@ -14176,7 +14152,7 @@
 	(footprint "Capacitor_SMD:C_0805_2012Metric"
 		(layer "F.Cu")
 		(uuid "25ee5404-5b9d-4505-b5c6-09c0136dbc9a")
-		(at 221.725 286.735)
+		(at 185 171)
 		(descr "Capacitor SMD 0805 (2012 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf, https://docs.google.com/spreadsheets/d/1BsfQQcO9C6DZCsRaXUlFlo91Tg2WpOkGARC1WS5S8t0/edit?usp=sharing)")
 		(tags "capacitor")
 		(property "Reference" "C11"
@@ -14239,12 +14215,6 @@
 		(path "/fee79be2-8ed9-405c-b8ed-c9965fcca24d")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -14808,7 +14778,7 @@
 	(footprint "Capacitor_SMD:C_1206_3216Metric"
 		(layer "F.Cu")
 		(uuid "29557976-74f8-470f-9895-33ce15678f99")
-		(at 320.945 256.375)
+		(at 183 175)
 		(descr "Capacitor SMD 1206 (3216 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "C2"
@@ -14871,12 +14841,6 @@
 		(path "/dc2dc8b5-011f-4c07-92c5-64023d697024")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -15118,7 +15082,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "36dc4896-2b26-4f02-bb93-98bae9d8bb30")
-		(at 241.595 272.355)
+		(at 166 170)
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "C1"
@@ -15181,12 +15145,6 @@
 		(path "/b6be8a47-2ff2-4bde-ae50-c0c9c350836b")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -18364,11 +18322,11 @@
 	(footprint "Diode_SMD:D_SMA"
 		(layer "F.Cu")
 		(uuid "5ade5ee0-385a-4360-85cd-319e7d9fafb2")
-		(at 320.34 294.215)
+		(at 166 173 180)
 		(descr "Diode SMA (DO-214AC)")
 		(tags "Diode SMA (DO-214AC)")
 		(property "Reference" "D1"
-			(at 0 -2.5 0)
+			(at 0 -2.5 180)
 			(layer "F.SilkS")
 			(uuid "57b80df3-0623-4ce6-9bba-a46bee31266b")
 			(effects
@@ -18379,7 +18337,7 @@
 			)
 		)
 		(property "Value" "B1100-13-F"
-			(at 0 2.6 0)
+			(at 0 2.6 180)
 			(layer "F.Fab")
 			(uuid "c206ec11-5d85-4fb8-9aac-0c3029af38dc")
 			(effects
@@ -18390,7 +18348,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 0)
+			(at 0 0 180)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -18403,7 +18361,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 0)
+			(at 0 0 180)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -18419,23 +18377,17 @@
 		(path "/b2c0d61b-356e-41d4-8898-de2cc80c7351")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
-			(start -3.51 -1.65)
-			(end -3.51 1.65)
+			(start -3.51 1.65)
+			(end 2 1.65)
 			(stroke
 				(width 0.12)
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "7f0cf450-4706-45e2-b809-c4ab83d225a8")
+			(uuid "23477468-a2bc-42e8-9fe9-52d65c208649")
 		)
 		(fp_line
 			(start -3.51 -1.65)
@@ -18448,44 +18400,14 @@
 			(uuid "fc46626d-6f20-4ac6-acc6-1771a053a1c8")
 		)
 		(fp_line
-			(start -3.51 1.65)
-			(end 2 1.65)
+			(start -3.51 -1.65)
+			(end -3.51 1.65)
 			(stroke
 				(width 0.12)
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "23477468-a2bc-42e8-9fe9-52d65c208649")
-		)
-		(fp_line
-			(start -3.5 -1.75)
-			(end 3.5 -1.75)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "F.CrtYd")
-			(uuid "d18043bc-b3d6-4871-b14f-732f1add72e8")
-		)
-		(fp_line
-			(start -3.5 1.75)
-			(end -3.5 -1.75)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "F.CrtYd")
-			(uuid "60b7d4dd-e8e0-4328-9008-a2c3c96a3788")
-		)
-		(fp_line
-			(start 3.5 -1.75)
-			(end 3.5 1.75)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "F.CrtYd")
-			(uuid "f6c26005-5962-46aa-855a-73ffac718361")
+			(uuid "7f0cf450-4706-45e2-b809-c4ab83d225a8")
 		)
 		(fp_line
 			(start 3.5 1.75)
@@ -18498,34 +18420,94 @@
 			(uuid "74d94667-0a41-42e9-adbd-d5e4d9b67653")
 		)
 		(fp_line
-			(start -2.3 1.5)
+			(start 3.5 -1.75)
+			(end 3.5 1.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "f6c26005-5962-46aa-855a-73ffac718361")
+		)
+		(fp_line
+			(start -3.5 1.75)
+			(end -3.5 -1.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "60b7d4dd-e8e0-4328-9008-a2c3c96a3788")
+		)
+		(fp_line
+			(start -3.5 -1.75)
+			(end 3.5 -1.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "d18043bc-b3d6-4871-b14f-732f1add72e8")
+		)
+		(fp_line
+			(start 2.3 1.5)
+			(end -2.3 1.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "1b983362-286a-4ea3-8b01-59d298d6a41f")
+		)
+		(fp_line
+			(start 2.3 -1.5)
+			(end 2.3 1.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "84f5766c-8b96-42f0-a86a-9f11f726a0a5")
+		)
+		(fp_line
+			(start 2.3 -1.5)
 			(end -2.3 -1.5)
 			(stroke
 				(width 0.1)
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "3b9be802-4c36-48d7-92b0-76d245dc0bfc")
+			(uuid "70d28a8d-15b8-4840-98a6-ed7eddbf576a")
 		)
 		(fp_line
-			(start -0.64944 -0.79908)
-			(end -0.64944 0.80112)
+			(start 0.50118 0.75032)
+			(end 0.50118 -0.79908)
 			(stroke
 				(width 0.1)
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "2397cf8c-c3f5-4215-a95a-d58c8d176420")
+			(uuid "b57b2696-c501-468c-8449-279bb737a9a2")
+		)
+		(fp_line
+			(start 0.50118 0.00102)
+			(end 1.4994 0.00102)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "ba5eb2dc-5a85-4ba1-bd49-5f966b2251ce")
 		)
 		(fp_line
 			(start -0.64944 0.00102)
-			(end -1.55114 0.00102)
+			(end 0.50118 0.75032)
 			(stroke
 				(width 0.1)
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "e74948da-3f0d-473e-90e1-cc7482d8b7b9")
+			(uuid "f45c50c8-dfef-43af-bb8f-5c6f9ffa407f")
 		)
 		(fp_line
 			(start -0.64944 0.00102)
@@ -18539,66 +18521,36 @@
 		)
 		(fp_line
 			(start -0.64944 0.00102)
-			(end 0.50118 0.75032)
+			(end -1.55114 0.00102)
 			(stroke
 				(width 0.1)
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "f45c50c8-dfef-43af-bb8f-5c6f9ffa407f")
+			(uuid "e74948da-3f0d-473e-90e1-cc7482d8b7b9")
 		)
 		(fp_line
-			(start 0.50118 0.00102)
-			(end 1.4994 0.00102)
+			(start -0.64944 -0.79908)
+			(end -0.64944 0.80112)
 			(stroke
 				(width 0.1)
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "ba5eb2dc-5a85-4ba1-bd49-5f966b2251ce")
+			(uuid "2397cf8c-c3f5-4215-a95a-d58c8d176420")
 		)
 		(fp_line
-			(start 0.50118 0.75032)
-			(end 0.50118 -0.79908)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "F.Fab")
-			(uuid "b57b2696-c501-468c-8449-279bb737a9a2")
-		)
-		(fp_line
-			(start 2.3 -1.5)
+			(start -2.3 1.5)
 			(end -2.3 -1.5)
 			(stroke
 				(width 0.1)
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "70d28a8d-15b8-4840-98a6-ed7eddbf576a")
-		)
-		(fp_line
-			(start 2.3 -1.5)
-			(end 2.3 1.5)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "F.Fab")
-			(uuid "84f5766c-8b96-42f0-a86a-9f11f726a0a5")
-		)
-		(fp_line
-			(start 2.3 1.5)
-			(end -2.3 1.5)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "F.Fab")
-			(uuid "1b983362-286a-4ea3-8b01-59d298d6a41f")
+			(uuid "3b9be802-4c36-48d7-92b0-76d245dc0bfc")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 -2.5 0)
+			(at 0 -2.5 180)
 			(layer "F.Fab")
 			(uuid "ddede2bf-f993-46e7-8209-42ba411a09e3")
 			(effects
@@ -18609,7 +18561,7 @@
 			)
 		)
 		(pad "1" smd roundrect
-			(at -2 0)
+			(at -2 0 180)
 			(size 2.5 1.8)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1388888889)
@@ -18619,7 +18571,7 @@
 			(uuid "2f50d6bd-d2dd-426a-8b9a-9ca2ffca1eed")
 		)
 		(pad "2" smd roundrect
-			(at 2 0)
+			(at 2 0 180)
 			(size 2.5 1.8)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1388888889)
@@ -22968,7 +22920,7 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "6202fdde-81aa-4142-8628-c8186cd30a0d")
-		(at 262.465 281.725)
+		(at 181 139)
 		(descr "Capacitor SMD 1210 (3225 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "C10"
@@ -23031,12 +22983,6 @@
 		(path "/6edfa5f1-28d5-4a04-a3ca-6ba6b58126d6")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -23284,7 +23230,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "6dd923a4-d57c-48b9-9f5d-5685871435a3")
-		(at 249.615 292.435)
+		(at 178 184)
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "R40"
@@ -23347,12 +23293,6 @@
 		(path "/b31bd91c-7dbf-4916-bffe-cc7f1340ecd6")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -24335,7 +24275,7 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "7d7f3097-bd39-47c4-bff2-b54940b545cd")
-		(at 262.465 277.475)
+		(at 182 149)
 		(descr "Capacitor SMD 1210 (3225 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "C5"
@@ -24398,12 +24338,6 @@
 		(path "/61380827-0b25-4d34-b3ac-dab75c65f203")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -24617,7 +24551,7 @@
 	(footprint "Diode_SMD:D_SMA"
 		(layer "F.Cu")
 		(uuid "80beff6b-93c8-4d29-ab3a-ad28252d04a2")
-		(at 320.34 298.765)
+		(at 178 171)
 		(descr "Diode SMA (DO-214AC)")
 		(tags "Diode SMA (DO-214AC)")
 		(property "Reference" "D3"
@@ -24672,12 +24606,6 @@
 		(path "/0d750e61-8d72-4470-93df-3ce6bd37c64b")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -25207,7 +25135,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "88f7b483-69fa-4a2d-b45d-5d9375b7f48a")
-		(at 241.595 277.375)
+		(at 178 166)
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "C13"
@@ -25270,12 +25198,6 @@
 		(path "/c74cbe91-ac72-4b6a-97f9-f814cd204571")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -36769,7 +36691,7 @@
 	(footprint "Capacitor_SMD:C_0805_2012Metric"
 		(layer "F.Cu")
 		(uuid "a58f584a-27ce-4d9a-9f35-71ba6646f8f7")
-		(at 221.725 283.725)
+		(at 182 145)
 		(descr "Capacitor SMD 0805 (2012 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf, https://docs.google.com/spreadsheets/d/1BsfQQcO9C6DZCsRaXUlFlo91Tg2WpOkGARC1WS5S8t0/edit?usp=sharing)")
 		(tags "capacitor")
 		(property "Reference" "C9"
@@ -36832,12 +36754,6 @@
 		(path "/c3b183f0-83e1-4a2b-b183-8b8b9febfb56")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -37085,7 +37001,7 @@
 	(footprint "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm"
 		(layer "F.Cu")
 		(uuid "aabaa0bd-ef47-4806-a7e3-9f360ac663d1")
-		(at 280.489698 297.675)
+		(at 180 190)
 		(descr "CP, Radial series, Radial, pin pitch=3.50mm, diameter=8mm, height=12mm, Electrolytic Capacitor")
 		(tags "CP Radial series Radial pin pitch 3.50mm diameter 8mm height 12mm Electrolytic Capacitor")
 		(property "Reference" "C39"
@@ -37148,12 +37064,6 @@
 		(path "/612c7744-5f72-4f11-9593-cac099f85440")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -39126,7 +39036,7 @@
 	(footprint "Capacitor_SMD:C_0805_2012Metric"
 		(layer "F.Cu")
 		(uuid "abc30023-ae52-4db0-b397-64ca02847336")
-		(at 221.725 289.745)
+		(at 182 152)
 		(descr "Capacitor SMD 0805 (2012 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf, https://docs.google.com/spreadsheets/d/1BsfQQcO9C6DZCsRaXUlFlo91Tg2WpOkGARC1WS5S8t0/edit?usp=sharing)")
 		(tags "capacitor")
 		(property "Reference" "C38"
@@ -39189,12 +39099,6 @@
 		(path "/25942163-e91a-42f8-b38f-370b20c8a890")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -39284,7 +39188,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "ae953c32-4f6b-415f-93d9-b5651a856432")
-		(at 241.595 274.865)
+		(at 178 178)
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "C12"
@@ -39347,12 +39251,6 @@
 		(path "/1ed971f5-c1ea-433c-b9b3-ce4d9824d771")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -39442,7 +39340,7 @@
 	(footprint "Package_TO_SOT_SMD:SOT-223"
 		(layer "F.Cu")
 		(uuid "b1b8289b-3f8c-44aa-a0af-81daff8c05b9")
-		(at 312.345 210.525)
+		(at 174 139)
 		(descr "module CMS SOT223 4 pins")
 		(tags "CMS SOT")
 		(property "Reference" "U3"
@@ -39496,12 +39394,6 @@
 		(path "/4541ea67-eb53-449c-b036-e8b38b980b65")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "3" "1" "2" "4")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -39546,7 +39438,7 @@
 		)
 		(fp_poly
 			(pts
-				(xy -3.13 -3.31) (xy -3.37 -3.64) (xy -2.89 -3.64) (xy -3.13 -3.31)
+				(xy -3.13 -3.31) (xy -3.37 -3.64) (xy -2.89 -3.64)
 			)
 			(stroke
 				(width 0.12)
@@ -39871,7 +39763,7 @@
 	(footprint "Package_SON:WSON-10-1EP_2.5x2.5mm_P0.5mm_EP1.2x2mm"
 		(layer "F.Cu")
 		(uuid "b457358b-1982-430e-afa4-41cd1e7b1812")
-		(at 319.65 226.225)
+		(at 172 172)
 		(descr "WSON, 10 Pin (http://www.ti.com/lit/gpn/tps63030#page=24)")
 		(tags "WSON NoLead")
 		(property "Reference" "U1"
@@ -39933,12 +39825,6 @@
 		(path "/5d0d4c27-c8b9-4e36-a560-14aead2a801c")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "2" "3" "4" "5" "6" "7" "8" "9" "10" "11" "1")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -40247,7 +40133,6 @@
 		(pad "11" smd rect
 			(at 0 0)
 			(size 1.2 2)
-			(property pad_prop_heatsink)
 			(layers "F.Cu" "F.Mask")
 			(net "/GND")
 			(pinfunction "EP_11")
@@ -40429,7 +40314,7 @@
 	(footprint "Capacitor_SMD:C_0805_2012Metric"
 		(layer "F.Cu")
 		(uuid "b6899f41-7de0-475f-8f15-b89bab7d4aa9")
-		(at 221.725 280.715)
+		(at 166 152)
 		(descr "Capacitor SMD 0805 (2012 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf, https://docs.google.com/spreadsheets/d/1BsfQQcO9C6DZCsRaXUlFlo91Tg2WpOkGARC1WS5S8t0/edit?usp=sharing)")
 		(tags "capacitor")
 		(property "Reference" "C8"
@@ -40492,12 +40377,6 @@
 		(path "/7ff0ac25-e368-42ee-a47d-8d727373779f")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -43621,7 +43500,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "dad48e81-d527-44d3-bc4b-c55775ca067e")
-		(at 249.615 279.885)
+		(at 178 175)
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "R2"
@@ -43684,12 +43563,6 @@
 		(path "/1a6bd93f-bdbf-4699-a6cb-b86ff0e9a849")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -47759,7 +47632,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "e98132e5-0770-423f-91e6-9f221dbf0255")
-		(at 249.615 289.925)
+		(at 178 181)
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "R39"
@@ -47822,12 +47695,6 @@
 		(path "/976a0bd6-e426-4726-8c94-a55d6188dd13")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -48091,7 +47958,7 @@
 	(footprint "Capacitor_SMD:C_0805_2012Metric"
 		(layer "F.Cu")
 		(uuid "efb3f178-5b62-4534-97ba-112c4856ba66")
-		(at 221.725 277.705)
+		(at 162 152)
 		(descr "Capacitor SMD 0805 (2012 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf, https://docs.google.com/spreadsheets/d/1BsfQQcO9C6DZCsRaXUlFlo91Tg2WpOkGARC1WS5S8t0/edit?usp=sharing)")
 		(tags "capacitor")
 		(property "Reference" "C6"
@@ -48154,12 +48021,6 @@
 		(path "/3a49b012-44ef-4202-bd0b-381aaacade3b")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -48249,7 +48110,7 @@
 	(footprint "Capacitor_SMD:C_1812_4532Metric"
 		(layer "F.Cu")
 		(uuid "f18ad96e-f005-40b6-a77a-9b6db3872230")
-		(at 320.395 221.725)
+		(at 183 183)
 		(descr "Capacitor SMD 1812 (4532 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "C4"
@@ -48312,12 +48173,6 @@
 		(path "/93e67467-1884-4b58-b280-7846f3166077")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line

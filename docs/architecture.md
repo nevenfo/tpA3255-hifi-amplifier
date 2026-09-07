@@ -543,3 +543,31 @@ Elles survivent à la tâche qui les a produites et gouvernent tout placement re
 - `C110`/`C210` : établissement de `VMID` en 5 τ ≈ 250 ms, à croiser avec le mute en Phase F.
 - Asymétrie de nommage assumée `-VSE`/`+VSE` à gauche, `-VSE_R`/`+VSE_R` à droite, à trancher
   avant H2. Bulk maintenu à 15 400 µF.
+
+
+## Décisions de placement figées en E1
+
+Elles ne bougent plus ; `progress.md` n'en garde qu'un renvoi.
+
+- **`U6` en rotation 180°, centre `(285, 175)`.** Les deux flancs du `HTSSOP-44` ne sont pas
+  interchangeables : d'un côté tout le bas niveau, de l'autre toute la puissance — six `PVDD`,
+  `OUT_A`–`D`, quatre `BST`, six `GND`. La rotation tourne la puissance vers l'intérieur de la
+  carte et laisse le bas niveau échapper vers la lisière droite.
+- **Canaux en rangées, pas en colonnes.** Les quatre broches `OUT` quittent `U6` sur un seul
+  flanc en huit millimètres : toute disposition des tores doit les ouvrir en éventail. Les
+  rangées gardent `OUT_A` près de `OUT_B` et `OUT_C` près de `OUT_D` — chaque paire BTL
+  adjacente, sa boucle courte — et ramènent l'écart de longueur de nœud commuté entre canaux
+  de 44 mm à 18. Sur des nœuds qui basculent 48 V à ~450 kHz, cette longueur prime sur la
+  symétrie gauche-droite.
+- **L'arête arrière est à `y` = 250, par conséquence et non par préférence** : le bulk est figé
+  sur `y` 119..182, donc une entrée 48 V plus haut aurait tiré les sorties haut-parleur sur la
+  même arête, là où `C312`–`C315` barrent la route aux tores.
+- **`U1` reste à rotation 0.** `SW` et `BUCK_VIN` sortent du même bord du WSON-10 : aucune
+  orientation ne met l'entrée en bas et la sortie en haut. La continuité de la sortie vers `U2`
+  puis `U3` l'emporte, et `PVDD`, rail DC calme, fait le détour.
+- **Les quatre broches de configuration de `U6` sortent dans la zone d'interdiction de la
+  barre** — flanc `x` = 288,71, `y` 168,97..177,86. La contrainte portant sur les pastilles et
+  la hauteur, non sur le cuivre sous vernis, `R301`–`R304` se posent en colonne `x` = 297, hors
+  des bandes interdites, au prix de 5 à 10 mm de piste passant sous la barre.
+- **Bande `x` 100..155 réservée à l'analogique bas niveau**, au bord opposé de `U6`, comme
+  l'exige l'orientation dans le coffret.
