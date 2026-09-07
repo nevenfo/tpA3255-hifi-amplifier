@@ -7230,7 +7230,7 @@
 	(footprint "Capacitor_THT:C_Rect_L18.0mm_W8.0mm_P15.00mm_FKS3_FKP3"
 		(layer "F.Cu")
 		(uuid "03902b86-5924-4509-a2ec-49b6d1d532c7")
-		(at 279.545 288.125)
+		(at 202 229)
 		(descr "C, Rect series, Radial, pin pitch=15.00mm, length*width=18*8mm^2, Capacitor, http://www.wima.com/EN/WIMA_FKS_3.pdf")
 		(tags "C Rect series Radial pin pitch 15.00mm length 18mm width 8mm Capacitor")
 		(property "Reference" "C324"
@@ -7293,12 +7293,6 @@
 		(path "/ced78652-09f4-48b1-999d-18c4129f851f")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -13624,7 +13618,7 @@
 	(footprint "HifiAmp_TPA3255_Local:L_Toroid_Vertical_L28.6mm_W12.3mm_P10.00mm_Coilcraft_PA6331"
 		(layer "F.Cu")
 		(uuid "23db0126-4be8-4ca5-aeee-88db6c69af57")
-		(at 292.345 200.1)
+		(at 276 195)
 		(descr "Coilcraft PA6331-AE, toroidal power inductor 15uH, vertical mount, iron powder core, THT, body 28.6mm max dia x 12.3mm max thickness, pin pitch 10.0+/-0.5mm")
 		(property "Reference" "L301"
 			(at 0 -2.55 0)
@@ -13674,12 +13668,6 @@
 		(path "/dfd14b3d-3e7a-4520-a4d0-702f8cafca15")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
@@ -18142,7 +18130,7 @@
 	(footprint "HifiAmp_TPA3255_Local:L_Toroid_Vertical_L28.6mm_W12.3mm_P10.00mm_Coilcraft_PA6331"
 		(layer "F.Cu")
 		(uuid "57e9778a-a9d8-46ae-92f4-695b0f052dba")
-		(at 292.345 242.625)
+		(at 240 212)
 		(descr "Coilcraft PA6331-AE, toroidal power inductor 15uH, vertical mount, iron powder core, THT, body 28.6mm max dia x 12.3mm max thickness, pin pitch 10.0+/-0.5mm")
 		(property "Reference" "L304"
 			(at 0 -2.55 0)
@@ -18192,12 +18180,6 @@
 		(path "/618a25df-1c1e-4f64-b44c-8f9a6f96b2c3")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
@@ -18868,7 +18850,7 @@
 	(footprint "Capacitor_THT:C_Rect_L18.0mm_W8.0mm_P15.00mm_FKS3_FKP3"
 		(layer "F.Cu")
 		(uuid "5bca4c19-5d38-4380-a702-9913fe82a323")
-		(at 279.545 269.025)
+		(at 224 229)
 		(descr "C, Rect series, Radial, pin pitch=15.00mm, length*width=18*8mm^2, Capacitor, http://www.wima.com/EN/WIMA_FKS_3.pdf")
 		(tags "C Rect series Radial pin pitch 15.00mm length 18mm width 8mm Capacitor")
 		(property "Reference" "C322"
@@ -18931,12 +18913,6 @@
 		(path "/ecb4ba24-6b63-4603-a6c1-a43f16671d76")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -23514,7 +23490,7 @@
 	(footprint "Capacitor_THT:C_Rect_L18.0mm_W8.0mm_P15.00mm_FKS3_FKP3"
 		(layer "F.Cu")
 		(uuid "6e3c4b31-b12d-4c7a-ad0c-c1fc38009b80")
-		(at 279.545 278.575)
+		(at 246 229)
 		(descr "C, Rect series, Radial, pin pitch=15.00mm, length*width=18*8mm^2, Capacitor, http://www.wima.com/EN/WIMA_FKS_3.pdf")
 		(tags "C Rect series Radial pin pitch 15.00mm length 18mm width 8mm Capacitor")
 		(property "Reference" "C323"
@@ -23577,12 +23553,6 @@
 		(path "/dec1e2de-7c51-4960-aafc-0e0b5b1e735f")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -24571,7 +24541,7 @@
 	(footprint "HifiAmp_TPA3255_Local:L_Toroid_Vertical_L28.6mm_W12.3mm_P10.00mm_Coilcraft_PA6331"
 		(layer "F.Cu")
 		(uuid "7f37eebf-ff5f-4d69-ada9-2f87c26e21b1")
-		(at 292.345 214.275)
+		(at 240 195)
 		(descr "Coilcraft PA6331-AE, toroidal power inductor 15uH, vertical mount, iron powder core, THT, body 28.6mm max dia x 12.3mm max thickness, pin pitch 10.0+/-0.5mm")
 		(property "Reference" "L302"
 			(at 0 -2.55 0)
@@ -24621,12 +24591,6 @@
 		(path "/939dc18b-82ab-4cf9-9464-f9af939ee983")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
@@ -36005,7 +35969,7 @@
 	(footprint "HifiAmp_TPA3255_Local:L_Toroid_Vertical_L28.6mm_W12.3mm_P10.00mm_Coilcraft_PA6331"
 		(layer "F.Cu")
 		(uuid "a0158bcb-1349-4b48-8c21-e157ceb6cb37")
-		(at 292.345 228.45)
+		(at 276 212)
 		(descr "Coilcraft PA6331-AE, toroidal power inductor 15uH, vertical mount, iron powder core, THT, body 28.6mm max dia x 12.3mm max thickness, pin pitch 10.0+/-0.5mm")
 		(property "Reference" "L303"
 			(at 0 -2.55 0)
@@ -36055,12 +36019,6 @@
 		(path "/9170b875-47d2-4eda-94ad-a150e7106125")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
@@ -36451,7 +36409,7 @@
 	(footprint "TerminalBlock:TerminalBlock_MaiXu_MX126-5.0-02P_1x02_P5.00mm"
 		(layer "F.Cu")
 		(uuid "a52ef75e-bafc-40c9-83ce-5d890bf7b506")
-		(at 300.845 269.84)
+		(at 246 241)
 		(descr "terminal block MaiXu MX126-5.0-02P, 2 pins, pitch 5mm, size 10.5x7.8mm, drill diameter 1.3mm, pad diameter 2.8mm, https://www.lcsc.com/datasheet/lcsc_datasheet_2309150913_MAX-MX126-5-0-03P-GN01-Cu-S-A_C5188435.pdf")
 		(tags "THT terminal block MaiXu MX126-5.0-02P pitch 5mm size 10.5x7.8mm drill 1.3mm pad 2.8mm")
 		(property "Reference" "J301"
@@ -36514,12 +36472,6 @@
 		(path "/05d49d93-dd35-4acd-b029-7801f79d333e")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -42537,7 +42489,7 @@
 	(footprint "TerminalBlock:TerminalBlock_MaiXu_MX126-5.0-02P_1x02_P5.00mm"
 		(layer "F.Cu")
 		(uuid "d00811e9-6a7d-4001-8316-253917cf0085")
-		(at 300.845 279.955)
+		(at 224 241)
 		(descr "terminal block MaiXu MX126-5.0-02P, 2 pins, pitch 5mm, size 10.5x7.8mm, drill diameter 1.3mm, pad diameter 2.8mm, https://www.lcsc.com/datasheet/lcsc_datasheet_2309150913_MAX-MX126-5-0-03P-GN01-Cu-S-A_C5188435.pdf")
 		(tags "THT terminal block MaiXu MX126-5.0-02P pitch 5mm size 10.5x7.8mm drill 1.3mm pad 2.8mm")
 		(property "Reference" "J302"
@@ -42600,12 +42552,6 @@
 		(path "/39ad98d1-0c23-4ae2-a58e-53c5b1a98f62")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -48061,7 +48007,7 @@
 	(footprint "Capacitor_THT:C_Rect_L18.0mm_W8.0mm_P15.00mm_FKS3_FKP3"
 		(layer "F.Cu")
 		(uuid "ec155722-0bfa-4fe9-8fe4-7335bc9c9cf0")
-		(at 279.545 259.475)
+		(at 268 229)
 		(descr "C, Rect series, Radial, pin pitch=15.00mm, length*width=18*8mm^2, Capacitor, http://www.wima.com/EN/WIMA_FKS_3.pdf")
 		(tags "C Rect series Radial pin pitch 15.00mm length 18mm width 8mm Capacitor")
 		(property "Reference" "C321"
@@ -48124,12 +48070,6 @@
 		(path "/d06dedf5-d9ca-411d-9d0f-8f8dcec0348a")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
