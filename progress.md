@@ -9,41 +9,46 @@ sérigraphie**, normales avant routage. Aucune `clearance`, aucun `courtyards_ov
 
 ## Tâche actuelle
 
-**E1.5 — revue du placement.** Tranches « symétrie mesurée » et « corrective » closes. Reste
-**le retour des courants et les masses**, en lecture seule.
+**E1.5 — revue du placement.** Tranches « symétrie mesurée », « corrective » et « retour des
+courants et masses » closes. Reste **la rotation de `C308`/`C309`**, puis clearances et
+manufacturabilité.
 
 ## Dernière tâche validée
 
-**E1.5, tranche « corriger les deux écarts gratuits » = PASS.** Cinq déplacements par IPC, tous
-en `y` : `C308` → 173,5 ; `C309` → 169,6 ; `C311` → 171,7 ; `R105` → 163,5 ; `R106` → 166,5. Les
-bootstraps somment désormais à 350, miroir exact du brochage de `U6` ; `VMID` est à mi-distance
-des deux voies. Détail : `docs/architecture.md`, section « E1.5 — tranche corrective ».
+**E1.5, tranche « retour des courants et masses » = PASS**, en lecture seule. Fait dominant :
+**un seul net de masse, `/GND`, et aucune zone de cuivre dessinée** — la séparation des masses
+sera purement géométrique, décidée en F1. Trois découvertes : `C308`/`C309` **croisés** (les
+orientations n'avaient pas été mises en miroir, seulement les positions) ; **les deux borniers de
+sortie croisés**, correction au schéma ; **160 mm d'entrées analogiques** dont le filtre est à la
+mauvaise extrémité. Masses séparées de **35,76 mm**. Détail et contraintes F1 :
+`docs/architecture.md`, section « E1.5 — retour des courants et masses ».
 
 Validation :
 
-- Les 5 positions cibles **au micron**, `x` et orientation inchangés.
-- **124 empreintes**, les **119 autres intactes** — `L301`–`L304`, `C306`, `C307` compris ;
-  `pad_prop_heatsink` de `U1` toujours présent.
-- DRC : **105 violations, toutes de sérigraphie** (86 `silk_overlap`, 19 `silk_over_copper`),
-  254 non-connectés, `schematic_parity` = 0, **aucune `clearance` ni `courtyards_overlap`** —
-  ce qui valide l'entraxe le plus serré, 3,0 mm entre `C307` et `C308`.
+- Les trois questions posées reçoivent une réponse **mesurée**, aucune estimée.
+- Chaque croisement est établi par **test d'intersection des segments**, pas par une aire.
+- `.kicad_pcb` **identique au bit près** — MD5 `a0a35c1636a56b0deb7c7934052899ff`, `git diff` vide.
 
-**Avant elle** : E1.5 « symétrie mesurée » ; E1.4 (`698e925`), placement clos ; E1.10 ; E1.3 en
-quatre tranches ; E1.9, E1.2, E1.8, E1.7, E1.6, E1.1 = PASS.
+**Avant elle** : E1.5 « corrective » ; E1.5 « symétrie mesurée » ; E1.4 (`698e925`) ; E1.10 ;
+E1.3 en quatre tranches ; E1.9, E1.2, E1.8, E1.7, E1.6, E1.1 = PASS.
 
 ## Décisions actives
 
 Placement figé, budgets thermiques et pilotage KiCad sont dans `docs/architecture.md` et
 `docs/kicad-operations.md`. Restent ici celles qui gouvernent la prochaine action :
 
-- **Le brochage de `U6` est un miroir autour de `y` = 175, pas un escalier.** Les paires réelles
-  de l'étage de sortie sont **A↔D et B↔C**, jamais A↔C/B↔D. Toute vérification de symétrie de
-  sortie qui apparie par numéro est fausse.
+- **Le brochage de `U6` est un miroir autour de `y` = 175.** Il inverse l'ordre des nets d'une
+  moitié à l'autre. **Une position mise en miroir ne suffit pas : l'orientation doit l'être
+  aussi.** Deux composants appariés qui portent la même rotation sont forcément à l'envers l'un
+  des deux.
+- **Un croisement se prouve par intersection de segments, jamais par une aire** : sur un
+  quadrilatère croisé, la formule du lacet retourne la différence des lobes et désigne le pire
+  cas comme le meilleur.
 - **Un écart géométrique exact peut être électriquement faux.** Les selfs sont à (0 ; +17) exact,
-  mais composée avec un brochage en miroir cette translation donne des trajets de sortie de
-  71,7 / 91,9 / 97,9 / 91,4 mm. Elles ne se replaceront pas pour autant : courtyard
-  29,10 × 13,10 mm, grille 2 × 2 imposée. **Contrainte pour F1** : apparier au routage, **par
-  paire de pont** — A avec B, C avec D.
+  mais composée avec le brochage en miroir cette translation donne des trajets de sortie de
+  71,7 / 91,9 / 97,9 / 91,4 mm. Elles ne se replaceront pas : courtyard 29,10 × 13,10 mm, grille
+  2 × 2 imposée. **Contrainte F1** : apparier au routage, **par paire de pont** — A avec B, C
+  avec D.
 - **La symétrie de la carte n'est pas un vecteur unique** : (0 ; +40) en analogique, (0 ; +17)
   aux selfs, (−22 ; 0) aux sorties. Aucun contrôle par translation globale.
 - **Zones interdites par la barre de liaison** : `x` ∈ [280, 291], `y` ∈ [160, 190] ; et
@@ -59,10 +64,17 @@ Placement figé, budgets thermiques et pilotage KiCad sont dans `docs/architectu
 
 ## Blocage actif
 
-Aucun. Le blocage GUI de la session précédente est **levé et l'issue vérifiée** : l'éditeur de
-PCB étant ouvert, l'IPC a exécuté le lot de cinq déplacements sans aucun refus. Le blocage
-`SendInput` n'atteint pas l'IPC et ne survit pas à la session. Voir `docs/kicad-operations.md`,
-section « Quand l'automatisation GUI est morte ».
+Aucun.
+
+## Décisions à porter à l'utilisateur
+
+Deux, toutes deux hors périmètre du placement, aucune ne bloque la prochaine action :
+
+1. **Permuter les broches de `J301` et `J302` au schéma** — supprime un croisement et 8,7 mm par
+   voie, au prix d'une inversion de polarité absolue identique sur les deux voies, donc sans
+   effet sur l'image stéréo.
+2. **Déplacer `C106`/`C107`/`C206`/`C207` devant les entrées de `U6`** — 6 mm au lieu de 160, mais
+   cela sort les quatre condensateurs du bloc analogique et touche la symétrie de E1.4.
 
 ## Fichiers / zones utiles
 
@@ -70,26 +82,26 @@ section « Quand l'automatisation GUI est morte ».
   `a0a35c1636a56b0deb7c7934052899ff` ; `.kicad_dru` porte la règle d'isolation intra-empreinte
   de E1.9 ; `.kicad_sym` les symboles locaux
 - **`docs/kicad-operations.md`** — pilotage KiCad, à lire avant toute manipulation de la carte
-- `docs/architecture.md` — placement figé, symétrie mesurée, tranche corrective, `NEEDS_DATA`,
-  budgets thermiques
+- `docs/architecture.md` — placement figé, symétrie mesurée, tranche corrective, retour des
+  courants et masses, `NEEDS_DATA`, budgets thermiques
 
 ## NEXT ACTION
 
-**E1.5, tranche « retour des courants et masses »**, en **lecture seule** — mesure au fichier,
-aucune écriture, `.kicad_pcb` identique au bit près à la fin (`cmp` et `git diff` vides).
+**E1.5, tranche « rotation des bootstraps croisés ».** L'éditeur de PCB étant ouvert, reprendre
+via `kicad-control`/MCP. **Deux rotations, aucun déplacement** :
 
-Trois questions à trancher, chacune par une mesure et non par une intention :
+| Réf. | Orientation actuelle | Cible |
+| --- | --- | --- |
+| `C308` | 90° | **270°** |
+| `C309` | 90° | **270°** |
 
-1. **Les boucles de commutation de `U6`** — pour chacun des quatre demi-ponts, la surface de la
-   boucle `PVDD` → pastille → découplage → `GND`. Ce sont elles qui rayonnent ; `C311`
-   vient d'être déplacé, sa boucle est donc à remesurer.
-2. **L'entrelacement des condensateurs de sortie**, question laissée ouverte par la tranche
-   précédente : `C321` (A) 268, `C323` (C) 246, `C322` (B) 224, `C324` (D) 202. La symétrie L/R
-   est exacte, mais les retours `OUT_A_F`/`OUT_B_F` et `OUT_C_F`/`OUT_D_F` **se croisent dans la
-   même bande de carte**. Établir si le croisement est réel au niveau des retours ou seulement
-   apparent dans l'ordre en `x`, et s'il se corrige au placement ou au routage.
-3. **La séparation des masses** — où passe la frontière entre masse de puissance et masse
-   analogique, et si le placement actuel la rend réalisable en un point unique.
+`C306` et `C307` **ne bougent pas** : ils sont déjà dans le bon sens, et les tourner les
+croiserait. Le centre de `C308` (273,5 ; 173,5) et celui de `C309` (273,5 ; 169,6) doivent rester
+**identiques au micron** — la rotation se fait autour du centre, donc les sommes à 350 de la
+tranche corrective sont préservées.
 
-Livrable : une section dans `docs/architecture.md`, chaque conclusion adossée à une mesure
-citée, et les contraintes de routage qui en découlent inscrites explicitement pour F1.
+Valider par relecture — les 2 orientations, les **124 centres inchangés**, `pad_prop_heatsink`
+à 1 — puis par le **test d'intersection** rejoué sur les quatre bootstraps : les quatre doivent
+ressortir **simples**, aucun croisé. Enfin `kicad-cli pcb drc --format json` depuis le répertoire
+du projet : `schematic_parity` = 0, 254 non-connectés, **aucune `clearance`, aucun
+`courtyards_overlap`**, `lib_footprint_mismatch` = 0. Seul le compte de sérigraphie peut varier.

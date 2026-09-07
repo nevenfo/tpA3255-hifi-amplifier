@@ -766,3 +766,133 @@ Ce dernier point était le seul risque réel de la tranche : l'entraxe le plus s
 violation au DRC — c'est-à-dire par le vérificateur qui connaît les courtyards réels — et non par
 un calcul de courtyard fait à la main, qui n'aurait prouvé que la cohérence de son propre modèle.
 
+
+## E1.5 — retour des courants et masses
+
+Mesure au fichier, sans écriture. Trois questions étaient posées : les boucles de commutation, le
+croisement des sorties, et la frontière des masses. Les trois ont une réponse mesurée, et deux
+d'entre elles ont retourné un défaut que le placement seul ne laissait pas voir.
+
+### Le fait qui gouverne tout le reste
+
+**Il n'existe qu'un seul net de masse — `/GND`, 83 pastilles sur 70 composants — et aucune zone
+de cuivre n'est encore dessinée.** La séparation des masses ne peut donc pas être portée par le
+schéma : elle sera **purement géométrique**, c'est-à-dire une découpe de zone et un point de
+jonction décidés en F1. Aucune mesure de plan de masse n'est possible aujourd'hui ; ce qui suit
+mesure ce qui la conditionne, la position des retours.
+
+### Boucles de commutation — deux bootstraps sont croisés
+
+Le découplage local de `U6` se réduit à **`C310` et `C311`, deux 1 µF**, pour six pastilles
+`PVDD` réparties en deux groupes (29–31 et 36–38). Les deux sont correctement orientés : le pad
+`PVDD` du condensateur fait face aux pastilles `PVDD` du circuit, le pad `GND` aux pastilles
+`GND`, et aucune des deux liaisons n'en croise une autre.
+
+**Les bootstraps, eux, ne le sont pas tous.** En testant l'intersection des deux segments
+d'amenée — pastille du circuit vers pastille du condensateur, pour chacun des deux nets :
+
+| Bootstrap | Nets | État | Après rotation de 180° |
+| --- | --- | --- | --- |
+| `C306` | `BST_A`/`OUT_A` | simple | croisé |
+| `C307` | `BST_B`/`OUT_B` | simple | croisé |
+| `C308` | `BST_C`/`OUT_C` | **croisé** | simple |
+| `C309` | `BST_D`/`OUT_D` | **croisé** | simple |
+
+**C'est la même erreur que celle corrigée à la tranche précédente, sous une autre forme.** Le
+brochage de `U6` étant en miroir autour de `y` = 175, l'ordre relatif de `BST` et de `OUT`
+s'inverse d'une moitié à l'autre : en bas `BST_D` (168,33) précède `OUT_D` (170,87), en haut
+`BST_A` (181,67) suit `OUT_A` (179,13). Les quatre bootstraps portant **la même rotation de
+90°**, deux sont nécessairement à l'envers. La tranche précédente avait corrigé les *positions*
+en miroir ; les *orientations* ne l'avaient pas été.
+
+Le coût du croisement n'est pas une longueur — les amenées ne diffèrent que de 0,5 à 0,9 mm — mais
+un **changement de couche** : deux liaisons qui se croisent imposent un via dans la boucle de
+grille du transistor haut, celle qui voit les `dV/dt` les plus rapides de la carte. La correction
+est une **rotation de 180°, sans déplacement** : le centre ne bouge pas, les sommes à 350 de la
+tranche précédente sont préservées, le courtyard d'un 0603 est symétrique, et un céramique n'est
+pas polarisé.
+
+> **Méthode — l'aire du quadrilatère ne mesure pas une boucle.** Un premier calcul avait pris
+> l'aire du polygone `pastille CI → pastille condensateur → pastille condensateur → pastille CI`.
+> Sur un quadrilatère croisé, la formule du lacet retourne la **différence** des deux lobes, qui
+> tend vers zéro : les boucles croisées ressortaient donc comme les meilleures, exactement à
+> l'envers. C'est le test d'intersection des segments qui tranche, pas une aire.
+
+### Sorties — les deux borniers sont croisés
+
+`J301` porte la voie gauche (`OUT_A_F`, `OUT_B_F`), `J302` la voie droite (`OUT_C_F`,
+`OUT_D_F`) : les paires de pont sont bien **A avec B** et **C avec D**, ce que la contrainte F1
+inscrite plus haut supposait.
+
+L'entrelacement en `x` des MKP de sortie, laissé ouvert par la tranche précédente, **n'est pas le
+problème**. Le problème est au bornier :
+
+| Bornier | Affectation actuelle | Provenance | Verdict |
+| --- | --- | --- | --- |
+| `J301` | `OUT_A_F` → broche `x` = 246, `OUT_B_F` → 251 | A vient de `x` = 268, B de 224 | **croisé**, 54,6 mm |
+| `J302` | `OUT_C_F` → 224, `OUT_D_F` → 229 | C vient de 246, D de 202 | **croisé**, 54,6 mm |
+
+Chaque bornier reçoit **par sa broche de gauche le signal qui vient de la droite**. Permuter les
+deux broches supprime le croisement et raccourcit de **8,7 mm par voie** (54,6 → 45,9 mm). Les
+deux voies sont affectées à l'identique, ce qui est cohérent avec la symétrie mesurée — et ce qui
+signifie aussi que la permutation **inverse la polarité absolue des deux sorties de la même
+façon**, donc sans effet sur la polarité relative entre canaux ni sur l'image stéréo.
+
+**Cette correction est au schéma, pas au placement** : elle change l'affectation des nets aux
+broches du bornier. Tourner physiquement le bornier de 180° donnerait le même résultat électrique
+mais retournerait l'ouverture des vis vers l'intérieur de la carte, ce qui est inacceptable pour
+un bornier à vis. Elle sort donc du périmètre de E1.5.
+
+### Masses — la séparation est franche, et personne ne la traverse
+
+La carte s'organise en un gradient net selon `x`, et la mesure le confirme sans exception :
+
+| Domaine | Étendue en `x` | Pastilles `/GND` |
+| --- | --- | --- |
+| Analogique bas niveau — `U4`/`U5`, séries `1xx`/`2xx`, `J2`–`J4`, `VMID` | 104 → 140 | 17 |
+| Puissance — `U6`, bulk, sorties, protection, entrée 48 V | 144 → 293 | 35 |
+
+**La distance minimale entre une pastille de masse analogique et une pastille de masse de
+puissance est de 35,76 mm** (`C209` pad 2 ↔ `U8` pad 5). Les deux domaines ne se touchent nulle
+part : la frontière en `x` est étroite — 140 contre 144 — mais les composants qui l'approchent
+sont décalés en `y` et ne se font pas face. Le placement autorise donc une découpe de zone
+verticale autour de `x` ≈ 142 avec un point de jonction unique, sans qu'aucun composant n'ait à
+être déplacé.
+
+### Ce que la revue a trouvé et que le placement ne montrait pas
+
+**Les quatre entrées analogiques traversent la carte de bout en bout** : de l'étage `OPA1612`
+(`x` ≈ 127–133) aux broches d'entrée de `U6` (`x` = 288,71), soit **157 à 163 mm** — et ce trajet
+passe au-dessus de toute la zone de puissance, bulk compris.
+
+Le filtre anti-repliement est **à la mauvaise extrémité de cette ligne**. `R107`/`R108`/`R207`/
+`R208` valent 100 Ω en série et `C106`/`C107`/`C206`/`C207` 100 pF vers la masse, mais les quatre
+condensateurs sont posés à `x` ≈ 126–132, **au départ** de la ligne. Le bruit capté sur les
+160 mm — sous le bulk, à côté de sorties commutées — arrive donc sur la broche de `U6` **sans
+aucun filtrage local**. La topologie correcte est l'inverse : résistance à la source,
+condensateur à la charge, la ligne étant alors shuntée à la masse juste avant le circuit.
+
+**Et l'emplacement qui corrigerait cela est interdit.** La bande `x` ∈ [288, 300], `y` ∈ [169,
+181] est **entièrement vide** — le placement a scrupuleusement respecté la réservation de la
+barre de liaison — et les **quatre broches d'entrée y débouchent** (`INPUT_A` 179,13,
+`INPUT_B` 178,49, `INPUT_C` 172,14, `INPUT_D` 171,51). Rien ne peut être posé en face d'elles.
+Les premiers emplacements libres sont à `y` ≤ 166 et `y` ≥ 184, à environ **6 mm** des broches,
+ce qui reste vingt-cinq fois mieux que 160 mm.
+
+Ce n'est donc pas un oubli de placement mais une **conséquence de la contrainte thermique**, et
+sa correction déplacerait quatre condensateurs hors du bloc analogique. **Décision à porter à
+l'utilisateur**, inscrite comme telle : elle n'est ni gratuite ni sans effet sur la symétrie
+établie en E1.4.
+
+> **Contraintes pour F1 — retour des courants.**
+>
+> 1. **Masses** : découpe de zone verticale vers `x` ≈ 142, **un seul point de jonction**, placé
+>    du côté puissance au plus près des pastilles `GND` de `U6`. La marge de 35,76 mm est
+>    disponible ; aucune pastille n'oblige à la réduire.
+> 2. **Entrées analogiques** : router les quatre lignes **en couche interne, entre deux plans de
+>    masse**, sur toute la traversée de la zone de puissance. Tant que le filtrage reste à
+>    l'origine, le blindage est la seule protection.
+> 3. **Retour des MKP de sortie** : les pads `GND` de `C321`–`C324` (`x` = 283, 261, 239, 217,
+>    `y` = 229) doivent revenir à la masse de puissance de `U6` — environ 48 mm — **sans emprunter
+>    le plan analogique**.
+> 4. **Bootstraps** : après rotation de `C308`/`C309`, router les quatre boucles **sans via**.
