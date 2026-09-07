@@ -510,4 +510,36 @@ La ligne du tableau donne ESR ≤ **0,071 Ω** à 25 °C et une ondulation admis
 
 - `NEEDS_DATA: tension absolue maximale de la broche MR du TPS3802K33 et caractéristique de montée de PVDD au power-up ; la chaîne EVM PVDD → R6 100 kΩ → C83 1 µF → RESET-SW couple MR au rail 48 V. Le continu est bloqué par C83, mais la contrainte transitoire au démarrage n'est pas bornée sans ces deux données.`
 
+- `NEEDS_DATA: plan de perçage de l'embase Modushop 01/05` — non publié par le fabricant ; à relever sur pièce.
+- `NEEDS_DATA: fabricant de PCB et épaisseur de cuivre par couche.` Le MCP n'expose pas l'épaisseur de cuivre et le fichier ne porte pas de bloc `stackup` explicite : à rendre explicite dans Board Setup **et** à la commande.
+- `NEEDS_DATA: décodage à la source de l'EEU-FC1J152` (`C312`–`C315`) — `industrial.panasonic.com` refuse `curl`.
+
 Ces points interdisent actuellement `PRÊT À FABRIQUER = OUI`, mais n’empêchent pas la capture schématique initiale si les composants non figés sont explicitement marqués.
+
+
+## Contraintes de placement encore actives
+
+Elles survivent à la tâche qui les a produites et gouvernent tout placement restant.
+
+- **`U6` se refroidit uniquement par le dessus**, aucun via thermique sous le boîtier. La
+  broche 45 du symbole n'a pas de pastille dans `HTSSOP-44_…_TopEP` : l'erreur d'import à ce
+  sujet est **attendue et correcte**.
+- **Orientation dans le coffret** : `U6` contre le flanc droit ; analogique bas niveau au bord
+  opposé ; sorties haut-parleur et entrée 48 V sur l'arête arrière ; `J4` vers la façade.
+  `J2`/`J3`/`J4` sont en **JST XH déporté**, leur panneau est donc un choix de câblage et non
+  une contrainte de carte.
+- **Zone d'interdiction de composants sous la barre** : `x` ∈ [280, 291], `y` ∈ [160, 190] au
+  pied élargi, et `x` ∈ [280, 300], `y` ∈ [169, 181] au-delà. Ce n'est pas seulement une limite
+  de hauteur — une pièce d'aluminium nu à 1,2 mm du cuivre n'est pas acceptable au-dessus de
+  pastilles. Les découplages bas niveau se rangent donc au-dessus de `y` = 166,5 et au-dessous
+  de `y` = 183,5.
+- **Hauteurs** : tores `L301`–`L304` debout ø 28,6 × 29 mm, 3,1 W de pertes cuivre ; films
+  `C321`–`C324` 18 × 8 × 15 mm ; `C312`–`C315` ø 18 × 35 mm ; `C316`/`C317` ø 35 × **30 mm** ;
+  `C325` 18 mm.
+- **`R306` est un shunt à deux bornes, pas Kelvin** : `VIN`/`SENSE` se prennent sur les bords
+  **intérieurs** des pastilles.
+- `Q302` en TO-264 sur radiateur, SOA supposant le boîtier à 75 °C. `Q301` en TO-220 : 6,9 A
+  avec **6 cm² de cuivre 70 µm sur son net de drain**.
+- `C110`/`C210` : établissement de `VMID` en 5 τ ≈ 250 ms, à croiser avec le mute en Phase F.
+- Asymétrie de nommage assumée `-VSE`/`+VSE` à gauche, `-VSE_R`/`+VSE_R` à droite, à trancher
+  avant H2. Bulk maintenu à 15 400 µF.

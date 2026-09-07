@@ -2,99 +2,94 @@
 
 ## Phase actuelle
 
-**Phase E — PCB 4 couches.** `GATE C2 = PASS`. Baseline ERC : **16 violations, 0 erreur** — 10 `endpoint_off_grid` et 6 `lib_symbol_mismatch`, ces derniers étant le prix des symboles locaux du projet. Baseline DRC : **96 violations, 254 non-connectés, `schematic_parity` = 0**. Les 96 restantes sont **toutes de la sérigraphie** — 80 `silk_overlap`, 12 `silk_over_copper`, 4 `silk_edge_clearance` — normales avant tout routage et tout nettoyage de sérigraphie.
+**Phase E — PCB 4 couches.** `GATE C2 = PASS`. Baseline ERC : 16 violations, 0 erreur
+(10 `endpoint_off_grid`, 6 `lib_symbol_mismatch` — prix des symboles locaux). DRC courant :
+**90 violations, 254 non-connectés, `schematic_parity` = 0**. Les 90 sont **toutes de la
+sérigraphie** — normales avant routage et nettoyage de sérigraphie.
 
 ## Tâche actuelle
 
-**E1.3 — placer filtres LC, sorties, alimentation et boucles de retour.** Non commencée. Premier placement depuis que la puissance est figée ; les tores `L301`–`L304` et les films `C321`–`C324` doivent se ranger côté puissance de `U6`, c'est-à-dire vers l'intérieur de la carte.
+**E1.3 — placer filtres LC, sorties, alimentation et boucles de retour.** En cours, deux
+tranches sur trois faites. **48 des 124 empreintes sont placées**, 76 restent dans le bloc
+d'import. Reste à placer : **l'alimentation auxiliaire** (buck `U1` LM5010 avec sa boucle de
+retour `R39`/`R40`, LDO `U2`/`U3`, supervision `U7`) et les **quatre résistances de
+configuration de `U6`** — `R301` `FREQ_ADJ`, `R302` `FAULT`, `R303` `CLIP_OTW`, `R304`
+`OC_ADJ`.
 
 ## Dernière tâche validée
 
-**E1.9 = PASS — les 42 violations `clearance` sont éteintes.** Une règle unique dans le nouveau `HifiAmp_TPA3255.kicad_dru` : `(constraint clearance (min 0.15mm))` sous la condition que `A` et `B` soient deux pastilles d'une **même** empreinte parmi `U1`, `U6`, `U8`.
+**E1.3, tranche « entrée 48 V » = PASS** (`1ae53af`). La chaîne `J1` → `F301` → `D301` →
+`Q301` → `R306` → `Q302` est déroulée du bas-gauche vers le haut-droite, dans le sens où le
+courant circule ; `PVDD` quitte le MOSFET de hot-swap à 30 mm du bulk au lieu de 47. La TVS
+est **après** le fusible, de sorte qu'un clamp en court-circuit fasse encore sauter `F301`.
+Le réseau haute impédance du `LM5069` est groupé contre `U8` plutôt qu'étiré le long du
+chemin de puissance.
 
-Validation, tenue par `kicad-cli pcb drc --format json` :
+Validation :
 
-- **42 → 0** violations `clearance`, total **138 → 96**, `schematic_parity` toujours 0, 254 non-connectés inchangés, aucune violation d'un type nouveau.
-- **`.kicad_pcb` et `.kicad_pro` identiques au bit près** (MD5 inchangés) : la correction n'a coûté aucune modification de la carte ni du plancher d'isolation.
-- **Sélectivité prouvée par contrôle discriminant** : en retirant `U6` et `U8` de la condition, exactement leurs 34 violations reviennent — 26 et 8 — tandis que les 8 de `U1` restent supprimées. La règle ne relâche donc pas l'isolation de la carte entière.
+- DRC inchangé à **90 violations**, toutes de sérigraphie, **aucune `clearance`**, aucun type
+  nouveau ; `schematic_parity` = 0 ; 254 non-connectés inchangés.
+- Les 48 positions relues du fichier enregistré concordent **au micron** ; 124 empreintes.
 
-**Avant elle** : E1.2 close par ses deux perçages M3 `H1 (285,163)` / `H2 (285,187)`, entraxe 24 mm, motif validé par l'utilisateur ; puis E1.8, E1.7, E1.6, E1.1 = PASS, D1 CLOSE.
+**Avant elle** : E1.3 tranche « filtres de sortie » (`ec83d2f`, DRC 96 → 90) ; E1.9 = PASS
+(42 violations `clearance` éteintes par `HifiAmp_TPA3255.kicad_dru`) ; E1.2, E1.8, E1.7,
+E1.6, E1.1 = PASS ; D1 CLOSE.
 
 ## Décisions actives
 
-- **`U6` en rotation 180°, centre `(285, 175)`.** Les deux flancs du `HTSSOP-44` ne sont pas interchangeables : côté `x < 0` du symbole tout le bas niveau, côté `x > 0` toute la puissance — six `PVDD`, `OUT_A`–`D`, quatre `BST`, six `GND`. La rotation 180° tourne la puissance vers l'intérieur de la carte et laisse le bas niveau échapper vers la lisière droite.
-- **La barre de liaison est dressée** : 10 mm d'épaisseur dans le plan de la carte, 60 mm de hauteur. Section de conduction inchangée à 600 mm², donc **0,250 à 0,333 °C/W inchangés**, mais l'ombre portée tombe à une bande de 10 mm. **Exigence non négociable qui en découle : la barre doit s'élargir en pied côté flanc pour y présenter au moins 1200 mm²**, sans quoi le terme d'isolation double et la marge tombe à 0,09 °C/W.
-- **Fixation de la barre arrêtée** : deux M3 de passage en `(285, 163)` et `(285, 187)`, **entraxe 24 mm**, encadrant `U6`. Deux vis et non une, pour empêcher la barre de pivoter sur le PowerPAD. **La barre se termine donc en pied élargi** côté `U6` : la lame de 10 mm s'ouvre à ≈ 30 mm de large sur `x` de 280 à 291, pour y porter deux taraudages au même entraxe. La zone d'interdiction s'élargit d'autant : `x` ∈ [280, 291], `y` ∈ [160, 190] côté `U6`. Aucun site de composant n'y tombe — voisin le plus proche `C303` à 8 mm, `U6` à 12 mm de chaque trou.
-- **Les règles DRC personnalisées vivent dans `<projet>.kicad_dru`**, jamais dans `board.design_settings.rules` du `.kicad_pro`, qui ne porte que des minima numériques. Le plan affirmait le contraire ; corrigé.
-- **`min_clearance` ne serre pas une règle personnalisée.** On l'avait supposé plancher absolu ; l'expérience le réfute — une règle à 0,15 mm passe alors que `min_clearance` vaut 0,2. Le `.kicad_pro` est donc resté intact. À ne pas re-supposer.
-- **Une règle DRC se prouve sélective, jamais supposée telle** : sans violation ailleurs pour le révéler, une condition trop large relâcherait la carte entière en silence. Le contrôle est de retirer une référence de la condition et de vérifier que ses seules violations reviennent.
-- **Zone d'interdiction de composants** : `x` ∈ [280, 300], `y` ∈ [169, 181]. Pas seulement une limite de hauteur — une pièce d'aluminium nu à 1,2 mm du cuivre n'est pas acceptable au-dessus de pastilles. Les découplages bas niveau sont donc rangés au-dessus de `y` = 166,5 et au-dessous de `y` = 183,5.
-- **Contour arrêté à 200 × 150 mm**, `(100,100)`–`(300,250)`, contraint par le placement et non par le coffret ; resserrable après E1.5.
-- **Arbitrages de E1.7 rendus** : coffret **Modushop `03/300` 3U**, carte à plat, isolation reportée à la jonction barre/flanc. Chaîne 1,711 à 1,932 °C/W pour 2,232 de budget — à recorriger selon la réserve du pied de barre ci-dessus.
+- **`U6` en rotation 180°, centre `(285, 175)`.** Les deux flancs du `HTSSOP-44` ne sont pas
+  interchangeables : le bas niveau d'un côté, toute la puissance de l'autre. La rotation
+  tourne la puissance vers l'intérieur de la carte et laisse le bas niveau échapper vers la
+  lisière droite.
+- **Les canaux sont en rangées, pas en colonnes.** Les quatre broches `OUT` quittent `U6` sur
+  un seul flanc en huit millimètres ; les rangées gardent chaque paire BTL adjacente et
+  ramènent l'écart de longueur de nœud commuté entre canaux de 44 mm à 18 — ce qui prime sur
+  la symétrie gauche-droite à 48 V et ~450 kHz.
+- **L'arête arrière est à `y` = 250, par conséquence et non par préférence** : le bulk est
+  figé sur `y` 119..182, donc une entrée 48 V plus haut aurait tiré les sorties haut-parleur
+  sur la même arête, là où `C312`–`C315` barrent la route aux tores.
+- **La barre de liaison est dressée** : 10 mm dans le plan de la carte, 60 mm de hauteur,
+  600 mm² de section conservés, ombre portée réduite à 10 mm. **Exigence non négociable : elle
+  s'élargit en pied côté flanc pour y présenter au moins 1200 mm²**, sinon la marge thermique
+  tombe à 0,09 °C/W. Fixation arrêtée : deux M3 en `(285, 163)` et `(285, 187)`, entraxe 24 mm,
+  encadrant `U6` — deux vis, pour l'empêcher de pivoter sur le PowerPAD. Détail et budgets
+  dans `docs/architecture.md`.
+- **Contour arrêté à 200 × 150 mm**, `(100,100)`–`(300,250)`, contraint par le placement et non
+  par le coffret ; resserrable après E1.5.
+- **Coffret Modushop `03/300` 3U, carte à plat**, isolation reportée à la jonction
+  barre/flanc. Chaîne 1,711 à 1,932 °C/W pour 2,232 de budget.
 - **`REQ-THERM-3`** : nominal continu 2 × 100 W sur **8 Ω**, le 4 Ω en crête seulement.
-- Toute édition schéma/PCB/librairie passe par `kicad-control`/MCP ; **les fichiers de configuration s'éditent directement**.
-- **`set_design_rules` et `set_active_layer` sont PROSCRITS** : jetons invalides dans `(setup ...)`, fichier illisible par KiCad, aucun retour d'erreur. Les règles vivent dans le `.kicad_pro`, sous `board.design_settings.rules`.
-- **Les rapports d'agents sont systématiquement vérifiés par le principal avant tout verdict.** Appliqué trois fois cette session ; a notamment permis de prouver l'enregistrement par le MD5 plutôt que de croire le retour d'outil.
-- **`kicad-cli.exe` fournit une preuve indépendante du MCP** — `sch erc`, `pcb drc --format json`. Chemin `C:/Users/FlowUP/AppData/Local/Programs/KiCad/10.0/bin/`.
-- **Lire les cotes par extraction du PDF fabricant**, jamais par listing distributeur ; contrôler l'échelle et **les conditions de mesure**. **PDF sans couche texte** : rendre en PNG par `pymupdf`. **Écrire l'extraction dans un fichier UTF-8 avant affichage**, la console Windows casse sur les accents.
-- Bulk maintenu à 15 400 µF. Asymétrie de nommage assumée `-VSE`/`+VSE` à gauche, `-VSE_R`/`+VSE_R` à droite, à trancher avant H2.
-
+- Toute édition schéma/PCB/librairie passe par `kicad-control`/MCP ; **les fichiers de
+  configuration s'éditent directement**.
 ## Blocage actif
 
 Aucun.
 
-## Pilotage de KiCad — appris à la dure cette session
-
-**Le MCP ne sait pas tout faire, et l'IPC est capricieux. Cette séquence est la seule qui fonctionne :**
-
-1. **Aucun des 203 outils du MCP ne sait synchroniser schéma → PCB.** `kicad-cli` non plus. Seule voie : **Outils → « Mise à jour du PCB à partir du Schéma »** dans l'éditeur de PCB, en action GUI.
-2. **`move_component` / `rotate_component` ne fonctionnent qu'en IPC**, pas en mode fichier. `place_component` est en mode fichier mais **n'a aucun champ net**.
-3. **L'éditeur de PCB doit être ouvert depuis le gestionnaire de projet.** Un `pcbnew.exe` lancé isolément crée un processus séparé **qui ne partage pas le canal IPC** — l'IPC ne le voit pas. Lancé en autonome, il refuse en plus la synchronisation au schéma.
-4. **Un seul document ouvert à la fois.** Schéma et PCB ouverts ensemble donnent `KiCad document context is ambiguous: expected exactly one PCB or schematic handler, found 2`. Fermer l'autre fenêtre par son handle Win32 suffit — la fenêtre du gestionnaire, elle, ne compte pas comme handler.
-5. `kicad_common.json` porte déjà `api.enable_server = true` ; il manquait seulement le processus.
-6. **Toujours prouver un enregistrement par le MD5 du fichier**, jamais par le retour de `save_project`.
-7. **Ne jamais lancer KiCad depuis le shell de l'agent : il est élevé, KiCad hérite du jeton administrateur, et UIPI bloque alors silencieusement tout clic et toute frappe** venant d'une session d'automatisation non élevée — les appels rapportent un faux succès. **Lancer par `explorer.exe <chemin du projet>`**, qui s'exécute avec le jeton utilisateur normal. Contrôler le résultat en lisant le `TokenElevation` du processus : il doit valoir `normal`.
-
-## État de la stack MCP
-
-`kicad-agentic-mcp` v1.1.3. Ne pas restaurer `v1.1.2`. Analyses dans `reports/MCP_BUG-documenttype-routing-eeschema.md` et `reports/MCP_BUG-setup-tokens-kicad-pcb.md`.
-
-- `save_project` / `open_project` échouent hors GUI : `Connection refused`.
-- `on_board` / `in_bom` / `dnp` inaccessibles ; `edit_schematic_component` ne gère que Reference/Value/Footprint/Datasheet plus des propriétés personnalisées, et accepte `uuid` en plus de `reference`.
-- `add_power_symbol` : `power_net` désigne le nom du symbole de librairie, pas le net cible.
-- Outils de `load_toolset` accessibles seulement via `kicad_invoke`. Sortie tronquée au-delà d'environ 72 000 caractères.
-- **Piège de relecture hors MCP** : dans le format KiCad 10, un bloc d'empreinte porte `(layer ...)` et `(uuid ...)` **avant** `(at x y rot)` — une regex qui attend `(at` juste après `(footprint` échoue. Les pastilles portent `(net "NOM")` **sans identifiant numérique**, et il n'y a pas de table de nets en fin de fichier. Dans le `.kicad_sch`, `lib_symbols` précède les instances : itérer sur les blocs de premier niveau à parenthèses équilibrées.
-
-## Contraintes de placement restantes
-
-- **`U6` se refroidit uniquement par le dessus**, aucun via thermique sous le boîtier. La broche 45 du symbole n'a pas de pastille dans `HTSSOP-44_…_TopEP` : l'erreur d'import à ce sujet est **attendue et correcte**.
-- **Orientation dans le coffret** : `U6` contre le flanc droit ; analogique bas niveau au bord opposé ; sorties haut-parleur et entrée 48 V sur l'arête arrière ; `J4` vers la façade. `J2`/`J3`/`J4` sont en **JST XH déporté**, leur panneau est donc un choix de câblage, pas une contrainte de carte.
-- **Hauteurs** : tores `L301`–`L304` debout ø28,6 × 29 mm, 3,1 W de pertes cuivre ; `C321`–`C324` films 18 × 8 × 15 mm ; `C312`–`C315` ø18 × 35 mm ; `C316`/`C317` ø35 × **30 mm** ; `C325` 18 mm.
-- **`R306` est un shunt à deux bornes, pas Kelvin** : `VIN`/`SENSE` depuis les bords **intérieurs** des pastilles.
-- `Q302` en TO-264 sur radiateur, SOA supposant le boîtier à 75 °C. `Q301` en TO-220 : 6,9 A avec 6 cm² de cuivre 70 µm **sur son net de drain**.
-- `C110`/`C210` : établissement de `VMID` en 5 τ ≈ 250 ms, à croiser avec le mute en Phase F.
-
-## NEEDS_DATA ouverts
-
-- Alimentation 48 V : volet tension clos par `REQ-PSU-1` ; restent ripple, courant continu garanti, démarrage.
-- `RV1` mécanique — seul symbole sans empreinte ; réponse/EMI du filtre LC ; common-mode du TPA3255 ; broche MR du TPS3802K33.
-- Plan de perçage de l'embase `01/05` non publié.
-- Fabricant de PCB non choisi. **Épaisseur de cuivre par couche non exposée par le MCP**, pas de bloc `stackup` explicite : à rendre explicite dans Board Setup et à la commande.
-- `EEU-FC1J152` (`C312`–`C315`) non décodée à la source — `industrial.panasonic.com` refuse `curl`.
-
 ## Fichiers / zones utiles
 
-- `HifiAmp_TPA3255.kicad_pcb` — **124 empreintes**, contour 200 × 150, **21 placées + H1/H2**, 101 encore dans le bloc d'import `x` 221,7..321,0 / `y` 200,1..298,8
-- `HifiAmp_TPA3255.kicad_dru` — **créé en E1.9**, porte la règle d'isolation intra-empreinte
-- `HifiAmp_TPA3255.kicad_sym` — contient `LM2940IMP_12_FIXED`, le **précédent à reproduire pour E1.8**
-- `HifiAmp_TPA3255.kicad_pro`, `.kicad_sch`, `sym-lib-table`, `fp-lib-table`
-- `docs/architecture.md` — « E1.2 — le placement retourne la section de la barre », « Arbitrages rendus, et contour qui en découle », « E1.7 — la solution n'est pas un dissipateur, c'est le coffret »
-- **État KiCad actuel** : **KiCad fermé**, aucun verrou `~*.lck`. Relancer par `explorer.exe <chemin du projet>` — jamais depuis le shell d'un agent, qui est élevé. Le titre de fenêtre porte un `*` tant que des modifications live ne sont pas enregistrées : indicateur fiable. Fermer une fenêtre par `WM_CLOSE` sur son handle Win32 lève le « document context is ambiguous ».
+- `HifiAmp_TPA3255.kicad_pcb` — 124 empreintes, contour 200 × 150, **48 placées**, 76 encore
+  dans le bloc d'import autour de `x` 221..321 / `y` 272..299
+- `HifiAmp_TPA3255.kicad_dru` — règle d'isolation intra-empreinte de E1.9
+- `HifiAmp_TPA3255.kicad_sym` — symboles locaux `LM2940IMP_12_FIXED`, `TLV1117_33_FIXED`
+- **`docs/kicad-operations.md` — comment piloter KiCad ici** : séquence IPC, pièges MCP,
+  proscriptions, relecture hors MCP. À lire avant toute manipulation de la carte.
+- `docs/architecture.md` — contraintes de placement actives, `NEEDS_DATA`, budgets thermiques
+- **État KiCad** : fermé, aucun verrou `~*.lck`.
 
 ## NEXT ACTION
 
-**E1.3 — placer filtres LC, sorties, alimentation et boucles de retour.** Relancer KiCad par `explorer.exe`, ouvrir l'éditeur de PCB depuis le gestionnaire, et sortir du bloc d'import les empreintes concernées vers le côté puissance de `U6` — c'est-à-dire vers l'intérieur de la carte, la rotation 180° de `U6` y ayant tourné `OUT_A`–`D`, les `PVDD` et les `GND`.
+**E1.3, tranche « alimentation auxiliaire » — placer le buck `LM5010` et sa descendance.**
+Sortir du bloc d'import les 26 empreintes du bloc — `U1`, `L1`, `D1`, `D3`, `C1`–`C4`, `C11`,
+`C39`, `C12`, `C13`, `R2`, `R39`, `R40`, `C6`, `C8`, `U2`, `C5`, `C9`, `C38`, `U3`, `C10`,
+`L6`, `C81`, `C82` — vers la bande **`x` 160..190, `y` 120..195**, libre entre la chaîne
+d'entrée 48 V (qui s'arrête à `y` ≈ 199) et le haut de carte. Cette bande touche `U8`/`Q302`,
+d'où sort `PVDD`, et laisse **`x` 100..155 pour l'analogique bas niveau de E1.4**, au bord
+opposé de `U6` comme l'exige l'orientation dans le coffret. Serrer la boucle de commutation
+`D3`/`C2`/`C3`/`C4`/`U1`/`D1`/`L1` avant tout confort de routage ; garder `R39`/`R40` — le
+diviseur de retour — courts et à l'écart du nœud `SW`.
 
-Contraintes déjà établies à respecter : tores `L301`–`L304` debout, ø 28,6 × 29 mm, 3,1 W de pertes cuivre ; films `C321`–`C324` 18 × 8 × 15 mm ; `R306` shunt à deux bornes, `VIN`/`SENSE` pris sur les bords **intérieurs** des pastilles ; `Q301` en TO-220 exigeant 6 cm² de cuivre 70 µm sur son net de drain ; sorties haut-parleur et entrée 48 V sur l'arête arrière. Zone d'interdiction de la barre : `x` ∈ [280, 291], `y` ∈ [160, 190], et `x` ∈ [280, 300], `y` ∈ [169, 181] au-delà.
-
-Valider par relecture du fichier — positions exactes, aucun placement antérieur déplacé, total toujours 124 empreintes — puis par `kicad-cli pcb drc --format json` : `schematic_parity` reste 0, 254 non-connectés inchangés tant que rien n'est routé, et aucune violation `clearance` ne réapparaît.
+Lancer KiCad par `explorer.exe`, ouvrir l'éditeur de PCB depuis le gestionnaire, déplacer en
+IPC via `kicad-control` (cf. `docs/kicad-operations.md`). Valider par relecture du fichier —
+positions exactes, 48 placements antérieurs intacts au micron, 124 empreintes — puis par
+`kicad-cli pcb drc --format json` : `schematic_parity` reste 0, 254 non-connectés inchangés,
+aucune violation `clearance`, aucun type nouveau.

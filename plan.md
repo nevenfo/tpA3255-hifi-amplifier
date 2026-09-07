@@ -70,6 +70,10 @@ Chaque connexion/valeur critique est sourcée ou calculée ; architecture cohér
 
 ## B1 — Créer et construire le schéma par blocs
 
+### Objectif
+
+Porter l'architecture A1 dans un schéma KiCad complet, construit bloc par bloc et inspecté à chaque bloc, plutôt que saisi d'un trait puis débogué.
+
 ### Dépendances
 
 A1 validée.
@@ -120,6 +124,10 @@ Chaque ajout est sourcé sur datasheet ou calculé explicitement ; aucun seuil d
 
 ## C1 — ERC et revue schématique obligatoire
 
+### Objectif
+
+Transformer le schéma en gate explicite : tout signalement ERC est classé réel ou admis, et la Phase D reste interdite tant que le verdict n'est pas PASS.
+
 ### Dépendances
 
 B1 validée.
@@ -157,6 +165,10 @@ Gate schématique de nouveau explicite et reproductible sur le schéma modifié.
 # Phase D — Footprints
 
 ## D1 — Attribuer et valider les empreintes
+
+### Objectif
+
+Donner à chaque symbole une empreinte réelle et vérifiée, condition sans laquelle aucun placement n'a de sens.
 
 ### Dépendances
 
@@ -196,6 +208,10 @@ Toutes les empreintes sont attribuées et revues contre leurs sources fabricant.
 
 ## E1 — Définir stack-up, règles et placement
 
+### Objectif
+
+Fixer la matière de la carte — quatre couches, règles, classes de nets — puis y poser les composants dans l'ordre où les contraintes physiques les imposent : puissance et thermique d'abord, analogique bas niveau ensuite.
+
 ### Dépendances
 
 D1 validée.
@@ -215,7 +231,10 @@ D1 validée.
   - **Vérifié au fichier par le principal.** 124 empreintes, exactement deux références `H*` sans doublon, coordonnées exactes, couche et rotation conformes, aucun net. Les 21 placements de E1.2 sont intacts au micron et les 101 empreintes du bloc d'import n'ont pas bougé. `kicad-cli pcb drc` : `schematic_parity` toujours **0**, 254 non-connectés inchangés, et **aucune des 138 violations n'implique `H1` ni `H2`** — les trous n'en introduisent aucune.
   - **Conséquence pour toute resynchronisation ultérieure** : `H1` et `H2` sont des empreintes sans symbole au schéma. Toute « Mise à jour du PCB à partir du Schéma » devra **décocher « supprimer les empreintes sans symbole »**, sans quoi elles disparaîtront.
   - **Découverte d'outillage, à porter en H2.** **Aucun des 203 outils du MCP ne sait synchroniser le schéma vers le PCB** : ni import de netlist, ni « update PCB from schematic ». `kicad-cli` ne l'expose pas davantage. De plus, les outils MCP dépendants de l'IPC exigent non seulement que KiCad tourne, mais que **l'éditeur de PCB ait le fichier ouvert** — le gestionnaire de projet seul renvoie `KiCad does not handle kiapi.common.commands.GetOpenDocuments for this document type`. La synchronisation a donc dû passer par l'action **Outils → « Mise à jour du PCB à partir du Schéma »** de l'éditeur de PCB, **ouvert depuis le gestionnaire de projet** : ouvert en autonome, KiCad la refuse.
-- [ ] E1.3 Placer filtres LC, sorties, alimentation et boucles de retour.
+- [ ] E1.3 Placer filtres LC, sorties, alimentation et boucles de retour. *(EN COURS — deux tranches sur trois. **48 des 124 empreintes placées.**)*
+  - **Tranche « filtres de sortie » = PASS** (`ec83d2f`). Les quatre broches `OUT` quittent `U6` sur un seul flanc en huit millimètres : toute disposition des tores doit les ouvrir en éventail. Canaux en **rangées** et non en colonnes — chaque paire BTL adjacente, boucle courte — ce qui ramène l'écart de longueur de nœud commuté entre canaux de 44 mm à 18. Tores 2×2 en `x` 240/276, `y` 195/212 ; films en rangée à `y` 229, ordre `C321` `C323` `C322` `C324` pour égaliser les liaisons post-filtre ; `J301`/`J302` sur l'arête arrière, fixée à `y` = 250 **par conséquence** du bulk figé sur `y` 119..182. DRC 96 → 90, les quatre `silk_edge_clearance` et deux `silk_over_copper` éteints, aucune `clearance` de retour.
+  - **Tranche « entrée 48 V » = PASS** (`1ae53af`). `J1` → `F301` → `D301` → `Q301` → `R306` → `Q302` déroulés du bas-gauche au haut-droite, dans le sens où le courant circule ; `PVDD` quitte le hot-swap à 30 mm du bulk au lieu de 47 ; TVS **après** le fusible, pour qu'un clamp en court-circuit fasse encore sauter `F301`. Réseau haute impédance du `LM5069` groupé contre `U8`. DRC inchangé à 90, `schematic_parity` = 0, 254 non-connectés, 48 positions relues au micron.
+  - **Reste la tranche « alimentation auxiliaire et boucles de retour »** : buck `U1` LM5010 et sa boucle de retour `R39`/`R40`, LDO `U2`/`U3`, supervision `U7`, et les quatre résistances de configuration de `U6` — `R301` `FREQ_ADJ`, `R302` `FAULT`, `R303` `CLIP_OTW`, `R304` `OC_ADJ`.
 - [ ] E1.4 Placer analogique faible bruit, volume et contrôles avec séparation fonctionnelle.
 - [ ] E1.5 Revoir symétrie, retour des courants, masses, clearances et manufacturabilité.
 - [x] E1.6 Chiffrer l'exigence thermique du dissipateur de `U6`, pour transformer le `NEEDS_DATA` en critère d'achat. **Ajouté en cours de Phase E**, le dissipateur étant devenu le point dimensionnant unique après D1.3. *(PASS. Dissipation de `U6` lue sur la **figure 10 de `SLASEA8A`** par extraction vectorielle, tracé contrôlé à l'échelle sur deux paires de graduations par axe : **22,4 W** à 2 × 100 W sur 8 Ω, **37,4 W** sur 4 Ω. **Recoupement fort** : les 22,4 W donnent 89,9 % de rendement, soit exactement les 90 % que le projet postulait sans preuve depuis l'origine pour établir les 4,6 A du rail. **Découverte principale : le point dur n'est pas le dissipateur mais l'interface.** Le PowerPAD ne fait que **29,02 mm²**, si bien qu'un pad silicone standard vaudrait **8,61 °C/W** — à lui seul plus que la totalité du budget. D'où deux exigences inscrites dans `docs/architecture.md` : **`REQ-THERM-1`, `RθSA` ≤ 1,0 °C/W** en convection naturelle pour l'usage nominal 8 Ω à 40 °C d'ambiante, et **`REQ-THERM-2`, interface ≤ 0,6 °C/W**, pad silicone standard explicitement exclu. Critère retenu : `T_C` ≤ 75 °C, plus strict que le seuil d'`OTW` à 125 °C, parce qu'il préserve la validité de toutes les courbes TI utilisées pour dimensionner la carte. **Réserve portée à l'utilisateur** : le continu à pleine puissance sur 4 Ω exigerait `RθSA` ≤ 0,37 °C/W, hors d'atteinte en convection naturelle — limite physique, non défaut de conception.)*
@@ -257,6 +276,10 @@ Placement guidé par contraintes TI et revue de design via workflow disponible.
 
 ## F1 — Router et créer les plans
 
+### Objectif
+
+Router la carte en commençant par les boucles qui ne pardonnent pas — commutation, découplage, puissance Class-D — puis créer les plans et zones.
+
 ### Dépendances
 
 E1 validée.
@@ -277,6 +300,10 @@ Routage terminé, zones remplies, contraintes critiques inspectées.
 
 ## G1 — DRC et design review
 
+### Objectif
+
+Prouver la carte routée par un DRC final et une revue de manufacturabilité, écarts résiduels assumés et documentés.
+
 ### Dépendances
 
 F1 validée.
@@ -296,6 +323,10 @@ DRC final et design review documentés après corrections.
 
 ## H1 — Revue audio/électronique indépendante
 
+### Objectif
+
+Vérifier par le calcul ce qu'ERC et DRC ne voient pas — gain, headroom, impédances, coupures, courants, dissipation — et dire honnêtement ce qui n'est pas vérifié.
+
 ### Dépendances
 
 G1 validée ou état final PCB explicitement PARTIAL.
@@ -311,6 +342,10 @@ G1 validée ou état final PCB explicitement PARTIAL.
 Rapport honnête, traçable, distinct d’ERC/DRC.
 
 ## H2 — Produire BOM, rapports et benchmark MCP
+
+### Objectif
+
+Livrer les artefacts exploitables du projet et le retour d'expérience mesuré sur la stack MCP, sans métrique inventée.
 
 ### Dépendances
 
