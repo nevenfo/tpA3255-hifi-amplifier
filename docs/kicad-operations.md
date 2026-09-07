@@ -30,6 +30,31 @@ Le MCP ne sait pas tout faire, et l'IPC est capricieux. Cet ordre est le seul qu
 8. Le titre de fenêtre porte un `*` tant que des modifications live ne sont pas enregistrées :
    indicateur fiable.
 
+## Quand l'automatisation GUI est morte, et comment le savoir vite
+
+**Symptôme.** `SetForegroundWindow`, `SetCursorPos` et tout `ui_click` renvoient `False` avec
+`GetLastWin32Error = 0`, ou `SendInput was blocked`. Les appels rapportent parfois un faux
+succès ; un essai a même minimisé une fenêtre au lieu de l'ouvrir.
+
+**Le test qui tranche en un appel** : tenter d'activer **une fenêtre quelconque sans rapport
+avec KiCad** — un navigateur déjà ouvert fait l'affaire. Si elle non plus ne s'active pas, le
+blocage est **au niveau de la session entière**, et il est inutile de chercher du côté de KiCad,
+de son élévation ou du MCP. Ce contrôle évite de rejouer la piste `TokenElevation`, qui est une
+autre cause du même symptôme et se diagnostique différemment.
+
+**Ce qui ne contourne pas le blocage** : les coordonnées physiques, la navigation clavier
+(`Tab`), l'activation de fenêtre, et le pattern UIA `Invoke` — tous repassent par `SendInput`.
+Le seul canal qui répond est le pattern sémantique `SelectionItem` sur un `TreeItem`, qui passe
+par COM sans `SendInput` — mais il **sélectionne** l'entrée sans l'ouvrir, et le panneau de
+lancement du gestionnaire de projet est un `Pane` **sans pattern UIA** exploitable.
+
+**Conséquence pratique.** L'IPC exige que l'éditeur de PCB soit **déjà ouvert**, et rien ne
+permet de l'ouvrir sans entrée synthétique. Quand la session est dans cet état, la seule issue
+est que **l'utilisateur ouvre l'éditeur de PCB lui-même** depuis le gestionnaire de projet ;
+l'automatisation reprend ensuite normalement par le canal IPC, qui n'est pas affecté. Contexte
+observé : session **RDP** (`RDP-Tcp#0`) — une session distante déconnectée ou verrouillée
+suffit à produire ce blocage.
+
 ## Preuve indépendante du MCP
 
 `kicad-cli.exe` — `sch erc`, `pcb drc --format json` — depuis
