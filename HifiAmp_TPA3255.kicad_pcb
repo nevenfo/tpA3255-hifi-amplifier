@@ -6794,7 +6794,7 @@
 	(footprint "Package_TO_SOT_THT:TO-220-3_Vertical"
 		(layer "F.Cu")
 		(uuid "03161315-dd20-4ff4-b4d6-3405bb89542d")
-		(at 312.605 271.175)
+		(at 184 229)
 		(descr "TO-220-3, Vertical, RM 2.54mm, see https://www.vishay.com/docs/66542/to-220-1.pdf")
 		(tags "TO-220-3 Vertical RM 2.54mm")
 		(property "Reference" "Q301"
@@ -6882,12 +6882,6 @@
 		(path "/90dc8a7e-205d-4f7c-92c5-a91c61dbf160")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2" "3")
-			)
-		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -7772,7 +7766,7 @@
 	(footprint "Diode_SMD:D_SOD-123"
 		(layer "F.Cu")
 		(uuid "071678bb-6a8b-4ca8-8581-f7cf1805206e")
-		(at 321.04 263.075)
+		(at 172 228)
 		(descr "SOD-123")
 		(tags "SOD-123")
 		(property "Reference" "D302"
@@ -7840,12 +7834,6 @@
 		(path "/5b5ea860-18b6-44db-86e0-26f6f49f49ef")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -9033,7 +9021,7 @@
 	(footprint "Capacitor_THT:C_Rect_L7.2mm_W11.0mm_P5.00mm_FKS2_FKP2_MKS2_MKP2"
 		(layer "F.Cu")
 		(uuid "14ed17c9-2d1b-4f0d-b81f-e819caee2a33")
-		(at 311.245 260.975)
+		(at 192 203)
 		(descr "C, Rect series, Radial, pin pitch=5.00mm, length*width=7.2*11mm^2, Capacitor, http://www.wima.com/EN/WIMA_FKS_2.pdf")
 		(tags "C Rect series Radial pin pitch 5.00mm length 7.2mm width 11mm Capacitor")
 		(property "Reference" "C325"
@@ -9109,12 +9097,6 @@
 		(path "/e395573f-0f4f-4957-be78-609d1e1408a1")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -13742,7 +13724,7 @@
 	(footprint "Capacitor_SMD:C_1206_3216Metric"
 		(layer "F.Cu")
 		(uuid "243710dd-850a-4a42-ac5d-e430c17863a8")
-		(at 320.945 259.725)
+		(at 186 200)
 		(descr "Capacitor SMD 1206 (3216 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "C326"
@@ -13805,12 +13787,6 @@
 		(path "/d948efc3-6748-491f-b71b-be4c2e62a35e")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -13900,7 +13876,7 @@
 	(footprint "Diode_SMD:D_SMC"
 		(layer "F.Cu")
 		(uuid "2494f13a-6351-4a5e-a6c6-98dbe17ec907")
-		(at 314.84 277.075)
+		(at 190 241)
 		(descr "Diode SMC (DO-214AB)")
 		(tags "Diode SMC (DO-214AB)")
 		(property "Reference" "D301"
@@ -13981,12 +13957,6 @@
 		(path "/2ccf2ddb-a73a-4eda-bb4d-53170b41d22b")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -14996,7 +14966,7 @@
 	(footprint "Resistor_SMD:R_0805_2012Metric"
 		(layer "F.Cu")
 		(uuid "2be7313b-6030-49da-9626-14918355af05")
-		(at 267.495 287.325)
+		(at 164 199)
 		(descr "Resistor SMD 0805 (2012 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "R307"
@@ -15059,12 +15029,6 @@
 		(path "/3453915a-e839-4a2d-a958-8847b43f10e7")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -15312,7 +15276,7 @@
 	(footprint "TerminalBlock:TerminalBlock_MaiXu_MX126-5.0-02P_1x02_P5.00mm"
 		(layer "F.Cu")
 		(uuid "380ddd58-fdfb-487b-a393-c82043f23d4b")
-		(at 300.845 259.725)
+		(at 144 241)
 		(descr "terminal block MaiXu MX126-5.0-02P, 2 pins, pitch 5mm, size 10.5x7.8mm, drill diameter 1.3mm, pad diameter 2.8mm, https://www.lcsc.com/datasheet/lcsc_datasheet_2309150913_MAX-MX126-5-0-03P-GN01-Cu-S-A_C5188435.pdf")
 		(tags "THT terminal block MaiXu MX126-5.0-02P pitch 5mm size 10.5x7.8mm drill 1.3mm pad 2.8mm")
 		(property "Reference" "J1"
@@ -15375,12 +15339,6 @@
 		(path "/758e8f3d-c451-4857-a6f2-5819a5e4cb8b")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -17160,7 +17118,7 @@
 	(footprint "Package_TO_SOT_THT:TO-264-3_Vertical"
 		(layer "F.Cu")
 		(uuid "4c3f59ef-3cf8-4bb3-b390-23a3046f9fee")
-		(at 302.145 288.065)
+		(at 176 212)
 		(descr "TO-264-3, Vertical, RM 5.45mm, see https://www.fairchildsemi.com/package-drawings/TO/TO264A03.pdf")
 		(tags "TO-264-3 Vertical RM 5.45mm")
 		(property "Reference" "Q302"
@@ -17248,12 +17206,6 @@
 		(path "/a3658334-b3d7-4eeb-b4a7-4f3979f8b97c")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2" "3")
-			)
-		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -25103,7 +25055,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "87022466-09dc-48ab-8801-0720bc36e5aa")
-		(at 257.635 284.905)
+		(at 164 202)
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "R308"
@@ -25166,12 +25118,6 @@
 		(path "/9d881ecd-4428-4789-9316-872f15b71dc5")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -25864,7 +25810,7 @@
 	(footprint "Package_SO:MSOP-10_3x3mm_P0.5mm"
 		(layer "F.Cu")
 		(uuid "8ef00d5d-836e-413e-8acb-42b7c9a19882")
-		(at 320.495 216.98)
+		(at 172 202)
 		(descr "MSOP, 10 Pin (JEDEC MO-187 variation BA, 0.85mm body thickness, https://www.jedec.org/system/files/docs/mo-187F.pdf)")
 		(tags "MSOP SO TSSOP-10_3x3mm_P0.5mm")
 		(property "Reference" "U8"
@@ -25926,12 +25872,6 @@
 		(path "/ab9fea50-b6d3-4e94-93be-eec8cbca4e01")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2" "3" "4" "5" "10" "9" "8" "7" "6")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -39045,7 +38985,7 @@
 	(footprint "HifiAmp_TPA3255_Local:Fuse_Schurter_UMT-H_5.3x16mm"
 		(layer "F.Cu")
 		(uuid "ab68ed70-37f9-48fb-8aca-1ac124a50b90")
-		(at 249.115 297.265)
+		(at 168 241)
 		(descr "Fusible CMS Schurter serie UMT-H, corps 15.4 x 5.35 x 3.2 mm (nominal 5.3 x 16 mm), 2 pastilles CMS. Implantation reprise du dessin Recommended Solder Pad Layout de la datasheet Schurter typ_UMT-H.pdf : pastilles 3.75 x 5.6, ecart entre bords interieurs 10.0, entraxe 13.75. Cotes lues sur le dessin cote, dont le trace n'est pas a l'echelle. Recoupement : les pastilles couvrent 2.70 des 2.80 mm de terminaison et debordent de 1.05 mm en bout pour le conge.")
 		(property "Reference" "F301"
 			(at 0 -4.05 0)
@@ -39121,12 +39061,6 @@
 		(path "/279cd602-dc1c-4e44-887a-cdb3329a39bb")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -41528,7 +41462,7 @@
 	(footprint "Resistor_SMD:R_2512_6332Metric"
 		(layer "F.Cu")
 		(uuid "c4797405-b53c-49c2-bfa2-b4c1d5f5ebd6")
-		(at 311.775 248.255)
+		(at 184 220)
 		(descr "Resistor SMD 2512 (6332 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "R306"
@@ -41604,12 +41538,6 @@
 		(path "/8de78dbe-16f1-4ab3-9006-49518212695d")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -43067,7 +42995,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "d36f0ac2-4c2a-4290-956e-13f9f6870b92")
-		(at 257.635 287.415)
+		(at 164 205)
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "R309"
@@ -43130,12 +43058,6 @@
 		(path "/4d1f09ca-e453-4cf0-88e4-f9160c0d6d5b")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -43857,7 +43779,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "dbf77132-644a-499c-83ea-8a1cbdf3eccf")
-		(at 257.635 289.925)
+		(at 180 205)
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "R310"
@@ -43920,12 +43842,6 @@
 		(path "/5f22ea12-1902-4a52-a77f-997785bfe629")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -47533,7 +47449,7 @@
 	(footprint "Resistor_SMD:R_0805_2012Metric"
 		(layer "F.Cu")
 		(uuid "e66d2fe1-965b-4e25-a527-062a45aa2d2c")
-		(at 267.495 284.375)
+		(at 172 232)
 		(descr "Resistor SMD 0805 (2012 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "R305"
@@ -47596,12 +47512,6 @@
 		(path "/89cbe224-bd72-4f4f-ad95-c64ef2c3561a")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
