@@ -39,17 +39,16 @@ Placement figé, budgets thermiques et pilotage KiCad sont dans `docs/architectu
 - **La symétrie de la carte n'est pas un vecteur unique** : (0 ; +40) en analogique, (0 ; +17)
   aux selfs, (−22 ; 0) aux sorties. Aucun contrôle par translation globale.
 - **Un écart géométrique exact peut être électriquement faux.** Les selfs sont à (0 ; +17)
-  exact, mais composée avec un brochage en miroir cette translation donne des trajets
-  pastille→self→bornier de 71,7 / 91,9 / 97,9 / 91,4 mm : **25,7 mm de cuivre en plus sur la
-  voie droite**. Ne jamais conclure la symétrie d'une sortie sur le seul vecteur de placement.
-- **Barre de liaison** : 10 × 60 mm, 600 mm², **pied élargi ≥ 1200 mm² non négociable**. M3 en
-  (285, 163) et (285, 187). **Zones interdites** : `x` ∈ [280, 291], `y` ∈ [160, 190] ; et
-  `x` ∈ [280, 300], `y` ∈ [169, 181].
+  exact, mais composée avec un brochage en miroir cette translation donne des trajets de sortie
+  de 71,7 / 91,9 / 97,9 / 91,4 mm — 25,7 mm de cuivre en plus sur la voie droite. Elles ne se
+  replaceront pas pour autant : courtyard 29,10 × 13,10 mm, la grille 2 × 2 est imposée.
+  **Contrainte pour F1** : apparier au routage, **par paire de pont** — A avec B, C avec D.
+- **Barre de liaison** : 10 × 60 mm, **pied élargi ≥ 1200 mm² non négociable**. **Zones
+  interdites** : `x` ∈ [280, 291], `y` ∈ [160, 190] ; et `x` ∈ [280, 300], `y` ∈ [169, 181].
 - **Contour arrêté à 200 × 150 mm**, `(100,100)`–`(300,250)` ; resserrable après E1.5.
-- **Un déplacement IPC peut perdre une propriété de pastille.** `U1` a perdu
-  `pad_prop_heatsink` ainsi — seule occurrence de la carte. Réparation par « Mise à Jour des
-  Empreintes à partir des Librairies », options texte décochées. **À vérifier après tout
-  déplacement de circuit intégré porteur d'un pad exposé.**
+- **Un déplacement IPC peut perdre une propriété de pastille** : `U1` a perdu ainsi son
+  `pad_prop_heatsink`, seule occurrence de la carte. **À vérifier après tout déplacement d'un
+  circuit intégré à pad exposé** ; réparation dans `docs/kicad-operations.md`.
 - **Un DRC de comparaison se lance dans le répertoire du projet**, sinon la baseline est fausse.
   Binaire : `C:/Users/FlowUP/AppData/Local/Programs/KiCad/10.0/bin/kicad-cli.exe`.
 - **`REQ-THERM-3`** : nominal continu 2 × 100 W sur **8 Ω**, le 4 Ω en crête seulement. Coffret

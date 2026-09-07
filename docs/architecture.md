@@ -678,17 +678,38 @@ l'écart exact de (0 ; +17) entre `L301`/`L303` et entre `L302`/`L304` est donc 
 irréprochable et électriquement trompeur**. C'est précisément le piège que la note « le brochage
 est un miroir » sert à éviter.
 
-**Conséquence pour la suite.** La question n'est pas « rapprocher `L301` et `L302` d'un `x`
-commun », comme une lecture en `x` seul le suggérait. Elle est : **faut-il replacer les quatre
-selfs en miroir autour de `y` = 175, à l'image du brochage, plutôt qu'en deux rangées
-translatées ?** Un placement miroir apparierait A↔D et B↔C par construction, mais renverrait les
-deux borniers dans des positions non symétriques, et se heurte à la zone interdite de la barre de
-liaison — `x` ∈ [280, 291] sur `y` ∈ [160, 190]. L'arbitrage n'est pas gratuit et reste ouvert.
+**Conséquence pour la suite : la grille 2 × 2 est forcée, l'appariement se fera au routage.**
+Une première formulation demandait s'il fallait replacer les quatre selfs en miroir autour de
+`y` = 175. La mesure d'encombrement ferme la question.
 
-**Ordre de grandeur, pour ne pas surestimer l'enjeu.** Ces longueurs sont des distances centre à
-centre sur un routage qui n'existe pas encore ; elles majorent ou minorent le cuivre final selon
-le chemin retenu. Elles suffisent à établir un écart de structure, pas à chiffrer une
-dissymétrie. Le chiffrage se fera sur le routage réel, en F1.
+Les selfs sont des toroïdes verticaux `Coilcraft PA6331`, dont le courtyard mesuré vaut
+**29,10 × 13,10 mm**. Trois faits en découlent :
+
+- **Une colonne unique de quatre selfs ne rentre pas.** Elle demanderait 4 × 13,10 = **52,4 mm**
+  en `y`, alors que la bande libre entre le bas de `U6` (`y` ≈ 183) et le haut des MKP de sortie
+  (`y` = 225) n'en offre que **42**. En les tournant de 90°, il en faudrait 116. La disposition
+  **2 × 2 est imposée par l'encombrement**, pas choisie.
+- **Un miroir autour de `y` = 175 est impossible** : la bande au-dessus de `U6` est occupée par
+  le bulk — `C316`/`C317` sont des snap-in de 35 mm de diamètre, `C312`–`C315` des 1500 µF. Les
+  selfs n'ont d'autre place que sous le composant.
+- **Dans une grille 2 × 2, deux selfs sont forcément proches du flanc et deux lointaines**,
+  puisque les quatre pastilles `OUT` sortent toutes du même flanc à `x` = 281,288 sur 8 mm
+  d'étalement seulement. Aucune permutation des affectations ne supprime l'écart : elle le
+  déplace d'une voie à l'autre.
+
+**Ce qui se règle donc où.** L'écart de longueur entre moitiés de pont **ne se corrige pas au
+placement** dans ce contour ; il se corrige **au routage, par égalisation de longueur**, qui est
+le geste normal pour apparier un pont BTL. E1.5 n'a pas à replacer les selfs : il a à **inscrire
+la contrainte pour F1**.
+
+> **Contrainte pour F1 — appariement des sorties.** Les quatre trajets `OUT` → self → bornier
+> partent déséquilibrés au placement (71,7 / 91,9 / 97,9 / 91,4 mm centre à centre). Le routage
+> doit les apparier **par paire de pont** — A avec B, C avec D — et non par voie. Cible à fixer
+> en F1 sur les longueurs de piste réelles, pas sur ces distances.
+
+Le seul recours qui rendrait l'appariement possible au placement serait d'agrandir le contour ou
+de changer de selfs pour un modèle plus plat. Ni l'un ni l'autre n'est justifié par un écart que
+le routage sait absorber.
 
 ### Ordre en `x` des condensateurs de sortie
 
