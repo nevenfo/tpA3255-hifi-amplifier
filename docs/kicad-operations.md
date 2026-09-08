@@ -64,6 +64,32 @@ n'en garde aucune trace. Avant de rouvrir un blocage GUI hérité d'une session 
 vérifier d'abord si la fenêtre nécessaire n'est pas déjà là — `Get-Process` sur `kicad` et son
 `MainWindowTitle` suffisent à le dire.
 
+## Mettre à jour le PCB depuis le schéma
+
+Opération **GUI par nature** : ni `kicad-cli` ni le MCP ne l'exposent. Elle s'automatise malgré
+tout, dès lors que l'entrée synthétique fonctionne.
+
+1. **Ouvrir le gestionnaire de projet par `explorer.exe "<projet>.kicad_pro"`**, jamais depuis le
+   shell d'un agent — c'est ce qui garantit le jeton non élevé (`TokenElevation` = 0) sans lequel
+   UIPI bloque silencieusement clics et frappes. Contrôle en un appel :
+   `GetTokenInformation(token, TokenElevation=20)`.
+2. Ouvrir l'**éditeur de PCB depuis le gestionnaire**. Un `pcbnew.exe` isolé ne partage pas l'IPC
+   et refuse la synchronisation.
+3. **Outils → « Mise à jour du PCB à partir du Schéma »**, raccourci **F8**.
+4. **Piège à ne jamais oublier : « Supprimer les empreintes sans symbole associé » est COCHÉE par
+   défaut.** Sur ce projet, elle **détruirait `H1` et `H2`**, les deux trous de fixation
+   mécaniques volontairement sans symbole au schéma — précisément les deux `extra_footprint` de
+   la baseline de parité. **La décocher avant chaque lancement**, et relire l'état de toutes les
+   cases plutôt que de le supposer.
+5. Le rapport doit ne contenir **aucune ligne de suppression ni d'ajout d'empreinte**. L'erreur
+   `U6 pad 45 non trouvé` est **attendue** : le PowerPAD du TPA3255 est sur le dessus du boîtier.
+6. **Ctrl+S**, puis vérifier que le `*` a disparu du titre — et confirmer par le MD5 du fichier.
+
+**Le blocage `SendInput` de la session RDP n'est pas une propriété du projet.** Il vient d'une
+session distante **déconnectée ou verrouillée** : reconnectée, tout repasse. Avant de rouvrir un
+blocage GUI hérité, refaire le test en un appel décrit plus haut — activer une fenêtre sans
+rapport — plutôt que de croire la note d'une session précédente.
+
 ## Preuve indépendante du MCP
 
 `kicad-cli.exe` — `sch erc`, `pcb drc --format json` — depuis

@@ -149,6 +149,12 @@
 		(path "/a3bc53af-27a2-4fc5-8ec2-4888e6740fe9")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -301,6 +307,12 @@
 		(path "/a0e0e309-a2f0-44ef-8c3b-f40259f62af9")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -445,6 +457,12 @@
 		(path "/4ce74107-dc1c-4ef9-a10d-5e00b6ea57be")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -969,6 +987,12 @@
 		(path "/11d1e0e6-aae0-4ad0-9bda-d7a961036f3a")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -6675,6 +6699,12 @@
 		(path "/ba59167e-fa3d-4289-992c-b3a4f4253870")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -6852,6 +6882,12 @@
 		(path "/90dc8a7e-205d-4f7c-92c5-a91c61dbf160")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2" "3")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -7099,6 +7135,12 @@
 		(path "/4754bcbe-fc48-4039-92bc-94fbc55a2e3e")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -7251,6 +7293,12 @@
 		(path "/ced78652-09f4-48b1-999d-18c4129f851f")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -7425,6 +7473,12 @@
 		(path "/d100d76e-6f32-4d13-b6b4-dc352ab8e764")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -7569,6 +7623,12 @@
 		(path "/6367b6cb-39c3-4b9e-8179-e02914793e12")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -7786,6 +7846,12 @@
 		(path "/5b5ea860-18b6-44db-86e0-26f6f49f49ef")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -8187,6 +8253,12 @@
 		(path "/94bd427a-42ff-4633-9a92-42659706235a")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -8338,6 +8410,16 @@
 		(path "/1a25a659-48ab-4430-90b1-1c59b05b8331")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2" "3" "4" "5" "6" "7" "8" "9" "10" "11" "12" "13" "14" "15"
+					"16" "17" "18" "19" "20" "21" "22" "45" "44" "43" "42" "41" "40" "39"
+					"38" "37" "36" "35" "34" "33" "32" "31" "30" "29" "28" "27" "26" "25"
+					"24" "23"
+				)
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -9047,6 +9129,12 @@
 		(path "/e395573f-0f4f-4957-be78-609d1e1408a1")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -9212,6 +9300,12 @@
 		(path "/3075924f-21f3-40d8-9408-a1a94a64161c")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2" "3" "4")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -9486,6 +9580,12 @@
 		(path "/bae1cd30-03eb-4a26-9db9-5c2d4aedeb1f")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -9767,6 +9867,12 @@
 		(path "/72b0c94f-4eea-4c8c-a7cc-cfaa8752457f")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -9919,6 +10025,12 @@
 		(path "/369732bc-253d-4568-af37-1ece67585f72")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -13115,6 +13227,12 @@
 		(path "/cefd518e-bf39-44fb-9023-7222b2998cee")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -13267,6 +13385,12 @@
 		(path "/2b355253-50a6-4f72-b68e-25d7d2d7a048")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -13419,6 +13543,12 @@
 		(path "/765b1402-1059-4c58-a808-2ccc87de4bdb")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -13558,6 +13688,12 @@
 		(path "/dfd14b3d-3e7a-4520-a4d0-702f8cafca15")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
@@ -13695,6 +13831,12 @@
 		(path "/d948efc3-6748-491f-b71b-be4c2e62a35e")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -13865,6 +14007,12 @@
 		(path "/2ccf2ddb-a73a-4eda-bb4d-53170b41d22b")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -14147,6 +14295,12 @@
 		(path "/fee79be2-8ed9-405c-b8ed-c9965fcca24d")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -14299,6 +14453,12 @@
 		(path "/cfd3f832-af90-4b2f-a6cd-f9e57c42b20e")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -14451,6 +14611,12 @@
 		(path "/e29cc84b-d968-4e5e-ae0f-2c8ab66ca342")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -14603,6 +14769,12 @@
 		(path "/26b2c30a-20c3-48c4-a05c-8532c013c326")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -14755,6 +14927,12 @@
 		(path "/dc2dc8b5-011f-4c07-92c5-64023d697024")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -14907,6 +15085,12 @@
 		(path "/3453915a-e839-4a2d-a958-8847b43f10e7")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -15059,6 +15243,12 @@
 		(path "/b6be8a47-2ff2-4bde-ae50-c0c9c350836b")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -15211,6 +15401,12 @@
 		(path "/758e8f3d-c451-4857-a6f2-5819a5e4cb8b")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -15631,6 +15827,12 @@
 		(path "/dd1f081e-88df-4bb1-b3c5-60ffe6bc75df")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -15783,6 +15985,12 @@
 		(path "/df5abcee-ddc6-4855-9f79-7e7ccf0b7455")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -15935,6 +16143,12 @@
 		(path "/9aeb3f3a-6fc4-46b1-ac90-31193826411e")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -16087,6 +16301,12 @@
 		(path "/070ee1bd-d665-4f02-8382-05e85ea9e7b8")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -16239,6 +16459,12 @@
 		(path "/9c089e65-b5e6-4316-9bf7-fd965a14f46a")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -16391,6 +16617,12 @@
 		(path "/78f58ebc-a253-4c09-8479-0a49259bd491")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -16543,6 +16775,12 @@
 		(path "/ed53be85-e73f-49d3-984c-0b33f3bc688a")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -16695,6 +16933,12 @@
 		(path "/432a6ce6-6cd2-4fec-bab5-e5421ba034e4")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -16847,6 +17091,12 @@
 		(path "/29facf9e-3512-4c37-9bfb-33c1fe9c5c42")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -17024,6 +17274,12 @@
 		(path "/a3658334-b3d7-4eeb-b4a7-4f3979f8b97c")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2" "3")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -17589,6 +17845,20 @@
 		(path "/904d65b2-5e84-4651-a5bf-d681d823412f")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "3" "2" "1")
+			)
+			(unit
+				(name "B")
+				(pins "5" "6" "7")
+			)
+			(unit
+				(name "C")
+				(pins "8" "4")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -17950,6 +18220,12 @@
 		(path "/618a25df-1c1e-4f64-b44c-8f9a6f96b2c3")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
@@ -18087,6 +18363,12 @@
 		(path "/643f9dbe-ec96-45c5-b9a1-0eb308fc2903")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -18231,6 +18513,12 @@
 		(path "/b2c0d61b-356e-41d4-8898-de2cc80c7351")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -18513,6 +18801,12 @@
 		(path "/3a4549a7-5349-4bc0-85e8-f932a91aee5a")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -18665,6 +18959,12 @@
 		(path "/ecb4ba24-6b63-4603-a6c1-a43f16671d76")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -18780,7 +19080,7 @@
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "C309"
-			(at 0 -1.43 -90)
+			(at 0 -1.43 270)
 			(layer "F.SilkS")
 			(uuid "f55d7d44-c755-4369-bf85-182318ddf979")
 			(effects
@@ -18791,7 +19091,7 @@
 			)
 		)
 		(property "Value" "0.033uF"
-			(at 0 1.43 -90)
+			(at 0 1.43 270)
 			(layer "F.Fab")
 			(uuid "5333ad7e-5515-4193-ae79-8a9745e45e75")
 			(effects
@@ -18802,7 +19102,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 -90)
+			(at 0 0 270)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "99cc5336-9f62-4d7e-bb19-525cd3817f53")
@@ -18813,7 +19113,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 -90)
+			(at 0 0 270)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "97bc3356-9bea-4f47-93ef-500256ab3650")
@@ -18824,7 +19124,7 @@
 			)
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
-			(at 0 0 -90)
+			(at 0 0 270)
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "0f348207-1e08-48c4-81d1-0290d35e3cc3")
@@ -18839,6 +19139,12 @@
 		(path "/f9e36b8e-0a1c-4cc5-a3dd-bc2262c21b73")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -18884,7 +19190,7 @@
 			(uuid "a30d1e75-f9ed-4757-8868-3bf6f5a1d8cb")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 -90)
+			(at 0 0 270)
 			(layer "F.Fab")
 			(uuid "e907e74b-fd6a-413c-b32e-3193055ff37c")
 			(effects
@@ -18991,6 +19297,12 @@
 		(path "/4c85a8f0-50a9-4403-8071-29414d569224")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -19143,6 +19455,12 @@
 		(path "/3d21720e-9f3b-4ab8-bdad-d0fbfdb9b5e2")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -19295,6 +19613,12 @@
 		(path "/2e7c8bf5-994e-4c58-a8c8-097fdbe9b820")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -19447,6 +19771,12 @@
 		(path "/337ed204-684a-4162-bb28-f943fc6e2dd2")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -22643,6 +22973,12 @@
 		(path "/5f5eeba6-b5e0-4da5-a9ff-b9ba0622363c")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -22795,6 +23131,12 @@
 		(path "/6edfa5f1-28d5-4a04-a3ca-6ba6b58126d6")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -22947,6 +23289,12 @@
 		(path "/2471f7d3-ed8b-457f-8baa-70b4035cb8fa")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -23099,6 +23447,12 @@
 		(path "/b31bd91c-7dbf-4916-bffe-cc7f1340ecd6")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -23251,6 +23605,12 @@
 		(path "/dec1e2de-7c51-4960-aafc-0e0b5b1e735f")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -23425,6 +23785,20 @@
 		(path "/f0740320-a368-4d10-9abf-6eb03d9467a6")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "3" "2" "1")
+			)
+			(unit
+				(name "B")
+				(pins "5" "6" "7")
+			)
+			(unit
+				(name "C")
+				(pins "8" "4")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -23799,6 +24173,12 @@
 		(path "/138e0120-a501-4e54-8d04-e0fc0d26c972")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2" "3" "4" "5" "6")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -24124,6 +24504,12 @@
 		(path "/61380827-0b25-4d34-b3ac-dab75c65f203")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -24263,6 +24649,12 @@
 		(path "/939dc18b-82ab-4cf9-9464-f9af939ee983")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
@@ -24392,6 +24784,12 @@
 		(path "/0d750e61-8d72-4470-93df-3ce6bd37c64b")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -24674,6 +25072,12 @@
 		(path "/6bf553e4-d600-49d5-8b1d-cd0e6a7bfadf")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -24826,6 +25230,12 @@
 		(path "/9d881ecd-4428-4789-9316-872f15b71dc5")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -24978,6 +25388,12 @@
 		(path "/c74cbe91-ac72-4b6a-97f9-f814cd204571")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -25130,6 +25546,12 @@
 		(path "/fa585941-f67b-4828-a675-1e9ae55dfc5a")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -25411,6 +25833,12 @@
 		(path "/e33bf8d6-0b4c-4224-9e11-1380ac5c2bcf")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -25562,6 +25990,12 @@
 		(path "/ab9fea50-b6d3-4e94-93be-eec8cbca4e01")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2" "3" "4" "5" "10" "9" "8" "7" "6")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -25958,6 +26392,12 @@
 		(path "/1b5de392-d334-48f5-aa07-3d5c676ac76d")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -26110,6 +26550,12 @@
 		(path "/6d6da579-8c59-43aa-b993-9f229e1d33f2")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -26262,6 +26708,12 @@
 		(path "/8a48a5a0-b260-46f8-9ba0-9246b85b76a7")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -26414,6 +26866,12 @@
 		(path "/e065b28e-f49e-49dd-a5f5-1b446260e7e8")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -32120,6 +32578,12 @@
 		(path "/76a5e08a-0c6c-4ca4-8ea3-de430e7e7b3c")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -32272,6 +32736,12 @@
 		(path "/1bbac625-53af-4938-8da7-3b9617ccba2f")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -32424,6 +32894,12 @@
 		(path "/128e25ff-98ab-4d20-80f5-efb0435934c1")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -35607,6 +36083,12 @@
 		(path "/9170b875-47d2-4eda-94ad-a150e7106125")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
@@ -35744,6 +36226,12 @@
 		(path "/6dbc193b-6a7d-455e-9cdc-3602cfddef26")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -35896,6 +36384,12 @@
 		(path "/16a167b1-a303-474a-9df8-2b833dc14258")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -36048,6 +36542,12 @@
 		(path "/05d49d93-dd35-4acd-b029-7801f79d333e")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -36373,7 +36873,7 @@
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(roundrect_rratio 0.089286)
-			(net "/OUT_A_F")
+			(net "/OUT_B_F")
 			(pinfunction "Pin_1_1")
 			(pintype "passive")
 			(uuid "92c99dfa-281c-433b-b4b8-c1f57f2f91f7")
@@ -36384,7 +36884,7 @@
 			(drill 1.3)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "/OUT_B_F")
+			(net "/OUT_A_F")
 			(pinfunction "Pin_2_2")
 			(pintype "passive")
 			(uuid "b347d627-c926-4295-baba-0c2ff499cd9f")
@@ -36468,6 +36968,12 @@
 		(path "/c3b183f0-83e1-4a2b-b183-8b8b9febfb56")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -36620,6 +37126,12 @@
 		(path "/4dfefc84-ad79-4b4e-82a7-c32a5465e91d")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -36772,6 +37284,12 @@
 		(path "/612c7744-5f72-4f11-9593-cac099f85440")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -38508,6 +39026,12 @@
 		(path "/b4de278e-1816-44fb-80d1-0727fc36f45a")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -38673,6 +39197,12 @@
 		(path "/279cd602-dc1c-4e44-887a-cdb3329a39bb")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -38801,6 +39331,12 @@
 		(path "/25942163-e91a-42f8-b38f-370b20c8a890")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -38953,6 +39489,12 @@
 		(path "/1ed971f5-c1ea-433c-b9b3-ce4d9824d771")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -39096,6 +39638,12 @@
 		(path "/4541ea67-eb53-449c-b036-e8b38b980b65")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "3" "1" "2" "4")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -39370,6 +39918,12 @@
 		(path "/f4f4288e-f83b-42f4-91f0-2ab12d52de39")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -39521,6 +40075,12 @@
 		(path "/5d0d4c27-c8b9-4e36-a560-14aead2a801c")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "2" "3" "4" "5" "6" "7" "8" "9" "10" "11" "1")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -39916,6 +40476,12 @@
 		(path "/2df47d36-56c1-439a-ac98-f1c337a70393")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -40068,6 +40634,12 @@
 		(path "/7ff0ac25-e368-42ee-a47d-8d727373779f")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -40161,7 +40733,7 @@
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "C308"
-			(at 0 -1.43 -90)
+			(at 0 -1.43 270)
 			(layer "F.SilkS")
 			(uuid "84f3deb1-be4a-456f-bb46-39c83c0bc2f9")
 			(effects
@@ -40172,7 +40744,7 @@
 			)
 		)
 		(property "Value" "0.033uF"
-			(at 0 1.43 -90)
+			(at 0 1.43 270)
 			(layer "F.Fab")
 			(uuid "9d4e4f12-0691-49d9-8607-e8c9bdd4ab17")
 			(effects
@@ -40183,7 +40755,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 -90)
+			(at 0 0 270)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "26e9cfb8-eb3c-4636-9860-637023124138")
@@ -40194,7 +40766,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 -90)
+			(at 0 0 270)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "6b48396a-9236-4a62-95e4-3f0b8774a7ee")
@@ -40205,7 +40777,7 @@
 			)
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
-			(at 0 0 -90)
+			(at 0 0 270)
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "b4d82619-fb60-4f74-8404-966e306b60a0")
@@ -40220,6 +40792,12 @@
 		(path "/029aed34-94b8-47c9-9405-02f11664a4c9")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -40265,7 +40843,7 @@
 			(uuid "18e8e976-5ba4-496a-9f09-c03fc6cf77b7")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 -90)
+			(at 0 0 270)
 			(layer "F.Fab")
 			(uuid "a1fe71ba-4dbe-4ded-b390-3de43aa89c7b")
 			(effects
@@ -40372,6 +40950,12 @@
 		(path "/efc36453-2828-40f8-b4d5-535f343457b6")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -40523,6 +41107,12 @@
 		(path "/249b3127-cf84-45ab-af59-ce4b1d3a1512")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "4" "5" "1" "2" "3")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -40919,6 +41509,12 @@
 		(path "/3b3b7e58-c566-4af8-b919-175621a989d5")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -41084,6 +41680,12 @@
 		(path "/8de78dbe-16f1-4ab3-9006-49518212695d")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -41236,6 +41838,12 @@
 		(path "/1009297a-4ab0-4c88-b344-9b03de54617a")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -41388,6 +41996,12 @@
 		(path "/1f1bb7af-f0b2-4f72-a83c-2aeca25ae6f7")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -41540,6 +42154,12 @@
 		(path "/0ef11480-a567-42ac-af83-fbe6336820a3")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -41692,6 +42312,12 @@
 		(path "/cd808db0-f042-4afd-8218-adfecaefa49d")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -41844,6 +42470,12 @@
 		(path "/39f7cfe7-35ca-42a4-a6da-011649daca0f")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -41996,6 +42628,12 @@
 		(path "/39ad98d1-0c23-4ae2-a58e-53c5b1a98f62")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -42321,7 +42959,7 @@
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(roundrect_rratio 0.089286)
-			(net "/OUT_C_F")
+			(net "/OUT_D_F")
 			(pinfunction "Pin_1_1")
 			(pintype "passive")
 			(uuid "a7ef3f79-c66c-4211-9676-095f933469ad")
@@ -42332,7 +42970,7 @@
 			(drill 1.3)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "/OUT_D_F")
+			(net "/OUT_C_F")
 			(pinfunction "Pin_2_2")
 			(pintype "passive")
 			(uuid "a33d4503-0f1c-410a-af4d-986038fe3085")
@@ -42416,6 +43054,12 @@
 		(path "/a0e4eb45-f68e-42c1-b283-8add0525d486")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -42568,6 +43212,12 @@
 		(path "/4d1f09ca-e453-4cf0-88e4-f9160c0d6d5b")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -42720,6 +43370,12 @@
 		(path "/3bc61d92-027a-4a07-a9b6-609dd6aa0dc7")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -42872,6 +43528,12 @@
 		(path "/1adb69db-5a7f-43aa-9e31-2a167c9a9e54")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -43024,6 +43686,12 @@
 		(path "/c96fb765-d32e-43d4-9de7-95bb1e08ada0")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -43176,6 +43844,12 @@
 		(path "/1a6bd93f-bdbf-4699-a6cb-b86ff0e9a849")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -43328,6 +44002,12 @@
 		(path "/5f22ea12-1902-4a52-a77f-997785bfe629")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -43480,6 +44160,12 @@
 		(path "/6e367c1d-beb7-4bdd-833c-d14c16351135")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -43632,6 +44318,12 @@
 		(path "/2b8d1f3e-4d97-495a-b636-5a9184cefbb0")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -43784,6 +44476,12 @@
 		(path "/0d9814cf-372b-4fc7-9d89-3c4fc771a05d")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -46980,6 +47678,12 @@
 		(path "/89cbe224-bd72-4f4f-ad95-c64ef2c3561a")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -47132,6 +47836,12 @@
 		(path "/2c5623db-347a-4e9c-8ea2-e8f03bba02ac")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -47284,6 +47994,12 @@
 		(path "/976a0bd6-e426-4726-8c94-a55d6188dd13")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -47436,6 +48152,12 @@
 		(path "/d06dedf5-d9ca-411d-9d0f-8f8dcec0348a")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -47610,6 +48332,12 @@
 		(path "/3a49b012-44ef-4202-bd0b-381aaacade3b")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -47762,6 +48490,12 @@
 		(path "/93e67467-1884-4b58-b280-7846f3166077")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -47914,6 +48648,12 @@
 		(path "/c8a9cd9c-58ce-4429-b327-a77429f9efdf")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -48066,6 +48806,12 @@
 		(path "/53a579ca-576c-4e73-9bea-ba1fd981260c")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -48218,6 +48964,12 @@
 		(path "/08d20ce2-50ef-46a4-847b-042023b3241a")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
