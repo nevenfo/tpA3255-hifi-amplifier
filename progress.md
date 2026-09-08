@@ -2,38 +2,33 @@
 
 ## Phase actuelle
 
-**Phase F — Routage.** **31 segments posés, zéro via** : les quatre boucles de bootstrap, `PVDD`,
-et les découplages auxiliaires `AVDD`/`DVDD`/`+12V`. DRC courant : **112 violations toutes de
-sérigraphie** (90 `silk_overlap`, 22 `silk_over_copper`), **239 non-connectés**,
-`schematic_parity` = **3**, aucune `clearance`, aucun `shorting_items`, aucun `track_dangling`.
+**Phase F — Routage. F1.1 close.** **35 segments posés, zéro via** : les quatre boucles de
+bootstrap, `PVDD`, et les découplages auxiliaires `AVDD`/`DVDD`/`+12V`/`VBG`. DRC courant :
+**113 violations toutes de sérigraphie** (91 `silk_overlap`, 22 `silk_over_copper`), **238
+non-connectés**, `schematic_parity` = **3**, aucune `clearance`, aucun `shorting_items`, aucun
+`track_dangling`.
 
 ## Tâche actuelle
 
-**F1.1 — router les boucles de commutation, l'alimentation Class-D et les découplages.** Les trois
-tranches sont routées. **Reste un seul point ouvert : `VBG` → `C303`, dont l'impossibilité
-mono-couche est démontrée et qui attend un arbitrage utilisateur.** Le retour `GND` est renvoyé au
-plan de masse de F1.4.
+**F1.2 — router les sorties vers les filtres LC et les connecteurs, avec des largeurs justifiées.**
+Pas encore commencée. Classe `PWR_OUT` : piste nominale **3,00 mm**, isolation **0,50 mm**.
 
 ## Dernière tâche validée
 
-**F1.1, tranche « découplages auxiliaires » = PASS sauf `VBG`.** `AVDD` (pin 14 → `C318`), `DVDD`
-(pin 11 → `C319`) et `/+12V` (pins 1, 2, 22 → `C302`, `C304`) sur `F.Cu`, **15 segments, zéro via**,
-largeur 0,30 mm.
+**F1.1 = PASS**, dernière tranche incluse. `VBG` a été résolu **en corrigeant la cause plutôt qu'en
+la contournant** : `C303` et `C304` ont échangé leurs positions (`y` 163 ↔ 166), ce qui aligne
+l'ordre des extrémités et fait passer `VBG` et `+12V` pin 22 en direct, sans via.
 
 Validation :
 
-- **DRC 112 violations, identiques à la baseline** ; 0 `clearance`, 0 `shorting_items`,
-  0 `track_dangling` ; parité **3**, les trois mêmes écarts ; `pad_prop_heatsink` de `U1` à 1.
-- **Non-connectés 244 → 239**, exactement les cinq chevelus prédits (`AVDD`, `DVDD`, et les trois
-  de `+12V`).
-- **Vérification indépendante du principal** : DRC relancé ; **31 segments tous sur `F.Cu`**,
-  **0 via** au fichier ; largeurs 12 × 0,35 + 2 × 0,8 + 2 × 1,1 + 15 × 0,30 ; **diff Git sans
-  aucune suppression de segment**, les 6 seules lignes retirées étant une normalisation d'écriture
-  de KiCad (`-90` → `270`) sur les champs texte de `C310`, dont le placement est inchangé.
-- **Un premier lot avait produit 6 `shorting_items`** : les découplages d'entrée `C106`/`C107`/
-  `C206`/`C207` manquaient à la liste d'obstacles. Segments retirés, géométrie recalculée, reposée.
-
-**Avant elle** : les tranches « bootstraps » et « alimentation Class-D » de F1.1.
+- **Non-connectés 239 → 238**, le chevelu prédit ; **0 `clearance`, 0 `shorting_items`,
+  0 `track_dangling`** ; parité **3** ; `pad_prop_heatsink` de `U1` à 1, contrôlé au premier
+  déplacement de la session ; **124 empreintes, exactement deux modifiées, seulement en position**.
+- **Sérigraphie 112 → 113**, seul compteur à bouger : `C303` entre en conflit avec les champs
+  référence de `C206`/`C207` et libère celui de `C318`. Cosmétique, aucun effet cuivre.
+- **Vérification indépendante du principal** : DRC relancé ; **35 segments tous sur `F.Cu`**,
+  **0 via** ; largeurs 12 × 0,35 + 2 × 0,8 + 2 × 1,1 + 15 × 0,30 + 4 × 0,25 ; diff Git ne montrant
+  **que les deux `(at)` d'empreinte échangés**.
 
 ## Décisions actives
 
@@ -42,13 +37,13 @@ des obstacles, calibration des contrôles, ouverture de l'éditeur, normalisatio
 dans `docs/kicad-operations.md` ; placement et budgets thermiques dans `docs/architecture.md`.
 Restent ici celles qui gouvernent la prochaine action :
 
-- **`VBG` → `C303` exige une via, et c'est prouvé, pas supposé.** Côté `U6`, la pin 22 (`y` =
-  168,33) précède `VBG` (169,6) ; côté condensateurs, `C303` (163) précède `C304` (166) :
-  **l'ordre s'inverse entre source et cible**, donc toute liaison mono-couche croise. Détour
-  externe, contournement local et inversion de priorité ont été testés et écartés par calcul.
 - **`AVDD` et `DVDD` sont longs — 28,95 et 34,82 mm** pour une distance directe d'environ 13,8 mm,
   le corridor central étant saturé. Acceptable pour des rails auxiliaires filtrés, mais **à
   réexaminer en F1.4** quand les plans offriront un retour et des vias.
+- **Le déplacement IPC laisse derrière lui les pistes qu'il traîne** : trois segments obsolètes ont
+  subsisté après le déplacement de `C304`. **Requêter les pistes d'un net après avoir déplacé l'un
+  de ses composants**, sinon un `track_dangling` s'installe.
+- **113 violations de sérigraphie restent à traiter en bloc**, aucune n'ayant d'effet cuivre.
 - **Le retour `GND` local ne passe pas sur `F.Cu` près de `U6`** : les masses partent au plan de
   F1.4.
 - **La symétrie miroir autour de `y` = 175 est exacte dans le placement** et doit le rester dans le
@@ -64,15 +59,11 @@ Restent ici celles qui gouvernent la prochaine action :
 
 ## Blocage actif
 
-**Arbitrage utilisateur en attente sur `VBG` → `C303`** — seule liaison de F1.1 non routée.
-Symptôme : croisement inévitable avec `/+12V` pin 22. Cause établie : inversion de l'ordre des
-extrémités entre `U6` et la rangée de condensateurs. Écarté par calcul : détour externe (croise
-`AVDD`), contournement local (0,75 mm requis contre 0,65 mm disponible), inversion de priorité.
-Prochaine tentative : appliquer l'option retenue par l'utilisateur.
+Aucun.
 
 ## Fichiers / zones utiles
 
-- `HifiAmp_TPA3255.kicad_pcb` — 124 empreintes, **31 segments routés**, 0 via ; `.kicad_pro` porte
+- `HifiAmp_TPA3255.kicad_pcb` — 124 empreintes, **35 segments routés**, 0 via ; `.kicad_pro` porte
   les classes de net ; `.kicad_dru` la règle de E1.9 ; `.kicad_sym` les symboles locaux
 - **`docs/kicad-operations.md`** — pilotage KiCad et pièges d'outillage, **à lire avant toute
   manipulation** ; convention de rotation des pads et format des segments
@@ -80,9 +71,12 @@ Prochaine tentative : appliquer l'option retenue par l'utilisateur.
 
 ## NEXT ACTION
 
-**F1.1 — trancher `VBG` → `C303` avec l'utilisateur, puis clore F1.1.** Trois options : poser une
-via sur `VBG` (rompt le « zéro via » mais route la liaison proprement) ; déplacer `C303` et `C304`
-pour rétablir l'ordre des extrémités (rouvre le placement, clos depuis la Phase E) ; ou reporter
-`VBG` au plan de masse et aux couloirs de F1.4. Une fois tranché, appliquer, revalider par DRC
-(0 `clearance`, 0 `shorting_items`, 0 `track_dangling` ; parité 3 ; non-connectés 239 → 238 si
-routé) et cocher F1.1.
+**F1.2 — router les sorties de puissance vers les filtres LC et les connecteurs.** Établir d'abord
+**par mesure au fichier** quelles sorties de `U6` vont vers quelles selfs et quels connecteurs, et
+**apparier par paire de pont, A avec B et C avec D**, conformément à la contrainte F1. Classe
+`PWR_OUT` : nominal **3,00 mm**, isolation **0,50 mm** — mais **recalculer la largeur tenable en
+sortie de `U6`**, où la classe n'a jamais été applicable. Router sur `F.Cu` sans via si la
+géométrie le permet ; sinon le dire avant d'en poser une. Valider par : DRC sans `clearance`,
+`shorting_items` ni `track_dangling` ; `schematic_parity` toujours **3** ; non-connectés en baisse
+du nombre exact de chevelus résolus ; `pad_prop_heatsink` de `U1` à 1 ; 124 empreintes intactes ;
+aucun croisement avec les 35 segments déjà posés.
