@@ -131,6 +131,25 @@ portent `(net "NOM")` **sans identifiant numérique**, et il n'y a pas de table 
 de fichier. Dans le `.kicad_sch`, `lib_symbols` précède les instances : itérer sur les blocs
 de premier niveau à parenthèses équilibrées.
 
+### Deux pièges qui rendent une mesure fausse en silence
+
+**La rotation d'un pad se fait en `-θ`, pas en `+θ`.** Dans le repère du fichier, `y` pointe vers
+le bas ; l'offset local d'une pastille se transforme donc en
+`x' = x·cos θ + y·sin θ` et `y' = −x·sin θ + y·cos θ`. Prendre `+θ` **échange les deux pastilles**
+d'un composant tourné à ±90°. Ce qui rend l'erreur redoutable, c'est qu'elle est **invisible à 0°
+et à 180°**, où les deux conventions coïncident : un script faux peut valider des dizaines de
+composants — tous les borniers, `U6` à 180° — avant de mentir sur le premier 0603 vertical.
+**Contrôle** : sur un composant à ±90°, vérifier que le pad calculé porte le net attendu ; à
+défaut, router vers ce point et lire `unconnected_items` et `track_dangling` au DRC.
+
+**`(segment` n'est pas suivi d'un espace mais d'un saut de ligne.** `(footprint "Nom"` en met un,
+`(segment` non — chercher la chaîne `"(segment "` rend **zéro résultat sans erreur**, donc « aucune
+piste » sur une carte routée. Faire correspondre `(<tag>` suivi de **n'importe quel blanc**.
+
+Ces deux-là partagent la forme du `schematic_parity` à zéro : **un compteur nul ne prouve rien
+tant qu'on n'a pas vérifié que la mesure a eu lieu.** Tout script de contrôle se calibre d'abord
+sur un état qu'il doit rejeter.
+
 ## Sources et mesures
 
 **Lire les cotes par extraction du PDF fabricant**, jamais par listing distributeur ; contrôler

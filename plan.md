@@ -349,7 +349,12 @@ E1 validée.
 
 ### Tâches
 
-- [ ] F1.1 Router boucles de commutation, alimentation Class-D et découplages.
+- [ ] F1.1 Router boucles de commutation, alimentation Class-D et découplages. *(EN COURS — **tranche « bootstraps » = PASS**, la première piste de la carte. Restent la commutation de puissance, l'alimentation Class-D et les découplages.)*
+  - **Tranche « bootstraps » = PASS.** Les quatre boucles `/BST_A`–`/BST_D` sont routées sur `F.Cu`, **12 segments, zéro via** — l'invariant qui gouvernait la tranche, et pour lequel E1.5 avait retiré le dernier croisement. Longueurs 7,806 mm (A, D) et 10,118 mm (B, C).
+  - **Largeur 0,35 mm, et non les 0,5 mm de la classe `GATE_DRIVE`.** Mesure : les pastilles de `U6` font 1,575 × 0,4 mm au pas de 0,635 mm, ce qui laisse 0,435 mm entre l'axe d'une piste et le bord de la pastille voisine. Pour 0,25 mm d'isolation, 0,5 mm donne 0,185 (viole), 0,4 mm donne 0,235 (viole encore), **0,35 mm donne 0,260 (passe)**. Le courant de bootstrap est négligeable et le minimum de la carte est 0,20 mm : la largeur de classe n'était pas tenable ici.
+  - **`C310` et `C311` barrent les tracés directs de `/BST_B` et `/BST_C`.** Le couloir de cuivre libre entre les deux pastilles de `C310` fait 1,8 mm, centré sur `y` = 178,3 : les pistes y passent, `/BST_A` et `/BST_D` restant hors courtyard.
+  - Validation : **DRC 112 violations, strictement les mêmes qu'avant** (90 `silk_overlap`, 22 `silk_over_copper`), **0 `clearance`, 0 `shorting_items`, 0 `track_dangling`** ; **non-connectés 254 → 250**, la preuve que les quatre liaisons sont réellement faites ; `schematic_parity` toujours **3** ; 124 empreintes inchangées. **Vérification indépendante du principal** : connexité pad à pad sans segment orphelin, **miroir `y` = 175 exact sommet par sommet** (A↔D sur 3, B↔C sur 5), aucun croisement sur les 6 paires, zéro via au fichier.
+  - **Deux pièges de relecture découverts ici, consignés dans `docs/kicad-operations.md`** : la rotation d'un pad se fait en `-θ` — prendre `+θ` échange les deux pastilles d'un composant à ±90° et **reste invisible à 0° et 180°** — et `(segment` est suivi d'un saut de ligne, pas d'un espace, si bien qu'un motif `"(segment "` rend zéro piste sans erreur.
 - [ ] F1.2 Router sorties vers filtres LC et connecteurs avec largeurs justifiées.
 - [ ] F1.3 Router analogique, contrôle puis signaux non critiques.
 - [ ] F1.4 Créer plans/zones et vias thermiques ; remplir les zones.
