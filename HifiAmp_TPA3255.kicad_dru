@@ -17,3 +17,29 @@
 (rule "Isolation interne aux boitiers a pas fin"
 	(constraint clearance (min 0.15mm))
 	(condition "A.Type == 'Pad' && B.Type == 'Pad' && ((A.memberOfFootprint('U1') && B.memberOfFootprint('U1')) || (A.memberOfFootprint('U6') && B.memberOfFootprint('U6')) || (A.memberOfFootprint('U8') && B.memberOfFootprint('U8')))"))
+
+# Echappement de piste interne au boitier U6.
+#
+# Meme cause que la regle precedente, portee cette fois a la piste qui sort
+# d'une pastille. Les sorties OUT_B (pin 35) et OUT_C (pin 32) sont des
+# pastilles uniques encadrees de GND et de PVDD : au pas de 0,635 mm pour
+# des pastilles de 0,4 mm de hauteur, l'axe d'une pastille n'est qu'a
+# 0,435 mm du bord de sa voisine. L'isolation de 0,50 mm de la classe
+# PWR_OUT y rend la largeur maximale negative — aucune piste ne sort du
+# boitier, si fine soit-elle. OUT_A (39-40) et OUT_D (27-28) sont doubles et
+# plafonnent a 0,505 mm, trop peu pour les 6 A efficaces d'une voie.
+#
+# Le seuil retenu est celui deja accepte pour les pastilles du meme boitier.
+# La carte tolere donc deja 0,235 mm entre les pastilles OUT et PVDD de U6,
+# qui portent exactement la meme tension : etendre la regle a la piste
+# n'introduit aucune contrainte de tension nouvelle. A 48 V sur du cuivre
+# externe revetu, l'IPC-2221 exige nettement moins.
+#
+# Portee limitee a U6, seul boitier bloquant a ce jour ; U1 et U8, au pas de
+# 0,5 mm, seront reexamines s'ils butent au routage de F1.3. L'isolation
+# entre empreintes distinctes n'est pas touchee, et la piste reprend sa
+# largeur de classe des la sortie du courtyard.
+
+(rule "Echappement de piste interne a U6"
+	(constraint clearance (min 0.15mm))
+	(condition "(A.Type == 'Track' && B.Type == 'Pad' && B.memberOfFootprint('U6')) || (B.Type == 'Track' && A.Type == 'Pad' && A.memberOfFootprint('U6'))"))
