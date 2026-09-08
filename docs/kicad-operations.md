@@ -206,3 +206,28 @@ l'ouverture de l'éditeur.
 **Ce qu'il faut vérifier après cette mise à jour**, parce que c'est l'opération qui a déjà causé
 les deux régressions connues du projet : `pad_prop_heatsink` de `U1` (perdu en E1.10) et les
 `lib_footprint_mismatch` (introduits en E1.3). Relever la baseline avant, la comparer après.
+
+## Règles de routage établies en Phase F
+
+- **Les classes de net se lisent dans `.kicad_pro`**, pas dans `.kicad_dru` qui ne porte que
+  l'exception interne à `U6`/`U1`/`U8`. Valeurs : `PWR_AUX` = 0,25 mm d'isolation et 0,8 mm de
+  piste nominale, `ANALOG` = 0,25/0,25, `PWR_48V` = 0,5, `GATE_DRIVE` et `GND` = 0,25,
+  `PWR_OUT` = 0,5. **Vérifier la classe avant de calculer un couloir** : reprendre celle d'un net
+  voisin a déjà coûté un tracé refait.
+- **La largeur nominale de classe n'est jamais tenable en sortie de `U6`.** Pastilles
+  1,575 × 0,4 mm au pas de 0,635 mm : 0,35 mm passe pour les bootstraps, 0,30 mm pour les
+  auxiliaires. Recalculer la marge à chaque sortie de boîtier fin.
+- **Un contrôle de dégagement ne vaut que par l'exhaustivité de sa liste d'obstacles.** L'oubli de
+  `C106`/`C107`/`C206`/`C207` a coûté un lot de 14 segments et 6 `shorting_items`. Le DRC, lui,
+  l'a vu immédiatement : **le juge est le DRC, jamais le script maison seul.**
+- **Un compteur nul ne prouve rien tant qu'on n'a pas vérifié que la mesure a eu lieu.** Vaut pour
+  `schematic_parity` (exige `--schematic-parity`) comme pour toute extraction du `.kicad_pcb`.
+  Calibrer d'abord le contrôle sur un état qu'il doit rejeter.
+- **Le MCP exige que l'éditeur de PCB soit ouvert**, pas seulement le gestionnaire de projet :
+  sinon `route_trace` échoue en `ipc_rejected` et un lot atomique n'écrit rien. Le geste
+  d'ouverture est un geste GUI, à déléguer.
+- **KiCad normalise les angles à la réécriture** (`-90` devient `270` dans les champs texte) : un
+  diff Git peut montrer des suppressions sans qu'aucun composant ait bougé. Vérifier le `(at)` de
+  l'empreinte, pas celui de ses propriétés.
+- **Un DRC de comparaison se lance dans le répertoire du projet.** Binaire :
+  `C:/Users/FlowUP/AppData/Local/Programs/KiCad/10.0/bin/kicad-cli.exe`.
