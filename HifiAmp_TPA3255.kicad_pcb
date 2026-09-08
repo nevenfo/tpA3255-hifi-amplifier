@@ -18300,11 +18300,11 @@
 	(footprint "Capacitor_SMD:C_1210_3225Metric"
 		(layer "F.Cu")
 		(uuid "59e8ef77-b031-4751-b885-e5171019666e")
-		(at 277.5 178.3 90)
+		(at 277.5 178.3 -90)
 		(descr "Capacitor SMD 1210 (3225 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "C310"
-			(at 0 -2.3 90)
+			(at 0 -2.3 -90)
 			(layer "F.SilkS")
 			(uuid "48e95f73-cbef-4488-b157-8be30b272bf0")
 			(effects
@@ -18315,7 +18315,7 @@
 			)
 		)
 		(property "Value" "1uF/100V"
-			(at 0 2.3 90)
+			(at 0 2.3 -90)
 			(layer "F.Fab")
 			(uuid "2fe91dc4-5ab0-40ba-a440-951fc160f59d")
 			(effects
@@ -18326,7 +18326,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 90)
+			(at 0 0 -90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "41f3f720-7c39-4dac-9588-13c941394f6b")
@@ -18337,7 +18337,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 90)
+			(at 0 0 -90)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "c13309d2-3c31-43e2-8e44-88455921ac84")
@@ -18348,7 +18348,7 @@
 			)
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
-			(at 0 0 90)
+			(at 0 0 -90)
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "1be7706e-893a-4923-93ea-bdb47a77a5cd")
@@ -18363,24 +18363,8 @@
 		(path "/643f9dbe-ec96-45c5-b9a1-0eb308fc2903")
 		(sheetname "/")
 		(sheetfile "HifiAmp_TPA3255.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
-		(fp_line
-			(start -0.711252 -1.36)
-			(end 0.711252 -1.36)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "F.SilkS")
-			(uuid "28e8083c-c79f-4a3f-b80b-0348e24a3d31")
-		)
 		(fp_line
 			(start -0.711252 1.36)
 			(end 0.711252 1.36)
@@ -18390,6 +18374,16 @@
 			)
 			(layer "F.SilkS")
 			(uuid "c809e067-ce90-4640-9856-285bd5308cfb")
+		)
+		(fp_line
+			(start -0.711252 -1.36)
+			(end 0.711252 -1.36)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "28e8083c-c79f-4a3f-b80b-0348e24a3d31")
 		)
 		(fp_rect
 			(start -2.3 -1.6)
@@ -18414,7 +18408,7 @@
 			(uuid "0f90f389-02b2-4dff-b28f-843c9f6dfdbd")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
+			(at 0 0 -90)
 			(layer "F.Fab")
 			(uuid "b6eed916-fb6b-4cc8-a66d-c0da73b6e863")
 			(effects
@@ -18425,7 +18419,7 @@
 			)
 		)
 		(pad "1" smd roundrect
-			(at -1.475 0 90)
+			(at -1.475 0 270)
 			(size 1.15 2.7)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.217391)
@@ -18434,7 +18428,7 @@
 			(uuid "75d0d509-ee2e-4b38-abcb-6096ffd840bc")
 		)
 		(pad "2" smd roundrect
-			(at 1.475 0 90)
+			(at 1.475 0 270)
 			(size 1.15 2.7)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.217391)
@@ -49095,6 +49089,38 @@
 		)
 		(layer "Edge.Cuts")
 		(uuid "0673f164-b44d-406e-a304-e9830e7d7d0a")
+	)
+	(segment
+		(start 279.9 177.2225)
+		(end 281.2875 177.2225)
+		(width 1.1)
+		(layer "F.Cu")
+		(net "/PVDD")
+		(uuid "09acd9a7-9287-42d5-97d9-0f76d208cad1")
+	)
+	(segment
+		(start 279.9 172.7775)
+		(end 281.2875 172.7775)
+		(width 1.1)
+		(layer "F.Cu")
+		(net "/PVDD")
+		(uuid "137c5f6d-6e5c-4ff5-8b37-417511e2f6ea")
+	)
+	(segment
+		(start 277.5 177.2225)
+		(end 279.9 177.2225)
+		(width 0.8)
+		(layer "F.Cu")
+		(net "/PVDD")
+		(uuid "22785dab-2adc-4eec-84f0-d3940d274222")
+	)
+	(segment
+		(start 277.5 172.7775)
+		(end 279.9 172.7775)
+		(width 0.8)
+		(layer "F.Cu")
+		(net "/PVDD")
+		(uuid "e2dc4dc0-5a66-404f-a7c1-66630b4ea0c0")
 	)
 	(segment
 		(start 281.2875 168.3325)

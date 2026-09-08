@@ -2,35 +2,39 @@
 
 ## Phase actuelle
 
-**Phase F — Routage.** Phase E close. La carte vient de recevoir ses **premières pistes** : les
-quatre boucles de bootstrap. DRC courant : **112 violations toutes de sérigraphie** (90
-`silk_overlap`, 22 `silk_over_copper`), **250 non-connectés**, `schematic_parity` = **3**, aucune
-`clearance`, aucun `shorting_items`, aucun `track_dangling`, **zéro via sur la carte**.
+**Phase F — Routage.** Phase E close. **16 segments posés, zéro via** : les quatre boucles de
+bootstrap et l'alimentation `PVDD`. DRC courant : **112 violations toutes de sérigraphie** (90
+`silk_overlap`, 22 `silk_over_copper`), **244 non-connectés**, `schematic_parity` = **3**, aucune
+`clearance`, aucun `shorting_items`, aucun `track_dangling`.
 
 ## Tâche actuelle
 
-**F1.1 — router les boucles de commutation, l'alimentation Class-D et les découplages.** La
-tranche « bootstraps » est validée. **Restent** : la commutation de puissance, l'alimentation
-Class-D et les découplages.
+**F1.1 — router les boucles de commutation, l'alimentation Class-D et les découplages.** Les
+tranches « bootstraps » et « alimentation Class-D » sont validées. **Reste** : le découplage des
+alimentations auxiliaires (`AVDD`, `DVDD`, `+12V`, `VBG`). Le retour `GND` est **renvoyé au plan
+de masse de F1.4**, faute de passage sur `F.Cu`.
 
 ## Dernière tâche validée
 
-**F1.1, tranche « bootstraps » = PASS.** `/BST_A`–`/BST_D` routées sur `F.Cu`, 12 segments,
-largeur **0,35 mm**, **zéro via**.
+**F1.1, tranche « alimentation Class-D » = PASS**, avec la rotation de `C310` décidée par
+l'utilisateur. `/PVDD` routé sur `F.Cu`, **4 segments, zéro via**, largeurs 0,8 puis 1,1 mm.
 
 Validation :
 
-- **DRC identique à la référence** : 112 violations, exactement les mêmes types et comptes ;
-  **0 `clearance`, 0 `shorting_items`, 0 `track_dangling`** ; parité toujours **3** ; 124
-  empreintes inchangées.
-- **Non-connectés 254 → 250** : la preuve que les quatre liaisons sont réellement faites, et non
-  posées à côté des pastilles.
-- **Vérification indépendante du principal** : connexité pad à pad sans segment orphelin, **miroir
-  `y` = 175 exact sommet par sommet** (A↔D sur 3, B↔C sur 5), aucun croisement sur les 6 paires,
-  zéro via au fichier. Longueurs 7,806 mm (A, D) et 10,118 mm (B, C).
+- **`C310` tourné de 90° à −90° sans bouger** (277,5 ; 178,3) : ses pastilles ont échangé leurs
+  nets, `PVDD` est désormais en 176,825, face aux pins 36–38 de `U6`. Boucle ramenée de 9,04 mm
+  avec croisement à **7,71 mm sans croisement**, identique à `C311`.
+- **Audit d'orientation de tout le bloc** : sur les 8 paires en miroir, **3 sont discriminantes**
+  (rotation hors 0/180) et **`C310`/`C311` était le seul défaut** ; `C306`/`C309` et `C307`/`C308`
+  sont correctes.
+- **DRC 112 violations, strictement inchangées** ; 0 `clearance`, 0 `shorting_items`,
+  0 `track_dangling` ; parité **3** ; **non-connectés 250 → 244** ; **124 empreintes dont `C310`
+  seule modifiée**, et seulement en rotation ; `pad_prop_heatsink` de `U1` à 1.
+- **Vérification indépendante du principal** : orientations miroir, `PVDD` plus près de l'axe que
+  `GND` sur les deux condensateurs, 0 via, miroir des segments exact, aucun croisement avec les
+  12 segments de bootstrap — qui sont eux-mêmes revérifiés intacts.
 
-**Avant elle** : E1.11 (permutation propagée au PCB, parité 7 → 3) et E1.12, qui closent la
-Phase E.
+**Avant elle** : F1.1 tranche « bootstraps », puis E1.11 et E1.12 qui closent la Phase E.
 
 ## Décisions actives
 
@@ -40,6 +44,11 @@ Placement, budgets thermiques et pilotage KiCad sont dans `docs/architecture.md`
 - **La largeur de classe n'est pas toujours tenable en sortie de `U6`.** Pastilles 1,575 × 0,4 mm
   au pas de 0,635 : pour 0,25 mm d'isolation, **0,5 mm et 0,4 mm violent, 0,35 mm passe**.
   Recalculer la marge à chaque sortie de boîtier fin plutôt que d'appliquer la classe.
+- **L'isolation dépend de la classe du net : `PWR_48V` exige 0,5 mm, `GATE_DRIVE` et `GND`
+  0,25 mm, `PWR_OUT` 0,5 mm.** Reprendre la valeur d'un net voisin a coûté un tracé refait.
+  **Vérifier la classe avant de calculer un couloir.**
+- **Le retour `GND` local ne passe pas sur `F.Cu` près de `U6`** : `/BST_B` traverse le couloir
+  haut (`x` ≈ 279,72 à `y` ≈ 180) et `/BST_C` le bas. Les masses partent au **plan de F1.4**.
 - **`C310` et `C311` barrent les tracés directs vers `C307`/`C308`** ; le couloir libre entre
   leurs pastilles fait 1,8 mm, centré sur `y` = 178,3 et 171,7.
 - **La symétrie miroir autour de `y` = 175 est exacte dans le placement** et doit le rester dans
@@ -62,35 +71,23 @@ Placement, budgets thermiques et pilotage KiCad sont dans `docs/architecture.md`
 
 ## Blocage actif
 
-**Une décision utilisateur est requise avant de router l'alimentation Class-D.**
-
-- **Symptôme** : `C310` et `C311`, les deux découplages `PVDD` de `U6`, sont **tous deux à
-  rotation 90°**. Le miroir autour de `y` = 175 en exige d'opposées, comme `C306`/`C307` à 90° et
-  `C308`/`C309` à −90° depuis E1.5.
-- **Cause** : `docs/architecture.md` n'a vérifié le miroir de `C310`/`C311` que sur la **position**
-  (178,3 contre 171,7), **jamais sur l'orientation** — l'angle mort exact de E1.5.
-- **Conséquence mesurée** : `C311` est correct (7,71 mm de boucle, aucun croisement). `C310`
-  présente son `PVDD` face au `GND` de `U6` : **9,04 mm et croisement `PVDD`/`GND`, donc une via
-  obligatoire** dans la boucle la plus critique du Class-D. `C310` tourné à −90° retombe sur
-  **7,71 mm sans croisement**, identique à `C311`.
-- **Faits exclus** : la rotation ne déplace rien — un 1210 tourné de 180° garde son emprise, seules
-  les pastilles échangent leurs nets, et le couloir où passe `/BST_B` reste libre.
-- **Décision attendue** : tourner `C310` à −90° avant de router, ou router en l'état.
+Aucun.
 
 ## Fichiers / zones utiles
 
-- `HifiAmp_TPA3255.kicad_pcb` — 124 empreintes placées, **12 segments routés** (bootstraps
-  seulement) ; `.kicad_dru` porte la règle de E1.9 ; `.kicad_sym` les symboles locaux
+- `HifiAmp_TPA3255.kicad_pcb` — 124 empreintes placées, **16 segments routés** (bootstraps et
+  `PVDD`) ; `.kicad_dru` porte la règle de E1.9 ; `.kicad_sym` les symboles locaux
 - **`docs/kicad-operations.md`** — pilotage KiCad et pièges d'outillage, **à lire avant toute
   manipulation** ; contient notamment la convention de rotation des pads et le format des segments
 - `docs/architecture.md` — placement, symétrie, retour des courants et masses, budgets thermiques
 
 ## NEXT ACTION
 
-**Trancher l'orientation de `C310`** (voir « Blocage actif »), puis router l'alimentation Class-D
-de `U6` : `PVDD` pins 29–31 et 36–38, `GND` pins 25–26, 33–34, 41–42, vers `C310`/`C311`, au plus
-court et à surface de boucle minimale, en respectant le miroir `y` = 175. Valider par : DRC sans
+**F1.1, dernière tranche : router les découplages des alimentations auxiliaires de `U6`** —
+`AVDD` (pin 14), `DVDD` (pin 11), `+12V` (pins 1, 2, 22) et `VBG` (pin 20), vers leurs
+condensateurs respectifs. Établir d'abord **par mesure au fichier** quel condensateur sert quelle
+broche, et **relever la classe de chaque net avant de calculer un couloir**. Router sur `F.Cu`
+sans via si la géométrie le permet ; sinon le dire et s'arrêter. Valider par : DRC sans
 `clearance` ni `shorting_items` ni `track_dangling` ; `schematic_parity` toujours **3** ;
-non-connectés en baisse du nombre exact de liaisons faites ; `pad_prop_heatsink` de `U1` toujours
-à 1 ; 124 empreintes intactes hormis la rotation éventuellement décidée ; miroir vérifié
-numériquement ; **zéro via sur le découplage**.
+non-connectés en baisse du nombre exact de chevelus résolus ; `pad_prop_heatsink` de `U1` à 1 ;
+124 empreintes intactes ; aucun croisement avec les 16 segments déjà posés.
