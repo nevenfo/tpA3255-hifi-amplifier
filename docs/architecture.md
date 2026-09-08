@@ -593,9 +593,14 @@ La promesse posée en E1.4 tient donc à la mesure.
 
 | Bloc | Paires L↔R | Écart mesuré |
 | --- | --- | --- |
-| Selfs de filtrage | `L301`/`L303`, `L302`/`L304` | (0 ; +17) exact |
-| Condensateurs de sortie | `C321`/`C323`, `C322`/`C324` | (−22 ; 0) exact |
+| Selfs de filtrage | `L301`/`L303`, `L302`/`L304` | (−36 ; 0) exact |
+| Condensateurs de sortie | `C321`/`C323`, `C322`/`C324` | (−44 ; 0) exact |
 | Borniers haut-parleur | `J301`/`J302` | (−22 ; 0) exact |
+
+> **Valeurs en vigueur, postérieures à F1.2-a.** Avant les deux échanges de F1.2-a, les selfs
+> étaient à (0 ; +17) et les condensateurs à (−22 ; 0). Les trois vecteurs restent exacts, et
+> chaque paire de pont est désormais contiguë : `L301`/`L302` et `L303`/`L304` à (0 ; +17),
+> `C321`/`C322` et `C323`/`C324` à (−22 ; 0).
 
 **La symétrie n'est pas un vecteur unique** : (0 ; +40) en analogique, (0 ; +17) aux selfs,
 (−22 ; 0) aux sorties. Ce n'est pas un défaut — chaque étage a sa propre contrainte
@@ -721,6 +726,10 @@ le routage sait absorber.
 au lieu d'être groupées. La symétrie L/R est respectée — (−22 ; 0) exact — mais les retours de
 `OUT_A_F`/`OUT_B_F` d'une part et `OUT_C_F`/`OUT_D_F` d'autre part se croisent dans la même
 bande de carte. À examiner avec le retour des courants, tranche suivante de E1.5.
+
+> **Levé en F1.2-a, et c'était bien un défaut.** L'entrelacement n'était pas cosmétique : il
+> rendait les quatre sorties filtrées non routables sur une seule couche. Voir « F1.2-a » plus
+> bas. Ordre en vigueur : `C321` (A) 268, `C322` (B) 246, `C323` (C) 224, `C324` (D) 202.
 
 ## E1.5 — tranche corrective
 
@@ -1036,3 +1045,93 @@ réel, les cibles étant bordées par `C302`, `R301`, `C304` et `R302`. 254 non-
 monte de 106 à 112 : six chevauchements de plus dans une bande déjà dense, cosmétiques, à traiter
 avec le reste après F1.
 
+
+## F1.2-a — sorties filtrées : l'entrelacement était un défaut bloquant
+
+### Ce que la mesure a établi
+
+Les quatre trajets `self → condensateur de filtre → bornier` ne sont **pas routables sur `F.Cu`
+sans croisement** avec le placement issu de E1.5. La cause est un ordre, pas une largeur :
+
+| Rangée | Ordre en `x`, de gauche à droite |
+| --- | --- |
+| Condensateurs de sortie, avant | `D` 202, **`B` 224**, **`C` 246**, `A` 268 |
+| Borniers, imposé par l'appariement BTL | `D` 224, **`C` 229**, **`B` 246**, `A` 251 |
+
+`B` et `C` sont transposés entre les deux rangées. Toute liaison mono-couche doit donc croiser,
+quelle que soit la forme du chemin — y compris les contournements par le bas de carte, qui
+déplacent le croisement sans le supprimer, `D` devant lui-même traverser la bande pour atteindre
+son condensateur en `x` = 202.
+
+C'est exactement l'entrelacement relevé plus haut en E1.5 et renvoyé à F1. Il n'était pas
+cosmétique.
+
+### La correction porte sur la cause
+
+Deux échanges entre composants **identiques**, dans des emplacements **identiques** — aucune
+empreinte ne quitte la grille, aucune rotation ne change :
+
+- `L302` (240 ; 195) ↔ `L303` (276 ; 212) — deux `PA6331` 15 µH
+- `C322` (224 ; 229) ↔ `C323` (246 ; 229) — deux 680 nF/250 V MKP
+
+L'ordre des condensateurs devient `D` 202, `C` 224, `B` 246, `A` 268 et coïncide alors avec celui
+des borniers. **La topologie devient planaire, et le routage se fait à zéro via.**
+
+### Ce que l'échange apporte en plus
+
+Il **groupe chaque paire de pont dans une même colonne** : `A` et `B` sur les selfs en `x` = 276,
+`C` et `D` en `x` = 240 — ce que demandait la contrainte F1 d'appariement par paire de pont, et
+que le placement E1.5 ne pouvait pas offrir. La symétrie mesurée sort **renforcée, pas dégradée** :
+tous les vecteurs L↔R restent exacts, et les vecteurs intra-paire le deviennent.
+
+E1.5 avait écrit qu'« aucune permutation des affectations ne supprime l'écart : elle le déplace
+d'une voie à l'autre ». C'est vrai, et cela reste vrai : l'échange **ne réduit pas** le cuivre
+total, il le redistribue. Ce qu'il corrige est l'**ordre**, que E1.5 ne mesurait pas.
+
+### Largeur : 3,00 mm, et la classe était tenable ici
+
+Contrairement à tout ce qui sort de `U6`, la largeur nominale de `PWR_OUT` **passe telle quelle**
+dans la région des sorties — les obstacles y sont des pastilles traversantes espacées, pas un pas
+de 0,635 mm. Les couloirs les plus serrés ont été vérifiés au calcul avant tracé puis au DRC :
+0,70 mm sous la pastille de `L302`, 0,75 mm au-dessus des condensateurs de filtre, 1,50 mm au
+bord de carte pour `min_copper_edge_clearance` = 0,50.
+
+Le brouillon que cette tranche remplace était à **0,5 mm**, largeur qui ne tient que **1,45 A** à
+IPC-2221 en couche externe, 35 µm, ΔT = 10 °C. À 3,00 mm la piste tient **5,3 A**, ce qui couvre
+les 5 A efficaces d'une voie à 200 W sur 8 Ω.
+
+| Voie | Trajet série self → bornier | Résistance | Chute à 5 A |
+| --- | --- | --- | --- |
+| `A` | 69,0 mm | 11,3 mΩ | 56 mV |
+| `B` | 57,0 mm | 9,3 mΩ | 47 mV |
+| `C` | 57,0 mm | 9,3 mΩ | 47 mV |
+| `D` | 47,0 mm | 7,7 mΩ | 39 mV |
+
+### Appariement : la cible se fixe, et elle est atteinte sans méandre
+
+La contrainte F1 demandait de fixer une cible « sur les longueurs de piste réelles ». Écarts
+obtenus : **12,0 mm dans la paire `A`/`B`**, **10,0 mm dans la paire `C`/`D`** — contre 8,5 et
+**26,4 mm** en distances de placement. La paire droite gagne donc un facteur 2,6.
+
+**La cible retenue est un écart électriquement négligeable, non un écart nul.** 12 mm de piste de
+3 mm valent environ 2 mΩ et 10 nH, à comparer aux 15 µH et 31 mΩ de la self en série : 0,07 % et
+0,02 %. Ajouter des méandres pour égaliser coûterait du cuivre, de la surface et de la boucle
+rayonnante sans rien apporter de mesurable. L'écart résiduel est donc **assumé, chiffré, et clos**.
+
+### Validation
+
+DRC **113 violations, strictement les mêmes qu'à la baseline** (91 `silk_overlap`,
+22 `silk_over_copper`) ; **0 `clearance`, 0 `shorting_items`, 0 `track_dangling`,
+0 `solder_mask_bridge`, 0 `copper_edge_clearance`** ; **non-connectés 238 → 230**, les huit
+chevelus prédits — deux par net ; `schematic_parity` toujours **3**, les trois mêmes écarts ;
+124 empreintes, `pad_prop_heatsink` de `U1` à 1. Vérification indépendante du principal :
+**58 segments tous sur `F.Cu`**, **0 via**, largeurs 23 × 3,00 + les 35 de F1.1 inchangées, et
+**zéro intersection** entre les 23 segments des quatre nets, testée segment à segment.
+
+### Un piège d'outillage de plus
+
+**Le déplacement par MCP retire le bloc `(units …)` de l'empreinte déplacée.** Les quatre
+empreintes échangées l'ont perdu — 119 blocs sur la carte, puis 115 — sans que le DRC, la parité
+ni la connectivité ne bougent. C'est une mutation silencieuse du fichier, restaurée à l'identique
+avant commit. **Compter les blocs `(units` avant et après tout déplacement**, comme on vérifie
+déjà `pad_prop_heatsink` et les pistes orphelines.

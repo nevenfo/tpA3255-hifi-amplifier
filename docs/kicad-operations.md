@@ -231,3 +231,15 @@ les deux régressions connues du projet : `pad_prop_heatsink` de `U1` (perdu en 
   l'empreinte, pas celui de ses propriétés.
 - **Un DRC de comparaison se lance dans le répertoire du projet.** Binaire :
   `C:/Users/FlowUP/AppData/Local/Programs/KiCad/10.0/bin/kicad-cli.exe`.
+- **Le déplacement par MCP retire le bloc `(units …)` de l'empreinte déplacée.** Constaté en
+  F1.2-a sur les quatre empreintes échangées : 119 blocs `(units` sur la carte, puis 115, sans
+  que le DRC, `schematic_parity` ni la connectivité ne bougent — donc invisible à tous les
+  contrôles habituels. **Compter les blocs `(units` avant et après tout déplacement**, au même
+  titre que `pad_prop_heatsink` et que les pistes orphelines. La restauration se fait au fichier,
+  éditeur fermé, et **le `.kicad_pcb` est en CRLF** : une regex qui attend `\n` après une
+  parenthèse fermante n'y trouve rien.
+- **La largeur nominale de classe redevient tenable dès qu'on sort des boîtiers à pas fin.**
+  `PWR_OUT` passe à ses 3,00 mm dans toute la région des sorties, où les obstacles sont des
+  pastilles traversantes espacées. La règle « recalculer la marge » vaut aux deux sens : elle
+  interdit de reprendre la largeur de classe en sortie de `U6`, elle interdit aussi de garder
+  une largeur d'échappement une fois le boîtier quitté.
