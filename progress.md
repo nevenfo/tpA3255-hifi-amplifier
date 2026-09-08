@@ -62,7 +62,20 @@ Placement, budgets thermiques et pilotage KiCad sont dans `docs/architecture.md`
 
 ## Blocage actif
 
-Aucun.
+**Une décision utilisateur est requise avant de router l'alimentation Class-D.**
+
+- **Symptôme** : `C310` et `C311`, les deux découplages `PVDD` de `U6`, sont **tous deux à
+  rotation 90°**. Le miroir autour de `y` = 175 en exige d'opposées, comme `C306`/`C307` à 90° et
+  `C308`/`C309` à −90° depuis E1.5.
+- **Cause** : `docs/architecture.md` n'a vérifié le miroir de `C310`/`C311` que sur la **position**
+  (178,3 contre 171,7), **jamais sur l'orientation** — l'angle mort exact de E1.5.
+- **Conséquence mesurée** : `C311` est correct (7,71 mm de boucle, aucun croisement). `C310`
+  présente son `PVDD` face au `GND` de `U6` : **9,04 mm et croisement `PVDD`/`GND`, donc une via
+  obligatoire** dans la boucle la plus critique du Class-D. `C310` tourné à −90° retombe sur
+  **7,71 mm sans croisement**, identique à `C311`.
+- **Faits exclus** : la rotation ne déplace rien — un 1210 tourné de 180° garde son emprise, seules
+  les pastilles échangent leurs nets, et le couloir où passe `/BST_B` reste libre.
+- **Décision attendue** : tourner `C310` à −90° avant de router, ou router en l'état.
 
 ## Fichiers / zones utiles
 
@@ -74,10 +87,10 @@ Aucun.
 
 ## NEXT ACTION
 
-**F1.1, tranche suivante : router l'alimentation Class-D de `U6`** — les paires `PVDD`/`GND` et
-leurs condensateurs de découplage, au plus court et en minimisant la surface de boucle. Établir
-d'abord, par mesure au fichier, quels condensateurs de découplage servent quelles broches
-`PVDD`/`GND`, puis router en respectant le miroir `y` = 175. Valider par : DRC sans `clearance`
-ni `shorting_items` ni `track_dangling` ; `schematic_parity` toujours **3** ; non-connectés en
-baisse du nombre exact de liaisons faites ; `pad_prop_heatsink` de `U1` toujours à 1 ; 124
-empreintes intactes ; miroir vérifié numériquement.
+**Trancher l'orientation de `C310`** (voir « Blocage actif »), puis router l'alimentation Class-D
+de `U6` : `PVDD` pins 29–31 et 36–38, `GND` pins 25–26, 33–34, 41–42, vers `C310`/`C311`, au plus
+court et à surface de boucle minimale, en respectant le miroir `y` = 175. Valider par : DRC sans
+`clearance` ni `shorting_items` ni `track_dangling` ; `schematic_parity` toujours **3** ;
+non-connectés en baisse du nombre exact de liaisons faites ; `pad_prop_heatsink` de `U1` toujours
+à 1 ; 124 empreintes intactes hormis la rotation éventuellement décidée ; miroir vérifié
+numériquement ; **zéro via sur le découplage**.
