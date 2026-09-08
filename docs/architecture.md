@@ -1135,3 +1135,79 @@ empreintes échangées l'ont perdu — 119 blocs sur la carte, puis 115 — sans
 ni la connectivité ne bougent. C'est une mutation silencieuse du fichier, restaurée à l'identique
 avant commit. **Compter les blocs `(units` avant et après tout déplacement**, comme on vérifie
 déjà `pad_prop_heatsink` et les pistes orphelines.
+
+## F1.2-b — les quatre sorties de `U6` sont enfermées
+
+### Le champ d'échappement et ce qui l'occupe
+
+Les broches de puissance de `U6` débouchent en `x` = 281,288, sur `y` ∈ [168,33 ; 181,67]. Entre
+elles et le reste de la carte il n'y a que **8 mm**, et cette bande porte déjà tout le découplage
+du Class-D :
+
+| Occupant | Emprise |
+| --- | --- |
+| `C310`, `C311` — découplage `PVDD` | `x` ∈ [276,15 ; 278,85], pastilles couvrant `y` 169,65–170,80, 172,60–173,75, 176,25–177,40, 179,20–180,35 |
+| `C306`–`C309` — bootstraps | `x` ∈ [273,03 ; 273,98], six bandes entre `y` = 168,38 et 181,63 |
+| Pistes `BST_A`–`BST_D` (F1.1) | traversent la bande de `x` = 273,5 à 281,288 |
+| Pistes `/PVDD` (F1.1) | `y` = 172,778 et 177,222, de `x` = 277,5 à 281,288 |
+
+### La mesure
+
+Fenêtres libres dans la colonne `C310`/`C311`, et largeur de piste qu'elles laissent à
+l'isolation `PWR_OUT` de 0,50 mm :
+
+| Fenêtre | Jour | Piste maximale | Sortie concernée |
+| --- | --- | --- | --- |
+| `y` 168,51–169,65 | 1,140 mm | 0,140 mm | — |
+| `y` 170,80–171,525 | 0,725 mm | **négative** | **`OUT_D`** |
+| `y` 171,875–172,60 | 0,725 mm | négative | — |
+| `y` **173,75–176,25** | **2,500 mm** | 1,50 mm pour **une** piste | **`OUT_C` et `OUT_B`**, qui doivent la partager — 0,50 mm chacune |
+| `y` 177,40–178,125 | 0,725 mm | négative | — |
+| `y` 178,475–179,20 | 0,725 mm | **négative** | **`OUT_A`** |
+| `y` 180,35–181,30 | 0,950 mm | négative | — |
+
+Une voie demande **3,00 mm** pour ses 5 A efficaces. À IPC-2221, couche externe, 35 µm :
+
+| Largeur | Courant à ΔT = 10 °C | Échauffement calculé à 5 A |
+| --- | --- | --- |
+| 0,225 mm | 0,81 A | 626 °C |
+| 0,500 mm | 1,45 A | 168 °C |
+| 1,500 mm | 3,21 A | 27 °C |
+| 3,000 mm | 5,30 A | **9 °C** |
+
+**Aucune fenêtre n'est exploitable.** Ce n'est pas une marge à grignoter : le déficit est d'un
+facteur 6 sur `OUT_B`/`OUT_C` et le tracé est impossible sur `OUT_A`/`OUT_D`.
+
+### Contournements exclus par la mesure
+
+- **Par le haut** : `BST_D` court de `x` = 273,5 à 281,288 à `y` ≈ 168,16–168,51, et la broche 23
+  est la plus haute du flanc. Rien ne passe au-dessus sans la croiser.
+- **Par le bas** : `BST_A` fait de même à `y` ≈ 181,30–181,85, sous la broche 44.
+- **Par la droite** : le corps de `U6` et son pavé thermique exposé occupent `x` ∈ [282 ; 288].
+
+### Deux causes, dont une héritée de F1.1
+
+**La première est de placement.** `C310` et `C311` sont posés **en face du flanc de puissance**
+plutôt qu'entre les broches `PVDD` et `GND`, et leurs quatre pastilles couvrent toute la plage en
+`y` des broches `OUT`. F1.1 avait optimisé la boucle de découplage — 7,71 mm, symétrique, sans
+croisement — sans que les sorties soient encore au dossier.
+
+**La seconde est un ordre inversé, du même type que `VBG` en F1.1.** `BST_B` part de la broche 43
+(`y` = 181,03) vers `C307` pad 2 (`y` = 177,28), tandis que `OUT_A` part des broches 39-40
+(`y` ≈ 178,8) vers `C306` pad 1 (`y` = 179,625) : la source de `BST_B` est **sous** la rangée
+`OUT_A` et sa cible **au-dessus**. Le croisement est structurel. `BST_C` et `OUT_D` reproduisent
+la figure par symétrie. Aucune permutation des deux condensateurs à deux pastilles ne produit
+l'ordre `OUT_B`, `OUT_A`, `BST_B`, `BST_A` qu'il faudrait.
+
+### Ce qui reste ouvert
+
+Trois voies, chacune avec un coût réel — **arbitrage utilisateur, aucune n'est neutre** :
+
+1. **Déplacer `C310`/`C311`** hors de la bande d'échappement. Libère le champ, mais rallonge la
+   boucle de découplage `PVDD` que F1.1 avait minimisée, sur le nœud le plus critique du Class-D.
+2. **Descendre les quatre `OUT` sur une couche interne** par vias posées aux broches. Pratique
+   courante en Class-D dense, et `In1.Cu` est déjà déclarée *power* ; coûte des vias sur quatre
+   nœuds de commutation, et une découpe de plan en F1.4.
+3. **Reprendre le voisinage complet de `U6`** — bootstraps, découplage et selfs. Le plus lourd,
+   le seul qui traite la cause de fond : les selfs sont à 14–20 mm des broches, alors que la
+   pratique de référence les colle aux sorties.
