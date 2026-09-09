@@ -1151,6 +1151,11 @@ du Class-D :
 | Pistes `BST_A`–`BST_D` (F1.1) | traversent la bande de `x` = 273,5 à 281,288 |
 | Pistes `/PVDD` (F1.1) | `y` = 172,778 et 177,222, de `x` = 277,5 à 281,288 |
 
+**Les quatre sorties n'ont pas le même nombre de pastilles.** `OUT_B` (broche 35) et `OUT_C`
+(broche 32) n'en ont **qu'une**, là où `OUT_A` et `OUT_D` en ont deux. Vérifié sur SLASEA8 : c'est
+conforme au boîtier, **ce n'est pas un défaut du symbole** — la question a été posée et tranchée,
+il est inutile de la rouvrir devant l'asymétrie apparente.
+
 ### La mesure
 
 Fenêtres libres dans la colonne `C310`/`C311`, et largeur de piste qu'elles laissent à

@@ -2,17 +2,18 @@
 
 ## Phase actuelle
 
-**Phase F — Routage. F1.2-a close, F1.2-b débloquée et en cours.** **58 segments posés, zéro
-via** : les quatre boucles de bootstrap, `PVDD`, les découplages auxiliaires (F1.1), et les
-quatre sorties filtrées `self → condensateur → bornier` à 3,00 mm (F1.2-a). DRC courant :
-**113 violations toutes de sérigraphie** (91 `silk_overlap`, 22 `silk_over_copper`),
-**230 non-connectés**, `schematic_parity` = **3**, aucune `clearance`, aucun `shorting_items`,
-aucun `track_dangling`.
+**Phase F — Routage. F1.2-a close, F1.2-b débloquée et en cours.** **58 segments, zéro via** : les
+quatre boucles de bootstrap, `PVDD`, les découplages auxiliaires (F1.1), et les quatre sorties
+filtrées `self → condensateur → bornier` à 3,00 mm (F1.2-a). DRC courant : **113 violations toutes
+de sérigraphie** (91 `silk_overlap`, 22 `silk_over_copper`), **230 non-connectés**,
+`schematic_parity` = **3**, aucune `clearance`, aucun `shorting_items`, aucun `track_dangling`.
+Compteurs de structure : **124 empreintes, 119 blocs `(units`, `pad_prop_heatsink` = 1**.
 
 ## Tâche actuelle
 
-**F1.2-b1 — basculer `C310`/`C311` sur `B.Cu` et rerouter `/PVDD` par vias.** Premier des trois
-gestes que l'arbitrage a ouverts, à la suite desquels F1.2-b2 puis F1.2-b3 s'enchaînent.
+**F1.2-b1 — basculer `C310`/`C311` sur `B.Cu` et rerouter `/PVDD` par vias.** Première des trois
+unités ouvertes par l'arbitrage ; F1.2-b2 puis F1.2-b3 suivent. Arrêtée sur un geste GUI, voir
+« Blocage actif ».
 
 ## Dernière tâche validée
 
@@ -24,7 +25,7 @@ Validation :
 
 - **Non-connectés 238 → 230**, les huit chevelus prédits ; **0 `clearance`, 0 `shorting_items`,
   0 `track_dangling`, 0 `solder_mask_bridge`, 0 `copper_edge_clearance`** ; `schematic_parity`
-  toujours **3** ; sérigraphie **113 inchangée** ; 124 empreintes, `pad_prop_heatsink` de `U1` à 1.
+  toujours **3** ; sérigraphie **113 inchangée**.
 - **Vérification indépendante du principal** : DRC relancé en `kicad-cli --schematic-parity` ;
   **58 segments tous sur `F.Cu`**, **0 via** ; **zéro intersection** entre les 23 segments, testée
   segment à segment ; diff Git ne montrant **que les quatre `(at)` échangés et les 23 segments**.
@@ -32,68 +33,50 @@ Validation :
 ## Décisions actives
 
 Les règles durables sont dans `docs/kicad-operations.md`, le placement et les mesures dans
-`docs/architecture.md`, sections **F1.2-a** et **F1.2-b**. Restent ici :
+`docs/architecture.md`, section **F1.2-b**. Restent ici :
 
 - **Arbitrage F1.2-b rendu, en deux gestes indépendants.** `C310`/`C311` **passent au dos sur
   `B.Cu`**, vias sous les broches `PVDD`/`GND` — la colonne `x` ∈ [276 ; 279] se libère et la
   boucle de découplage **raccourcit** au lieu de s'allonger. Le croisement structurel se dénoue
   par **une via sur chaque `BST`**, jamais sur un `OUT` à 5 A. **Coût assumé : la carte cesse
-  d'être simple-face**, second passage d'assemblage pour deux composants. Voies écartées et
-  motifs dans `docs/architecture.md`.
-- **La classe n'est jamais tenable en sortie de `U6`** — 0,35 mm aux bootstraps, 0,30 mm aux
-  auxiliaires — mais elle le redevient hors du pas fin : `PWR_OUT` passe à ses 3,00 mm dans la
-  région des sorties. Recalculer dans les deux sens.
+  d'être simple-face**, second passage d'assemblage pour deux composants.
 - **Règle DRU d'échappement posée et prouvée inerte** ; **sa sélectivité reste à prouver** en
-  retirant `U6` de sa condition, quand une piste l'exercera.
-- **`OUT_B` (35) et `OUT_C` (32) n'ont qu'une pastille**, `OUT_A` et `OUT_D` en ont deux.
-  Conforme à SLASEA8, vérifié : ce n'est pas un défaut de symbole.
-- **Le déplacement par MCP retire le bloc `(units …)`** de l'empreinte déplacée, invisiblement au
-  DRC. Compter les blocs `(units` avant et après — il y en a 119. Le `.kicad_pcb` est en CRLF.
+  retirant `U6` de sa condition, quand une piste l'exercera — c'est une validation de F1.2-b3.
 - **113 violations de sérigraphie restent à traiter en bloc**, aucune n'ayant d'effet cuivre.
 - **Masses locales et rails auxiliaires trop longs partent au plan de F1.4**, où `AVDD` et `DVDD`
   — 28,95 et 34,82 mm — seront réexaminés. Un seul net `/GND`, aucune zone dessinée.
-- **Les réservations de la barre de liaison interdisent les composants, pas le cuivre** :
-  `x` ∈ [280, 291], `y` ∈ [160, 190] et `x` ∈ [280, 300], `y` ∈ [169, 181]. Contour
-  `(100,100)`–`(300,250)`.
-- Toute édition PCB passe par `kicad-control`/MCP, qui **exige l'éditeur de PCB ouvert depuis le
-  gestionnaire de projet** — un `pcbnew.exe` isolé ne partage pas l'IPC. Ouvrir le gestionnaire
-  par `explorer.exe <projet>.kicad_pro`, jamais depuis le shell d'un agent.
 
 ## Blocage actif
 
 **F1.2-b1 attend un geste GUI que l'automatisation ne peut pas garantir : le bureau est occupé.**
-Aucun des 203 outils MCP ne retourne une empreinte placée — piège consigné dans
-`docs/kicad-operations.md` — donc `C310`/`C311` ne passent sur `B.Cu` que par l'interface. Le
-geste a été tenté puis abandonné sans aucun clic : la fenêtre au premier plan a basculé seule
-vers une fenêtre Excel, et la position du curseur a changé entre deux lectures **sans mouvement
-émis**. Le canevas de l'éditeur de PCB n'expose aucun élément UIA pour les empreintes — la
-sélection ne se fait que par coordonnées pixel —, donc un focus disputé peut retourner la
-mauvaise empreinte. **Ce n'est pas le blocage `SendInput` de session RDP déjà connu** :
-l'activation de fenêtre réussissait, c'est une activité concurrente réelle sur le poste.
+Aucun outil MCP ne retourne une empreinte placée — piège consigné dans `docs/kicad-operations.md`
+—, donc `C310`/`C311` ne passent sur `B.Cu` que par l'interface. Le geste a été tenté puis
+abandonné **sans aucun clic** : la fenêtre au premier plan a basculé seule vers une fenêtre Excel,
+et la position du curseur a changé entre deux lectures **sans mouvement émis**. Le canevas de
+l'éditeur n'expose aucun élément UIA pour les empreintes — sélection par coordonnées pixel
+seulement —, donc un focus disputé retournerait la mauvaise empreinte. **Ce n'est pas le blocage
+`SendInput` de session RDP déjà connu** : l'activation de fenêtre réussissait.
 
-**Prochaine tentative : rejouer le geste quand le poste est libre**, ou le faire soi-même dans
-l'éditeur déjà ouvert — sélectionner `C310` et `C311`, **F**, puis **Ctrl+S**. L'IPC, lui, n'est
-pas affecté : la suite de F1.2-b1 reprend par MCP dès le flip constaté.
+**Prochaine tentative : rejouer le geste quand le poste est libre.** L'IPC n'est pas affecté, la
+suite de F1.2-b1 reprend par MCP dès le flip constaté.
 
 ## Fichiers / zones utiles
 
-- `HifiAmp_TPA3255.kicad_pcb` — 124 empreintes, **58 segments routés**, 0 via ; `.kicad_pro` porte
-  les classes de net ; `.kicad_dru` les deux règles internes aux boîtiers à pas fin
+- `HifiAmp_TPA3255.kicad_pcb` — MD5 `2cc389a517fef7deb02fb5a290e66bef`, inchangé ; `.kicad_pro`
+  porte les classes de net, `.kicad_dru` les deux règles internes aux boîtiers à pas fin
 - **`docs/kicad-operations.md`** — pilotage KiCad et pièges d'outillage, **à lire avant toute
   manipulation**
-- `docs/architecture.md` — placement, symétrie, retour des courants, budgets thermiques ; section
-  **F1.2-b** pour la mesure du champ d'échappement et l'arbitrage rendu
+- `docs/architecture.md`, section **F1.2-b** — champ d'échappement, mesure et arbitrage rendu
 
 ## NEXT ACTION
 
-**F1.2-b1 — retourner `C310` et `C311` sur `B.Cu` par l'interface — sélection, `F`, `Ctrl+S` —
-puis rerouter `/PVDD` par vias sous les broches `PVDD`/`GND` de `U6`.** Le reste est automatisable
-par IPC ; seul le retournement demande le geste. Ancres : `C310` en (277,5 ; 178,3) rotation −90°,
-`C311` en (277,5 ; 171,7) rotation +90°, deux `Capacitor_SMD:C_1210_3225Metric` alignés à la même
-abscisse juste à gauche de `U6`. Pastilles `/PVDD` de `U6` : pads 29/30/31 en `y` = 172,1425 /
-172,7775 / 173,4125 et pads 36/37/38 en `y` = 176,5875 / 177,2225 / 177,8575, toutes en
-`x` = 281,2875 ; les pistes F1.1 touchent le pad médian de chaque groupe.
-Valider par : trajet équivalent de la boucle de découplage **≤ 7,71 mm** ;
-colonne `x` ∈ [276,15 ; 278,85] libre de tout cuivre `F.Cu` ; DRC sans `clearance`,
-`shorting_items` ni `track_dangling` ; parité **3** ; non-connectés **inchangés à 230** ;
-`pad_prop_heatsink` à 1 ; **124 empreintes et 119 blocs `(units`**.
+**F1.2-b1 — retourner `C310` et `C311` sur `B.Cu` par l'interface (sélection, `F`, `Ctrl+S`), puis
+rerouter `/PVDD` par vias sous les broches `PVDD` de `U6`.** Seul le retournement demande le
+geste ; le reste passe par IPC. Ancres : `C310` en (277,5 ; 178,3) rotation −90°, `C311` en
+(277,5 ; 171,7) rotation +90°, deux `Capacitor_SMD:C_1210_3225Metric` alignés juste à gauche de
+`U6` ; pastilles `/PVDD` de `U6` en `x` = 281,2875, pads 29/30/31 en `y` = 172,1425 / 172,7775 /
+173,4125 et pads 36/37/38 en `y` = 176,5875 / 177,2225 / 177,8575, les pistes F1.1 touchant le pad
+médian de chaque groupe. Valider par : boucle de découplage **≤ 7,71 mm** de trajet équivalent ;
+colonne `x` ∈ [276,15 ; 278,85] libre de cuivre `F.Cu` ; DRC sans `clearance`, `shorting_items` ni
+`track_dangling` ; parité **3** ; non-connectés **inchangés à 230** ; **124 empreintes et 119
+blocs `(units`**.
