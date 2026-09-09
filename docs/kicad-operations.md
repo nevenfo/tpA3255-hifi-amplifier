@@ -111,6 +111,15 @@ le principal avant tout verdict.**
   d'environ 72 000 caractères.
 - **`set_design_rules` et `set_active_layer` sont PROSCRITS** : jetons invalides dans
   `(setup ...)`, fichier illisible par KiCad, aucun retour d'erreur.
+- **Aucun des 203 outils ne retourne une empreinte déjà placée sur l'autre couche.** Recherche
+  `find_capabilities` sur « flip layer », « mirror to back », « change side of placed footprint » :
+  zéro correspondance. Pire, **`edit_component` accepte silencieusement un champ `layer` et ne
+  l'applique pas** — aucune erreur, et `find_component` montre l'empreinte toujours sur sa couche
+  d'origine. `move_component` et `rotate_component` n'ont pas de champ `layer`. `place_component`
+  en a un, mais il crée une empreinte **neuve et sans net** : l'employer pour retourner un
+  composant existant casserait la liaison au schéma — UUID neuf, donc `extra_footprint` et nets à
+  raccrocher à la main. **Le retournement est un geste GUI** : sélectionner les empreintes, puis
+  **F** ou *Édition → Retourner les éléments*.
 
 ## Où vivent les règles
 
