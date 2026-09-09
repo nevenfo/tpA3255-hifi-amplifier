@@ -1199,9 +1199,28 @@ croisement — sans que les sorties soient encore au dossier.
 la figure par symétrie. Aucune permutation des deux condensateurs à deux pastilles ne produit
 l'ordre `OUT_B`, `OUT_A`, `BST_B`, `BST_A` qu'il faudrait.
 
-### Ce qui reste ouvert
+### L'arbitrage rendu
 
-Trois voies, chacune avec un coût réel — **arbitrage utilisateur, aucune n'est neutre** :
+**Les deux causes se traitent séparément, et la voie retenue ne figure pas dans les trois
+ci-dessous.** Le blocage se dénoue en deux gestes indépendants :
+
+1. **`C310`/`C311` passent au dos, sur `B.Cu`**, pastilles reliées par vias sous les broches
+   `PVDD`/`GND`. La colonne `x` ∈ [276,15 ; 278,85] se libère entièrement, et la boucle de
+   découplage ne s'allonge pas : elle **raccourcit**, sa surface devenant l'épaisseur de carte —
+   1,6 mm — au lieu des 7,71 mm de trajet plan que F1.1 avait obtenus. C'est ce qui distingue
+   cette voie du report des condensateurs *sur la face avant*, où ils n'auraient eu d'autre place
+   qu'à gauche des bootstraps, au prix d'une boucle au-delà de 20 mm traversant la rangée `BST`.
+2. **Le croisement structurel se dénoue par une via sur chaque `BST`.** `BST_B` et `BST_C` sont
+   des signaux de grille routés à 0,35 mm : **une via suffit par net**, là où un `OUT` à 5 A en
+   exigerait quatre. La via se pose donc du côté du signal faible, jamais du nœud de puissance.
+
+**Coût assumé : la carte cesse d'être strictement simple-face.** Les 124 empreintes étaient
+toutes sur `F.Cu` ; deux passent au dos, soit un second passage d'assemblage. C'est le seul prix
+payé, et il n'entame ni la boucle `PVDD`, ni le plan `In1.Cu`, ni le travail validé en F1.2-a.
+
+### Les trois voies initialement mesurées, et pourquoi elles ont été écartées
+
+Chacune avait un coût réel sur un acquis du projet :
 
 1. **Déplacer `C310`/`C311`** hors de la bande d'échappement. Libère le champ, mais rallonge la
    boucle de découplage `PVDD` que F1.1 avait minimisée, sur le nœud le plus critique du Class-D.
