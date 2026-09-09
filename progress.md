@@ -61,7 +61,19 @@ Les règles durables sont dans `docs/kicad-operations.md`, le placement et les m
 
 ## Blocage actif
 
-Aucun.
+**F1.2-b1 attend un geste GUI que l'automatisation ne peut pas garantir : le bureau est occupé.**
+Aucun des 203 outils MCP ne retourne une empreinte placée — piège consigné dans
+`docs/kicad-operations.md` — donc `C310`/`C311` ne passent sur `B.Cu` que par l'interface. Le
+geste a été tenté puis abandonné sans aucun clic : la fenêtre au premier plan a basculé seule
+vers une fenêtre Excel, et la position du curseur a changé entre deux lectures **sans mouvement
+émis**. Le canevas de l'éditeur de PCB n'expose aucun élément UIA pour les empreintes — la
+sélection ne se fait que par coordonnées pixel —, donc un focus disputé peut retourner la
+mauvaise empreinte. **Ce n'est pas le blocage `SendInput` de session RDP déjà connu** :
+l'activation de fenêtre réussissait, c'est une activité concurrente réelle sur le poste.
+
+**Prochaine tentative : rejouer le geste quand le poste est libre**, ou le faire soi-même dans
+l'éditeur déjà ouvert — sélectionner `C310` et `C311`, **F**, puis **Ctrl+S**. L'IPC, lui, n'est
+pas affecté : la suite de F1.2-b1 reprend par MCP dès le flip constaté.
 
 ## Fichiers / zones utiles
 
@@ -74,8 +86,14 @@ Aucun.
 
 ## NEXT ACTION
 
-**F1.2-b1 — basculer `C310` et `C311` sur `B.Cu`, puis rerouter `/PVDD` par vias sous les broches
-`PVDD`/`GND` de `U6`.** Valider par : trajet équivalent de la boucle de découplage **≤ 7,71 mm** ;
+**F1.2-b1 — retourner `C310` et `C311` sur `B.Cu` par l'interface — sélection, `F`, `Ctrl+S` —
+puis rerouter `/PVDD` par vias sous les broches `PVDD`/`GND` de `U6`.** Le reste est automatisable
+par IPC ; seul le retournement demande le geste. Ancres : `C310` en (277,5 ; 178,3) rotation −90°,
+`C311` en (277,5 ; 171,7) rotation +90°, deux `Capacitor_SMD:C_1210_3225Metric` alignés à la même
+abscisse juste à gauche de `U6`. Pastilles `/PVDD` de `U6` : pads 29/30/31 en `y` = 172,1425 /
+172,7775 / 173,4125 et pads 36/37/38 en `y` = 176,5875 / 177,2225 / 177,8575, toutes en
+`x` = 281,2875 ; les pistes F1.1 touchent le pad médian de chaque groupe.
+Valider par : trajet équivalent de la boucle de découplage **≤ 7,71 mm** ;
 colonne `x` ∈ [276,15 ; 278,85] libre de tout cuivre `F.Cu` ; DRC sans `clearance`,
 `shorting_items` ni `track_dangling` ; parité **3** ; non-connectés **inchangés à 230** ;
 `pad_prop_heatsink` à 1 ; **124 empreintes et 119 blocs `(units`**.
