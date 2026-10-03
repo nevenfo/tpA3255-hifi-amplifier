@@ -11,9 +11,9 @@ Compteurs de structure : **124 empreintes, 119 blocs `(units`, `pad_prop_heatsin
 
 ## Tâche actuelle
 
-**F1.2-b1 — basculer `C310`/`C311` sur `B.Cu` et rerouter `/PVDD` par vias.** Première des trois
-unités ouvertes par l'arbitrage ; F1.2-b2 puis F1.2-b3 suivent. Arrêtée sur un geste GUI, voir
-« Blocage actif ».
+**F1.2-b1 — basculer `C310`/`C311` sur `B.Cu` et rerouter `/PVDD` par vias.** Moitié 1 faite :
+le flip est commité (`7114e41`, Konnect v1.2.0 `flip_component`, `kicad-cli pcb export pos` les
+donne `bottom`). Reste le reroutage `/PVDD`/`GND` par vias sous `U6`.
 
 ## Dernière tâche validée
 
@@ -48,21 +48,12 @@ Les règles durables sont dans `docs/kicad-operations.md`, le placement et les m
 
 ## Blocage actif
 
-**F1.2-b1 attend un geste GUI que l'automatisation ne peut pas garantir : le bureau est occupé.**
-Aucun outil MCP ne retourne une empreinte placée — piège consigné dans `docs/kicad-operations.md`
-—, donc `C310`/`C311` ne passent sur `B.Cu` que par l'interface. Le geste a été tenté puis
-abandonné **sans aucun clic** : la fenêtre au premier plan a basculé seule vers une fenêtre Excel,
-et la position du curseur a changé entre deux lectures **sans mouvement émis**. Le canevas de
-l'éditeur n'expose aucun élément UIA pour les empreintes — sélection par coordonnées pixel
-seulement —, donc un focus disputé retournerait la mauvaise empreinte. **Ce n'est pas le blocage
-`SendInput` de session RDP déjà connu** : l'activation de fenêtre réussissait.
-
-**Prochaine tentative : rejouer le geste quand le poste est libre.** L'IPC n'est pas affecté, la
-suite de F1.2-b1 reprend par MCP dès le flip constaté.
+Aucun. Le geste GUI n'est plus nécessaire : `flip_component` (Konnect v1.2.0, mode fichier,
+refusé si KiCad tient la carte) retourne une empreinte placée.
 
 ## Fichiers / zones utiles
 
-- `HifiAmp_TPA3255.kicad_pcb` — MD5 `2cc389a517fef7deb02fb5a290e66bef`, inchangé ; `.kicad_pro`
+- `HifiAmp_TPA3255.kicad_pcb` — MD5 `619eedd795f6f35dfc6af4dec222a1c1` après flip ; `.kicad_pro`
   porte les classes de net, `.kicad_dru` les deux règles internes aux boîtiers à pas fin
 - **`docs/kicad-operations.md`** — pilotage KiCad et pièges d'outillage, **à lire avant toute
   manipulation**
@@ -70,13 +61,10 @@ suite de F1.2-b1 reprend par MCP dès le flip constaté.
 
 ## NEXT ACTION
 
-**F1.2-b1 — retourner `C310` et `C311` sur `B.Cu` par l'interface (sélection, `F`, `Ctrl+S`), puis
-rerouter `/PVDD` par vias sous les broches `PVDD` de `U6`.** Seul le retournement demande le
-geste ; le reste passe par IPC. Ancres : `C310` en (277,5 ; 178,3) rotation −90°, `C311` en
-(277,5 ; 171,7) rotation +90°, deux `Capacitor_SMD:C_1210_3225Metric` alignés juste à gauche de
-`U6` ; pastilles `/PVDD` de `U6` en `x` = 281,2875, pads 29/30/31 en `y` = 172,1425 / 172,7775 /
-173,4125 et pads 36/37/38 en `y` = 176,5875 / 177,2225 / 177,8575, les pistes F1.1 touchant le pad
-médian de chaque groupe. Valider par : boucle de découplage **≤ 7,71 mm** de trajet équivalent ;
-colonne `x` ∈ [276,15 ; 278,85] libre de cuivre `F.Cu` ; DRC sans `clearance`, `shorting_items` ni
-`track_dangling` ; parité **3** ; non-connectés **inchangés à 230** ; **124 empreintes et 119
-blocs `(units`**.
+**F1.2-b1 — rerouter `/PVDD` et `GND` de `C310`/`C311` (désormais sur `B.Cu`) par vias vers les
+broches `PVDD` de `U6`, et supprimer les segments F.Cu F1.1 devenus orphelins.** Ancres : `C310`
+(277,5 ; 178,3) −90°, `C311` (277,5 ; 171,7) +90°, `C_1210_3225Metric` ; pads `/PVDD` de `U6` en
+`x` = 281,2875, 29/30/31 en `y` = 172,1425 / 172,7775 / 173,4125, 36/37/38 en `y` = 176,5875 /
+177,2225 / 177,8575. Valider par : boucle **≤ 7,71 mm** ; colonne `x` ∈ [276,15 ; 278,85] libre
+sur `F.Cu` ; DRC sans `clearance`, `shorting_items` ni `track_dangling` ; parité **3** ;
+non-connectés **230** ; **124 empreintes, 119 blocs `(units`**.
