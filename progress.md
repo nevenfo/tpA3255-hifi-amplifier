@@ -48,8 +48,27 @@ Les règles durables sont dans `docs/kicad-operations.md`, le placement et les m
 
 ## Blocage actif
 
-Aucun. Le geste GUI n'est plus nécessaire : `flip_component` (Konnect v1.2.0, mode fichier,
-refusé si KiCad tient la carte) retourne une empreinte placée.
+**Le reroutage exige l'IPC, donc l'éditeur de PCB ouvert ; la session Windows est sur le bureau
+sécurisé** (verrouillage ou invite UAC : `SecureDesktopActive` sur KiCad comme sur Firefox).
+KiCad tourne, lancé par `explorer.exe`, gestionnaire de projet seul ; le double-clic sur
+`HifiAmp_TPA3255.kicad_pcb` n'a pu être émis. Carte inchangée. **Reprise : session déverrouillée
+→ ouvrir l'éditeur de PCB depuis le gestionnaire (sans schéma) → reroutage par IPC.**
+
+Relevés pour le reroutage, faits sur le fichier courant :
+
+- Le flip a **inversé les pastilles** : `/PVDD` à l'extérieur, `/GND` à l'intérieur — `C310`
+  pad 1 PVDD (277,5 ; 179,775), pad 2 GND (277,5 ; 176,825) ; `C311` pad 1 PVDD (277,5 ;
+  170,225), pad 2 GND (277,5 ; 173,175), `B.Cu`, 1,15 × 2,7 mm.
+- Segments F1.1 `/PVDD` 0,8 mm dangling, à supprimer : `e2dc4dc0-5a66-404f-a7c1-66630b4ea0c0`,
+  `22785dab-2adc-4eec-84f0-d3940d274222` ; les 1,1 mm (279,9 → 281,2875) `137c5f6d…`,
+  `09acd9a7…` restent et servent de sortie aux vias.
+- **Aucune piste `GND` n'existait** ici : pistes neuves vers les broches `GND` de `U6` 25/26
+  (`y` 169,60/170,24), 33/34 (174,68/175,32), 41/42 (179,76/180,40).
+- Vias prévues vers `x` ≈ 279,5 : l'isolation 0,5 mm `PVDD`/`PWR_OUT` vaut via ↔ pastille, la
+  règle `.kicad_dru` ne l'assouplit pas.
+- **La colonne ne sera libre qu'après F1.2-b2** : `BST_C` (`y` 171,7) et `BST_B` (`y` 178,3)
+  la traversent encore de `x` 275,5 à 279,25 ; ce critère de F1.2-b1 se constate donc en
+  F1.2-b2.
 
 ## Fichiers / zones utiles
 
