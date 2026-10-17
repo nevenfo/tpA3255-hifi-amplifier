@@ -10,27 +10,20 @@ aucun `courtyards_overlap`. **124 empreintes, 119 blocs `(units`, `pad_prop_heat
 
 ## Tâche actuelle
 
-**F1.2-b3 — `/OUT_A`–`/OUT_D` routés sur `F.Cu`, sans via, DRC propre, 216 non-connectés.**
-Sélectivité DRU **prouvée** (copie avec `U6` retiré de la condition : 14 `clearance`, toutes
-piste `OUT` ↔ pastille `U6` ; 0 avec la règle). **Critère « 3,00 mm hors du pas fin » non tenu** :
-~12 mm sous 3,00 mm par net, cols de 0,96–1,07 mm (`OUT_B`/`OUT_C`) entre les pastilles de
-`C306`–`C309`, 0,90 mm (`OUT_A`) près de la via `BST_B`. Longueurs A 31,7 / B 58,3 / C 63,7 /
-**D 101,2 mm** : `L303`/`L304` sont en `x` = 240, à 45 mm de `U6`. Vias `BST` déplacées en
-(280 ; 169,1) et (280 ; 180,9), `BST_A`/`BST_D` à `y` 182,5 / 167,5.
+**F1.2-c2 — appliquer le placement O1 et rerouter l'étage de sortie.** État courant : routage
+F1.2-b3 (`ce19b50`) propre au DRC, sélectivité DRU prouvée, mais cols de 0,96–1,07 mm et
+`OUT_D` de 101 mm ; il sera repris.
 
 ## Dernière tâche validée
 
-**F1.2-b2 = PASS, nombre de vias révisé par la mesure.** `BST_B`/`BST_C` plongent sur `B.Cu`
-avec **2 vias par net**, remontées en (274,6 ; 177,275) et (274,6 ; 172,725) vers `C307`/`C308`
-pad 1 ; `BST_A`/`BST_D` contournent sur `F.Cu`, sans via. Tout en 0,35 mm. (Sorties et
-contournements déplacés depuis par F1.2-b3, voir Tâche actuelle.)
+**F1.2-c1 = PASS** — étude en lecture seule, option **O1 « brique stricte »** retenue ; positions,
+bootstraps, vias et chiffres dans `docs/architecture.md`, section **F1.2-c**.
 
 Validation :
 
-- **Vérification du principal** : DRC `kicad-cli --schematic-parity` identique à F1.2-b1
-  (0 `clearance`/`shorting_items`/`track_dangling`/`courtyards_overlap`, parité 3, 226) ;
-  **seuls les nets `/BST_A`–`/BST_D` changent**, aucune empreinte ; **0 segment et 0 via `F.Cu`
-  dans `x` ∈ [276,15 ; 278,85], `y` ∈ [168 ; 182]** ; 119 `(units`.
+- Courtyards et contour vérifiés par géométrie, aucun chevauchement ; longueurs estimées A 27,9 /
+  B 27,9 / C 67,2 / D 70,0 mm ; écarts A/B 0,0, C/D 2,8 ; quatre `OUT` et quatre `OUT_x_F`
+  planaires ; MD5 de la carte inchangé.
 
 ## Décisions actives
 
@@ -45,11 +38,7 @@ section **F1.2-b**.
 
 ## Blocage actif
 
-Aucun. **Arbitrage rendu : reprise du placement de l'étage de sortie (F1.2-c).** Cadre E1.5
-conservé — grille 2 × 2 des tores imposée par le contour (courtyard 29,10 × 13,10 mm, bande `y`
-183–225) ; ouverts : pas, position et affectation des tores, position de `C306`–`C309`.
-Repères : `L301` (276 ; 195), `L302` (276 ; 212), `L303` (240 ; 195), `L304` (240 ; 212) ;
-`C321`–`C324` en `y` 229, `x` 268/246/224/202 ; borniers `J301` (246 ; 241), `J302` (224 ; 241).
+Aucun.
 
 ## Fichiers / zones utiles
 
@@ -60,7 +49,8 @@ Repères : `L301` (276 ; 195), `L302` (276 ; 212), `L303` (240 ; 195), `L304` (2
 
 ## NEXT ACTION
 
-**F1.2-c1 — étude au fichier, sans écriture, du replacement des tores et des bootstraps** :
-grille resserrée, affectations planaires tore ↔ `OUT`, bootstraps en miroir hors du chemin
-`OUT`. Validation : longueurs `OUT` → self par option, planarité avec `OUT_x_F` et borniers,
-écart A/B et C/D chiffré, option retenue écrite dans `docs/architecture.md`.
+**F1.2-c2 — appliquer O1** : déplacer `L301`–`L304` et `C306`–`C309` aux positions de
+`docs/architecture.md` § F1.2-c, remplacer les vias `BST` en `x` = 274,6, rerouter `OUT_x`,
+`OUT_x_F` et `BST_B`/`BST_C`. Validation : DRC sans `clearance`/`shorting_items`/`track_dangling`/
+`courtyards_overlap`, parité 3, non-connectés 216, 3,00 mm hors pas fin, écarts A/B et C/D
+chiffrés, 124 empreintes, 119 `(units`.

@@ -1244,3 +1244,33 @@ Chacune avait un coût réel sur un acquis du projet :
 3. **Reprendre le voisinage complet de `U6`** — bootstraps, découplage et selfs. Le plus lourd,
    le seul qui traite la cause de fond : les selfs sont à 14–20 mm des broches, alors que la
    pratique de référence les colle aux sorties.
+
+## F1.2-c — reprise du placement de l'étage de sortie
+
+**Pourquoi.** Le routage F1.2-b3 était propre au DRC mais laissait des cols de 0,96–1,07 mm sur
+`OUT_B`/`OUT_C` entre les bootstraps, hors du pas fin, un nœud `OUT_D` de 101 mm, et un
+appariement par paire de pont non tenu (A 31,7 / B 58,3, C 63,7 / D 101,2 mm). Décision
+utilisateur : reprendre le placement, dans le cadre E1.5 — grille 2 × 2 des tores conservée.
+
+**Étude F1.2-c1** (lecture seule, courtyards et contour vérifiés par géométrie, longueurs en
+polyligne pastille `OUT` → broche 1 du tore, bootstrap en dérivation) :
+
+| | O1 « brique stricte » — **retenue** | O2 « brique compacte » | O3 « positions conservées » |
+| --- | --- | --- | --- |
+| `L302` (B) / `L304` (D) | (260,45 ; 184,5) / (228,35 ; 184,5) | (265,35 ; 186,3) / (233,25 ; 186,3) | inchangés |
+| `L301` (A) / `L303` (C) | (276,5 ; 204,3) / (244,4 ; 204,3) | (276,5 ; 201,3) / (246,9 ; 201,3) | inchangés |
+| A / B / C / D (mm) | 27,9 / 27,9 / 67,2 / 70,0 | 24,9 / 24,8 / 60,3 / 66,9 | 18,8 / 45,1 / 62,3 / 91,1 |
+| Écart A/B ; C/D | **0,0 ; 2,8** | 0,1 ; 6,6 | 26,3 ; 28,8 |
+| `OUT` sous un corps de tore | aucun | `OUT_A` 13 mm sous `L302` | `OUT_B`, `OUT_D` |
+
+**O1 retenue** : appariement tenu sans méandre, aucun nœud commuté sous un tore. Prix : les
+quatre `OUT_x_F` sont à rerouter ; C/D restent 2,5 fois plus longs que A/B, ce qu'impose la grille.
+Points serrés à confirmer au DRC : courtyard `L304` à 0,29 mm de `C317`, couloir de `OUT_C` de
+3,00 mm exactement entre les corps de `L304` et `L302`.
+
+**Bootstraps en miroir autour de `y` = 175**, hors du faisceau `OUT` : `C309` (275,5 ; 165,82)
+−90°, `C308` (274,5 ; 171,22) −90°, `C307` (274,5 ; 178,78) 90°, `C306` (278,48 ; 185,5) 0°.
+Vias `BST` côté broche (280 ; 169,1) et (280 ; 180,9) conservées ; celles en `x` = 274,6
+remplacées par (275,9 ; 170,44) pour C et (275,9 ; 179,56) pour B. Rangées `OUT` : D `y` 167,65,
+C 173,25, B 176,75, A en diagonale vers `x` 276,5 ; 3,00 mm dès `x` ≈ 278, l'amont restant
+contraint par le pas fin et les vias `BST`.
