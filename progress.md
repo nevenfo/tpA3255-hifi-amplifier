@@ -2,47 +2,46 @@
 
 ## Phase actuelle
 
-**Phase F — Routage. F1.2-a et F1.2-b1 closes, F1.2-b2 à faire.** 62 segments, **4 vias**. DRC
-courant : **111 violations toutes de sérigraphie** (89 `silk_overlap`, 22 `silk_over_copper`),
-**226 non-connectés**, `schematic_parity` = **3**, aucune `clearance`, aucun `shorting_items`,
-aucun `track_dangling`, aucun `courtyards_overlap`. Compteurs de structure : **124 empreintes,
-119 blocs `(units`, `pad_prop_heatsink` = 1**. `C310`/`C311` sur `B.Cu`, le reste sur `F.Cu`.
+**Phase F — Routage. F1.2-a, F1.2-b1 et F1.2-b2 closes, F1.2-b3 à faire.** 66 segments,
+**8 vias**. DRC courant : **111 violations toutes de sérigraphie** (89 `silk_overlap`, 22
+`silk_over_copper`), **226 non-connectés** dont **10 sur `/OUT_A`–`/OUT_D`**,
+`schematic_parity` = **3**, aucune `clearance`, aucun `shorting_items`, aucun `track_dangling`,
+aucun `courtyards_overlap`. **124 empreintes, 119 blocs `(units`, `pad_prop_heatsink` = 1.**
 
 ## Tâche actuelle
 
-**F1.2-b2 — faire passer `BST_B` et `BST_C` sous la rangée `OUT` par vias.**
+**F1.2-b3 — router `/OUT_A` à `/OUT_D` de `U6` aux bootstraps puis aux selfs.**
 
 ## Dernière tâche validée
 
-**F1.2-b1 = PASS, critère de boucle révisé par décision utilisateur.** `C310`/`C311` au dos,
-tournés de 180°, glissés sous `U6` en (280,75 ; 178,3) et (280,75 ; 171,7). 4 vias tentées
-ø0,6/0,3 en `x` = 282,6 sous le corps de `U6`, à l'est des broches : `/PVDD` `y` 172,7775 et
-177,2225, `/GND` `y` 169,92 et 180,08.
+**F1.2-b2 = PASS, nombre de vias révisé par la mesure.** `BST_B`/`BST_C` plongent sur `B.Cu`
+avec **2 vias par net** : sorties en (279 ; 181,0325) et (279 ; 168,9675), remontées en
+(274,6 ; 177,275) et (274,6 ; 172,725), vers `C307`/`C308` pad 1. `BST_A`/`BST_D` contournent
+sur `F.Cu` par `y` 182,4 et 167,6, sans via. Tout en 0,35 mm.
 
 Validation :
 
-- **Vérification du principal** : DRC `kicad-cli --schematic-parity` → 0 `clearance`/
-  `shorting_items`/`track_dangling`/`courtyards_overlap`, parité **3**, non-connectés **226**,
-  aucun sur `C310`/`C311` ; fins de ligne normalisées, **seules les empreintes `C310`/`C311`
-  changent** ; 119 `(units` (celui de `C311`, perdu au déplacement, réinséré au fichier).
-- **Boucle 9,63 mm par condensateur** (centre de pastille → centre de broche + 2 × 1,6 mm),
-  recalculée par le principal ; ≈ 10,8 au `x` d'origine. ≤ 7,71 était intenable avec des vias ;
-  9,63 est le minimum sans via dans une pastille.
+- **Vérification du principal** : DRC `kicad-cli --schematic-parity` identique à F1.2-b1
+  (0 `clearance`/`shorting_items`/`track_dangling`/`courtyards_overlap`, parité 3, 226) ;
+  **seuls les nets `/BST_A`–`/BST_D` changent**, aucune empreinte ; **0 segment et 0 via `F.Cu`
+  dans `x` ∈ [276,15 ; 278,85], `y` ∈ [168 ; 182]** ; 119 `(units`.
 
 ## Décisions actives
 
 Règles durables : `docs/kicad-operations.md` ; placement et mesures : `docs/architecture.md`,
 section **F1.2-b**.
 
-- **Croisement `BST`/`OUT` dénoué côté `BST`, jamais sur un `OUT` à 5 A.** Carte non simple-face.
-- **À vérifier en F1.2-b2 : « une via par `BST` » est probablement physiquement impossible** —
-  `C307`/`C308` sont des CMS `F.Cu`, une plongée sur `B.Cu` doit remonter, donc **2 vias par net,
-  4 au total**. Si la mesure le confirme, réviser la validation du plan (« 2 vias exactement »).
-- **`B.Cu` n'est plus vide** sous `U6` : `C310`/`C311` couvrent `x` 279,4–282,1, et leurs pistes
-  vont aux vias en 282,6. Les plongées `BST` doivent les contourner.
-- **Colonne `x` ∈ [276,15 ; 278,85] à libérer sur `F.Cu` en F1.2-b2** (critère hérité de b1) :
-  4 segments `BST` y passent encore.
-- **Règle DRU d'échappement** : sélectivité à prouver en F1.2-b3.
+- **Les `OUT` à 5 A restent intégralement sur `F.Cu`, sans via.** Carte non simple-face.
+- **Chevelus `OUT` à résoudre** : `U6` 27/28 → `C309` pad 2 → `L304` (`OUT_D`) ; 32 → `C308`
+  pad 2 → `L303` (`OUT_C`) ; 35 → `C307` pad 2 → `L302` (`OUT_B`) ; 39/40 → `C306` pad 2 →
+  `L301` (`OUT_A`).
+- **Couloir mesuré** : pour `x` ∈ [276 ; 278,7], bande `y` 168,275–181,725 (13,45 mm) ; resserrée
+  à **10,46 mm** (`y` 169,77–180,23) près des vias `BST` en `x` ≈ 278,7–279,3. Quatre voies à
+  3,00 mm + 3 isolations de 0,5 mm demandent 13,5 mm : **largeur d'échappement réduite à
+  justifier dans le resserrement**, puis reprise à 3,00 mm ; sinon décaler les vias `BST` en
+  (279 ; …) vers l'ouest. À gauche de `x` = 276 : vias (274,6 ; …) et pastilles `C306`–`C309`
+  en `x` 273,03–273,98.
+- **Règle DRU d'échappement** : sélectivité à prouver ici, en retirant `U6` de sa condition.
 - **Sérigraphie à traiter en bloc** ; **masses et rails auxiliaires longs au plan de F1.4**.
 
 ## Blocage actif
@@ -51,14 +50,14 @@ Aucun.
 
 ## Fichiers / zones utiles
 
-- `HifiAmp_TPA3255.kicad_pcb` — MD5 `b260b44c1e9724b576218e71813d589e`
-- **`docs/kicad-operations.md`** — **à lire avant toute manipulation** (API à activer, named pipe,
-  `(units` perdus au déplacement, fermer l'éditeur sans enregistrer après restauration au fichier)
-- `docs/architecture.md`, section **F1.2-b** — ordre inversé `BST_B`/`OUT_A` et `BST_C`/`OUT_D`
+- `HifiAmp_TPA3255.kicad_pcb` — MD5 `db7db5ceba5dd712652c83541963aad2` ; `.kicad_dru` porte les
+  deux règles internes aux boîtiers à pas fin
+- **`docs/kicad-operations.md`** — **à lire avant toute manipulation**
+- `docs/architecture.md`, section **F1.2-b** — mesure d'échappement et courant (IPC-2221)
 
 ## NEXT ACTION
 
-**F1.2-b2 — rerouter `BST_B` (broche 43 → `C307` pad 2) et `BST_C` (→ `C308`) par vias sous la
-rangée `OUT`, en libérant la colonne `x` ∈ [276,15 ; 278,85] sur `F.Cu`.** Validation : nombre de
-vias justifié (2 par net attendu), aucun `track_dangling`, 0,35 mm en sortie de boîtier, 0
-`clearance`/`shorting_items`, parité 3, non-connectés **≤ 226**, 124 empreintes, 119 `(units`.
+**F1.2-b3 — router les quatre `OUT` de `U6` à leurs bootstraps puis à leurs selfs, sur `F.Cu`.**
+Validation : non-connectés **226 → 216**, largeur d'échappement justifiée puis 3,00 mm hors du pas
+fin, 0 `clearance`/`shorting_items`/`track_dangling`, parité 3, **sélectivité de la règle DRU
+prouvée**, 124 empreintes, 119 `(units`.
