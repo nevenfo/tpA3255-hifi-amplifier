@@ -7,9 +7,9 @@ Branche `ai/f1.4-plane-strategy`.
 
 ## Tâche actuelle
 
-F1.7 — corriger l'empreinte de `U1`. Découverte en préparant F1.4-b : le PCB porte un
-WSON 2,5 × 2,5 mm au pas de 0,5 mm, mais le `DPR0010A` réel mesure 4 × 4 mm au pas de 0,8 mm,
-pad exposé 2,6 × 3 mm. F1.4-b est bloquée jusqu'à la correction.
+F1.7 — corriger les empreintes de `U1` (`DPR0010A` 4 × 4 mm au pas de 0,8 mm, au lieu d'un
+WSON 2,5 mm au pas de 0,5 mm) et de `L1` (WE-PD 1050 de 10 × 10 mm, au lieu d'un WE-PD2 d'environ 6 mm).
+Diagnostic `U1` fait (voir `plan.md` F1.7) ; impact de `L1` à mesurer. F1.4-b bloquée jusque-là.
 
 ## Dernière tâche validée
 
@@ -47,5 +47,5 @@ Aucun. Vérifier l'état de l'éditeur PCB avant toute écriture IPC.
 
 ## NEXT ACTION
 
-F1.7 — par `kicad-control` : identifier ou créer une empreinte conforme à `DPR0010A`
-(4218856/B), mesurer l'impact sur le placement et le routage autour de `U1`, puis appliquer et valider.
+F1.7 — par `kicad-control`, en lecture seule : impact de l'empreinte WE-PD 1050 de `L1`
+(courtyards, pistes, vias sous le composant) et proposition de placement commune `U1`/`L1`.

@@ -410,18 +410,23 @@ E1 validée.
   - [x] F1.6-a Diagnostic, lecture seule. *(PASS : `BUCK_VIN` = `U1.10`, `D3.1` (Schottky série anti-retour), `R2.2`, aucun condensateur ; le plus proche, `C11` 10 nF, est à ~15,6 mm de piste derrière `D3`, boucle ≈ 27 mm. Ajout requis.)*
   - [x] F1.6-b Ajouter le découplage d'entrée selon SNVS376F (Table 2, §8.2.2.1.5, §8.2.2.1.9, §Layout) : `C327` 0,1 µF 100 V X7R (rôle C5, au plus près de `U1.10`) et `C328` 2,2 µF 100 V X7R 1210 (rôle C1, boucle `C1`–`VIN`–`SW`–`L1`–`COUT` minimale), tous deux entre `BUCK_VIN` et `GND`, `GND` direct vers l'EP de `U1` sans via. Eq. 18 à 48 V, `R_ON` 182 k, 0,5 A : ≥ 0,33 µF pour ΔV 1 V. Étapes : schéma + ERC, propagation F8 (« Supprimer les empreintes sans symbole » décoché), placement, routage. Validation : ERC sans nouvelle erreur, 126 empreintes, parité 3, `pad_prop_heatsink` = 1, aucune `clearance`/`shorting_items`/`courtyards_overlap`, non-connectés tous `GND`, pistes existantes identiques par UUID hormis reprises déclarées.
 
-- [ ] F1.7 Corriger l'empreinte de `U1` (**découvert en F1.4-b**, 2026-10-17). Le PCB et le schéma portent `Package_SON:WSON-10-1EP_2.5x2.5mm_P0.5mm_EP1.2x2mm`, alors que le `LM5010ASD/NOPB` est en `DPR0010A` : 4 × 4 mm, pas de 0,8 mm, pad exposé 2,6 × 3 mm (SNVS376F, dessins 4218856/B). **Bloque F1.4-b.** Tâches :
-  - choisir une empreinte KiCad conforme au land pattern TI, ou la créer en bibliothèque locale ;
-  - l'affecter au schéma et la propager (F8, « Supprimer les empreintes sans symbole » décoché) ;
-  - rétablir `pad_prop_heatsink` sur le pad 11 ;
-  - replacer les voisins si les courtyards l'exigent, puis reprendre les pistes de `U1`, dont la règle d'échappement.
+- [ ] F1.7 Corriger les empreintes de `U1` et `L1` (**découvert en F1.4-b**, 2026-10-17) en un seul passage F8 et une seule reprise de placement du buck auxiliaire. **Bloque F1.4-b.**
+  - Écarts constatés :
+    - `U1` (`LM5010ASD/NOPB`) : boîtier `DPR0010A` de 4 × 4 mm au pas de 0,8 mm, pad exposé 2,6 × 3 mm (SNVS376F, dessins 4218856/B). Le PCB porte `WSON-10-1EP_2.5x2.5mm_P0.5mm_EP1.2x2mm`. Cible : `Package_SON:WSON-10-1EP_4x4mm_P0.8mm_EP2.6x3mm`.
+    - `L1` (`7447714101`) : WE-PD taille 1050, corps 10 × 10 × 5 mm. Land pattern Würth : pastilles 3,5 × 2 mm, 7 mm intérieur, 11 mm extérieur, « no vias and sensitive traces underneath ». Le PCB porte `L_Wuerth_WE-PD2-Typ-MS`, pastilles 2,15 × 5,5 mm à ± 1,93 mm.
+  - Audit des autres empreintes non génériques : aucun autre écart. `L6` n'a pas de référence fabricant ; son empreinte WE-PD M/S fixera le choix au moment de la nomenclature.
+  - Tâches :
+    - mesurer l'impact de `L1` (diagnostic `U1` fait : `C327` à déplacer d'environ 0,8 mm, 22 segments `F.Cu` et 2 vias à reprendre, exceptions `.kicad_dru` de `U1` à revoir) ;
+    - affecter les empreintes au schéma et propager par F8 (« Remplacer les empreintes » coché, « Supprimer les empreintes sans symbole » décoché) ;
+    - rétablir `pad_prop_heatsink` sur le pad 11 de `U1` ;
+    - replacer, puis router de nouveau la zone.
   - **Dépendances** : F1.6.
   - **Validation** :
-    - géométrie des pastilles conforme à 4218856/B ;
+    - géométrie conforme aux dessins fabricant ;
     - ERC sans nouvelle erreur, parité 3, `pad_prop_heatsink` = 1 ;
     - aucune `clearance`, `shorting_items`, `track_dangling` ni `courtyards_overlap` ;
-    - non-connectés tous `GND` ;
-    - pistes hors `U1` identiques par UUID, sauf reprises déclarées.
+    - non-connectés tous `GND`, aucun via sous `L1` ;
+    - pistes hors zone identiques par UUID, sauf reprises déclarées.
 
 ### Validation
 
