@@ -1325,3 +1325,12 @@ vias 14 → 20.
 
 À contrôler en F1.4 : doubler `PVDD` par une zone (`In1.Cu` puissance disponible), liaisons
 `F.Cu` vers `C312`/`C314`/`C316` face au courant d'ondulation.
+
+## F1.3-c — alimentations analogiques
+
+Courant `+12V-OA` majoré à ~41 mA (20 mA par OPA1612, hypothèse faute de fiche chargée) :
+0,4 mm, 129,6 mm, 5 vias, tronc `B.Cu` à `x` 145 pour le canal droit, `C108`/`C208` à ~3 mm
+des broches 8. `VMID` 0,3 mm surtout en `B.Cu`, étoile en (121,05 ; 170), canal droit translaté
+de 40 mm : 22,0 mm vers `C110`/`C210`, 30,85 mm vers les broches 3, 37,97 mm vers les broches 5,
+des deux côtés. `±VSE`/`±VSE_R` et `*_AC` en `F.Cu` 0,25 mm. Distance minimale aux `SW`/`OUT` :
+22,3 mm. Mesure : 147 → 113, segments 253 → 332, vias 20 → 33.

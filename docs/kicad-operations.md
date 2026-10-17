@@ -270,3 +270,7 @@ les deux régressions connues du projet : `pad_prop_heatsink` de `U1` (perdu en 
   touchent ce boîtier (F1.3-b).
 - **Shunt en Kelvin** : prises 0,25 mm sur les bords intérieurs des pastilles, via sur chaque
   pastille, mesure en `B.Cu` ; aucun cuivre partagé avec le chemin de puissance (`R306`, F1.3-b).
+- **Rail analogique traversant un canal d'AOP : en `B.Cu`, vias au plus près des broches.** Deux
+  canaux translatés se raccordent depuis un centre équidistant : longueurs `VMID` égales par
+  construction (F1.3-c). Pistes `F.Cu` persistantes à `y` 140,4 et 160,4 dans la bande
+  analogique : les traversées nord-sud suivantes passent en `B.Cu`.
