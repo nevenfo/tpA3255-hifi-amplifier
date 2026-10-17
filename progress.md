@@ -21,9 +21,9 @@ piste `OUT` ↔ pastille `U6` ; 0 avec la règle). **Critère « 3,00 mm hors du
 ## Dernière tâche validée
 
 **F1.2-b2 = PASS, nombre de vias révisé par la mesure.** `BST_B`/`BST_C` plongent sur `B.Cu`
-avec **2 vias par net** : sorties en (279 ; 181,0325) et (279 ; 168,9675), remontées en
-(274,6 ; 177,275) et (274,6 ; 172,725), vers `C307`/`C308` pad 1. `BST_A`/`BST_D` contournent
-sur `F.Cu` par `y` 182,4 et 167,6, sans via. Tout en 0,35 mm.
+avec **2 vias par net**, remontées en (274,6 ; 177,275) et (274,6 ; 172,725) vers `C307`/`C308`
+pad 1 ; `BST_A`/`BST_D` contournent sur `F.Cu`, sans via. Tout en 0,35 mm. (Sorties et
+contournements déplacés depuis par F1.2-b3, voir Tâche actuelle.)
 
 Validation :
 
@@ -40,14 +40,7 @@ section **F1.2-b**.
 - **Les `OUT` à 5 A restent intégralement sur `F.Cu`, sans via.** Carte non simple-face.
 - **Chevelus `OUT` à résoudre** : `U6` 27/28 → `C309` pad 2 → `L304` (`OUT_D`) ; 32 → `C308`
   pad 2 → `L303` (`OUT_C`) ; 35 → `C307` pad 2 → `L302` (`OUT_B`) ; 39/40 → `C306` pad 2 →
-  `L301` (`OUT_A`).
-- **Couloir mesuré** : pour `x` ∈ [276 ; 278,7], bande `y` 168,275–181,725 (13,45 mm) ; resserrée
-  à **10,46 mm** (`y` 169,77–180,23) près des vias `BST` en `x` ≈ 278,7–279,3. Quatre voies à
-  3,00 mm + 3 isolations de 0,5 mm demandent 13,5 mm : **largeur d'échappement réduite à
-  justifier dans le resserrement**, puis reprise à 3,00 mm ; sinon décaler les vias `BST` en
-  (279 ; …) vers l'ouest. À gauche de `x` = 276 : vias (274,6 ; …) et pastilles `C306`–`C309`
-  en `x` 273,03–273,98.
-- **Règle DRU d'échappement** : sélectivité à prouver ici, en retirant `U6` de sa condition.
+  `L301` (`OUT_ion.
 - **Sérigraphie à traiter en bloc** ; **masses et rails auxiliaires longs au plan de F1.4**.
 
 ## Blocage actif
