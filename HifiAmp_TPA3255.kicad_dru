@@ -43,3 +43,42 @@
 (rule "Echappement de piste interne a U6"
 	(constraint clearance (min 0.15mm))
 	(condition "(A.Type == 'Track' && B.Type == 'Pad' && B.memberOfFootprint('U6')) || (B.Type == 'Track' && A.Type == 'Pad' && A.memberOfFootprint('U6'))"))
+
+# Echappement de piste interne au boitier U8 (LM5069, MSOP-10, pas 0,5 mm).
+#
+# F1.3-b. Les pastilles de U8 font 0,35 mm de hauteur au pas de 0,5 mm :
+# l'axe d'une pastille est a 0,325 mm du bord de sa voisine, soit 0,225 mm
+# pour une piste de 0,2 mm. La broche 2 (VIN, PVDD_PROT) est en classe
+# PWR_48V (0,50 mm) entre SENSE (broche 1) et UVLO (broche 3), si bien
+# qu'AUCUNE piste ne sort de la broche 2 sous 0,50 mm : meme cause que pour
+# U6, meme remede. Trois cas couverts, tous limites a U8 :
+#  - piste <-> pastille de U8 ;
+#  - piste <-> piste lorsque l'une des deux touche la cour de U8 (les
+#    amorces voisines des broches 1 a 4 et 7 a 10, qui divergent ensuite).
+# Le seuil de 0,15 mm est celui deja accepte entre pastilles du meme boitier.
+# Les 80 V du LM5069 depassent les 48 V de service ; l'ecart de tension entre
+# broches voisines est le meme que celui deja tolere entre pastilles. Au-dela
+# de l'amorce, l'isolation de classe reprend ses droits.
+
+(rule "Echappement de piste interne a U8"
+	(constraint clearance (min 0.15mm))
+	(condition "(A.Type == 'Track' && B.Type == 'Pad' && B.memberOfFootprint('U8')) || (B.Type == 'Track' && A.Type == 'Pad' && A.memberOfFootprint('U8')) || (A.Type == 'Track' && B.Type == 'Track' && (A.intersectsCourtyard('U8') || B.intersectsCourtyard('U8')))"))
+
+# Echappement de piste interne au boitier U1 (LM5010A, WSON-10, pas 0,5 mm).
+#
+# F1.3-b. Reglage identique a U6 et U8, accepte pour les memes raisons. La
+# broche 3 (ISEN) de U1 est enfermee entre le saut BST (via B.Cu obligatoire,
+# car SW forme un mur en F.Cu) et la pastille GND de la broche 4 : a 0,25 mm
+# aucune position de via ni de piste ne laisse sortir ISEN. Sont ramenes a
+# 0,15 mm, seulement lorsque l'un des deux items touche la cour de U1 :
+#  - piste <-> pastille de U1 ;
+#  - piste <-> piste ;
+#  - piste <-> via.
+# Le seuil est celui deja accepte entre pastilles du meme boitier ; les
+# tensions en jeu (SW <= 48 V, BST = SW + 7 V, ISEN et GND quasi nulles)
+# restent compatibles avec 0,15 mm sur cuivre externe revetu (IPC-2221). Au-dela
+# de l'amorce, l'isolation de classe reprend ses droits.
+
+(rule "Echappement de piste interne a U1"
+	(constraint clearance (min 0.15mm))
+	(condition "(A.Type == 'Track' && B.Type == 'Pad' && B.memberOfFootprint('U1')) || (B.Type == 'Track' && A.Type == 'Pad' && A.memberOfFootprint('U1')) || (A.Type == 'Track' && (B.Type == 'Track' || B.Type == 'Via') && (A.intersectsCourtyard('U1') || B.intersectsCourtyard('U1'))) || (B.Type == 'Track' && A.Type == 'Via' && (A.intersectsCourtyard('U1') || B.intersectsCourtyard('U1')))"))

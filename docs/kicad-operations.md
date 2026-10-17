@@ -224,7 +224,8 @@ les deux régressions connues du projet : `pad_prop_heatsink` de `U1` (perdu en 
 ## Règles de routage établies en Phase F
 
 - **Les classes de net se lisent dans `.kicad_pro`**, pas dans `.kicad_dru` qui ne porte que
-  l'exception interne à `U6`/`U1`/`U8`. Valeurs : `PWR_AUX` = 0,25 mm d'isolation et 0,8 mm de
+  les exceptions d'échappement internes à `U6`, `U8` et `U1` (piste ↔ pastille et piste ↔ piste
+  à 0,15 mm dans la cour du boîtier, chacune prouvée sélective). Valeurs : `PWR_AUX` = 0,25 mm d'isolation et 0,8 mm de
   piste nominale, `ANALOG` = 0,25/0,25, `PWR_48V` = 0,5, `GATE_DRIVE` et `GND` = 0,25,
   `PWR_OUT` = 0,5. **Vérifier la classe avant de calculer un couloir** : reprendre celle d'un net
   voisin a déjà coûté un tracé refait.
@@ -262,3 +263,10 @@ les deux régressions connues du projet : `pad_prop_heatsink` de `U1` (perdu en 
   Sortir en col de 0,2 à 0,25 mm sur ~0,5 mm, puis élargir (0,6 mm exige ≥ 0,55 mm de la pastille
   voisine). Une broche enfermée (`U1` : `VCC`, `BST`) saute en `B.Cu` par via 0,6/0,3 plutôt que
   de forcer (F1.3-a).
+- **Pas de 0,5 mm et pastilles ≥ 0,35 mm de haut : la règle de classe enferme les broches.**
+  Une broche `PWR_48V` (0,5 mm) entre deux voisines ne sort pas sans exception `.kicad_dru`
+  limitée à la cour du boîtier (`U8`, puis `U1` pour `ISEN`), sur le modèle de `U6`. Chaque
+  exception se prouve sélective : sur une copie sans elle, toutes les violations qui reviennent
+  touchent ce boîtier (F1.3-b).
+- **Shunt en Kelvin** : prises 0,25 mm sur les bords intérieurs des pastilles, via sur chaque
+  pastille, mesure en `B.Cu` ; aucun cuivre partagé avec le chemin de puissance (`R306`, F1.3-b).

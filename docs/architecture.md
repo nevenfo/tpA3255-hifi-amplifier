@@ -1303,3 +1303,25 @@ l'opposé de `SW`.
 | `+3V3` | 0,3–0,5 mm | long rail `B.Cu` ~135 mm, ~1 mA |
 
 Mesure : 216 → 186 non-connectés, segments 81 → 159, vias 8 → 14, aucune empreinte déplacée.
+
+## F1.3-b — entrée de puissance et protection `LM5069`
+
+Dimensionnement : 4,95 A nominal sur 4 Ω (84,2 % de rendement), crête 9,3 A, fusible 12,5 A.
+IPC-2221 externe, 35 µm, ΔT 10 K : 2,1 mm = 4,1 A, 3 mm = 5,3 A, 5 mm = 7,7 A, 7 mm = 9,8 A.
+
+| Net | Couche, largeur | Remarque |
+|---|---|---|
+| `PVDD_EXT` | `F.Cu` 2,8 → 5 mm | `J1` → `F301` |
+| `PVDD_FUSED` | `F.Cu` 5 → 4 mm, col 2,1 mm sur 3 mm | col vers `Q301.2` effacé par la zone F1.4 |
+| `PVDD_PROT` | `F.Cu` 3 mm | `Q301.3` → `R306.1`, bus 0,25 mm vers `U8` |
+| `PVDD_SENSE` | `F.Cu` 2,5 → 1,9 mm | `R306.2` → `Q302.2` |
+| `PVDD` | `B.Cu` 5 puis 7 mm (`x` 188..279) | jusqu'à `C310`/`C311`, dérivations 2,4–4 mm |
+
+Kelvin `R306` en `B.Cu` 0,25 mm. Zone réservée au drain de `Q301` : `x` 175..200,
+`y` 230..248,5, `F.Cu` et `B.Cu` (≈ 9 cm²), seul `PVDD_FUSED` y passe ; la pastille `GND` de
+`D301` y sera à isoler. `ISEN` (`U1.3` → `D1.2`) en 0,2 mm après déplacement du via `BST` en
+(169,575 ; 171,75) et règle d'échappement `U1`. Mesure : 186 → 147, segments 159 → 253,
+vias 14 → 20.
+
+À contrôler en F1.4 : doubler `PVDD` par une zone (`In1.Cu` puissance disponible), liaisons
+`F.Cu` vers `C312`/`C314`/`C316` face au courant d'ondulation.
