@@ -45,9 +45,11 @@ section **F1.2-b**.
 
 ## Blocage actif
 
-**Décision utilisateur sur F1.2-b3** : accepter les cols et longueurs actuels (élargissement par
-zones `OUT` en F1.4), ou reprendre le placement — bootstraps hors du chemin `OUT`, selfs
-`L303`/`L304` rapprochées de `U6` — au prix d'une reprise partielle de F1.2-a.
+Aucun. **Arbitrage rendu : reprise du placement de l'étage de sortie (F1.2-c).** Cadre E1.5
+conservé — grille 2 × 2 des tores imposée par le contour (courtyard 29,10 × 13,10 mm, bande `y`
+183–225) ; ouverts : pas, position et affectation des tores, position de `C306`–`C309`.
+Repères : `L301` (276 ; 195), `L302` (276 ; 212), `L303` (240 ; 195), `L304` (240 ; 212) ;
+`C321`–`C324` en `y` 229, `x` 268/246/224/202 ; borniers `J301` (246 ; 241), `J302` (224 ; 241).
 
 ## Fichiers / zones utiles
 
@@ -58,6 +60,7 @@ zones `OUT` en F1.4), ou reprendre le placement — bootstraps hors du chemin `O
 
 ## NEXT ACTION
 
-**F1.2-b3 — obtenir l'arbitrage sur les cols et la longueur des `OUT`, puis l'appliquer.**
-Validation : critère de largeur retenu tenu ou justifié, 0 `clearance`/`shorting_items`/
-`track_dangling`, parité 3, non-connectés **216**, 124 empreintes, 119 `(units`.
+**F1.2-c1 — étude au fichier, sans écriture, du replacement des tores et des bootstraps** :
+grille resserrée, affectations planaires tore ↔ `OUT`, bootstraps en miroir hors du chemin
+`OUT`. Validation : longueurs `OUT` → self par option, planarité avec `OUT_x_F` et borniers,
+écart A/B et C/D chiffré, option retenue écrite dans `docs/architecture.md`.
