@@ -28,12 +28,10 @@ Validation :
 ## Décisions actives
 
 Règles durables : `docs/kicad-operations.md` ; placement et mesures : `docs/architecture.md`,
-section **F1.2-b**.
+sections **F1.2-b** et **F1.2-c**.
 
 - **Les `OUT` à 5 A restent intégralement sur `F.Cu`, sans via.** Carte non simple-face.
-- **Chevelus `OUT` à résoudre** : `U6` 27/28 → `C309` pad 2 → `L304` (`OUT_D`) ; 32 → `C308`
-  pad 2 → `L303` (`OUT_C`) ; 35 → `C307` pad 2 → `L302` (`OUT_B`) ; 39/40 → `C306` pad 2 →
-  `L301` (`OUT_ion.
+- **Règle DRU d'échappement `U6` : sélectivité prouvée** en F1.2-b3, à rejouer après c2.
 - **Sérigraphie à traiter en bloc** ; **masses et rails auxiliaires longs au plan de F1.4**.
 
 ## Blocage actif
