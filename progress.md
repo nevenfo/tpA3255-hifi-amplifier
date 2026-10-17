@@ -10,7 +10,8 @@ aucun `courtyards_overlap`. **124 empreintes, 119 blocs `(units`, `pad_prop_heat
 
 ## Tâche actuelle
 
-**F1.3 — router analogique, contrôle puis signaux non critiques.** À découper en sous-unités.
+**F1.3-a — buck auxiliaire `U1` et rails `+12V`/`+15V`/`+3V3` (30 chevelus).** F1.3 découpée
+en a–e après inventaire (216 = `GND` 78 + 39 + 30 + 34 + 26 + 9).
 
 ## Dernière tâche validée
 
@@ -50,7 +51,7 @@ Aucun.
 
 ## NEXT ACTION
 
-**F1.3 — inventorier les 216 chevelus par catégorie (analogique, contrôle, alimentation
-auxiliaire, non critique) et découper F1.3 en sous-unités à IDs stables dans `plan.md`**, avec
-ordre, contraintes et validation de chacune ; validation : inventaire dont la somme fait 216,
-sous-unités écrites dans le plan.
+**F1.3-a — router le buck auxiliaire `U1` et ses rails** : boucle `BUCK_VIN`–`SW`–self minimale
+d'abord, `FB` à l'écart de `SW`. Validation : 30 chevelus résolus (216 → 186), DRC sans
+`clearance`/`shorting_items`/`track_dangling`, parité 3, largeurs justifiées, 124 empreintes,
+119 `(units`.
