@@ -282,3 +282,11 @@ les deux régressions connues du projet : `pad_prop_heatsink` de `U1` (perdu en 
 - **Redimensionner un via par MCP** : `delete_trace` le supprime par UUID, `add_via` le recrée
   (0,6/0,3). Près de `U6` côté est (pas 0,635 mm), faire passer deux pistes entre deux voisines
   exige 1,10 mm libres : vias 0,6/0,3 seulement, jamais 0,8/0,4 (F1.3-e).
+- **Propagation F8 (F1.6-b) : réglages qui n'apportent que l'ajout voulu.** Décocher
+  « Remplacer les empreintes… », « Supprimer les empreintes sans symbole associé » (`H1`/`H2`) et
+  « Mise à jour des champs d'empreinte… ». Les lignes « Mise à jour des métadonnées de l'unité »
+  persistent malgré tout : elles n'ajoutent que des blocs `(units` manquants (vérifié au fichier).
+  Le geste se délègue à `desktop-control` ; le contrôle se fait au fichier par UUID et positions.
+- **Un `move_component` MCP peut retirer le bloc `(units` d'une empreinte** : recompter les
+  `(units` après chaque placement. **`save_project` échoue (« found 2 ») si l'éditeur de schéma
+  est ouvert en même temps que celui de PCB.**

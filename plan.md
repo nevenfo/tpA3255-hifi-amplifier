@@ -403,7 +403,9 @@ E1 validée.
   - [x] F1.3-e Contrôle (9 : `RESET`, `RESET-SW`, `RESET_RC`, `FAULT`, `CLIP_OTW`, `OC_ADJ`, `FREQ_ADJ`, `C_START`). Validation : 9 résolus ; il ne reste que les 78 `GND` ; DRC propre, parité 3.
 - [ ] F1.4 Créer plans/zones et vias thermiques ; remplir les zones. *(**Dépend de F1.6** : un condensateur ajouté se place avant le remplissage des zones. Constat F1.3-a : le `+3V3` long (~135 mm) court en `B.Cu` à `y` 138,3 ; à reprendre si `B.Cu` est réservé au plan `GND`.)*
 - [ ] F1.5 Vérifier l’absence de ratsnest et les longueurs/vias inutiles critiques.
-- [ ] F1.6 Vérifier au schéma le découplage d'entrée du buck `U1` : aucun condensateur sur `BUCK_VIN` après `D3` (`C2`–`C4` côté `PVDD`). Validation : capacité locale VIN du LM5010 présente au schéma et au PCB, ou absence justifiée par la fiche technique.
+- [x] F1.6 Vérifier au schéma le découplage d'entrée du buck `U1` : aucun condensateur sur `BUCK_VIN` après `D3` (`C2`–`C4` côté `PVDD`). Validation : capacité locale VIN du LM5010 présente au schéma et au PCB, ou absence justifiée par la fiche technique.
+  - [x] F1.6-a Diagnostic, lecture seule. *(PASS : `BUCK_VIN` = `U1.10`, `D3.1` (Schottky série anti-retour), `R2.2`, aucun condensateur ; le plus proche, `C11` 10 nF, est à ~15,6 mm de piste derrière `D3`, boucle ≈ 27 mm. Ajout requis.)*
+  - [x] F1.6-b Ajouter le découplage d'entrée selon SNVS376F (Table 2, §8.2.2.1.5, §8.2.2.1.9, §Layout) : `C327` 0,1 µF 100 V X7R (rôle C5, au plus près de `U1.10`) et `C328` 2,2 µF 100 V X7R 1210 (rôle C1, boucle `C1`–`VIN`–`SW`–`L1`–`COUT` minimale), tous deux entre `BUCK_VIN` et `GND`, `GND` direct vers l'EP de `U1` sans via. Eq. 18 à 48 V, `R_ON` 182 k, 0,5 A : ≥ 0,33 µF pour ΔV 1 V. Étapes : schéma + ERC, propagation F8 (« Supprimer les empreintes sans symbole » décoché), placement, routage. Validation : ERC sans nouvelle erreur, 126 empreintes, parité 3, `pad_prop_heatsink` = 1, aucune `clearance`/`shorting_items`/`courtyards_overlap`, non-connectés tous `GND`, pistes existantes identiques par UUID hormis reprises déclarées.
 
 ### Validation
 
