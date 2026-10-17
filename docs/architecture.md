@@ -1354,3 +1354,13 @@ chemin croisé nord/sud sans croiser les paires).
 `INPUT_C` passe à 0,275 mm entre une piste `VBG` et `C207.2`. Les vias `INPUT` près de `U6`
 (`x` 290–294,3, `y` 164–179,15) resserrent la sortie des nets de contrôle. Mesure : 113 → 87,
 segments 332 → 472, vias 33 → 50, les 365 éléments existants inchangés (UUID).
+
+## F1.3-e — contrôle
+
+Tous en 0,2 mm. `OC_ADJ` 14,2, `FREQ_ADJ` 13,5, `FAULT` 13,8, `CLIP_OTW` 11,6, `RESET-SW` 8,0,
+`RESET_RC` 3,9 mm en `F.Cu` sans via ; `C_START` 26,5 mm (contourne la poche `AVDD`, 2 vias) ;
+`RESET` 142,2 mm, surtout en `B.Cu` à `y` 139 (`x` 260 → 180), hors bande analogique, à 7,4 mm
+des `OUT`. Pour libérer les sorties de `U6`, trois vias `INPUT` de F1.3-d sont repris en 0,6/0,3 ;
+`INPUT_D` rejoint `C207.1` par un via en (290,6 ; 168,425) et un coude `B.Cu` : écart C/D
+0,10 mm. `CLIP_OTW` passe à 0,25 mm exactement de ce via. Mesure : 87 → 78 (tous `GND`),
+segments 472 → 540, vias 50 → 54.

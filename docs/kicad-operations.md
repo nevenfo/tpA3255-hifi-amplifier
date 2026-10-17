@@ -279,3 +279,6 @@ les deux régressions connues du projet : `pad_prop_heatsink` de `U1` (perdu en 
   `DVDD`/`AVDD`/`VBG` se traverse en `B.Cu` (F1.3-d).
 - **Vérifier l'intégrité des pistes existantes par UUID**, pas par `git diff --numstat` : KiCad
   réordonne les blocs à l'enregistrement, ce qui fait apparaître des suppressions fictives.
+- **Redimensionner un via par MCP** : `delete_trace` le supprime par UUID, `add_via` le recrée
+  (0,6/0,3). Près de `U6` côté est (pas 0,635 mm), faire passer deux pistes entre deux voisines
+  exige 1,10 mm libres : vias 0,6/0,3 seulement, jamais 0,8/0,4 (F1.3-e).
