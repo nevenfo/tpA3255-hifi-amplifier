@@ -7,17 +7,19 @@ Branche `ai/f1.4-plane-strategy`.
 
 ## Tâche actuelle
 
-F1.4-b — appliquer O3 : transfert `B.Cu` → `In2.Cu`, plans `/GND` continus sur
-`In1.Cu` et `B.Cu`, zones, couture et vias thermiques.
+F1.7 — corriger l'empreinte de `U1`. Découverte en préparant F1.4-b : le PCB porte un
+WSON 2,5 × 2,5 mm au pas de 0,5 mm, mais le `DPR0010A` réel mesure 4 × 4 mm au pas de 0,8 mm,
+pad exposé 2,6 × 3 mm. F1.4-b est bloquée jusqu'à la correction.
 
 ## Dernière tâche validée
 
-F1.4-a — stratégie des plans : O3 retenue par l'utilisateur le 2026-10-17.
+F1.4-b, préconditions thermiques : données fabricant `U1`/`Q301` établies dans
+`docs/plane-strategy-f1.4-a.md`. Résultats : `U1` large marge ; `Q301` à 101 °C dans le pire cas
+avec cuivre de drain, 160 °C sans.
 
 Validation :
-- Décision consignée dans `docs/architecture.md` (section F1.4-a) et `plan.md`.
-- Baseline PCB inchangée : MD5 `d1c92ea037bde88a81731b002599e651`, DRC 123 violations de
-  sérigraphie, 78 non-connectés tous `GND`, parité 3 ; ERC 16 violations.
+- Sources lues : SNVS376F (rév. mai 2016) et Infineon rév. 2.0 du 2021-05-10.
+- Calculs consignés avec leurs formules. PCB inchangé, MD5 `d1c92ea037bde88a81731b002599e651`.
 
 ## Décisions actives
 
@@ -28,7 +30,8 @@ Validation :
   frontière fonctionnelle et près de `U6`, retours MKP `C321`–`C324` vers `U6` hors aire analogique.
 - Zone `PVDD` sur `In2.Cu` ou `F.Cu` (plus sur `In1.Cu`) ; reprendre aussi les retours
   `COUT`–EP de `U1` et `AVDD`/`DVDD`. Aucun via sous `U6`.
-- Matrices thermiques `U1`/`Q301` seulement après données fabricant (NEEDS_DATA).
+- Cuivre de drain `Q301` sur `F.Cu` + `In2.Cu` (plus `B.Cu`) ; `U1` : vias 2 × 3 de 0,6/0,3 mm
+  dans le pad exposé, bouchés côté `B.Cu`.
 - Sérigraphie à traiter en bloc. Interdiction composants `x` [280 ; 291], `y` [160 ; 190].
 
 ## Blocage actif
@@ -44,6 +47,5 @@ Aucun. Vérifier l'état de l'éditeur PCB avant toute écriture IPC.
 
 ## NEXT ACTION
 
-F1.4-b — réunir les recommandations thermiques PCB fabricant de `LM5010ASD` et
-`IPP330P10NM` (vias, cuivre, puissance pire cas) et les consigner dans
-`docs/plane-strategy-f1.4-a.md`, avant toute écriture KiCad.
+F1.7 — par `kicad-control` : identifier ou créer une empreinte conforme à `DPR0010A`
+(4218856/B), mesurer l'impact sur le placement et le routage autour de `U1`, puis appliquer et valider.

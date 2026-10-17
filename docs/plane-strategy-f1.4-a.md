@@ -28,4 +28,35 @@ O3 transforme l'étoile en ségrégation fonctionnelle : aucun retour MKP dans l
 
 ## Préconditions F1.4-b
 
-`U1` WSON-10 à pad exposé (`172,172`) et `Q301` TO-220 (`184,229`) : **NEEDS_DATA** recommandations thermiques `LM5010ASD`/`IPP330P10NM`, puissance pire cas et règles PCB (via, masque, bouchage, cuivre) avant leur matrice thermique. Aucun via sous `U6`, dont le PowerPAD supérieur va à la barre/dissipateur. Après arbitrage : connectivité, DRC sans `clearance`/`shorting_items`/`track_dangling`/`courtyards_overlap`, parité 3, pas d'îlot, continuité des deux références sous chaque `INPUT`.
+### `U1` — `LM5010ASD/NOPB`, boîtier `DPR0010A`
+
+Source : TI SNVS376F (rév. mai 2016), §6.3, §6.5, §6.6, Eq. 2, §10.1, dessins `DPR0010A` 4218856/B.
+
+- **L'empreinte du PCB est fausse.** Le `DPR0010A` mesure 4 × 4 mm, au pas de 0,8 mm, avec un pad exposé de 2,6 × 3 mm. Le PCB porte `Package_SON:WSON-10-1EP_2.5x2.5mm_P0.5mm_EP1.2x2mm`, pastilles à ± 1,2125 mm au pas de 0,5 mm. Le composant ne serait pas soudable. Correction : F1.7, préalable à F1.4-b.
+- Pas de NEEDS_DATA bloquant pour `U1`.
+  - Données thermiques : RθJA 36 °C/W (métrique JEDEC, SPRA953), RθJC(bot) 3 °C/W, ψJB 13,5 °C/W ; TJ max recommandée 125 °C ; RDS(on) max 0,8 Ω (TJ ≤ 125 °C).
+  - Fréquence, Eq. 2, à VIN ≈ 47,5 V (`PVDD` après `D3`), `R_ON` 182 kΩ, VOUT 15 V : FS ≈ 673 kHz.
+  - Budget : (125 − 50) / 36 = 2,08 W admissibles à Ta = 50 °C. La conduction au courant maximal du composant (1 A, D = 0,316) vaut 1² × 0,8 × 0,316 = 0,25 W. La datasheet ne chiffre pas les pertes de commutation (méthode PIN − POUT, §10.1), mais elles devraient dépasser 1,8 W pour atteindre la limite : la marge est large.
+- Recommandations de layout :
+  - Pad exposé soudé au plan `GND`, vias vers les plans de l'autre face, « autant que possible » (§10.1). L'exemple TI utilise des vias Ø 0,2 mm.
+  - Les règles du projet imposent 0,6/0,3 mm : matrice 2 × 3 au pas de 1 mm dans le pad, vers `In1.Cu` et `B.Cu`, bouchées côté `B.Cu` pour limiter la remontée de soudure.
+  - Le retour `C2`→`C1` (`COUT`→`CIN`) et `SGND`/`RTN` restent directs sans via (§10.1).
+
+### `Q301` — `IPP330P10NM`, TO-220
+
+Source : Infineon Final Data Sheet rév. 2.0, 2021-05-10, Tables 2–4, Diagram 9.
+
+- Données : RthJC 0,5 °C/W ; RthJA 40 °C/W avec 6 cm² de cuivre 70 µm sur une couche (FR4 40 × 40 × 1,5 mm, vertical, air calme) et 62 °C/W sur empreinte minimale ; RDS(on) max 33 mΩ à 25 °C ; Tj max 175 °C ; RDS(on) normalisé ≈ 1,38 à 78 °C et ≈ 1,58 à 100 °C (Diagram 9).
+- Calcul itératif `Tj = Ta + I² × 33 mΩ × k(Tj) × RthJA` :
+  - 4,6 A, Ta = 40 °C, 40 °C/W : Tj ≈ 79 °C, P ≈ 0,96 W.
+  - 4,95 A (4 Ω), Ta = 50 °C, 40 °C/W : Tj ≈ 101 °C, P ≈ 1,28 W.
+  - Même cas, empreinte minimale (62 °C/W) : Tj ≈ 160 °C, marge insuffisante. **Le cuivre de drain est donc nécessaire.**
+- Cuivre retenu, conforme à O3 (`B.Cu` reste `/GND` continu) :
+  - Zone `PVDD_FUSED` `x` 175..200, `y` 230..248,5 sur `F.Cu` et `In2.Cu` (≈ 9 cm² chacune), cousue par vias. 2 × 9 cm² × 35 µm ≥ 6 cm² × 70 µm en conductance de feuille.
+  - Équivalence estimée et non prouvée (couche interne, carte horizontale) : à confirmer par mesure de température.
+  - Les `INPUT` (`y` ≤ 198,2) passent à plus de 30 mm.
+- Aucun via sous `U6`, dont le PowerPAD supérieur va à la barre/dissipateur.
+
+### Validation après application
+
+Connectivité, DRC sans `clearance`/`shorting_items`/`track_dangling`/`courtyards_overlap`, parité 3, pas d'îlot, continuité des deux références sous chaque `INPUT`.

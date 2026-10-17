@@ -401,7 +401,7 @@ E1 validée.
   - [x] F1.3-c Alimentations analogiques (34 : `±VSE`, `±VSE_R`, `L/R_POS/NEG_AC`, `+12V-OA`, `VMID`). `VMID` équidistant de `U4`/`U5` (constat E1.5). Validation : 34 résolus, DRC propre.
   - [x] F1.3-d Signal analogique — d'abord reclasser `±VSE`/`±VSE_R` de `PWR_OUT` en `ANALOG` dans `.kicad_pro` (sorties d'AOP de quelques mA, classe héritée erronée ; DRC inchangé après reclassement) (26 : `INPUT_A`–`D`, `INV1`–`4_NEG`, `RCA_L/R`, `VOL_L/R(_IN)`). Dans la bande `x` 100..155, symétrie (0 ; +40) des deux voies conservée au routage, loin des nœuds commutés. Validation : 26 résolus, écart de longueur entre voies chiffré, DRC propre.
   - [x] F1.3-e Contrôle (9 : `RESET`, `RESET-SW`, `RESET_RC`, `FAULT`, `CLIP_OTW`, `OC_ADJ`, `FREQ_ADJ`, `C_START`). Validation : 9 résolus ; il ne reste que les 78 `GND` ; DRC propre, parité 3.
-- [ ] F1.4 Créer plans/zones et vias thermiques ; remplir les zones. *(**Dépend de F1.6** : un condensateur ajouté se place avant le remplissage des zones. Constat F1.3-a : le `+3V3` long (~135 mm) court en `B.Cu` à `y` 138,3 ; à reprendre si `B.Cu` est réservé au plan `GND`.)*
+- [ ] F1.4 Créer plans/zones et vias thermiques ; remplir les zones. *(**Dépend de F1.6 et F1.7** : un condensateur ajouté se place avant le remplissage des zones. Constat F1.3-a : le `+3V3` long (~135 mm) court en `B.Cu` à `y` 138,3 ; à reprendre si `B.Cu` est réservé au plan `GND`.)*
   - [x] F1.4-a Étude de stratégie des plans, lecture seule. Concilier les contraintes E1.5 (découpe `GND` vers `x` ≈ 142 et jonction unique près de `U6` ; `INPUT_A`–`D` en couche interne entre deux plans de masse sur la traversée de puissance ; retour des MKP `C321`–`C324` sans le plan analogique) avec l'implantation prévue (« L2 plan GND continu ») et le routage réel (`INPUT` en `B.Cu`, `PVDD` 7 mm en `B.Cu`, `+3V3` long en `B.Cu`). Validation : options d'affectation des quatre couches chiffrées (occupation par couche, reprises de pistes, vias, continuité du plan sous `INPUT`, boucles de retour), une recommandation, arbitrage utilisateur obtenu et consigné dans `docs/architecture.md`.
     - **PASS** — étude `docs/plane-strategy-f1.4-a.md` ; **O3 retenue par l'utilisateur le 2026-10-17** (`In1.Cu`/`B.Cu` `/GND` continus, `B.Cu` transféré vers `In2.Cu`), consignée dans `docs/architecture.md`. Elle remplace la découpe E1.5 pour les plans.
   - [ ] F1.4-b Appliquer la stratégie retenue (reprises de routage éventuelles, zones, vias de couture et thermiques sous `U1`/`Q301`), remplir les zones. Validation : 0 non-connecté, DRC sans `clearance`/`shorting_items`/`track_dangling`/`courtyards_overlap`, parité 3, zones remplies sans îlot non relié.
@@ -409,6 +409,19 @@ E1 validée.
 - [x] F1.6 Vérifier au schéma le découplage d'entrée du buck `U1` : aucun condensateur sur `BUCK_VIN` après `D3` (`C2`–`C4` côté `PVDD`). Validation : capacité locale VIN du LM5010 présente au schéma et au PCB, ou absence justifiée par la fiche technique.
   - [x] F1.6-a Diagnostic, lecture seule. *(PASS : `BUCK_VIN` = `U1.10`, `D3.1` (Schottky série anti-retour), `R2.2`, aucun condensateur ; le plus proche, `C11` 10 nF, est à ~15,6 mm de piste derrière `D3`, boucle ≈ 27 mm. Ajout requis.)*
   - [x] F1.6-b Ajouter le découplage d'entrée selon SNVS376F (Table 2, §8.2.2.1.5, §8.2.2.1.9, §Layout) : `C327` 0,1 µF 100 V X7R (rôle C5, au plus près de `U1.10`) et `C328` 2,2 µF 100 V X7R 1210 (rôle C1, boucle `C1`–`VIN`–`SW`–`L1`–`COUT` minimale), tous deux entre `BUCK_VIN` et `GND`, `GND` direct vers l'EP de `U1` sans via. Eq. 18 à 48 V, `R_ON` 182 k, 0,5 A : ≥ 0,33 µF pour ΔV 1 V. Étapes : schéma + ERC, propagation F8 (« Supprimer les empreintes sans symbole » décoché), placement, routage. Validation : ERC sans nouvelle erreur, 126 empreintes, parité 3, `pad_prop_heatsink` = 1, aucune `clearance`/`shorting_items`/`courtyards_overlap`, non-connectés tous `GND`, pistes existantes identiques par UUID hormis reprises déclarées.
+
+- [ ] F1.7 Corriger l'empreinte de `U1` (**découvert en F1.4-b**, 2026-10-17). Le PCB et le schéma portent `Package_SON:WSON-10-1EP_2.5x2.5mm_P0.5mm_EP1.2x2mm`, alors que le `LM5010ASD/NOPB` est en `DPR0010A` : 4 × 4 mm, pas de 0,8 mm, pad exposé 2,6 × 3 mm (SNVS376F, dessins 4218856/B). **Bloque F1.4-b.** Tâches :
+  - choisir une empreinte KiCad conforme au land pattern TI, ou la créer en bibliothèque locale ;
+  - l'affecter au schéma et la propager (F8, « Supprimer les empreintes sans symbole » décoché) ;
+  - rétablir `pad_prop_heatsink` sur le pad 11 ;
+  - replacer les voisins si les courtyards l'exigent, puis reprendre les pistes de `U1`, dont la règle d'échappement.
+  - **Dépendances** : F1.6.
+  - **Validation** :
+    - géométrie des pastilles conforme à 4218856/B ;
+    - ERC sans nouvelle erreur, parité 3, `pad_prop_heatsink` = 1 ;
+    - aucune `clearance`, `shorting_items`, `track_dangling` ni `courtyards_overlap` ;
+    - non-connectés tous `GND` ;
+    - pistes hors `U1` identiques par UUID, sauf reprises déclarées.
 
 ### Validation
 
