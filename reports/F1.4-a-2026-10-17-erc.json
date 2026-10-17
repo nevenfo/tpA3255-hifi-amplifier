@@ -1,0 +1,277 @@
+{
+    "$schema": "https://schemas.kicad.org/erc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-17T19:07:34",
+    "ignored_checks": [
+        {
+            "description": "Global label only appears once in the schematic",
+            "key": "single_global_label"
+        },
+        {
+            "description": "Four connection points are joined together",
+            "key": "four_way_junction"
+        },
+        {
+            "description": "SPICE model issue",
+            "key": "simulation_model_issue"
+        },
+        {
+            "description": "Assigned footprint doesn't match footprint filters",
+            "key": "footprint_filter"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning"
+    ],
+    "kicad_version": "10.0.6",
+    "sheets": [
+        {
+            "path": "/",
+            "uuid_path": "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b",
+            "violations": [
+                {
+                    "description": "Le symbole 'LM5010ASD' ne correspond pas à la copie en librairie 'HifiAmp_TPA3255_Local'",
+                    "items": [
+                        {
+                            "description": "Symbole U1 [LM5010ASD]",
+                            "pos": {
+                                "x": 1.0033,
+                                "y": 1.0033
+                            },
+                            "uuid": "5d0d4c27-c8b9-4e36-a560-14aead2a801c"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol pin or wire end off connection grid",
+                    "items": [
+                        {
+                            "description": "Fil Horizontal, longueur 0,0270 mm",
+                            "pos": {
+                                "x": 1.5002,
+                                "y": 1.0033
+                            },
+                            "uuid": "106b2631-c108-44d6-ad65-0b45255795dd"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "endpoint_off_grid"
+                },
+                {
+                    "description": "Le symbole 'LM2940IMP_12_FIXED' ne correspond pas à la copie en librairie 'HifiAmp_TPA3255_Local'",
+                    "items": [
+                        {
+                            "description": "Symbole U2 [LM2940IMP_12_FIXED]",
+                            "pos": {
+                                "x": 1.6002,
+                                "y": 1.0033
+                            },
+                            "uuid": "3075924f-21f3-40d8-9408-a1a94a64161c"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol pin or wire end off connection grid",
+                    "items": [
+                        {
+                            "description": "Fil Vertical, longueur 0,0254 mm",
+                            "pos": {
+                                "x": 1.6002,
+                                "y": 1.1033
+                            },
+                            "uuid": "7fd1f2a5-71d4-4c9d-baf5-635de01a6285"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "endpoint_off_grid"
+                },
+                {
+                    "description": "Symbol pin or wire end off connection grid",
+                    "items": [
+                        {
+                            "description": "Symbol U2 Pin 2 [GND, Power input, Line]",
+                            "pos": {
+                                "x": 1.6002,
+                                "y": 1.1033
+                            },
+                            "uuid": "9af023d3-a7f8-4339-93fd-72528ecad746"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "endpoint_off_grid"
+                },
+                {
+                    "description": "Symbol pin or wire end off connection grid",
+                    "items": [
+                        {
+                            "description": "Fil Horizontal, longueur 0,0254 mm",
+                            "pos": {
+                                "x": 1.7002,
+                                "y": 0.9779
+                            },
+                            "uuid": "9b64f7f6-bdde-4c7d-988b-34089e011f94"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "endpoint_off_grid"
+                },
+                {
+                    "description": "Symbol pin or wire end off connection grid",
+                    "items": [
+                        {
+                            "description": "Fil Horizontal, longueur 0,0254 mm",
+                            "pos": {
+                                "x": 1.7002,
+                                "y": 1.0287
+                            },
+                            "uuid": "f4102e55-9618-46b1-b7dc-1592d8b07b61"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "endpoint_off_grid"
+                },
+                {
+                    "description": "Le symbole 'TLV1117_33_FIXED' ne correspond pas à la copie en librairie 'HifiAmp_TPA3255_Local'",
+                    "items": [
+                        {
+                            "description": "Symbole U3 [TLV1117_33_FIXED]",
+                            "pos": {
+                                "x": 1.9558,
+                                "y": 1.0033
+                            },
+                            "uuid": "4541ea67-eb53-449c-b036-e8b38b980b65"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol pin or wire end off connection grid",
+                    "items": [
+                        {
+                            "description": "Fil Horizontal, longueur 0,0254 mm",
+                            "pos": {
+                                "x": 2.3003,
+                                "y": 1.0033
+                            },
+                            "uuid": "c2da4f42-4839-4f0a-a7d9-62c0165e1a6c"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "endpoint_off_grid"
+                },
+                {
+                    "description": "Symbol pin or wire end off connection grid",
+                    "items": [
+                        {
+                            "description": "Fil Horizontal, longueur 0,0254 mm",
+                            "pos": {
+                                "x": 2.3003,
+                                "y": 1.0287
+                            },
+                            "uuid": "ab8d6a8a-334f-4460-9eb2-6634644751cb"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "endpoint_off_grid"
+                },
+                {
+                    "description": "Le symbole 'TPS3802K33' ne correspond pas à la copie en librairie 'HifiAmp_TPA3255_Local'",
+                    "items": [
+                        {
+                            "description": "Symbole U7 [TPS3802K33]",
+                            "pos": {
+                                "x": 2.4003,
+                                "y": 1.0033
+                            },
+                            "uuid": "249b3127-cf84-45ab-af59-ce4b1d3a1512"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol pin or wire end off connection grid",
+                    "items": [
+                        {
+                            "description": "Fil Vertical, longueur 0,0254 mm",
+                            "pos": {
+                                "x": 2.4003,
+                                "y": 1.1033
+                            },
+                            "uuid": "c5edb9b9-ceb2-4a92-8c9f-0a75b6ca307f"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "endpoint_off_grid"
+                },
+                {
+                    "description": "Symbol pin or wire end off connection grid",
+                    "items": [
+                        {
+                            "description": "Symbol U7 Pin 2 [GND, Power input, Line]",
+                            "pos": {
+                                "x": 2.4003,
+                                "y": 1.1287
+                            },
+                            "uuid": "55c3b798-8fe8-475d-b2bf-3b574ab9d6e5"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "endpoint_off_grid"
+                },
+                {
+                    "description": "Symbol pin or wire end off connection grid",
+                    "items": [
+                        {
+                            "description": "Fil Horizontal, longueur 0,0254 mm",
+                            "pos": {
+                                "x": 2.5003,
+                                "y": 1.0033
+                            },
+                            "uuid": "a097d941-fdb8-4c73-89fe-55456ae26243"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "endpoint_off_grid"
+                },
+                {
+                    "description": "Le symbole 'LM5069' ne correspond pas à la copie en librairie 'HifiAmp_TPA3255_Local'",
+                    "items": [
+                        {
+                            "description": "Symbole U8 [LM5069]",
+                            "pos": {
+                                "x": 3.302,
+                                "y": 4.2037
+                            },
+                            "uuid": "ab9fea50-b6d3-4e94-93be-eec8cbca4e01"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Le symbole 'TPA3255B' ne correspond pas à la copie en librairie 'HifiAmp_TPA3255_Local'",
+                    "items": [
+                        {
+                            "description": "Symbole U6 [TPA3255B]",
+                            "pos": {
+                                "x": 3.4036,
+                                "y": 1.8034
+                            },
+                            "uuid": "1a25a659-48ab-4430-90b1-1c59b05b8331"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                }
+            ]
+        }
+    ],
+    "source": "HifiAmp_TPA3255.kicad_sch"
+}

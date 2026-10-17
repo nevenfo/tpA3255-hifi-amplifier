@@ -1364,3 +1364,14 @@ des `OUT`. Pour libérer les sorties de `U6`, trois vias `INPUT` de F1.3-d sont 
 `INPUT_D` rejoint `C207.1` par un via en (290,6 ; 168,425) et un coude `B.Cu` : écart C/D
 0,10 mm. `CLIP_OTW` passe à 0,25 mm exactement de ce via. Mesure : 87 → 78 (tous `GND`),
 segments 472 → 540, vias 50 → 54.
+
+## F1.4-a — stratégie des quatre couches : arbitrage en attente
+
+L'[étude de stratégie](plane-strategy-f1.4-a.md) recommande **O3** :
+`F.Cu` composants/signaux, `In1.Cu` masse continue, `In2.Cu` pistes transférées
+aujourd'hui sur `B.Cu`, `B.Cu` masse continue. Cette proposition révise la découpe
+analogique/puissance et la jonction unique d'E1.5 ; les chemins de retour seraient
+maîtrisés par l'implantation et la couture, sans fente sous les entrées audio.
+
+**Décision utilisateur : en attente.** Les décisions E1.5 restent en vigueur et
+F1.4-a ouverte jusqu'à cet arbitrage. Aucun fichier KiCad n'a été modifié.
