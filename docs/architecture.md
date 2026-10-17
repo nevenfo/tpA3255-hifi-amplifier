@@ -1215,6 +1215,11 @@ ci-dessous.** Le blocage se dénoue en deux gestes indépendants :
    1,6 mm — au lieu des 7,71 mm de trajet plan que F1.1 avait obtenus. C'est ce qui distingue
    cette voie du report des condensateurs *sur la face avant*, où ils n'auraient eu d'autre place
    qu'à gauche des bootstraps, au prix d'une boucle au-delà de 20 mm traversant la rangée `BST`.
+   **Correction mesurée en F1.2-b1 : la boucle ne raccourcit pas.** Les condensateurs restant au
+   même `x`, les deux traversées de 1,6 mm s'**ajoutent** au trajet plan : ≈ 10,8 mm par
+   condensateur à la métrique de F1.1 (centre de pastille → centre de broche), contre 7,71 mm.
+   Le flip a aussi inversé les pastilles ; une rotation de 180° sur `B.Cu` les remet face à leurs
+   broches, sans croisement.
 2. **Le croisement structurel se dénoue par une via sur chaque `BST`.** `BST_B` et `BST_C` sont
    des signaux de grille routés à 0,35 mm : **une via suffit par net**, là où un `OUT` à 5 A en
    exigerait quatre. La via se pose donc du côté du signal faible, jamais du nœud de puissance.

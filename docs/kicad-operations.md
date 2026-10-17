@@ -19,7 +19,12 @@ Le MCP ne sait pas tout faire, et l'IPC est capricieux. Cet ordre est le seul qu
    `KiCad document context is ambiguous: expected exactly one PCB or schematic handler, found 2`.
    Fermer l'autre fenêtre par `WM_CLOSE` sur son handle Win32 suffit — la fenêtre du
    gestionnaire ne compte pas comme handler.
-5. `kicad_common.json` porte déjà `api.enable_server = true` ; il ne manque que le processus.
+5. **`api.enable_server` doit valoir `true`** dans `%APPDATA%\kicad\10.0\kicad_common.json` —
+   il a été trouvé à `false` en F1.2-b1, d'où un `Connection refused`. Le corriger **KiCad
+   fermé** (il réécrit le fichier en quittant), puis relancer. Sous Windows, le socket n'est
+   **pas un fichier** : nng l'expose en named pipe
+   `\\.\pipe\C:\Users\FlowUP\AppData\Local\Temp\kicad\api.sock`. Contrôle :
+   `[IO.Directory]::GetFiles('\\.\pipe\') -match 'kicad'`.
 6. **Toujours prouver un enregistrement par le MD5 du fichier**, jamais par le retour de
    `save_project`.
 7. **Ne jamais lancer KiCad depuis le shell d'un agent : il est élevé, KiCad hérite du jeton

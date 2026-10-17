@@ -2,88 +2,74 @@
 
 ## Phase actuelle
 
-**Phase F — Routage. F1.2-a close, F1.2-b débloquée et en cours.** **58 segments, zéro via** : les
-quatre boucles de bootstrap, `PVDD`, les découplages auxiliaires (F1.1), et les quatre sorties
-filtrées `self → condensateur → bornier` à 3,00 mm (F1.2-a). DRC courant : **113 violations toutes
-de sérigraphie** (91 `silk_overlap`, 22 `silk_over_copper`), **230 non-connectés**,
-`schematic_parity` = **3**, aucune `clearance`, aucun `shorting_items`, aucun `track_dangling`.
-Compteurs de structure : **124 empreintes, 119 blocs `(units`, `pad_prop_heatsink` = 1**.
+**Phase F — Routage. F1.2-a close, F1.2-b en cours.** 68 segments, **4 vias** (les premières de la
+carte). DRC courant : **111 violations toutes de sérigraphie** (89 `silk_overlap`, 22
+`silk_over_copper`), **226 non-connectés**, `schematic_parity` = **3**, aucune `clearance`,
+aucun `shorting_items`, aucun `track_dangling`. Compteurs de structure : **124 empreintes, 119
+blocs `(units`, `pad_prop_heatsink` = 1**. `C310`/`C311` sur `B.Cu`, toutes les autres sur `F.Cu`.
 
 ## Tâche actuelle
 
-**F1.2-b1 — basculer `C310`/`C311` sur `B.Cu` et rerouter `/PVDD` par vias.** Moitié 1 faite :
-le flip est commité (`7114e41`, Konnect v1.2.0 `flip_component`, `kicad-cli pcb export pos` les
-donne `bottom`). Reste le reroutage `/PVDD`/`GND` par vias sous `U6`.
+**F1.2-b1 — `C310`/`C311` au dos, `/PVDD` et `/GND` reroutés par vias.** Câblage fait et DRC propre,
+**mais le critère de boucle ≤ 7,71 mm échoue** : la tâche reste ouverte, en attente d'arbitrage.
 
 ## Dernière tâche validée
 
-**F1.2-a = PASS.** Les quatre nets `/OUT_x_F` sont routés, **23 segments à 3,00 mm, zéro via**,
-après deux échanges d'emplacement entre composants identiques — `L302` ↔ `L303` et `C322` ↔ `C323`
-— qui alignent l'ordre des condensateurs sur celui des borniers et rendent la topologie planaire.
+**F1.2-a = PASS** (quatre sorties filtrées, 23 segments à 3,00 mm, zéro via). Depuis, F1.2-b1
+a produit un état **sain mais non validé** :
 
 Validation :
 
-- **Non-connectés 238 → 230**, les huit chevelus prédits ; **0 `clearance`, 0 `shorting_items`,
-  0 `track_dangling`, 0 `solder_mask_bridge`, 0 `copper_edge_clearance`** ; `schematic_parity`
-  toujours **3** ; sérigraphie **113 inchangée**.
-- **Vérification indépendante du principal** : DRC relancé en `kicad-cli --schematic-parity` ;
-  **58 segments tous sur `F.Cu`**, **0 via** ; **zéro intersection** entre les 23 segments, testée
-  segment à segment ; diff Git ne montrant **que les quatre `(at)` échangés et les 23 segments**.
+- `C310`/`C311` tournés de 180° sur `B.Cu` (−90 et 90) : chaque pastille fait face à sa broche
+  — `C311` GND 170,225 ↔ broches 25/26, PVDD 173,175 ↔ 29–31 ; `C310` PVDD 176,825 ↔ 36–38,
+  GND 179,775 ↔ 41/42. Sans cette rotation, le flip imposait un croisement.
+- 4 vias ø0,6/0,3 : `/PVDD` (279,9 ; 172,7775) et (279,9 ; 177,2225) au bout des segments 1,1 mm
+  F1.1 ; `/GND` (280,55 ; 169,85) et (280,55 ; 180,2), décalées à droite des diagonales
+  `BST_C`/`BST_B`. Segments 0,8 mm F1.1 orphelins supprimés.
+- **Vérification du principal** : DRC `kicad-cli --schematic-parity` → 0 `clearance`/
+  `shorting_items`/`track_dangling` (HEAD en avait 2), non-connectés **232 → 226**, les six
+  résolus étant ceux de `C310`/`C311` ; diff, fins de ligne normalisées : **seules les empreintes
+  `C310`/`C311` changent**.
+- **Boucle, même métrique que F1.1 (centre de pastille → centre de broche le long des pistes)** :
+  PVDD 3,79 + GND 3,83 + 2 × 1,6 de traversée ≈ **10,8 mm par condensateur, contre 7,71**.
+  Le condensateur n'ayant pas bougé en `x`, les traversées s'**ajoutent** au trajet plan :
+  l'affirmation « la boucle raccourcit » de l'arbitrage F1.2-b était fausse.
 
 ## Décisions actives
 
 Les règles durables sont dans `docs/kicad-operations.md`, le placement et les mesures dans
 `docs/architecture.md`, section **F1.2-b**. Restent ici :
 
-- **Arbitrage F1.2-b rendu, en deux gestes indépendants.** `C310`/`C311` **passent au dos sur
-  `B.Cu`**, vias sous les broches `PVDD`/`GND` — la colonne `x` ∈ [276 ; 279] se libère et la
-  boucle de découplage **raccourcit** au lieu de s'allonger. Le croisement structurel se dénoue
-  par **une via sur chaque `BST`**, jamais sur un `OUT` à 5 A. **Coût assumé : la carte cesse
-  d'être simple-face**, second passage d'assemblage pour deux composants.
-- **Règle DRU d'échappement posée et prouvée inerte** ; **sa sélectivité reste à prouver** en
-  retirant `U6` de sa condition, quand une piste l'exercera — c'est une validation de F1.2-b3.
-- **113 violations de sérigraphie restent à traiter en bloc**, aucune n'ayant d'effet cuivre.
-- **Masses locales et rails auxiliaires trop longs partent au plan de F1.4**, où `AVDD` et `DVDD`
-  — 28,95 et 34,82 mm — seront réexaminés. Un seul net `/GND`, aucune zone dessinée.
+- **Arbitrage F1.2-b** : `C310`/`C311` au dos ; le croisement `BST`/`OUT` se dénoue par **une via
+  sur chaque `BST`** (F1.2-b2), jamais sur un `OUT`. Carte non simple-face, coût assumé.
+- **La colonne `x` ∈ [276,15 ; 278,85] n'est libre qu'après F1.2-b2** : `BST_B`/`BST_C` (et les
+  amorces `BST_A`/`BST_D`) la traversent encore ; ce critère de F1.2-b1 se constate en F1.2-b2.
+- **Règle DRU d'échappement posée et prouvée inerte**, sélectivité à prouver en F1.2-b3.
+- **Sérigraphie à traiter en bloc** ; **masses et rails auxiliaires longs au plan de F1.4**.
 
 ## Blocage actif
 
-**Le reroutage exige l'IPC, donc l'éditeur de PCB ouvert ; la session Windows est sur le bureau
-sécurisé** (verrouillage ou invite UAC : `SecureDesktopActive` sur KiCad comme sur Firefox).
-KiCad tourne, lancé par `explorer.exe`, gestionnaire de projet seul ; le double-clic sur
-`HifiAmp_TPA3255.kicad_pcb` n'a pu être émis. Carte inchangée. **Reprise : session déverrouillée
-→ ouvrir l'éditeur de PCB depuis le gestionnaire (sans schéma) → reroutage par IPC.**
+**Décision utilisateur : le critère de boucle ≤ 7,71 mm n'est pas tenable avec les condensateurs
+à leur `x` actuel.** Options mesurées :
 
-Relevés pour le reroutage, faits sur le fichier courant :
-
-- Le flip a **inversé les pastilles** : `/PVDD` à l'extérieur, `/GND` à l'intérieur — `C310`
-  pad 1 PVDD (277,5 ; 179,775), pad 2 GND (277,5 ; 176,825) ; `C311` pad 1 PVDD (277,5 ;
-  170,225), pad 2 GND (277,5 ; 173,175), `B.Cu`, 1,15 × 2,7 mm.
-- Segments F1.1 `/PVDD` 0,8 mm dangling, à supprimer : `e2dc4dc0-5a66-404f-a7c1-66630b4ea0c0`,
-  `22785dab-2adc-4eec-84f0-d3940d274222` ; les 1,1 mm (279,9 → 281,2875) `137c5f6d…`,
-  `09acd9a7…` restent et servent de sortie aux vias.
-- **Aucune piste `GND` n'existait** ici : pistes neuves vers les broches `GND` de `U6` 25/26
-  (`y` 169,60/170,24), 33/34 (174,68/175,32), 41/42 (179,76/180,40).
-- Vias prévues vers `x` ≈ 279,5 : l'isolation 0,5 mm `PVDD`/`PWR_OUT` vaut via ↔ pastille, la
-  règle `.kicad_dru` ne l'assouplit pas.
-- **La colonne ne sera libre qu'après F1.2-b2** : `BST_C` (`y` 171,7) et `BST_B` (`y` 178,3)
-  la traversent encore de `x` 275,5 à 279,25 ; ce critère de F1.2-b1 se constate donc en
-  F1.2-b2.
+1. **Accepter ≈ 10,8 mm** et réviser le critère (aucune reprise).
+2. **Glisser `C310`/`C311` vers la droite sous `U6`** sur `B.Cu`, extrémité de pastille sur les
+   vias (`x` ≈ 279,9) : ≈ **8,7 mm**, coût nul en fabrication, la face dessous sous `U6` étant
+   libre (PowerPAD sur le dessus).
+3. **Vias dans les pastilles** des condensateurs : ≈ **5,4 mm**, mais vias bouchées et capées
+   (option de fabrication payante).
 
 ## Fichiers / zones utiles
 
-- `HifiAmp_TPA3255.kicad_pcb` — MD5 `619eedd795f6f35dfc6af4dec222a1c1` après flip ; `.kicad_pro`
-  porte les classes de net, `.kicad_dru` les deux règles internes aux boîtiers à pas fin
-- **`docs/kicad-operations.md`** — pilotage KiCad et pièges d'outillage, **à lire avant toute
-  manipulation**
-- `docs/architecture.md`, section **F1.2-b** — champ d'échappement, mesure et arbitrage rendu
+- `HifiAmp_TPA3255.kicad_pcb` — MD5 `7257cdc74fc2190b1a102b232268074e` ; `.kicad_pro` porte les
+  classes de net, `.kicad_dru` les deux règles internes aux boîtiers à pas fin
+- **`docs/kicad-operations.md`** — pilotage KiCad, **à lire avant toute manipulation** (API à
+  activer, named pipe, `(units` perdus au déplacement)
+- `docs/architecture.md`, section **F1.2-b**
 
 ## NEXT ACTION
 
-**F1.2-b1 — rerouter `/PVDD` et `GND` de `C310`/`C311` (désormais sur `B.Cu`) par vias vers les
-broches `PVDD` de `U6`, et supprimer les segments F.Cu F1.1 devenus orphelins.** Ancres : `C310`
-(277,5 ; 178,3) −90°, `C311` (277,5 ; 171,7) +90°, `C_1210_3225Metric` ; pads `/PVDD` de `U6` en
-`x` = 281,2875, 29/30/31 en `y` = 172,1425 / 172,7775 / 173,4125, 36/37/38 en `y` = 176,5875 /
-177,2225 / 177,8575. Valider par : boucle **≤ 7,71 mm** ; colonne `x` ∈ [276,15 ; 278,85] libre
-sur `F.Cu` ; DRC sans `clearance`, `shorting_items` ni `track_dangling` ; parité **3** ;
-non-connectés **230** ; **124 empreintes, 119 blocs `(units`**.
+**F1.2-b1 — obtenir l'arbitrage sur la boucle de découplage (options 1, 2 ou 3 ci-dessus), puis
+l'appliquer** ; validation : boucle au nouveau critère retenu, DRC sans `clearance`,
+`shorting_items` ni `track_dangling`, parité **3**, non-connectés **≤ 226**, **124 empreintes,
+119 `(units`**.
