@@ -2,15 +2,21 @@
 
 ## Phase actuelle
 
-**Phase F — Routage. F1.2-a, F1.2-b1 et F1.2-b2 closes, F1.2-b3 à faire.** 66 segments,
-**8 vias**. DRC courant : **111 violations toutes de sérigraphie** (89 `silk_overlap`, 22
-`silk_over_copper`), **226 non-connectés** dont **10 sur `/OUT_A`–`/OUT_D`**,
+**Phase F — Routage. F1.2-a, F1.2-b1 et F1.2-b2 closes, F1.2-b3 routée mais non validée.**
+122 segments, **8 vias**. DRC courant : **111 violations toutes de sérigraphie** (89
+`silk_overlap`, 22 `silk_over_copper`), **216 non-connectés**, aucun sur `/OUT_A`–`/OUT_D`,
 `schematic_parity` = **3**, aucune `clearance`, aucun `shorting_items`, aucun `track_dangling`,
 aucun `courtyards_overlap`. **124 empreintes, 119 blocs `(units`, `pad_prop_heatsink` = 1.**
 
 ## Tâche actuelle
 
-**F1.2-b3 — router `/OUT_A` à `/OUT_D` de `U6` aux bootstraps puis aux selfs.**
+**F1.2-b3 — `/OUT_A`–`/OUT_D` routés sur `F.Cu`, sans via, DRC propre, 216 non-connectés.**
+Sélectivité DRU **prouvée** (copie avec `U6` retiré de la condition : 14 `clearance`, toutes
+piste `OUT` ↔ pastille `U6` ; 0 avec la règle). **Critère « 3,00 mm hors du pas fin » non tenu** :
+~12 mm sous 3,00 mm par net, cols de 0,96–1,07 mm (`OUT_B`/`OUT_C`) entre les pastilles de
+`C306`–`C309`, 0,90 mm (`OUT_A`) près de la via `BST_B`. Longueurs A 31,7 / B 58,3 / C 63,7 /
+**D 101,2 mm** : `L303`/`L304` sont en `x` = 240, à 45 mm de `U6`. Vias `BST` déplacées en
+(280 ; 169,1) et (280 ; 180,9), `BST_A`/`BST_D` à `y` 182,5 / 167,5.
 
 ## Dernière tâche validée
 
@@ -46,18 +52,19 @@ section **F1.2-b**.
 
 ## Blocage actif
 
-Aucun.
+**Décision utilisateur sur F1.2-b3** : accepter les cols et longueurs actuels (élargissement par
+zones `OUT` en F1.4), ou reprendre le placement — bootstraps hors du chemin `OUT`, selfs
+`L303`/`L304` rapprochées de `U6` — au prix d'une reprise partielle de F1.2-a.
 
 ## Fichiers / zones utiles
 
-- `HifiAmp_TPA3255.kicad_pcb` — MD5 `db7db5ceba5dd712652c83541963aad2` ; `.kicad_dru` porte les
+- `HifiAmp_TPA3255.kicad_pcb` — MD5 `199511c0266fd228e2d84d4a10a298d9` ; `.kicad_dru` porte les
   deux règles internes aux boîtiers à pas fin
 - **`docs/kicad-operations.md`** — **à lire avant toute manipulation**
 - `docs/architecture.md`, section **F1.2-b** — mesure d'échappement et courant (IPC-2221)
 
 ## NEXT ACTION
 
-**F1.2-b3 — router les quatre `OUT` de `U6` à leurs bootstraps puis à leurs selfs, sur `F.Cu`.**
-Validation : non-connectés **226 → 216**, largeur d'échappement justifiée puis 3,00 mm hors du pas
-fin, 0 `clearance`/`shorting_items`/`track_dangling`, parité 3, **sélectivité de la règle DRU
-prouvée**, 124 empreintes, 119 `(units`.
+**F1.2-b3 — obtenir l'arbitrage sur les cols et la longueur des `OUT`, puis l'appliquer.**
+Validation : critère de largeur retenu tenu ou justifié, 0 `clearance`/`shorting_items`/
+`track_dangling`, parité 3, non-connectés **216**, 124 empreintes, 119 `(units`.
