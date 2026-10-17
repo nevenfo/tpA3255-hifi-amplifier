@@ -1274,3 +1274,17 @@ Vias `BST` côté broche (280 ; 169,1) et (280 ; 180,9) conservées ; celles en 
 remplacées par (275,9 ; 170,44) pour C et (275,9 ; 179,56) pour B. Rangées `OUT` : D `y` 167,65,
 C 173,25, B 176,75, A en diagonale vers `x` 276,5 ; 3,00 mm dès `x` ≈ 278, l'amont restant
 contraint par le pas fin et les vias `BST`.
+
+**Appliqué en F1.2-c2**, positions O1 tenues à l'exception de `C306`, posé à **180°** : à 0°, sa
+pastille `BST_A` tombait dans la verticale `OUT_A` de 3 mm. Vias `BST_C`/`BST_B` côté
+condensateur en (273,0 ; 170,445) et (273,0 ; 179,555), à l'ouest des pastilles, les positions
+prévues étant à moins de 0,5 mm de `OUT_D`/`OUT_A`. Résultat mesuré :
+
+| Net | Longueur | Sous 3,00 mm |
+| --- | --- | --- |
+| `OUT_A` / `OUT_B` | 29,13 / 28,92 mm — écart **0,21** | 5,33 / 2,92 mm, `x` ≥ 277,3 / 278,7 |
+| `OUT_C` / `OUT_D` | 68,27 / 71,89 mm — écart **3,62** | 2,92 / 6,05 mm, `x` ≥ 278,7 / 277,2 |
+| `OUT_A_F`–`OUT_D_F` | 52,20 / 60,95 / 52,10 / 106,85 mm | aucun |
+
+Les largeurs réduites ne se trouvent plus qu'au pas fin et aux vias `BST` côté broche ; les cols
+entre bootstraps ont disparu.
