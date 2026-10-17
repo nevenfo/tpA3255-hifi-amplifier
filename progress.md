@@ -2,42 +2,38 @@
 
 ## Phase actuelle
 
-**Phase F — Routage. F1.1 et F1.2 closes (sorties Class-D complètes), F1.3 à ouvrir.** 81
-segments, **8 vias**. DRC courant : **107 violations toutes de sérigraphie** (86 `silk_overlap`,
-21 `silk_over_copper`), **216 non-connectés**, aucun sur `OUT`, `OUT_x_F` ni `BST_A`–`D`,
-`schematic_parity` = **3**, aucune `clearance`, aucun `shorting_items`, aucun `track_dangling`,
-aucun `courtyards_overlap`. **124 empreintes, 119 blocs `(units`, `pad_prop_heatsink` = 1.**
+**Phase F — Routage. F1.1, F1.2 et F1.3-a closes ; F1.3-b à ouvrir.** 159 segments, **14 vias**.
+DRC courant : **107 violations toutes de sérigraphie** (86 `silk_overlap`, 21 `silk_over_copper`),
+**186 non-connectés** (78 `GND` + entrée/protection 39 + analogique 34 + signal 26 + contrôle 9),
+`schematic_parity` = **3**, aucune `clearance`, `shorting_items`, `track_dangling` ni
+`courtyards_overlap`. **124 empreintes, 119 blocs `(units`, `pad_prop_heatsink` = 1.**
 
 ## Tâche actuelle
 
-**F1.3-a — buck auxiliaire `U1` et rails `+12V`/`+15V`/`+3V3` (30 chevelus).** F1.3 découpée
-en a–e après inventaire (216 = `GND` 78 + 39 + 30 + 34 + 26 + 9).
+**F1.3-b — entrée de puissance et protection `LM5069` (39 chevelus).**
 
 ## Dernière tâche validée
 
-**F1.2-c2 = PASS — placement O1 appliqué, étage de sortie rerouté.** Tores `L302` (260,45 ; 184,5),
-`L304` (228,35 ; 184,5), `L301` (276,5 ; 204,3), `L303` (244,4 ; 204,3) ; bootstraps en miroir,
-`C306` à 180°. Détail dans `docs/architecture.md`, § F1.2-c.
+**F1.3-a = PASS — buck `U1` et rails `+12V`/`+15V`/`+3V3` routés** (détail et largeurs :
+`docs/architecture.md`, § F1.3-a).
 
 Validation :
 
-- **Vérification du principal** : DRC `kicad-cli --schematic-parity` propre, non-connectés 216,
-  parité 3 ; **seules les 8 empreintes prévues changent**, toutes avec leur `(units` ; tout sur
-  `F.Cu`, aucune via sur un `OUT`.
-- Longueurs A 29,13 / B 28,92 (écart 0,21), C 68,27 / D 71,89 (écart 3,62) ; largeur < 3,00 mm
-  seulement en `x` ≥ 277,2 (pas fin, vias `BST`) ; `OUT_x_F` intégralement à 3,00 mm.
-- **Sélectivité DRU rejouée** : copie sans `U6` dans la condition → 11 `clearance`, toutes
-  piste ↔ pastille `U6`.
+- **Vérification du principal** (`kicad-cli pcb drc --schematic-parity`) : non-connectés 216 → 186,
+  aucun restant sur `SW`, `BUCK_VIN`, `FB`, `BST`, `VCC`, `SS`, `RON_SD`, `+12V`, `+15V`, `+3V3` ;
+  violations 86 + 21 silk uniquement ; parité 3 ; 124 / 119 / 1.
+- Diff `.kicad_pcb` purement additif (672 insertions, 0 suppression) : aucune empreinte déplacée.
 
 ## Décisions actives
 
 Règles durables : `docs/kicad-operations.md` ; placement et mesures : `docs/architecture.md`.
 
-- **Les `OUT` à 5 A restent intégralement sur `F.Cu`, sans via.** Carte non simple-face
-  (`C310`/`C311` au dos).
-- **Bande `x` 100..155 réservée à l'analogique bas niveau** ; zone d'interdiction de la barre
-  `x` [280 ; 291], `y` [160 ; 190] pour les composants (décisions E1).
-- **Sérigraphie à traiter en bloc** ; **masses et rails auxiliaires longs au plan de F1.4**.
+- **Les `OUT` à 5 A restent intégralement sur `F.Cu`, sans via.** Carte non simple-face.
+- **Bande `x` 100..155 réservée à l'analogique bas niveau** ; zone d'interdiction composants
+  `x` [280 ; 291], `y` [160 ; 190] (pistes autorisées).
+- **Sérigraphie à traiter en bloc** ; **masses au plan de F1.4** ; `+3V3` long en `B.Cu` à
+  reprendre si F1.4 réserve `B.Cu` au `GND`.
+- **Découplage `BUCK_VIN` absent après `D3`** : à trancher en F1.6, sans bloquer F1.3.
 
 ## Blocage actif
 
@@ -45,13 +41,13 @@ Aucun.
 
 ## Fichiers / zones utiles
 
-- `HifiAmp_TPA3255.kicad_pcb` — MD5 `d00e2fb846c4744d688642f534342e53`
+- `HifiAmp_TPA3255.kicad_pcb` — MD5 `4ecca372ee549a15e6c5ef0c692b1fad`
 - **`docs/kicad-operations.md`** — **à lire avant toute manipulation**
-- `docs/architecture.md` — décisions E1, E1.5, F1.2-b, F1.2-c
+- `docs/architecture.md` — décisions E1, E1.5, F1.2-b, F1.2-c, F1.3-a
 
 ## NEXT ACTION
 
-**F1.3-a — router le buck auxiliaire `U1` et ses rails** : boucle `BUCK_VIN`–`SW`–self minimale
-d'abord, `FB` à l'écart de `SW`. Validation : 30 chevelus résolus (216 → 186), DRC sans
-`clearance`/`shorting_items`/`track_dangling`, parité 3, largeurs justifiées, 124 empreintes,
-119 `(units`.
+**F1.3-b — router l'entrée de puissance et la protection `LM5069`** : shunt `R306` en Kelvin sur
+les bords intérieurs, chemin de puissance dimensionné au courant total, 6 cm² réservés au drain de
+`Q301`. Validation : 39 résolus (186 → 147), DRC sans `clearance`/`shorting_items`/`track_dangling`,
+parité 3, largeurs de puissance justifiées, 124 empreintes, 119 `(units`.

@@ -1288,3 +1288,18 @@ prévues étant à moins de 0,5 mm de `OUT_D`/`OUT_A`. Résultat mesuré :
 
 Les largeurs réduites ne se trouvent plus qu'au pas fin et aux vias `BST` côté broche ; les cols
 entre bootstraps ont disparu.
+
+## F1.3-a — buck auxiliaire `U1` et rails
+
+Boucle chaude d'abord : `SW` `U1.1` → `D1`/`L1`/`C1` en col 0,25 mm puis 0,4–0,6 mm (≤ 1 A,
+limite LM5010 ; IPC-2221 1 oz, ΔT 10 K : 0,30 mm/1 A). `BUCK_VIN` 0,25 → 0,6 mm vers `D3`.
+`VCC` et `BST` sautent en `B.Cu` (broches enfermées). `FB`/`SS`/`RON_SD` 0,25 mm, `FB` part à
+l'opposé de `SW`.
+
+| Rail | Largeur | Remarque |
+|---|---|---|
+| `+15V` | 0,6 mm tronc, 0,25 mm diviseurs | `R39` longe le pad `SW` de `L1` à 0,5 mm sur ~7 mm (DC, accepté) |
+| `+12V` | 0,4–0,6 mm | long rail `F.Cu` ~96 mm à `y` 150,25 ; jonction 0,4 mm sous `U6` (`x` 287,4) |
+| `+3V3` | 0,3–0,5 mm | long rail `B.Cu` ~135 mm, ~1 mA |
+
+Mesure : 216 → 186 non-connectés, segments 81 → 159, vias 8 → 14, aucune empreinte déplacée.

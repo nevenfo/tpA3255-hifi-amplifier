@@ -257,3 +257,8 @@ les deux régressions connues du projet : `pad_prop_heatsink` de `U1` (perdu en 
   pastilles traversantes espacées. La règle « recalculer la marge » vaut aux deux sens : elle
   interdit de reprendre la largeur de classe en sortie de `U6`, elle interdit aussi de garder
   une largeur d'échappement une fois le boîtier quitté.
+- **Au pas de 0,5 mm (WSON/MSOP), rien ne relâche le dégagement piste ↔ pastille.** La règle
+  `.kicad_dru` ne vise que pastille ↔ pastille, la classe `PWR_AUX` non plus : il reste 0,25 mm.
+  Sortir en col de 0,2 à 0,25 mm sur ~0,5 mm, puis élargir (0,6 mm exige ≥ 0,55 mm de la pastille
+  voisine). Une broche enfermée (`U1` : `VCC`, `BST`) saute en `B.Cu` par via 0,6/0,3 plutôt que
+  de forcer (F1.3-a).
