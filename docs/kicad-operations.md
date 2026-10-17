@@ -274,3 +274,8 @@ les deux régressions connues du projet : `pad_prop_heatsink` de `U1` (perdu en 
   canaux translatés se raccordent depuis un centre équidistant : longueurs `VMID` égales par
   construction (F1.3-c). Pistes `F.Cu` persistantes à `y` 140,4 et 160,4 dans la bande
   analogique : les traversées nord-sud suivantes passent en `B.Cu`.
+- **Paires côte à côte en `B.Cu` : pas de 0,55 mm (0,30 mm d'isolation), appariement compté vias
+  inclus** (1,6 mm par via, `use_height_for_length_calcs`). Une zone `F.Cu` enclose par
+  `DVDD`/`AVDD`/`VBG` se traverse en `B.Cu` (F1.3-d).
+- **Vérifier l'intégrité des pistes existantes par UUID**, pas par `git diff --numstat` : KiCad
+  réordonne les blocs à l'enregistrement, ce qui fait apparaître des suppressions fictives.

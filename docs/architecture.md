@@ -1334,3 +1334,23 @@ des broches 8. `VMID` 0,3 mm surtout en `B.Cu`, étoile en (121,05 ; 170), canal
 de 40 mm : 22,0 mm vers `C110`/`C210`, 30,85 mm vers les broches 3, 37,97 mm vers les broches 5,
 des deux côtés. `±VSE`/`±VSE_R` et `*_AC` en `F.Cu` 0,25 mm. Distance minimale aux `SW`/`OUT` :
 22,3 mm. Mesure : 147 → 113, segments 253 → 332, vias 20 → 33.
+
+## F1.3-d — signal analogique
+
+`±VSE`/`±VSE_R` reclassés de `PWR_OUT` en `ANALOG` (sorties d'AOP), DRC inchangé. Tout en
+0,25 mm. `INPUT_A`–`D` : sortie `B.Cu` par les couloirs `x` 136,5–140, corridor nord `y`
+102–104,1, descente à l'est `x` 297,7–299,35 jusqu'à `U6` (l'ordre des broches de `U6` interdit un
+chemin croisé nord/sud sans croiser les paires).
+
+| Mesure | Valeur |
+|---|---|
+| `INPUT_A` / `B` (vias inclus) | 324,74 / 325,19 mm, écart 0,45 mm |
+| `INPUT_C` / `D` | 365,08 / 365,08 mm, écart 0,00 |
+| Voie droite − voie gauche | +40,3 mm ≈ 0,27 ns, **accepté** : négligeable à 20 kHz |
+| `INV`, `RCA` gauche/droite | écart 0,00 (translation de 40 mm) |
+| Distance aux `SW` de `U1` | 24,6 mm |
+| Distance aux `OUT` | 6,5 mm aux broches de `U6` seulement, > 30 mm ailleurs |
+
+`INPUT_C` passe à 0,275 mm entre une piste `VBG` et `C207.2`. Les vias `INPUT` près de `U6`
+(`x` 290–294,3, `y` 164–179,15) resserrent la sortie des nets de contrôle. Mesure : 113 → 87,
+segments 332 → 472, vias 33 → 50, les 365 éléments existants inchangés (UUID).

@@ -645,19 +645,19 @@
         "pattern": "/OUT_D_F"
       },
       {
-        "netclass": "PWR_OUT",
+        "netclass": "ANALOG",
         "pattern": "/+VSE"
       },
       {
-        "netclass": "PWR_OUT",
+        "netclass": "ANALOG",
         "pattern": "/-VSE"
       },
       {
-        "netclass": "PWR_OUT",
+        "netclass": "ANALOG",
         "pattern": "/+VSE_R"
       },
       {
-        "netclass": "PWR_OUT",
+        "netclass": "ANALOG",
         "pattern": "/-VSE_R"
       },
       {
