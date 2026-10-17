@@ -10,7 +10,7 @@ DRC courant : **123 violations toutes de sérigraphie** (93 `silk_overlap`, 30 `
 
 ## Tâche actuelle
 
-**F1.4 — plans, zones et vias thermiques.**
+**F1.4-a — étude de stratégie des plans (lecture seule), puis arbitrage utilisateur.**
 
 ## Dernière tâche validée
 
@@ -34,6 +34,8 @@ Règles durables : `docs/kicad-operations.md` ; placement et mesures : `docs/arc
   reprendre si F1.4 réserve `B.Cu` au `GND`.
 - **Écart de 40 mm entre voies sur `INPUT` accepté** (0,27 ns, négligeable en audio).
 - **Courant OPA1612 supposé (20 mA/boîtier)**, non tiré de la fiche technique.
+- **Écart à E1.5 constaté** : `INPUT_A`–`D` routées en `B.Cu` (F1.3-d) alors qu'E1.5 les veut en
+  couche interne entre deux plans de masse ; tranché en F1.4-a.
 - **Retour `COUT`↔EP de `U1` (≈ 20 mm) et `AVDD`/`DVDD` longs (F1.1) à reprendre par le plan
   `GND` de F1.4.**
 - **Exceptions `.kicad_dru` à 0,15 mm limitées aux cours de `U6`, `U8`, `U1`** ; `PVDD` en
@@ -52,7 +54,6 @@ Aucun. L'éditeur de PCB est fermé : le rouvrir (geste GUI, `desktop-control`) 
 
 ## NEXT ACTION
 
-**F1.4 — définir la stratégie de plans au fichier** (affectation `In1.Cu`/`In2.Cu`/`F.Cu`/`B.Cu`
-aux zones `GND`, `PVDD`, `PVDD_FUSED` de `Q301`, séparation analogique/puissance, vias thermiques
-sous `U6`/`U1`/`Q301`) puis la découper en unités F1.4-a… dans `plan.md`. Validation : chaque
-unité porte objectif, nets, couches et critère DRC (non-connectés `GND` → 0).
+**F1.4-a — étudier en lecture seule l'affectation des quatre couches** (contraintes E1.5 vs routage
+réel), chiffrer les options, recommander, puis obtenir l'arbitrage utilisateur. Validation : options
+chiffrées et décision consignée dans `docs/architecture.md`.
