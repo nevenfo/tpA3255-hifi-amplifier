@@ -416,7 +416,12 @@ E1 validée.
     - `L1` (`7447714101`) : WE-PD taille 1050, corps 10 × 10 × 5 mm. Land pattern Würth : pastilles 3,5 × 2 mm, 7 mm intérieur, 11 mm extérieur, « no vias and sensitive traces underneath ». Le PCB porte `L_Wuerth_WE-PD2-Typ-MS`, pastilles 2,15 × 5,5 mm à ± 1,93 mm.
   - Audit des autres empreintes non génériques : aucun autre écart. `L6` n'a pas de référence fabricant ; son empreinte WE-PD M/S fixera le choix au moment de la nomenclature.
   - Tâches :
-    - mesurer l'impact de `L1` (diagnostic `U1` fait : `C327` à déplacer d'environ 0,8 mm, 22 segments `F.Cu` et 2 vias à reprendre, exceptions `.kicad_dru` de `U1` à revoir) ;
+    - diagnostic fait (2026-10-17, lecture seule) :
+      - aucune empreinte WE-PD 1050 installée : en créer une, `HifiAmp_TPA3255_Local:L_Wuerth_WE-PD-1050_10x10x5mm`, avec des pads 2,0 × 3,5 mm à ± 4,5 mm et un courtyard de 11,5 × 10,5 mm ;
+      - positions cibles : `L1` (170 ; 159) rot 270, avec `SW` en bas au-dessus de `U1.1` ; `U1` reste en (172 ; 172) ; `C328` (173,525 ; 166,5) ; `C327` (172,825 ; 168,95) ; `D1` (165,8 ; 173) ; `D3` (178,2 ; 171) ;
+      - 33 segments et 2 vias (`e204f231`, `14712104`) à refaire, plus le `BST` en `B.Cu` ;
+      - l'exception `.kicad_dru` de `U1` reste nécessaire, l'écart entre le pad exposé et les broches valant 0,2 mm ;
+      - le retour `COUT`→`CIN` en `F.Cu` mesure environ 20 mm, imposé par la piste `SW` ; il sera court-circuité par la couture des plans O3 en F1.4-b.
     - affecter les empreintes au schéma et propager par F8 (« Remplacer les empreintes » coché, « Supprimer les empreintes sans symbole » décoché) ;
     - rétablir `pad_prop_heatsink` sur le pad 11 de `U1` ;
     - replacer, puis router de nouveau la zone.
