@@ -1219,7 +1219,11 @@ ci-dessous.** Le blocage se dénoue en deux gestes indépendants :
    même `x`, les deux traversées de 1,6 mm s'**ajoutent** au trajet plan : ≈ 10,8 mm par
    condensateur à la métrique de F1.1 (centre de pastille → centre de broche), contre 7,71 mm.
    Le flip a aussi inversé les pastilles ; une rotation de 180° sur `B.Cu` les remet face à leurs
-   broches, sans croisement.
+   broches, sans croisement. **Retenu** : condensateurs glissés sous `U6` (centre `x` = 280,75,
+   dessous libre), vias tentées en `x` = 282,6 sous le corps du boîtier, à l'est des broches —
+   l'ouest est barré pour `GND` par les diagonales `BST_B`/`BST_C`. **Boucle 9,63 mm**, minimum
+   tenable avec ≥ 0,15 mm entre bord de via et bord de pastille ; descendre plus bas exige des vias
+   dans les pastilles, bouchées et capées.
 2. **Le croisement structurel se dénoue par une via sur chaque `BST`.** `BST_B` et `BST_C` sont
    des signaux de grille routés à 0,35 mm : **une via suffit par net**, là où un `OUT` à 5 A en
    exigerait quatre. La via se pose donc du côté du signal faible, jamais du nœud de puissance.
