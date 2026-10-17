@@ -9,7 +9,8 @@ Branche `ai/f1.4-plane-strategy`.
 
 F1.7 — corriger les empreintes de `U1` (`DPR0010A` 4 × 4 mm au pas de 0,8 mm, au lieu d'un
 WSON 2,5 mm au pas de 0,5 mm) et de `L1` (WE-PD 1050 de 10 × 10 mm, au lieu d'un WE-PD2 d'environ 6 mm).
-Diagnostic `U1`/`L1` et placement cible faits (voir `plan.md` F1.7). F1.4-b bloquée jusque-là.
+Diagnostic et placement cible faits (voir `plan.md` F1.7). Empreinte locale
+`L_Wuerth_WE-PD-1050_10x10x5mm` créée et deux empreintes affectées au schéma ; ERC 16, PCB inchangé. F1.4-b bloquée jusque-là.
 
 ## Dernière tâche validée
 
@@ -47,5 +48,6 @@ Aucun. Vérifier l'état de l'éditeur PCB avant toute écriture IPC.
 
 ## NEXT ACTION
 
-F1.7 — par `kicad-control` : créer l'empreinte locale WE-PD 1050 et affecter les deux
-empreintes au schéma ; ensuite, F8 dans l'interface (`desktop-control`), replacement et reroutage.
+F1.7 — mettre à jour le PCB depuis le schéma (F8 dans l'interface : « Remplacer les empreintes »
+coché, « Supprimer les empreintes sans symbole » décoché). Attendu : seuls `U1` et `L1` remplacés,
+puis contrôler `pad_prop_heatsink`, la parité et les positions.

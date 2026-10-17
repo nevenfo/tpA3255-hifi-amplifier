@@ -11719,7 +11719,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_SON:WSON-10-1EP_2.5x2.5mm_P0.5mm_EP1.2x2mm"
+		(property "Footprint" "Package_SON:WSON-10-1EP_4x4mm_P0.8mm_EP2.6x3mm"
 			(at 100.33 100.33 0)
 			(hide yes)
 			(effects
@@ -11923,7 +11923,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Inductor_SMD:L_Wuerth_WE-PD2-Typ-MS"
+		(property "Footprint" "HifiAmp_TPA3255_Local:L_Wuerth_WE-PD-1050_10x10x5mm"
 			(at 129.54 100.33 0)
 			(hide yes)
 			(effects
