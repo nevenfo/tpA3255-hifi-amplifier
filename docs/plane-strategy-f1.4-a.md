@@ -52,7 +52,7 @@ Source : Infineon Final Data Sheet rév. 2.0, 2021-05-10, Tables 2–4, Diagram 
   - 4,95 A (4 Ω), Ta = 50 °C, 40 °C/W : Tj ≈ 101 °C, P ≈ 1,28 W.
   - Même cas, empreinte minimale (62 °C/W) : Tj ≈ 160 °C, marge insuffisante. **Le cuivre de drain est donc nécessaire.**
 - Cuivre retenu, conforme à O3 (`B.Cu` reste `/GND` continu) :
-  - Zone `PVDD_FUSED` `x` 175..200, `y` 230..248,5 sur `F.Cu` et `In2.Cu` (≈ 9 cm² chacune), cousue par vias. 2 × 9 cm² × 35 µm ≥ 6 cm² × 70 µm en conductance de feuille.
+  - Zone `PVDD_FUSED` `x` 175..200, `y` 230..248,5 sur `F.Cu` et `In2.Cu` (**corrigé 2026-10-18 : 4,6 cm² chacune**, et non 9), cousue par vias. 2 × 4,6 cm² × 35 µm ≈ 323 cm²·µm, contre 420 pour 6 cm² × 70 µm : déficit d'environ 25 %, arbitrage en F1.4-b4.
   - Équivalence estimée et non prouvée (couche interne, carte horizontale) : à confirmer par mesure de température.
   - Les `INPUT` (`y` ≤ 198,2) passent à plus de 30 mm.
 - Aucun via sous `U6`, dont le PowerPAD supérieur va à la barre/dissipateur.
