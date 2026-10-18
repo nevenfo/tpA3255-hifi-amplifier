@@ -605,9 +605,39 @@ G1 validée ou état final PCB explicitement PARTIAL.
 
 ### Tâches
 
-- [ ] H1.1 Vérifier par calcul gain, headroom, impédances, coupures, LC, courants et dissipation.
-- [ ] H1.2 Classer preuves : KiCad, documentation, calcul/simulation, non vérifié physiquement.
-- [ ] H1.3 Documenter bruit/EMI/stabilité/thermique non mesurés et toute divergence TI.
+- [x] H1.1 Vérifier par calcul gain, headroom, impédances, coupures, LC, courants et dissipation. *(**PASS** 2026-10-18 : `docs/review/h1-electrical.md`.)*
+- [x] H1.2 Classer preuves : KiCad, documentation, calcul/simulation, non vérifié physiquement. *(**PASS**, classement [K]/[D]/[C]/[NV] dans le rapport.)*
+- [x] H1.3 Documenter bruit/EMI/stabilité/thermique non mesurés et toute divergence TI. *(**PASS**, §4–5 du rapport.)*
+- [x] H1.4 *(**PASS** 2026-10-18.)* Corriger les défauts de schéma révélés par H1 (**découvert le 2026-10-18**), en un seul passage schéma → F8 → placement/routage → DRC.
+  - **Objectif** : rendre la chaîne d'entrée fonctionnelle et trancher les écarts à l'intention.
+  - **Dépendances** : H1.1–H1.3.
+  - **Constats** :
+    - **B1 (bloquant, confirmé sur la netlist)** : le curseur du volume (`J4.2`/`J4.5`, à 0 V DC parce que `J4.3`/`J4.6` sont sur `/GND`) attaque `R101`/`R201` sans condensateur, alors que les entrées + des OPA1612 sont à `VMID` = 6 V. L'étage 1 sature à 12 V et l'étage 2 vers 0 V : aucun signal ne passe. C'est un trou de l'intention (`architecture.md` l. 56–62), pas une erreur d'implémentation.
+    - Correctif recommandé (a) : 10 µF en série entre le curseur et `R101`/`R201` (film ou électrolytique bipolaire 16–25 V), fc 1,6 Hz. Le pop de mise sous tension doit être masqué par `RESET`/mute, ce qui reste à vérifier.
+    - **A1** : `C7` (5,6 nF en parallèle de `R39`, FB du LM5010A) est documenté mais absent du schéma.
+    - **A2** : le réseau RC de sortie TI (Fig. 29) est absent.
+  - **Décisions utilisateur du 2026-10-18** :
+    - B1 : correctif (a), un condensateur **film** de 10 µF par voie, en série entre le curseur et `R101`/`R201` ;
+    - A1 : ajouter `C7` ;
+    - A2 : ajouter le réseau RC de sortie de la Fig. 29 de TI, après vérification de la topologie sur le PDF.
+  - **Tâches** : appliquer les décisions utilisateur au schéma, puis ERC, F8, placement, routage, remplissage, DRC, et mettre à jour les docs (`architecture.md`, `power-block.md` : `C13`).
+  - Fait au schéma (MD5 `c1aaee89`, ERC 16 avertissements connus, nets vérifiés sur la netlist) :
+    - `C111`/`C211` 10 µF/63 V film, empreinte `Capacitor_THT:C_Rect_L26.5mm_W10.5mm_P22.50mm_MKS4` (26,5 × 10,5 mm, hauteur et pièce à confirmer) ;
+    - nets `/VOL_L` = {`J4.2`, `C111.1`} et `/VOL_L_AC` = {`C111.2`, `R101.1`}, idem pour la voie R ;
+    - `C7` 5,6 nF C0G 0603 entre `/FB` et `/+15V`.
+    - A2 (schéma MD5 `18680060`) : sur chaque `/OUT_x_F`, 1 nF C0G 1206 vers `GND` (`C330`–`C333`) et 3,3 Ω 0603 (`R311`–`R314`) en série avec 10 nF X7R 0603 (`C334`–`C337`), nœuds `/SNUB_A`–`D`. Topologie de la Fig. 29 de SLASEA8A ; ERC 16 avertissements connus.
+  - F8 appliqué (15 ajouts, aucune suppression), puis placement et routage au fichier (PCB `dee8a699`). DRC : 0 non-connecté, parité 3, aucune violation hors sérigraphie (`silk_overlap` 12, `silk_over_copper` 8). `OUT` et `INPUT` inchangés ; `OUT_B_F` +3,2 mm et `OUT_C_F` +4,3 mm (raccords des réseaux RC) ; 140 `(units`.
+    - `C111`/`C211` en (125 ; 126,5)/(125 ; 166,5), symétrie (0 ; +40) ; `C7` en (178 ; 179,5).
+    - Réseaux RC en `F.Cu` près de `C321`–`C324`, un via `GND` par réseau, aucun via sur `OUT_x_F`.
+  - Finitions : `.kicad_pro` met `/VOL_L_AC` et `/VOL_R_AC` en ANALOG, `/SNUB_A`–`D` en PWR_OUT ; 16 champs de sérigraphie déplacés.
+  - Validation finale (PCB `f50cd65e`, schéma `18680060`) :
+    - DRC : seuls les 4 `silk_over_copper` B2 restent ; 0 non-connecté, parité 3 ;
+    - ERC : 16 avertissements connus ; 140 `(units`, `pad_prop_heatsink` = 1 ;
+    - point DC recalculé : toutes les sorties d'étage à `VMID` (`docs/review/h1-electrical.md`, H1.4).
+  - **Validation** :
+    - ERC sans nouvelle erreur ; netlist prouvant un condensateur série sur `VOL_L`→`R101` et `VOL_R`→`R201` ;
+    - DRC : 0 non-connecté, parité 3, aucune violation hors sérigraphie acceptée ;
+    - point de fonctionnement DC recalculé (sorties des étages à `VMID`).
 
 ### Validation
 
@@ -627,6 +657,11 @@ H1.
 
 - [ ] H2.1 Générer BOM et livrables exploitables disponibles.
 - [ ] H2.2 Collecter métriques MCP observables, erreurs, retries, limitations et `NEEDS_DATA`.
+  - **Écart à l'invariant « aucun contournement par édition de `.kicad_sch`/`.kicad_pcb` », constaté le 2026-10-18.**
+    - Depuis F1.4-b1, l'éditeur PCB était fermé : le principal a demandé à `kicad-control` de « travailler au fichier ». Le PCB a donc été modifié par script texte, hors MCP, dans F1.4-b1 à b4, F1.8, G1.3-a, G1.3-b (placement), G1.4-a et H1.4 (placement, routage, `.kicad_pro`). La restauration des `(units` en F1.7 relève du même cas.
+    - Sont passés par le MCP ou la GUI : le `move_component` de F1.7, les modifications de schéma (`kicad_invoke`) et les gestes F8.
+    - Les validations DRC, ERC et parité restent établies par `kicad-cli`, mais ces unités ne prouvent rien sur l'autonomie du MCP. Le statut AUTONOMIE MCP doit le refléter.
+    - **Décision utilisateur requise** : accepter l'écart et le documenter, ou rejouer ces unités par MCP/IPC (éditeur PCB ouvert).
 - [ ] H2.3 Vérifier la présence de tous les livrables demandés.
 - [ ] H2.4 Émettre les huit statuts finaux et `PRÊT À FABRIQUER` avec preuves.
 
