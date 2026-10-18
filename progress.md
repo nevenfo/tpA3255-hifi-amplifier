@@ -34,7 +34,9 @@ Validation :
 
 ## Blocage actif
 
-Aucun. Éditeur PCB fermé (seul le gestionnaire de projet est ouvert) : le rouvrir seul avant toute
+Décision utilisateur attendue pour F1.4-b4 seulement : cuivre de drain `Q301` à 4,6 cm² par couche
+au lieu des 9 cm² de l'étude (Tj ≈ 121 °C estimée). Options : accepter et mesurer en H2, agrandir
+la zone, ou ajouter un dissipateur. F1.4-b1 à b3 n'en dépendent pas. Éditeur PCB fermé (seul le gestionnaire de projet est ouvert) : le rouvrir seul avant toute
 écriture IPC, recompter les `(units` (124) après chaque déplacement MCP.
 
 ## Fichiers / zones utiles
@@ -46,6 +48,5 @@ Aucun. Éditeur PCB fermé (seul le gestionnaire de projet est ouvert) : le rouv
 
 ## NEXT ACTION
 
-F1.4-b — inventorier au fichier, sans écriture, les pistes et vias `B.Cu` à transférer en
-`In2.Cu`, les conflits avec les pistes `In2.Cu` existantes et l'emprise des zones prévues par O3 ;
-proposer un découpage de F1.4-b en sous-unités validables.
+F1.4-b1 — transférer 112 segments `B.Cu` en `In2.Cu` (garder les 4 de `C310`/`C311` et les 56 vias),
+puis valider selon `plan.md` F1.4-b1.

@@ -405,6 +405,30 @@ E1 validée.
   - [x] F1.4-a Étude de stratégie des plans, lecture seule. Concilier les contraintes E1.5 (découpe `GND` vers `x` ≈ 142 et jonction unique près de `U6` ; `INPUT_A`–`D` en couche interne entre deux plans de masse sur la traversée de puissance ; retour des MKP `C321`–`C324` sans le plan analogique) avec l'implantation prévue (« L2 plan GND continu ») et le routage réel (`INPUT` en `B.Cu`, `PVDD` 7 mm en `B.Cu`, `+3V3` long en `B.Cu`). Validation : options d'affectation des quatre couches chiffrées (occupation par couche, reprises de pistes, vias, continuité du plan sous `INPUT`, boucles de retour), une recommandation, arbitrage utilisateur obtenu et consigné dans `docs/architecture.md`.
     - **PASS** — étude `docs/plane-strategy-f1.4-a.md` ; **O3 retenue par l'utilisateur le 2026-10-17** (`In1.Cu`/`B.Cu` `/GND` continus, `B.Cu` transféré vers `In2.Cu`), consignée dans `docs/architecture.md`. Elle remplace la découpe E1.5 pour les plans.
   - [ ] F1.4-b Appliquer la stratégie retenue (reprises de routage éventuelles, zones, vias de couture et thermiques sous `U1`/`Q301`), remplir les zones. Validation : 0 non-connecté, DRC sans `clearance`/`shorting_items`/`track_dangling`/`courtyards_overlap`, parité 3, zones remplies sans îlot non relié.
+    - Inventaire (2026-10-18, lecture seule, PCB `050bbce3`) :
+      - aucune zone ; `B.Cu` porte 116 segments (2 190,8 mm), `In2.Cu` 2 (`+15V`) ;
+      - les 56 vias sont traversants ; les pads traversants ont des anneaux sur toutes les couches ;
+      - aucun conflit géométrique pour un transfert à géométrie identique ; le transfert passe par suppression puis re-routage, donc les UUID changent ;
+      - à garder en `B.Cu` : 4 segments `PVDD`/`GND` vers `C310`/`C311`, les seules empreintes `B.Cu` ;
+      - correction de F1.4-a : la boîte de drain `Q301` (x 175..200, y 230..248,5) fait 4,6 cm² par couche, pas 9 cm².
+    - Défauts retenus, sauf avis contraire de l'utilisateur :
+      - plans en retrait de 0,5 mm du bord, la valeur de la règle ;
+      - pas de zone `PVDD` en `In2.Cu`, car la barre de 7 mm y est transférée telle quelle ;
+      - règle `.kicad_dru` interdisant les vias sous `L1`/`U6`, avec test négatif ;
+      - pas de ligne de couture continue à `x` ≈ 156, où passent les `INPUT` : couture par pad et vias libres environ tous les 10 mm.
+    - [ ] F1.4-b1 Transfert `B.Cu` → `In2.Cu`. Dépendances : F1.7. Tâches : refaire 112 segments en `In2.Cu` par net, conserver les 56 vias et les 4 segments `C310`/`C311`. Validation :
+      - DRC sans `clearance`, `shorting_items`, `track_dangling`, `courtyards_overlap` ni `hole_clearance` ;
+      - non-connectés 76, tous `/GND` ; parité 3 ;
+      - 427 segments inchangés par UUID ; `B.Cu` = 4 segments, `In2.Cu` = 114.
+    - [ ] F1.4-b2 Couture et vias `GND`. Dépendances : b1. Tâches :
+      - règle `.kicad_dru` interdisant les vias sous `L1`/`U6`, prouvée par un via d'essai refusé ;
+      - un via 0,6/0,3 en dog-bone par pad CMS `/GND` (environ 60, dont 8 pour `U6` hors corps) ;
+      - vias thermiques `U1` 2 × 3 (x 171,5/172,5 ; y 171/172/173).
+
+      Validation : 0 via sous `L1`/`U6`, DRC propre, parité 3.
+    - [ ] F1.4-b3 Zones `/GND` `In1.Cu` et `B.Cu`. Dépendances : b2. Tâches : polygones en retrait du contour, `B.Cu` excluant `C310.1`/`C311.1`, remplissage. Validation : 0 non-connecté, DRC propre, ni îlot ni `starved_thermal`, parité 3, références continues sous chaque `INPUT`.
+    - [ ] F1.4-b4 Drain `Q301` et `PVDD`. Dépendances : b1. Tâches : zones `PVDD_FUSED` `F.Cu` + `In2.Cu` (hors `D301.2`/`R305`) avec vias de couture, dimensionnées selon la décision utilisateur sur la surface. Validation : DRC propre, surface mesurée au fichier, Tj estimée consignée.
+    - [ ] F1.4-b5 Clôture. Dépendances : b3, b4. Tâches : ERC/DRC complets, parité, `pad_prop_heatsink`, 124 `(units`. Validation : celle de F1.4-b.
 - [ ] F1.5 Vérifier l’absence de ratsnest et les longueurs/vias inutiles critiques.
 - [x] F1.6 Vérifier au schéma le découplage d'entrée du buck `U1` : aucun condensateur sur `BUCK_VIN` après `D3` (`C2`–`C4` côté `PVDD`). Validation : capacité locale VIN du LM5010 présente au schéma et au PCB, ou absence justifiée par la fiche technique.
   - [x] F1.6-a Diagnostic, lecture seule. *(PASS : `BUCK_VIN` = `U1.10`, `D3.1` (Schottky série anti-retour), `R2.2`, aucun condensateur ; le plus proche, `C11` 10 nF, est à ~15,6 mm de piste derrière `D3`, boucle ≈ 27 mm. Ajout requis.)*
