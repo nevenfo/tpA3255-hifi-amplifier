@@ -129,3 +129,21 @@ U6 : 22,4 W (2×100 W/8 Ω) ; 37,4 W (4 Ω). Budget (75−40)/22,4 = 1,5625 °C/
 7. WIMA MKP4 680 nF : courant d'ondulation admissible ; `PA6331-AE` : pertes fer à 450 kHz.
 8. Potentiomètre `J4` : référence, loi, résistance ; impédance de sortie des sources.
 9. Origine du chiffre 9,3 A de crête (4 Ω).
+
+## Complément 2026-10-18 : réseau RC de sortie (A2), lu sur le PDF
+
+Source : SLASEA8A rév. A (oct. 2016), PDF téléchargé depuis ti.com, Figure 29 « Typical Differential (2N) BTL Application », p. 22. La lecture est recoupée avec la nomenclature de l'EVM SLOU441, Table 8.
+
+- **Topologie, pour chaque branche de sortie** (`OUT_x`, après la self de 10 µH, côté haut-parleur), trois éléments vers `GND` :
+  - le condensateur de filtre de 1 µF (présent ici sous la forme du condensateur de sortie existant) ;
+  - **1 nF** ;
+  - un réseau série **3,3 Ω + 10 nF**.
+- **Nomenclature EVM, cohérente** : quatre jeux, soit 4 × 3,3 Ω, 4 × 1 nF et 4 de ses 5 × 10 nF.
+  - 3,3 Ω : 0603, 0,1 W, `CRCW06033R30JNEA`. Des emplacements 2010 de 0,75 W sont prévus mais non montés.
+  - 1 nF : 100 V C0G, 1206, `12061A102JAT2A`.
+  - 10 nF : 100 V X7R, 0603, `06031C103KAT2A`.
+- **Dissipation de la résistance (ordre de grandeur, calcul)** :
+  - à 20 kHz, crête de 28 V en sortie : Xc(10 nF) ≈ 796 Ω, I ≈ 25 mA rms, P ≈ 2 mW ;
+  - au résidu de découpage de 450 kHz (≈ 0,5 V) : P < 1 mW.
+  - Le 0603 de 0,1 W suffit, avec une marge > 10.
+- **Autres valeurs de la Figure 29, pour mémoire** : bootstrap 33 nF, VBG 1 µF, AVDD 1 µF, DVDD 1 µF, C_START 47 nF, VDD 10 µF + 100 nF, GVDD 100 nF via 3,3 Ω, PVDD 1 µF par pont plus 470 µF, entrées 10 µF en série. Les découplages AVDD/DVDD (1 µF chacun) lèvent le NEEDS_DATA de C3 (`C318`/`C319`). Leurs valeurs au schéma restent à recouper.
