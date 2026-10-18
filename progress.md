@@ -7,15 +7,15 @@ Branche `ai/g1-drc-review`, créée depuis `ai/f1.4-plane-strategy`.
 
 ## Tâche actuelle
 
-G1.4 — revue de manufacturabilité et écarts résiduels.
+G1 — clôture : archiver le DRC final après G1.4-a et cocher la validation G1.
 
 ## Dernière tâche validée
 
-G1.3 : corrections C1 à C6, DRC rejoué et archivé dans `docs/drc/drc-g1.3.json`.
+G1.4 : revue DFM (`docs/drc/dfm-g1.4.md`), corrections autonomes et décisions de fabrication consignées.
 
 Validation :
-- Seuls `silk_overlap` 89 et `silk_over_copper` 25 restent ; 0 non-connecté, parité 3.
-- Zones identiques au rejeu. PCB MD5 `ea6ea4b3695946c52b2deca67f622fd4`.
+- DRC : seuls 4 `silk_over_copper` restent (B2 accepté) ; 0 non-connecté, parité 3.
+- 125 `(units`, `pad_prop_heatsink` = 1. PCB MD5 `4f4b36822efc7ac6eb330008314dde87`.
 
 ## Décisions actives
 
@@ -29,9 +29,9 @@ Validation :
 - Cuivre de drain `Q301` sur `F.Cu` + `In2.Cu` (plus `B.Cu`) ; `U1` : vias 2 × 3 de 0,6/0,3 mm
   dans le pad exposé, bouchés côté `B.Cu`.
 - F1.4-b, choix validés par l'utilisateur : plans en retrait de 0,5 mm, pas de zone `PVDD` en `In2.Cu`, règle DRU interdisant les vias sous `L1`/`U6`, couture par pad. Drain `Q301` agrandi (b4) ; Tj à mesurer en H2.
-- Vias dans les pads `C303.2`/`C206.2` et dans l'EP de `U1` : à faire boucher et capper (G1).
 - G1.3 (utilisateur) : C1 en option (b) ; `C13` à 1 µF en `B.Cu` ; ajout d'un 1 µF/100 V sur `/PVDD_SENSE` ; pas de 10 µF sur `U3`.
-- Sérigraphie à traiter en bloc. Interdiction composants `x` [280 ; 291], `y` [160 ; 190].
+- Fabrication (utilisateur) : PCBWay, IPC-4761 type VII pour les vias dans une pastille, 1 oz sur toutes les couches. Notes : `docs/drc/dfm-g1.4.md` §5.
+- Sérigraphie traitée en G1.4-a ; seuls restent les 4 repères B2 de `L301`–`L304`. Interdiction composants `x` [280 ; 291], `y` [160 ; 190].
 
 ## Blocage actif
 
@@ -47,5 +47,5 @@ Aucun. Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb 
 
 ## NEXT ACTION
 
-G1.4-a — appliquer au fichier les corrections DFM autonomes de `docs/drc/dfm-g1.4.md` (masque `U8`, 3 vias, champs de référence),
-re-remplir et valider selon `plan.md` G1.4-a.
+G1 — archiver le DRC final (`docs/drc/drc-g1.4.json` et section du README), puis cocher la validation G1
+et ouvrir la PR de la phase G.

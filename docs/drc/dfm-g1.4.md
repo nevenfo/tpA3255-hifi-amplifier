@@ -106,9 +106,10 @@ tolérance +/-0,1 mm ; 2 trous de fixation 3,2 mm non métallisés.
 Anneau minimum 0,15 mm sur les vias (0,6/0,3). Piste/isolement minimums 0,2 mm /
 0,225 mm hors boîtiers fins ; 0,15 mm dans les cours de U1, U6, U8.
 Cuivre à 0,5 mm du bord de carte. Contour sans V-cut ni languette.
-VIAS DANS LES PASTILLES : 6 vias thermiques de U1 (EP) + C206.2, C303.2, C319.2, C10.2 :
+VIAS DANS LES PASTILLES (état G1.4-a) : 6 vias thermiques de U1 (EP), C303.2, C319.2
+(via a4061ec3) ; en bord de pastille : C207.1, via f46ffa1e (pastille GND de C319) :
 IPC-4761 type VII (remplis résine, capés et métallisés en surface) ; autres vias
-tentés (type IV-b) recto-verso. Ne pas appliquer de pâte sur les trous non remplis.
+tentés (type IV-b) recto-verso.
 Contrôle : test électrique 100 % (net-list IPC-356), contrôle d'impédance non requis.
 Sérigraphie : texte 1,0 mm / trait 0,15 mm ; traits d'empreinte 0,12 mm ; retirer la
 sérigraphie sur les ouvertures de masque.
@@ -136,3 +137,15 @@ Demandent une décision :
 ## Complément : épaisseur de cuivre et référence TI
 
 Le Second Brain (page « routage et écarts référence TI ») le rappelle : TI recommande du FR-4 en cuivre de 70 µm (2 oz), et son EVM est une carte 2 couches en 2 oz. Ce projet est dimensionné en 35 µm sur toutes les couches. Avant H2, il faut faire revalider auprès du fabricant retenu l'épaisseur, le cuivre (externe et interne), le courant et la température. Une option en 70 µm externe abaisserait de moitié environ l'échauffement des pistes externes.
+
+## Décisions utilisateur et état après G1.4-a (2026-10-18)
+
+- **Corrections G1.4-a appliquées** (PCB `4f4b3682`) :
+  - `U8` : `solder_mask_margin` de +0,025 mm sur ses 10 pastilles. Cette valeur remplace la marge globale de 0,05 mm, et le pont passe à 0,10 mm. Le signe « −0,025 » des actions 1 était une erreur de rédaction.
+  - Vias de `C206.2`, `U7.3` et `C10.2` sortis de leur pastille.
+  - 22 champs de référence déplacés : la sérigraphie passe de 114 entrées à 4, qui sont les repères de broche 1 de `L301`–`L304` (catégorie B2, acceptée).
+- **Fabricant visé : PCBWay**, prototype 4 couches. Ses capacités sont à confirmer au devis : IPC-4761 type VII, pont de masque de 0,10 mm, cuivre interne de 35 µm, empilement fourni.
+- **Vias dans les pastilles : IPC-4761 type VII** pour tous ceux qui restent (EP de `U1`, `C303.2`, `C319.2`, `C207.1`, `f46ffa1e`). `C319` n'est pas décalé (action 6 écartée).
+- **Cuivre : 1 oz (35 µm) sur toutes les couches**, imposé dans les notes. Les calculs IPC-2221 du projet restent valables. La recommandation TI de 2 oz est écartée, en écart assumé.
+- **C1 option (a)** écartée : on garde l'option (b) de G1.3, en écart assumé sur T1.
+- Les actions 6 à 10 sont donc tranchées. Les notes de la section 5 font foi pour H2, avec PCBWay comme fabricant.

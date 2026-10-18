@@ -512,7 +512,7 @@ F1 validée.
 ### Tâches
 
 - [x] G1.1 Exécuter DRC et archiver le résultat. *(**PASS** 2026-10-18 : `docs/drc/drc-g1.1.json` et `docs/drc/README.md`, KiCad 10.0.6. 116 avertissements de sérigraphie, 0 erreur, 0 non-connecté, parité 3.)*
-- [ ] G1.2 Revoir courts-circuits, alimentations, masses, découplages, puissance et thermique. *(Revue écrite : `docs/drc/design-review-g1.2.md`.)*
+- [x] G1.2 Revoir courts-circuits, alimentations, masses, découplages, puissance et thermique. *(**PASS** 2026-10-18, revue `docs/drc/design-review-g1.2.md`. Données TI relevées. Restent `NEEDS_DATA`, en écarts résiduels de `dfm-g1.4.md` §4 : SLOU441 pour `AVDD`/`DVDD`, condensateur d'entrée du TLV1117, valeurs TI à recontrôler sur PDF.)*
   - Bloquant avant H2 : B1, via-in-pad à remplir et capper (IPC-4761 type VII) : `C303.2`, `C206.2`, `C319` GND, EP `U1`.
   - À corriger : C1 à C6. Accepté : A1 à A11.
   - Reste à lever : les `NEEDS_DATA` des fiches TPA3255, LM5010 et LM5069 (distances et valeurs de découplage, broches `GND`, M1/M2).
@@ -568,16 +568,16 @@ F1 validée.
     - `C329` placé près du drain de `Q302` et routé.
 
     Validation : ERC sans nouvelle erreur, 127 empreintes, parité 3, DRC propre, 0 non-connecté.
-- [ ] G1.4 Établir la revue manufacturabilité et les écarts résiduels.
+- [x] G1.4 Établir la revue manufacturabilité et les écarts résiduels. *(**PASS** 2026-10-18.)*
   - Revue écrite le 2026-10-18 : `docs/drc/dfm-g1.4.md`.
-  - [ ] G1.4-a Corrections DFM autonomes. Dépendances : G1.3. Tâches :
+  - [x] G1.4-a *(**PASS** 2026-10-18, MD5 `4f4b36822efc7ac6eb330008314dde87`. DRC : seuls 4 `silk_over_copper` restent (B2 accepté) ; 0 non-connecté, parité 3, 125 `(units`, `pad_prop_heatsink` = 1. Masque `U8` à +0,025 mm, soit un pont de 0,10 mm ; 3 vias sortis de leur pastille ; 22 champs déplacés.)* Corrections DFM autonomes. Dépendances : G1.3. Tâches :
     - marge de masque locale de −0,025 mm sur les pastilles de `U8` ;
     - sortir de leur pastille les vias de `C206.2`, `U7.3` et `C10.2` ;
     - déplacer les champs de référence (catégories A1–A3 et B1, 110 entrées) ;
     - re-remplir les zones.
 
     Validation : DRC sans nouvelle violation et sérigraphie ≤ 4 entrées (B2 accepté), 0 non-connecté, parité 3, `(units` et `pad_prop_heatsink` inchangés.
-  - [ ] G1.4-b Décisions fabrication. Dépendances : G1.4-a. Tâches :
+  - [x] G1.4-b *(**PASS** 2026-10-18. Décisions utilisateur : PCBWay, IPC-4761 type VII pour les vias restants dans une pastille, 1 oz sur toutes les couches. Consignées dans `docs/drc/dfm-g1.4.md`, notes de fabrication prêtes ; capacités PCBWay à confirmer au devis.)* Décisions fabrication. Dépendances : G1.4-a. Tâches :
     - choisir le fabricant ;
     - choisir le traitement des vias dans les pastilles (EP de `U1`, `C303.2`, `C207.1`, `C319`) ;
     - choisir le cuivre (interne ≥ 35 µm exigé ; 2 oz recommandé par TI) ;
