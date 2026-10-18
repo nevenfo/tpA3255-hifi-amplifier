@@ -47,5 +47,5 @@ Aucun. Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb 
 
 ## NEXT ACTION
 
-G1.4 — établir la revue de manufacturabilité (`docs/drc/dfm-g1.4.md`) : B1 via-in-pad (10 vias + 3 en bord de pad),
-capacités fabricant requises, sérigraphie (89 + 25), écarts résiduels assumés.
+G1.4-a — appliquer au fichier les corrections DFM autonomes de `docs/drc/dfm-g1.4.md` (masque `U8`, 3 vias, champs de référence),
+re-remplir et valider selon `plan.md` G1.4-a.

@@ -569,6 +569,21 @@ F1 validée.
 
     Validation : ERC sans nouvelle erreur, 127 empreintes, parité 3, DRC propre, 0 non-connecté.
 - [ ] G1.4 Établir la revue manufacturabilité et les écarts résiduels.
+  - Revue écrite le 2026-10-18 : `docs/drc/dfm-g1.4.md`.
+  - [ ] G1.4-a Corrections DFM autonomes. Dépendances : G1.3. Tâches :
+    - marge de masque locale de −0,025 mm sur les pastilles de `U8` ;
+    - sortir de leur pastille les vias de `C206.2`, `U7.3` et `C10.2` ;
+    - déplacer les champs de référence (catégories A1–A3 et B1, 110 entrées) ;
+    - re-remplir les zones.
+
+    Validation : DRC sans nouvelle violation et sérigraphie ≤ 4 entrées (B2 accepté), 0 non-connecté, parité 3, `(units` et `pad_prop_heatsink` inchangés.
+  - [ ] G1.4-b Décisions fabrication. Dépendances : G1.4-a. Tâches :
+    - choisir le fabricant ;
+    - choisir le traitement des vias dans les pastilles (EP de `U1`, `C303.2`, `C207.1`, `C319`) ;
+    - choisir le cuivre (interne ≥ 35 µm exigé ; 2 oz recommandé par TI) ;
+    - consigner les écarts résiduels.
+
+    Validation : choix utilisateur consignés dans `docs/drc/dfm-g1.4.md`, notes de fabrication finales prêtes pour H2.
 
 ### Validation
 
