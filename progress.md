@@ -7,15 +7,15 @@ Branche `ai/g1-drc-review`, créée depuis `ai/f1.4-plane-strategy`.
 
 ## Tâche actuelle
 
-G1.3-a — corrections PCB seules (C1 en option b, C3 à C6), d'après l'étude et les décisions de `plan.md` G1.3.
+G1.3-b — `C13` à 1 µF en `B.Cu`, ajout de `C329` 1 µF/100 V sur `/PVDD_SENSE`, par schéma, F8 et placement.
 
 ## Dernière tâche validée
 
-G1.1 : DRC final archivé dans `docs/drc/`.
+G1.3-a : `PVDD` de `U6` en option (b), C6, et rapprochement de `C318`, `C319`, `C9`, `C326`.
 
 Validation :
-- 116 avertissements de sérigraphie, 0 erreur, 0 non-connecté, parité 3.
-- PCB MD5 `70e315fad1997ce7b3616006aac5cd1b`.
+- DRC : seuls `silk_overlap` 89 et `silk_over_copper` 24 restent ; 0 non-connecté, parité 3, 124 `(units`.
+- Chemin `PVDD` vers `U6` ≤ 9,5 °C à 4,6 A. PCB MD5 `64148dfa4996b48dffbe20d462662a3b`.
 
 ## Décisions actives
 
@@ -47,4 +47,5 @@ Aucun. Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb 
 
 ## NEXT ACTION
 
-G1.3-a — appliquer au fichier C1 (option b), C6, C3, C4 et C5 selon `plan.md` G1.3, re-remplir et valider.
+G1.3-b — au schéma : `C13` passe à 1 µF ; ajouter `C329` 1 µF/100 V 1210 entre `/PVDD_SENSE` et `GND` ;
+ERC ; puis F8 par GUI, avec les mêmes options qu'en F1.7.

@@ -513,7 +513,7 @@ F1 validée.
 
 - [x] G1.1 Exécuter DRC et archiver le résultat. *(**PASS** 2026-10-18 : `docs/drc/drc-g1.1.json` et `docs/drc/README.md`, KiCad 10.0.6. 116 avertissements de sérigraphie, 0 erreur, 0 non-connecté, parité 3.)*
 - [ ] G1.2 Revoir courts-circuits, alimentations, masses, découplages, puissance et thermique. *(Revue écrite : `docs/drc/design-review-g1.2.md`.)*
-  - Bloquant avant H2 : B1, via-in-pad à remplir et capper (IPC-4761 type VII).
+  - Bloquant avant H2 : B1, via-in-pad à remplir et capper (IPC-4761 type VII) : `C303.2`, `C206.2`, `C319` GND, EP `U1`.
   - À corriger : C1 à C6. Accepté : A1 à A11.
   - Reste à lever : les `NEEDS_DATA` des fiches TPA3255, LM5010 et LM5069 (distances et valeurs de découplage, broches `GND`, M1/M2).
 - [ ] G1.3 Corriger via MCP, relancer DRC et le workflow de design review.
@@ -534,7 +534,15 @@ F1 validée.
     - `C13` passe à 1 µF et se place en `B.Cu`, sous le via `VCC` ;
     - ajout d'un 1 µF/100 V 1210 sur `/PVDD_SENSE` ;
     - pas de 10 µF sur `U3` : on rapproche seulement `C9`.
-  - [ ] G1.3-a Corrections PCB seules. Dépendances : G1.2. Tâches :
+  - [x] G1.3-a *(**PASS** 2026-10-18, MD5 `64148dfa4996b48dffbe20d462662a3b`.)*
+    - DRC : seuls `silk_overlap` 89 et `silk_over_copper` 24 restent ; 0 non-connecté, parité 3, 124 `(units`.
+    - Chemin `PVDD` vers `U6` à 4,6 A : ≤ 9,5 °C partout ; 10 vias.
+    - `C319` à 2,31 mm de sa broche, `C318` à 5,13 mm (zone saturée), `C9` à 2,30 mm, `C326` à 2,14 mm de `R306.1`.
+    - Le via `70c513ec` a été supprimé : il ne servait qu'à `C326`, qui a maintenant son propre via.
+    - Le via `GND` de `C319` tombe dans sa pastille : il s'ajoute à B1.
+    - Sous `U6`, les plans présentent deux découpes d'environ 2,9 × 2,5 mm reliées par un pont d'environ 1 mm.
+    - 33 éléments supprimés et 27 ajoutés (voir le diff Git du commit G1.3-a) ; le reste est inchangé.
+    - Définition : corrections PCB seules. Dépendances : G1.2. Tâches :
     - C1 en option (b) ;
     - C6 : élargir `1fd0727d`/`2d1d025d` à 7 mm et déplacer le via `70c513ec` pour lever le goulot ;
     - C3 : déplacer `C319`/`C318` ;
