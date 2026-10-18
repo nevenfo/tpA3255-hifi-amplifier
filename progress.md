@@ -35,7 +35,7 @@ Validation :
 
 ## Blocage actif
 
-Décision utilisateur requise pour H1.4 : correctif de B1 et type de condensateur, ajout ou non de `C7` et du réseau RC de sortie.
+Aucun. Décisions H1.4 prises (voir `plan.md`) ; topologie de la Fig. 29 de TI à confirmer avant de modifier le schéma pour A2.
 
 Notes : Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb drc --refill-zones --save-board` ; recompter les 125 `(units`.
 

@@ -616,6 +616,10 @@ G1 validée ou état final PCB explicitement PARTIAL.
     - Correctif recommandé (a) : 10 µF en série entre le curseur et `R101`/`R201` (film ou électrolytique bipolaire 16–25 V), fc 1,6 Hz. Le pop de mise sous tension doit être masqué par `RESET`/mute, ce qui reste à vérifier.
     - **A1** : `C7` (5,6 nF en parallèle de `R39`, FB du LM5010A) est documenté mais absent du schéma.
     - **A2** : le réseau RC de sortie TI (Fig. 29) est absent.
+  - **Décisions utilisateur du 2026-10-18** :
+    - B1 : correctif (a), un condensateur **film** de 10 µF par voie, en série entre le curseur et `R101`/`R201` ;
+    - A1 : ajouter `C7` ;
+    - A2 : ajouter le réseau RC de sortie de la Fig. 29 de TI, après vérification de la topologie sur le PDF.
   - **Tâches** : appliquer les décisions utilisateur au schéma, puis ERC, F8, placement, routage, remplissage, DRC, et mettre à jour les docs (`architecture.md`, `power-block.md` : `C13`).
   - **Validation** :
     - ERC sans nouvelle erreur ; netlist prouvant un condensateur série sur `VOL_L`→`R101` et `VOL_R`→`R201` ;
