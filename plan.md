@@ -529,6 +529,32 @@ F1 validée.
     - C3 : `C319` à 2,5 mm de piste, `C318` à 5,5 mm ;
     - C4 : `C9` à 2,3 mm de `U3.3` ;
     - C5 : `C326` à 2,0 mm de `R306.1`, plus un 1 µF/100 V sur `/PVDD_SENSE` près du drain de `Q302`.
+  - **Décisions utilisateur du 2026-10-18** :
+    - C1 en option (b) ;
+    - `C13` passe à 1 µF et se place en `B.Cu`, sous le via `VCC` ;
+    - ajout d'un 1 µF/100 V 1210 sur `/PVDD_SENSE` ;
+    - pas de 10 µF sur `U3` : on rapproche seulement `C9`.
+  - [ ] G1.3-a Corrections PCB seules. Dépendances : G1.2. Tâches :
+    - C1 en option (b) ;
+    - C6 : élargir `1fd0727d`/`2d1d025d` à 7 mm et déplacer le via `70c513ec` pour lever le goulot ;
+    - C3 : déplacer `C319`/`C318` ;
+    - C4 : déplacer `C9` ;
+    - C5 : déplacer `C326` ;
+    - re-remplir les zones.
+
+    Validation :
+    - DRC sans nouvelle violation, 0 non-connecté, parité 3, 124 `(units` ;
+    - net de chaque via contrôlé ;
+    - échauffement IPC-2221 ≤ 10 °C sur le chemin `PVDD` de `U6`, ou écart chiffré ;
+    - existants hors reprises déclarées inchangés par UUID.
+  - [ ] G1.3-b Schéma et nouveaux composants. Dépendances : G1.3-a. Tâches :
+    - `C13` à 1 µF ;
+    - ajout de `C329` 1 µF/100 V 1210 entre `/PVDD_SENSE` et `GND`, puis ERC ;
+    - propagation F8 (GUI) ;
+    - `C13` retourné en `B.Cu` (GUI) et routé ;
+    - `C329` placé près du drain de `Q302` et routé.
+
+    Validation : ERC sans nouvelle erreur, 127 empreintes, parité 3, DRC propre, 0 non-connecté.
 - [ ] G1.4 Établir la revue manufacturabilité et les écarts résiduels.
 
 ### Validation

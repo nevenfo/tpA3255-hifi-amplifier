@@ -7,8 +7,7 @@ Branche `ai/g1-drc-review`, créée depuis `ai/f1.4-plane-strategy`.
 
 ## Tâche actuelle
 
-G1.2/G1.3 — lever les `NEEDS_DATA` de fiches techniques, puis corriger C1 à C6 de
-`docs/drc/design-review-g1.2.md`.
+G1.3-a — corrections PCB seules (C1 en option b, C3 à C6), d'après l'étude et les décisions de `plan.md` G1.3.
 
 ## Dernière tâche validée
 
@@ -31,6 +30,7 @@ Validation :
   dans le pad exposé, bouchés côté `B.Cu`.
 - F1.4-b, choix validés par l'utilisateur : plans en retrait de 0,5 mm, pas de zone `PVDD` en `In2.Cu`, règle DRU interdisant les vias sous `L1`/`U6`, couture par pad. Drain `Q301` agrandi (b4) ; Tj à mesurer en H2.
 - Vias dans les pads `C303.2`/`C206.2` et dans l'EP de `U1` : à faire boucher et capper (G1).
+- G1.3 (utilisateur) : C1 en option (b) ; `C13` à 1 µF en `B.Cu` ; ajout d'un 1 µF/100 V sur `/PVDD_SENSE` ; pas de 10 µF sur `U3`.
 - Sérigraphie à traiter en bloc. Interdiction composants `x` [280 ; 291], `y` [160 ; 190].
 
 ## Blocage actif
@@ -47,5 +47,4 @@ Aucun. Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb 
 
 ## NEXT ACTION
 
-G1.2 — lever les `NEEDS_DATA` (TPA3255 : distances de découplage `AVDD`/`DVDD`/`GVDD`/`VBG`, broches `GND`, M1/M2 ;
-LM5010 : condensateur `VCC` ; LM5069 : condensateurs d'entrée) et les reporter dans la revue.
+G1.3-a — appliquer au fichier C1 (option b), C6, C3, C4 et C5 selon `plan.md` G1.3, re-remplir et valider.
