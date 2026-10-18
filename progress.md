@@ -47,5 +47,5 @@ Aucun. Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb 
 
 ## NEXT ACTION
 
-G1.3-b — au schéma : `C13` passe à 1 µF ; ajouter `C329` 1 µF/100 V 1210 entre `/PVDD_SENSE` et `GND` ;
-ERC ; puis F8 par GUI, avec les mêmes options qu'en F1.7.
+G1.3-b — schéma fait (MD5 `9bcba85d`, ERC 16 avertissements connus) ; F8 par GUI (ajout de `C329` seulement),
+retournement de `C13` en `B.Cu`, puis placement, routage et valeur `C13` au fichier.
