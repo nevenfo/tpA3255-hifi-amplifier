@@ -35,7 +35,7 @@ Validation :
 
 ## Blocage actif
 
-Aucun. Décisions H1.4 prises (voir `plan.md`) ; topologie de la Fig. 29 de TI à confirmer avant de modifier le schéma pour A2.
+Aucun.
 
 Notes : Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb drc --refill-zones --save-board` ; recompter les 125 `(units`.
 
@@ -49,5 +49,5 @@ Notes : Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb
 
 ## NEXT ACTION
 
-H1.4 — après décision utilisateur, modifier le schéma (condensateurs série curseur → `R101`/`R201`, et selon décision `C7` et le réseau RC),
-puis ERC et netlist, puis F8 par GUI.
+H1.4 — F8 par GUI (ajout de `C111`, `C211`, `C7`, `C330`–`C337`, `R311`–`R314`, posés hors carte), puis placement et routage
+dans le fichier, remplissage et DRC (validation : `plan.md` H1.4).

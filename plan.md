@@ -625,7 +625,8 @@ G1 validée ou état final PCB explicitement PARTIAL.
     - `C111`/`C211` 10 µF/63 V film, empreinte `Capacitor_THT:C_Rect_L26.5mm_W10.5mm_P22.50mm_MKS4` (26,5 × 10,5 mm, hauteur et pièce à confirmer) ;
     - nets `/VOL_L` = {`J4.2`, `C111.1`} et `/VOL_L_AC` = {`C111.2`, `R101.1`}, idem pour la voie R ;
     - `C7` 5,6 nF C0G 0603 entre `/FB` et `/+15V`.
-  - Reste à faire : le réseau RC de sortie (A2), puis F8, placement et routage.
+    - A2 (schéma MD5 `18680060`) : sur chaque `/OUT_x_F`, 1 nF C0G 1206 vers `GND` (`C330`–`C333`) et 3,3 Ω 0603 (`R311`–`R314`) en série avec 10 nF X7R 0603 (`C334`–`C337`), nœuds `/SNUB_A`–`D`. Topologie de la Fig. 29 de SLASEA8A ; ERC 16 avertissements connus.
+  - Reste à faire : F8 (15 empreintes à ajouter), placement, routage, remplissage, DRC.
   - **Validation** :
     - ERC sans nouvelle erreur ; netlist prouvant un condensateur série sur `VOL_L`→`R101` et `VOL_R`→`R201` ;
     - DRC : 0 non-connecté, parité 3, aucune violation hors sérigraphie acceptée ;

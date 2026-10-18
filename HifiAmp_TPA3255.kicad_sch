@@ -11895,6 +11895,246 @@
 		)
 		(uuid "cf7d97dd-c5fb-4a99-b1e0-c5c047cb5a8d")
 	)
+	(label "OUT_A_F"
+		(at 342.9 356.87 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "11048475-f901-4afc-9720-f788c3066e47")
+	)
+	(label "OUT_A_F"
+		(at 350.52 356.87 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5e1343a1-858f-4fe7-a77f-2663e5e0dcd3")
+	)
+	(label "GND"
+		(at 342.9 364.49 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "e6604dcc-578d-49e4-98ee-c0f843d9734f")
+	)
+	(label "SNUB_A"
+		(at 350.52 364.49 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "41498f57-cbdc-4d3c-bdb3-657fa9469ebd")
+	)
+	(label "SNUB_A"
+		(at 350.52 368.3 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "d273e92f-fa5d-4bd7-a1a2-356ea7f886c4")
+	)
+	(label "GND"
+		(at 350.52 375.92 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "69ca3e89-289d-48a1-8ea0-b6f8e435af19")
+	)
+	(label "OUT_B_F"
+		(at 363.22 356.87 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2ca5a5fe-3ca9-4bdd-8178-33038fb0051a")
+	)
+	(label "OUT_B_F"
+		(at 370.84 356.87 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "47c6286e-3f5b-4a6e-a0c0-e10e5b3331ae")
+	)
+	(label "GND"
+		(at 363.22 364.49 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "cc4383a6-d613-443a-a714-7b485289907f")
+	)
+	(label "SNUB_B"
+		(at 370.84 364.49 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fd22df2d-7351-4863-a4d3-0bc2a41333c4")
+	)
+	(label "SNUB_B"
+		(at 370.84 368.3 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5f521ca3-1033-4226-b348-f5f15ff7d20d")
+	)
+	(label "GND"
+		(at 370.84 375.92 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "7f798e56-1ace-4691-a98f-19d2a45b6540")
+	)
+	(label "OUT_C_F"
+		(at 383.54 356.87 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "744828c2-8aba-477b-9273-6a99cef57c10")
+	)
+	(label "OUT_C_F"
+		(at 391.16 356.87 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "677eddf1-766c-4e94-92a8-32effad24686")
+	)
+	(label "GND"
+		(at 383.54 364.49 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "8bfb0e8d-76df-4478-a5ce-8446dc7bfcc7")
+	)
+	(label "SNUB_C"
+		(at 391.16 364.49 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fda578c8-bbac-435c-bd62-9e5944cb4a06")
+	)
+	(label "SNUB_C"
+		(at 391.16 368.3 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "4637972a-e9c4-4c74-b8c7-ff89c83fa716")
+	)
+	(label "GND"
+		(at 391.16 375.92 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "df02e772-d4de-48c1-8cd3-26a90cd5c745")
+	)
+	(label "OUT_D_F"
+		(at 403.86 356.87 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "15475577-fdb9-4738-a8de-3cf1c171bddb")
+	)
+	(label "OUT_D_F"
+		(at 411.48 356.87 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5833064f-d028-457a-99eb-5e3162312f35")
+	)
+	(label "GND"
+		(at 403.86 364.49 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2af15046-b49b-4bec-b3cd-e52b1b6ca60d")
+	)
+	(label "SNUB_D"
+		(at 411.48 364.49 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "980ad5dd-a73f-45cb-b1c1-299eccaaa6d5")
+	)
+	(label "SNUB_D"
+		(at 411.48 368.3 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2d4e104d-383e-44c2-b067-e6c91e4a4810")
+	)
+	(label "GND"
+		(at 411.48 375.92 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "4a0910b1-6cf3-4d96-812e-d20eadfc0634")
+	)
 	(symbol
 		(lib_id "HifiAmp_TPA3255_Local:LM5010ASD")
 		(at 100.33 100.33 0)
@@ -19243,6 +19483,634 @@
 			(project "HifiAmp_TPA3255"
 				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
 					(reference "C7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 342.9 360.68 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "90fb0d14-3ccc-4795-a534-22a5077e2735")
+		(property "Reference" "C330"
+			(at 343.535 358.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1nF/100V C0G"
+			(at 343.535 363.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
+			(at 343.8652 364.49 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 342.9 360.68 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "C330")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 350.52 360.68 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "744b5c14-6361-48d0-8b20-d88f9a85a8ab")
+		(property "Reference" "R311"
+			(at 352.552 360.68 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "3R3 0.1W"
+			(at 350.52 360.68 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 348.742 360.68 90)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 350.52 360.68 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "R311")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 350.52 372.11 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3aa58a79-6d4b-433c-a189-4757c3624303")
+		(property "Reference" "C334"
+			(at 351.155 369.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10nF/100V X7R"
+			(at 351.155 374.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 351.4852 375.92 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 350.52 372.11 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "C334")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 363.22 360.68 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c960897a-307c-495f-8e90-1a9445d40d97")
+		(property "Reference" "C331"
+			(at 363.855 358.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1nF/100V C0G"
+			(at 363.855 363.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
+			(at 364.1852 364.49 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 363.22 360.68 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "C331")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 370.84 360.68 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "62fdc337-d5fa-4c19-a2ec-444534d8b41f")
+		(property "Reference" "R312"
+			(at 372.872 360.68 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "3R3 0.1W"
+			(at 370.84 360.68 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 369.062 360.68 90)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 370.84 360.68 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "R312")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 370.84 372.11 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "35f6de90-4819-4f02-924c-9e4d468b19e3")
+		(property "Reference" "C335"
+			(at 371.475 369.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10nF/100V X7R"
+			(at 371.475 374.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 371.8052 375.92 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 370.84 372.11 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "C335")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 383.54 360.68 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "2cc7c1f4-a544-4f33-8049-1a12e7159d1f")
+		(property "Reference" "C332"
+			(at 384.175 358.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1nF/100V C0G"
+			(at 384.175 363.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
+			(at 384.5052 364.49 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 383.54 360.68 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "C332")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 391.16 360.68 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "7d98dc33-23f1-474e-ab2c-27acc70c3982")
+		(property "Reference" "R313"
+			(at 393.192 360.68 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "3R3 0.1W"
+			(at 391.16 360.68 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 389.382 360.68 90)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 391.16 360.68 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "R313")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 391.16 372.11 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ca670cd7-34bb-42e9-8bd4-435128b4c120")
+		(property "Reference" "C336"
+			(at 391.795 369.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10nF/100V X7R"
+			(at 391.795 374.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 392.1252 375.92 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 391.16 372.11 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "C336")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 403.86 360.68 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "28e59cb9-b84a-4af7-93db-81840d1430d0")
+		(property "Reference" "C333"
+			(at 404.495 358.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1nF/100V C0G"
+			(at 404.495 363.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
+			(at 404.8252 364.49 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 403.86 360.68 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "C333")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 411.48 360.68 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "19a6a33e-3fa7-4166-8128-d417ced51d9d")
+		(property "Reference" "R314"
+			(at 413.512 360.68 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "3R3 0.1W"
+			(at 411.48 360.68 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 409.702 360.68 90)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 411.48 360.68 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "R314")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 411.48 372.11 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "cb348228-b7c6-423f-9068-e0776cff6190")
+		(property "Reference" "C337"
+			(at 412.115 369.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10nF/100V X7R"
+			(at 412.115 374.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 412.4452 375.92 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 411.48 372.11 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "C337")
 					(unit 1)
 				)
 			)
