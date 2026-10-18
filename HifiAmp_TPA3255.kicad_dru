@@ -82,3 +82,15 @@
 (rule "Echappement de piste interne a U1"
 	(constraint clearance (min 0.15mm))
 	(condition "(A.Type == 'Track' && B.Type == 'Pad' && B.memberOfFootprint('U1')) || (B.Type == 'Track' && A.Type == 'Pad' && A.memberOfFootprint('U1')) || (A.Type == 'Track' && (B.Type == 'Track' || B.Type == 'Via') && (A.intersectsCourtyard('U1') || B.intersectsCourtyard('U1'))) || (B.Type == 'Track' && A.Type == 'Via' && (A.intersectsCourtyard('U1') || B.intersectsCourtyard('U1')))"))
+
+# Pas de via dans le courtyard de L1 ni de U6 (F1.4-b2).
+#
+# L1 (WE-PD 1050) : Würth interdit vias et pistes sensibles dessous.
+# U6 : le PowerPAD est sur le dessus, rien ne doit percer le dessous du boitier.
+# Les six vias deja presents dans le courtyard de U6 avant cette regle
+# (PVDD x2 vers C310/C311, GND x2 vers C311, BST_B et BST_C) sont conserves
+# a l'identique : seuls ces quatre nets sont exemptes. Tout autre via est refuse.
+
+(rule "Pas de via sous L1 ni sous U6"
+	(constraint disallow via)
+	(condition "A.Type == 'Via' && (A.intersectsCourtyard('L1') || (A.intersectsCourtyard('U6') && A.NetName != '/PVDD' && A.NetName != '/GND' && A.NetName != '/BST_B' && A.NetName != '/BST_C'))"))

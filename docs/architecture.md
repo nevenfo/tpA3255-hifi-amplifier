@@ -1364,3 +1364,22 @@ des `OUT`. Pour libérer les sorties de `U6`, trois vias `INPUT` de F1.3-d sont 
 `INPUT_D` rejoint `C207.1` par un via en (290,6 ; 168,425) et un coude `B.Cu` : écart C/D
 0,10 mm. `CLIP_OTW` passe à 0,25 mm exactement de ce via. Mesure : 87 → 78 (tous `GND`),
 segments 472 → 540, vias 50 → 54.
+
+## F1.4-a — stratégie des quatre couches : O3 retenue
+
+L'[étude de stratégie](plane-strategy-f1.4-a.md) recommande **O3** :
+`F.Cu` composants/signaux, `In1.Cu` masse continue, `In2.Cu` pistes transférées
+aujourd'hui sur `B.Cu`, `B.Cu` masse continue. Cette proposition révise la découpe
+analogique/puissance et la jonction unique d'E1.5 ; les chemins de retour seraient
+maîtrisés par l'implantation et la couture, sans fente sous les entrées audio.
+
+**Décision utilisateur (2026-10-17) : O3 retenue.** Elle remplace, pour les plans,
+la découpe `GND` vers `x` ≈ 142 et la jonction unique près de `U6` décidées en E1.5 :
+l'étoile devient une ségrégation fonctionnelle (aucun retour MKP `C321`–`C324` dans
+l'aire analogique, couture `GND` à la frontière fonctionnelle et près de `U6`, aucune
+fente sous `INPUT_A`–`D`). Le reste d'E1.5 (placement, retours locaux `PVDD`/`C310`/`C311`,
+BTL jamais à `GND`) reste en vigueur.
+
+Conséquence pour F1.4-b : `In1.Cu` cesse d'être la couche puissance. Le doublement de
+`PVDD` par zone, prévu sur `In1.Cu`, se fait sur `In2.Cu` ou `F.Cu` sans couper
+la référence des `INPUT`.

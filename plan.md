@@ -401,17 +401,101 @@ E1 validée.
   - [x] F1.3-c Alimentations analogiques (34 : `±VSE`, `±VSE_R`, `L/R_POS/NEG_AC`, `+12V-OA`, `VMID`). `VMID` équidistant de `U4`/`U5` (constat E1.5). Validation : 34 résolus, DRC propre.
   - [x] F1.3-d Signal analogique — d'abord reclasser `±VSE`/`±VSE_R` de `PWR_OUT` en `ANALOG` dans `.kicad_pro` (sorties d'AOP de quelques mA, classe héritée erronée ; DRC inchangé après reclassement) (26 : `INPUT_A`–`D`, `INV1`–`4_NEG`, `RCA_L/R`, `VOL_L/R(_IN)`). Dans la bande `x` 100..155, symétrie (0 ; +40) des deux voies conservée au routage, loin des nœuds commutés. Validation : 26 résolus, écart de longueur entre voies chiffré, DRC propre.
   - [x] F1.3-e Contrôle (9 : `RESET`, `RESET-SW`, `RESET_RC`, `FAULT`, `CLIP_OTW`, `OC_ADJ`, `FREQ_ADJ`, `C_START`). Validation : 9 résolus ; il ne reste que les 78 `GND` ; DRC propre, parité 3.
-- [ ] F1.4 Créer plans/zones et vias thermiques ; remplir les zones. *(**Dépend de F1.6** : un condensateur ajouté se place avant le remplissage des zones. Constat F1.3-a : le `+3V3` long (~135 mm) court en `B.Cu` à `y` 138,3 ; à reprendre si `B.Cu` est réservé au plan `GND`.)*
-  - [ ] F1.4-a Étude de stratégie des plans, lecture seule. Concilier les contraintes E1.5 (découpe `GND` vers `x` ≈ 142 et jonction unique près de `U6` ; `INPUT_A`–`D` en couche interne entre deux plans de masse sur la traversée de puissance ; retour des MKP `C321`–`C324` sans le plan analogique) avec l'implantation prévue (« L2 plan GND continu ») et le routage réel (`INPUT` en `B.Cu`, `PVDD` 7 mm en `B.Cu`, `+3V3` long en `B.Cu`). Validation : options d'affectation des quatre couches chiffrées (occupation par couche, reprises de pistes, vias, continuité du plan sous `INPUT`, boucles de retour), une recommandation, arbitrage utilisateur obtenu et consigné dans `docs/architecture.md`.
+- [x] F1.4 Créer plans/zones et vias thermiques ; remplir les zones. *(**PASS** 2026-10-18, b1–b5.)* *(**Dépend de F1.6 et F1.7** : un condensateur ajouté se place avant le remplissage des zones. Constat F1.3-a : le `+3V3` long (~135 mm) court en `B.Cu` à `y` 138,3 ; à reprendre si `B.Cu` est réservé au plan `GND`.)*
+  - [x] F1.4-a Étude de stratégie des plans, lecture seule. Concilier les contraintes E1.5 (découpe `GND` vers `x` ≈ 142 et jonction unique près de `U6` ; `INPUT_A`–`D` en couche interne entre deux plans de masse sur la traversée de puissance ; retour des MKP `C321`–`C324` sans le plan analogique) avec l'implantation prévue (« L2 plan GND continu ») et le routage réel (`INPUT` en `B.Cu`, `PVDD` 7 mm en `B.Cu`, `+3V3` long en `B.Cu`). Validation : options d'affectation des quatre couches chiffrées (occupation par couche, reprises de pistes, vias, continuité du plan sous `INPUT`, boucles de retour), une recommandation, arbitrage utilisateur obtenu et consigné dans `docs/architecture.md`.
+    - **PASS** — étude `docs/plane-strategy-f1.4-a.md` ; **O3 retenue par l'utilisateur le 2026-10-17** (`In1.Cu`/`B.Cu` `/GND` continus, `B.Cu` transféré vers `In2.Cu`), consignée dans `docs/architecture.md`. Elle remplace la découpe E1.5 pour les plans.
   - [ ] F1.4-b Appliquer la stratégie retenue (reprises de routage éventuelles, zones, vias de couture et thermiques sous `U1`/`Q301`), remplir les zones. Validation : 0 non-connecté, DRC sans `clearance`/`shorting_items`/`track_dangling`/`courtyards_overlap`, parité 3, zones remplies sans îlot non relié.
-- [ ] F1.5 Vérifier l’absence de ratsnest et les longueurs/vias inutiles critiques.
+    - Inventaire (2026-10-18, lecture seule, PCB `050bbce3`) :
+      - aucune zone ; `B.Cu` porte 116 segments (2 190,8 mm), `In2.Cu` 2 (`+15V`) ;
+      - les 56 vias sont traversants ; les pads traversants ont des anneaux sur toutes les couches ;
+      - aucun conflit géométrique pour un transfert à géométrie identique ; le transfert passe par suppression puis re-routage, donc les UUID changent ;
+      - à garder en `B.Cu` : 4 segments `PVDD`/`GND` vers `C310`/`C311`, les seules empreintes `B.Cu` ;
+      - correction de F1.4-a : la boîte de drain `Q301` (x 175..200, y 230..248,5) fait 4,6 cm² par couche, pas 9 cm².
+    - Défauts **validés par l'utilisateur le 2026-10-18** :
+      - plans en retrait de 0,5 mm du bord, la valeur de la règle ;
+      - pas de zone `PVDD` en `In2.Cu`, car la barre de 7 mm y est transférée telle quelle ;
+      - règle `.kicad_dru` interdisant les vias sous `L1`/`U6`, avec test négatif ;
+      - pas de ligne de couture continue à `x` ≈ 156, où passent les `INPUT` : couture par pad et vias libres environ tous les 10 mm.
+    - [x] F1.4-b1 *(**PASS** 2026-10-18, MD5 `fe6ee0dd2738c8de3cab2819ea089624`. DRC propre, non-connectés 76 tous `/GND`, parité 3, 427 segments inchangés, 124 `(units`, `pad_prop_heatsink` = 1. Le transfert ne change que `(layer)`, donc les 112 segments gardent leur UUID. Écart : 2 copies `In2.Cu` de `853289ed`/`88eb8b10`, sinon la barre `PVDD` ne rejoint plus les vias de `C310`/`C311` ; `In2.Cu` = 116, `B.Cu` = 4.)* Transfert `B.Cu` → `In2.Cu`. Dépendances : F1.7. Tâches : refaire 112 segments en `In2.Cu` par net, conserver les 56 vias et les 4 segments `C310`/`C311`. Validation :
+      - DRC sans `clearance`, `shorting_items`, `track_dangling`, `courtyards_overlap` ni `hole_clearance` ;
+      - non-connectés 76, tous `/GND` ; parité 3 ;
+      - 427 segments inchangés par UUID ; `B.Cu` = 4 segments, `In2.Cu` = 114.
+    - [x] F1.4-b2 Couture et vias `GND`. *(**PASS** 2026-10-18 : PCB MD5 `59ae3657641d9452e170b37efd8b27ad`, DRU `cb9016bf`. DRC propre, parité 3, 73 non-connectés tous `/GND`, 60 `via_dangling` attendus jusqu'à b3.)*
+      - Fait :
+        - règle « pas de via sous `L1` ni `U6` », prouvée par des vias d'essai refusés (`items_not_allowed`) ; les 6 vias déjà présents dans le courtyard de `U6` sont exemptés par net (`PVDD`, `GND`, `BST_B`, `BST_C`) ;
+        - 57 vias `/GND` (51 dog-bones et 6 thermiques `U1`) ; existants inchangés par UUID ;
+        - DRC propre et parité 3 ; 57 `via_dangling` attendus jusqu'à b3.
+      - 6 pads enfermés, résolus sans reprise de piste :
+        - `U6.3`/`U6.4` (M1/M2 à `GND`, sans courant de retour) : un dog-bone commun ;
+        - `U6.33`/`U6.34` : pistes `F.Cu` de 0,25 mm (≈ 6 mm) vers les vias `GND` existants ;
+        - `C303.2` et `C206.2` : **via dans le pad** 0,6/0,3, à faire boucher et capper à la fabrication (anneau de 0,15 mm sur `C206.2`), à reporter en G1.
+      - Fiche TPA3255 (SLASEG) non consultée pour les broches `GND` : à vérifier en G1. Dépendances : b1. Tâches :
+      - règle `.kicad_dru` interdisant les vias sous `L1`/`U6`, prouvée par un via d'essai refusé ;
+      - un via 0,6/0,3 en dog-bone par pad CMS `/GND` (environ 60, dont 8 pour `U6` hors corps) ;
+      - vias thermiques `U1` 2 × 3 (x 171,5/172,5 ; y 171/172/173).
+
+      Validation : 0 via sous `L1`/`U6`, DRC propre, parité 3.
+    - [x] F1.4-b3 *(**PASS** 2026-10-18, MD5 `a83e6740c14efea4de81de4958ae97f9`. Zones rectangulaires en retrait de 0,5 mm, clearance 0,25, reliefs thermiques 0,5/0,5, îlots supprimés, remplies par `kicad-cli pcb drc --refill-zones --save-board`. 0 non-connecté, 0 `via_dangling`, DRC propre, parité 3. Un seul polygone rempli par zone : `In1.Cu` 290,6 cm², `B.Cu` 290,4 cm². Sous les `INPUT`, références continues sauf l'isolement de leurs propres vias, soit 7,4 mm sur 1 301.)* Zones `/GND` `In1.Cu` et `B.Cu`. Dépendances : b2. Tâches : polygones en retrait du contour, `B.Cu` excluant `C310.1`/`C311.1`, remplissage. Validation : 0 non-connecté, DRC propre, ni îlot ni `starved_thermal`, parité 3, références continues sous chaque `INPUT`.
+    - [x] F1.4-b4 *(**PASS** 2026-10-18, MD5 `581d3783b58f78fa067fa1df4ec89c11`. Zones `/PVDD_FUSED` `F.Cu` + `In2.Cu`, priorité 1, polygone x 172–199,5 / y 225–249,5 plus une bande sud x 160–172 / y 244,5–249,5, sans déplacement. Remplies : 6,54 et 7,16 cm², soit 479,5 cm²·µm pour ≥ 420. 12 vias de couture. Tj `Q301` estimée ≈ 102 °C, à mesurer en H2. DRC propre, 0 non-connecté, parité 3, existants inchangés.)* Drain `Q301` et `PVDD`. Dépendances : b1. Tâches : zones `PVDD_FUSED` `F.Cu` + `In2.Cu` (hors `D301.2`/`R305`) avec vias de couture, **agrandies** (décision utilisateur du 2026-10-18 : la boîte x 175..200, y 230..248,5 ne fait que 4,6 cm² par couche, objectif ≥ 420 cm²·µm, soit ≥ 6 cm² par couche) ; d'abord chiffrer l'agrandissement possible et les déplacements qu'il impose (`D301`, `R305`, pistes voisines). Validation : DRC propre, surface mesurée au fichier, Tj estimée consignée.
+    - [x] F1.4-b5 *(**PASS** 2026-10-18, PCB `581d3783`. ERC : 16 avertissements connus, 0 erreur. DRC complet avec `--refill-zones` sur une copie : seuls `silk_overlap` 90 et `silk_over_copper` 26 restent, 0 non-connecté, parité 3. Zones du fichier identiques au rejeu, écart de 0 mm².)* Clôture. Dépendances : b3, b4. Tâches : ERC/DRC complets, parité, `pad_prop_heatsink`, 124 `(units`. Validation : celle de F1.4-b.
+- [x] F1.5 Vérifier l’absence de ratsnest et les longueurs/vias inutiles critiques. *(**PASS** 2026-10-18.)*
+  - 0 chevelu ; 128 vias, aucun inutile ni sur `OUT_*` ; aucune boucle.
+  - `SW` : 6,4 mm de `U1.1` à `L1.2`.
+  - `OUT` : A/B 29,13/28,92, C/D 68,27/71,89, identiques à F1.2-c2.
+  - `INPUT` : A 324,7 / B 325,2 / C 365,1 / D 365,0 mm. L'écart de 40 mm entre les paires A–B et C–D vient de la position des voies ; à revoir en G1 si nécessaire.
+  - Anomalies mineures non bloquantes : voir F1.8.
 - [x] F1.6 Vérifier au schéma le découplage d'entrée du buck `U1` : aucun condensateur sur `BUCK_VIN` après `D3` (`C2`–`C4` côté `PVDD`). Validation : capacité locale VIN du LM5010 présente au schéma et au PCB, ou absence justifiée par la fiche technique.
   - [x] F1.6-a Diagnostic, lecture seule. *(PASS : `BUCK_VIN` = `U1.10`, `D3.1` (Schottky série anti-retour), `R2.2`, aucun condensateur ; le plus proche, `C11` 10 nF, est à ~15,6 mm de piste derrière `D3`, boucle ≈ 27 mm. Ajout requis.)*
   - [x] F1.6-b Ajouter le découplage d'entrée selon SNVS376F (Table 2, §8.2.2.1.5, §8.2.2.1.9, §Layout) : `C327` 0,1 µF 100 V X7R (rôle C5, au plus près de `U1.10`) et `C328` 2,2 µF 100 V X7R 1210 (rôle C1, boucle `C1`–`VIN`–`SW`–`L1`–`COUT` minimale), tous deux entre `BUCK_VIN` et `GND`, `GND` direct vers l'EP de `U1` sans via. Eq. 18 à 48 V, `R_ON` 182 k, 0,5 A : ≥ 0,33 µF pour ΔV 1 V. Étapes : schéma + ERC, propagation F8 (« Supprimer les empreintes sans symbole » décoché), placement, routage. Validation : ERC sans nouvelle erreur, 126 empreintes, parité 3, `pad_prop_heatsink` = 1, aucune `clearance`/`shorting_items`/`courtyards_overlap`, non-connectés tous `GND`, pistes existantes identiques par UUID hormis reprises déclarées.
 
+- [x] F1.7 Corriger les empreintes de `U1` et `L1` (**découvert en F1.4-b**, 2026-10-17) en un seul passage F8 et une seule reprise de placement du buck auxiliaire. **Bloque F1.4-b.**
+  - **PASS** (2026-10-18), MD5 `050bbce302a6f410e3a3378507d0cff3` :
+    - DRC sans `clearance`/`shorting_items`/`track_dangling`/`courtyards_overlap`/`hole_clearance`/`solder_mask_bridge` ; restent `silk_overlap` 90 et `silk_over_copper` 26 ;
+    - non-connectés 76, tous `/GND` ; parité 3 ; `pad_prop_heatsink` = 1 ; 124 `(units` ; ERC 16 avertissements, comme avant ;
+    - 46 éléments de la zone supprimés et 43 ajoutés, dont 5 vias de 0,6/0,3 mm ; les 552 autres sont identiques par UUID ;
+    - aucun via sous `L1`.
+  - Écarts au placement cible :
+    - `D1` en (165,7 ; 173) : à 165,8, l'isolement avec `ISEN` serait de 0,2 mm, sous les 0,25 mm requis ;
+    - `D3` en (178,8 ; 171) : le via `VCC` de `U1.9` en (174,95 ; 171,2) l'impose.
+  - `+15V` vers `R39.2` passe maintenant en `In2.Cu` (33,5 mm) : à relire avec O3 en F1.4-b.
+  - Écarts constatés :
+    - `U1` (`LM5010ASD/NOPB`) : boîtier `DPR0010A` de 4 × 4 mm au pas de 0,8 mm, pad exposé 2,6 × 3 mm (SNVS376F, dessins 4218856/B). Le PCB porte `WSON-10-1EP_2.5x2.5mm_P0.5mm_EP1.2x2mm`. Cible : `Package_SON:WSON-10-1EP_4x4mm_P0.8mm_EP2.6x3mm`.
+    - `L1` (`7447714101`) : WE-PD taille 1050, corps 10 × 10 × 5 mm. Land pattern Würth : pastilles 3,5 × 2 mm, 7 mm intérieur, 11 mm extérieur, « no vias and sensitive traces underneath ». Le PCB porte `L_Wuerth_WE-PD2-Typ-MS`, pastilles 2,15 × 5,5 mm à ± 1,93 mm.
+  - Audit des autres empreintes non génériques : aucun autre écart. `L6` n'a pas de référence fabricant ; son empreinte WE-PD M/S fixera le choix au moment de la nomenclature.
+  - Tâches :
+    - diagnostic fait (2026-10-17, lecture seule) :
+      - aucune empreinte WE-PD 1050 installée : en créer une, `HifiAmp_TPA3255_Local:L_Wuerth_WE-PD-1050_10x10x5mm`, avec des pads 2,0 × 3,5 mm à ± 4,5 mm et un courtyard de 11,5 × 10,5 mm ;
+      - positions cibles : `L1` (170 ; 159) rot 270, avec `SW` en bas au-dessus de `U1.1` ; `U1` reste en (172 ; 172) ; `C328` (173,525 ; 166,5) ; `C327` (172,825 ; 168,95) ; `D1` (165,8 ; 173) ; `D3` (178,2 ; 171) ;
+      - 33 segments et 2 vias (`e204f231`, `14712104`) à refaire, plus le `BST` en `B.Cu` ;
+      - l'exception `.kicad_dru` de `U1` reste nécessaire, l'écart entre le pad exposé et les broches valant 0,2 mm ;
+      - le retour `COUT`→`CIN` en `F.Cu` mesure environ 20 mm, imposé par la piste `SW` ; il sera court-circuité par la couture des plans O3 en F1.4-b.
+    - affecter les empreintes au schéma et propager par F8 (« Remplacer les empreintes » coché, « Supprimer les empreintes sans symbole » décoché) — fait le 2026-10-18 : seuls `U1`/`L1` changent de lib_id, 544 segments et 54 vias identiques par UUID, parité revenue aux 3 écarts connus (`U6` pin 45, `H1`, `H2`), `lib_footprint_issues` 5 → 0. Le message F8 « attribut 'Ne pas placer' » n'apparaît pas dans les fichiers (aucun `dnp yes`, `U1`/`L1` en `attr smd`) ;
+    - `pad_prop_heatsink` sur le pad 11 de `U1` : conservé après F8, vérifié ;
+    - replacer, puis router de nouveau la zone.
+  - **Dépendances** : F1.6.
+  - **Validation** :
+    - géométrie conforme aux dessins fabricant ;
+    - ERC sans nouvelle erreur, parité 3, `pad_prop_heatsink` = 1 ;
+    - aucune `clearance`, `shorting_items`, `track_dangling` ni `courtyards_overlap` ;
+    - non-connectés tous `GND`, aucun via sous `L1` ;
+    - pistes hors zone identiques par UUID, sauf reprises déclarées.
+
+- [x] F1.8 Nettoyage du routage (anomalies F1.5, toutes fonctionnelles au DRC). *(**PASS** 2026-10-18, MD5 `70e315fad1997ce7b3616006aac5cd1b`. 23 éléments supprimés, dont 22 micro-segments ; 6 modifiés ; 3 ajoutés. Restent 2 micro-segments utiles : `566b5a3b`, `20d20fe0`. DRC inchangé, 0 non-connecté, parité 3. `OUT` à Δ 0 mm, `INPUT` à Δ ≤ 0,14 mm. Zones identiques.)*
+  - **Dépendances** : F1.5.
+  - **Tâches** :
+    - fusionner les segments `SS` `a61a4555`/`de15abac` ;
+    - supprimer le recouvrement `PVDD` `F.Cu` `6a4a4572`/`7f37f257` ;
+    - ramener la jonction `INPUT_B` `e64ca2e8` au point (298,8 ; 178,3) ;
+    - supprimer les 24 micro-segments (< 0,15 mm) internes à un pad ;
+    - joindre en un nœud commun les recouvrements `PVDD` `15f41f43`/`1855d30d`/`f1745b96` et `PVDD_PROT` `ebcb9715` ;
+    - re-remplir les zones.
+  - **Validation** : DRC sans nouvelle violation, 0 non-connecté, parité 3, longueurs `OUT`/`INPUT` inchangées à ± 0,2 mm, existants hors liste inchangés par UUID.
+
 ### Validation
 
 Routage terminé, zones remplies, contraintes critiques inspectées.
+
+**PASS** 2026-10-18 (F1.1–F1.8) : PCB `70e315fa`, 0 non-connecté, DRC sans violation autre que la sérigraphie (90 + 26), parité 3, 4 zones remplies.
 
 # Phase G — Validation PCB
 
