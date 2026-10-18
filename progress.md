@@ -2,22 +2,21 @@
 
 ## Phase actuelle
 
-Phase F — Routage. F1.1 à F1.3, F1.6, F1.7 et F1.4-a validées ; F1.4-b débloquée.
+Phase F — Routage. F1.1 à F1.7 validées ; reste F1.8 (nettoyage), puis PR de la phase F.
 Branche `ai/f1.4-plane-strategy`.
 
 ## Tâche actuelle
 
-F1.4-b — appliquer O3 : transfert `B.Cu` → `In2.Cu`, zones `/GND` `In1.Cu`/`B.Cu`, `PVDD`,
-couture, vias thermiques `U1`/`Q301`, remplissage.
+F1.8 — nettoyage des anomalies mineures relevées en F1.5.
 
 ## Dernière tâche validée
 
-F1.4-b4 : cuivre de drain `Q301` agrandi (`/PVDD_FUSED` `F.Cu` 6,54 cm², `In2.Cu` 7,16 cm², 12 vias de couture).
+F1.4-b5 et F1.5 : routage complet et zones à jour.
 
 Validation :
-- 0 non-connecté, 0 `via_dangling`.
-- DRC sans `clearance`/`shorting_items`/`track_dangling`/`courtyards_overlap`/`hole_clearance`/`solder_mask_bridge`/`starved_thermal`/`isolated_copper`.
-- Parité 3 ; Tj ≈ 102 °C estimée. PCB MD5 `581d3783b58f78fa067fa1df4ec89c11`.
+- ERC : 16 avertissements connus. DRC complet : seuls `silk_overlap` 90 et `silk_over_copper` 26 restent.
+- 0 non-connecté, parité 3 ; zones du fichier identiques au rejeu.
+- 128 vias, aucun inutile ni sur `OUT`. PCB MD5 `581d3783b58f78fa067fa1df4ec89c11`.
 
 ## Décisions actives
 
@@ -47,5 +46,4 @@ Aucun. Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb 
 
 ## NEXT ACTION
 
-F1.4-b5 — clôture : ERC, DRC complet avec parité, `pad_prop_heatsink`, 124 `(units`, zones à jour ;
-valider selon F1.4-b, puis cocher F1.4.
+F1.8 — appliquer au fichier les nettoyages listés dans `plan.md` F1.8, re-remplir les zones, valider.
