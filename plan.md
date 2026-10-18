@@ -422,8 +422,8 @@ E1 validée.
       - 33 segments et 2 vias (`e204f231`, `14712104`) à refaire, plus le `BST` en `B.Cu` ;
       - l'exception `.kicad_dru` de `U1` reste nécessaire, l'écart entre le pad exposé et les broches valant 0,2 mm ;
       - le retour `COUT`→`CIN` en `F.Cu` mesure environ 20 mm, imposé par la piste `SW` ; il sera court-circuité par la couture des plans O3 en F1.4-b.
-    - affecter les empreintes au schéma et propager par F8 (« Remplacer les empreintes » coché, « Supprimer les empreintes sans symbole » décoché) ;
-    - rétablir `pad_prop_heatsink` sur le pad 11 de `U1` ;
+    - affecter les empreintes au schéma et propager par F8 (« Remplacer les empreintes » coché, « Supprimer les empreintes sans symbole » décoché) — fait le 2026-10-18 : seuls `U1`/`L1` changent de lib_id, 544 segments et 54 vias identiques par UUID, parité revenue aux 3 écarts connus (`U6` pin 45, `H1`, `H2`), `lib_footprint_issues` 5 → 0. Le message F8 « attribut 'Ne pas placer' » n'apparaît pas dans les fichiers (aucun `dnp yes`, `U1`/`L1` en `attr smd`) ;
+    - `pad_prop_heatsink` sur le pad 11 de `U1` : conservé après F8, vérifié ;
     - replacer, puis router de nouveau la zone.
   - **Dépendances** : F1.6.
   - **Validation** :
