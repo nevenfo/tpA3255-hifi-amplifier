@@ -78,3 +78,41 @@ Aucun bloquant pour la connectivité : DRC 0 clearance / court-circuit / non-con
 2. LM5010 (SNVS376F) § Layout : valeur et distance du condensateur `VCC`.
 3. LM5069 : condensateurs d'entrée/sortie recommandés et leur distance.
 4. Fabricant : capacité de via-in-pad rempli et capé, clearance minimale (marge de 0,265 mm sur `U6`), épaisseur de cuivre interne.
+
+## Données fabricant relevées (2026-10-18)
+
+Sources : pages `document-viewer` de ti.com. Aucun PDF n'a pu être décodé, donc chaque valeur est à recontrôler sur le PDF avant H2.
+
+- **TPA3255, SLASEA8A (oct. 2016) :**
+  - Broches `GND` : 12, 13, 25, 26, 33, 34, 41 **et 42** (§6).
+  - PowerPAD : « connect to grounded heat sink » (§6).
+  - §11.1 : plan de masse contigu depuis les broches `GND`, « for as many of the ground pins as possible », et zone de masse locale pleine sous le boîtier.
+  - Pins 3/4 : M1 (LSB) et M2 (MSB) ; M2 = 0, M1 = 0 donne le Stereo BTL (Table 1). Une ligne « Mono BTL » est ambiguë, à vérifier sur le PDF.
+  - Découplages (§6) :
+    - `GVDD_AB` (1) et `GVDD_CD` (22) : 0,1 µF chacun ;
+    - `VDD` (2) : 10 µF + 0,1 µF ;
+    - `VBG` (20) : 1 µF ;
+    - `AVDD` (14) et `DVDD` (11) : pas de valeur ; le datasheet renvoie à l'EVM, SLOU441 (non lu) ;
+    - aucune distance chiffrée.
+  - `PVDD` (§10.2.1.2.2) : découplage 1 µF X7R ≥ 100 V par pont complet, « as close as possible », et réservoir de 1 000 µF / 80 V.
+  - **Notes T1/T2 des Figures 38–40 (§11.2) :**
+    - T1 : `PVDD` en pistes larges sur la couche supérieure, « direct connection to the pins, not through vias », et « no vias or traces should block the current path » ;
+    - T2 : les X7R de découplage proche se placent sous le dissipateur.
+  - Thermique : TJ max 150 °C (§7.1), TJ recommandée 0–125 °C (§7.3), RθJC(top) 0,36 °C/W (§7.4).
+- **LM5010A, SNVS376F :**
+  - `VCC` : ≥ 0,47 µF « as close as possible to the pins » (citation venant d'un résumé, à recontrôler) ;
+  - boucle C1 → VIN-SW → L1 → C2 → C1 minimale, et masse C2 → C1 courte, sans via (§10.1).
+- **LM5069, SNVS452G :**
+  - bypass d'entrée près de `Rsns` plutôt que de la broche VIN (§10.1.1) ;
+  - 1 µF céramique vers la masse près du drain du MOSFET (§9) ;
+  - TVS à clamp < 30 V au-dessus de VIN, exemple SMBJ30A (§8.2.1.2.7).
+
+### Conséquences sur les constats
+
+- **C1/C6 requalifiés.** L'arrivée `PVDD` de `U6` passe par la barre de 7 mm en `In2.Cu` (transfert F1.4-b1) et par 2 vias, ce qui contredit la note T1.
+  - Correction visée : `PVDD` en `F.Cu` jusqu'aux broches `PVDD` de `U6`, ou à défaut une barre `F.Cu` doublée et cousue.
+  - Faisabilité à chiffrer en G1.3 : la couche `F.Cu` porte les `OUT` et les `BST` autour de `U6`.
+- **C3** : vérifier la valeur et la distance d'`AVDD`/`DVDD` sur SLOU441 ; en attendant, rapprocher les condensateurs.
+- **C5** : la règle du LM5069 porte sur la proximité avec `Rsns` et le drain, pas avec VIN. Recalculer `C326`/`C39` selon ce critère.
+- **Broche 42** : vérifier qu'elle est reliée à `/GND` et dotée d'un chemin vers les plans.
+- **TJ max 150 °C** pour `U6`, à reprendre dans la revue thermique (A-thermique).
