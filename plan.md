@@ -517,6 +517,18 @@ F1 validée.
   - À corriger : C1 à C6. Accepté : A1 à A11.
   - Reste à lever : les `NEEDS_DATA` des fiches TPA3255, LM5010 et LM5069 (distances et valeurs de découplage, broches `GND`, M1/M2).
 - [ ] G1.3 Corriger via MCP, relancer DRC et le workflow de design review.
+  - Étude du 2026-10-18 (lecture seule, PCB `70e315fa`) :
+    - broche 42 de `U6` reliée à `/GND` (via `b253eeed`) ;
+    - `PVDD` arrive à `U6` par la barre `In2.Cu`, puis 4 cous de 1,1 mm (≈ 38 °C d'échauffement), puis 2 vias ;
+    - options C1 :
+      - (a) tout en `F.Cu`, en coupant le `+12V` `ada74fbd` ;
+      - (b) barre `F.Cu` de 2,6 mm à x = 285,3, avec 8 vias de plus (10 au total), des bras `In2.Cu` de 3 mm et les `GND` 33/34 reprises par un via (283 ; 175) ;
+      - (c) seulement 4 vias de plus ;
+    - C6 : élargir `1fd0727d` à 7 mm ; goulot de 5,5 mm à y ≈ 202 (via `70c513ec`) ;
+    - C2 : `C13` vaut 100 nF pour ≥ 0,47 µF requis ; aucune place à moins de 3 mm en `F.Cu`, mais 2,2 mm en `B.Cu` ;
+    - C3 : `C319` à 2,5 mm de piste, `C318` à 5,5 mm ;
+    - C4 : `C9` à 2,3 mm de `U3.3` ;
+    - C5 : `C326` à 2,0 mm de `R306.1`, plus un 1 µF/100 V sur `/PVDD_SENSE` près du drain de `Q302`.
 - [ ] G1.4 Établir la revue manufacturabilité et les écarts résiduels.
 
 ### Validation
