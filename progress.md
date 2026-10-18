@@ -2,20 +2,21 @@
 
 ## Phase actuelle
 
-Phase G — Validation PCB. Phase F validée, PR #1 ouverte vers `main` (non fusionnée).
-Branche `ai/g1-drc-review`, créée depuis `ai/f1.4-plane-strategy`.
+Phase G validée (G1.1–G1.4). PR #1 (phase F) et PR de la phase G ouvertes, non fusionnées.
+Phase H — Revue électronique et livrables à démarrer. Branche `ai/g1-drc-review`.
 
 ## Tâche actuelle
 
-G1 — clôture : archiver le DRC final après G1.4-a et cocher la validation G1.
+H1.1 — vérifier par le calcul gain, headroom, impédances, coupures, LC, courants et dissipation.
 
 ## Dernière tâche validée
 
-G1.4 : revue DFM (`docs/drc/dfm-g1.4.md`), corrections autonomes et décisions de fabrication consignées.
+G1 : DRC final archivé dans `docs/drc/drc-g1.4.json`.
 
 Validation :
-- DRC : seuls 4 `silk_over_copper` restent (B2 accepté) ; 0 non-connecté, parité 3.
-- 125 `(units`, `pad_prop_heatsink` = 1. PCB MD5 `4f4b36822efc7ac6eb330008314dde87`.
+- Seuls 4 `silk_over_copper` restent (B2 accepté) ; 0 non-connecté, parité 3.
+- ERC : 16 avertissements connus ; zones à jour.
+- MD5 : PCB `4f4b36822efc7ac6eb330008314dde87`, schéma `9bcba85d947b78af82475f58438dcdcb`.
 
 ## Décisions actives
 
@@ -47,5 +48,5 @@ Aucun. Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb 
 
 ## NEXT ACTION
 
-G1 — archiver le DRC final (`docs/drc/drc-g1.4.json` et section du README), puis cocher la validation G1
-et ouvrir la PR de la phase G.
+H1.1 — sur une branche `ai/h1-electrical-review`, vérifier par le calcul gain, headroom, impédances, coupures,
+filtre LC, courants et dissipation à partir du schéma, et écrire `docs/review/h1-electrical.md`.

@@ -1,0 +1,176 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-18T10:17:23",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [
+        {
+            "description": "Aucun pad trouvé pour la pin 45 (/GND) du schéma",
+            "items": [
+                {
+                    "description": "Empreinte U6",
+                    "pos": {
+                        "x": 285.0,
+                        "y": 175.0
+                    },
+                    "uuid": "1120244f-1e14-474d-89f7-b1a2c1bfdf39"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Extra footprint",
+            "items": [
+                {
+                    "description": "Empreinte H1",
+                    "pos": {
+                        "x": 285.0,
+                        "y": 163.0
+                    },
+                    "uuid": "0f454911-0e40-44fe-9c53-4c42b7fc9ba1"
+                }
+            ],
+            "severity": "warning",
+            "type": "extra_footprint"
+        },
+        {
+            "description": "Extra footprint",
+            "items": [
+                {
+                    "description": "Empreinte H2",
+                    "pos": {
+                        "x": 285.0,
+                        "y": 187.0
+                    },
+                    "uuid": "506a01c1-4e39-4487-ae6e-ce21d4c803b9"
+                }
+            ],
+            "severity": "warning",
+            "type": "extra_footprint"
+        }
+    ],
+    "source": "HifiAmp_TPA3255.kicad_pcb",
+    "unconnected_items": [],
+    "violations": [
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Cercle de L304 sur F.Silkscreen",
+                    "pos": {
+                        "x": 228.35,
+                        "y": 183.1
+                    },
+                    "uuid": "983bd3f7-eeae-4ef2-88f4-f8f871a95885"
+                },
+                {
+                    "description": "Pad métallisé 1 [/OUT_D] de L304",
+                    "pos": {
+                        "x": 228.35,
+                        "y": 184.5
+                    },
+                    "uuid": "8e4c7eee-8c9b-4415-a130-08172bdb5b99"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Cercle de L301 sur F.Silkscreen",
+                    "pos": {
+                        "x": 276.5,
+                        "y": 202.9
+                    },
+                    "uuid": "950b860b-addd-4265-a31b-6cd30810ad2a"
+                },
+                {
+                    "description": "Pad métallisé 1 [/OUT_A] de L301",
+                    "pos": {
+                        "x": 276.5,
+                        "y": 204.3
+                    },
+                    "uuid": "d439353b-d00c-4c2f-882b-98f6bf20a012"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Cercle de L303 sur F.Silkscreen",
+                    "pos": {
+                        "x": 244.4,
+                        "y": 202.9
+                    },
+                    "uuid": "64d66889-77c1-43f1-90e7-1e07297fd5f2"
+                },
+                {
+                    "description": "Pad métallisé 1 [/OUT_C] de L303",
+                    "pos": {
+                        "x": 244.4,
+                        "y": 204.3
+                    },
+                    "uuid": "d03d1e1e-ab94-4bb4-ba83-963c06238a68"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Cercle de L302 sur F.Silkscreen",
+                    "pos": {
+                        "x": 260.45,
+                        "y": 183.1
+                    },
+                    "uuid": "538485e0-07c4-4db9-8e5b-83a5bf2731dc"
+                },
+                {
+                    "description": "Pad métallisé 1 [/OUT_B] de L302",
+                    "pos": {
+                        "x": 260.45,
+                        "y": 184.5
+                    },
+                    "uuid": "489d6adb-8c36-42d3-abb0-ae3ede6cee87"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        }
+    ]
+}

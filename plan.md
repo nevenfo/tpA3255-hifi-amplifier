@@ -589,6 +589,8 @@ F1 validée.
 
 DRC final et design review documentés après corrections.
 
+**PASS** 2026-10-18 (G1.1–G1.4) : `docs/drc/drc-g1.4.json`, PCB `4f4b3682`. Seuls 4 `silk_over_copper` restent (B2 accepté) ; 0 non-connecté, parité 3, ERC 16 avertissements connus, zones à jour. Revue : `design-review-g1.2.md`, DFM et écarts résiduels : `dfm-g1.4.md`.
+
 # Phase H — Revue électronique et livrables
 
 ## H1 — Revue audio/électronique indépendante

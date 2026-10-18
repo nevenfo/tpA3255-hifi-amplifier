@@ -83,3 +83,39 @@ Rapport archivé : [`drc-g1.3.json`](drc-g1.3.json).
 - Zones : `--refill-zones --save-board` sur une copie redonne un fichier de MD5 identique au PCB
   du dépôt (`ea6ea4b3…`), donc zones à jour. Surfaces (cm²) : `/GND` `B.Cu` 289,99 (G1.1 : 290,15),
   `/GND` `In1.Cu` 290,27 (290,39), `/PVDD_FUSED` `F.Cu` 6,54 et `In2.Cu` 7,16 (inchangées).
+
+# G1.4 — DRC final
+
+Rapport archivé : [`drc-g1.4.json`](drc-g1.4.json).
+
+| Élément | Valeur |
+| --- | --- |
+| Date du rapport | 2026-10-18 (JSON `2026-10-18T10:17:23`) |
+| Branche / HEAD | `ai/g1-drc-review` / G1.4 commitée |
+| `HifiAmp_TPA3255.kicad_pcb` MD5 | `4f4b36822efc7ac6eb330008314dde87` |
+| `HifiAmp_TPA3255.kicad_sch` MD5 | `9bcba85d947b78af82475f58438dcdcb` |
+| `HifiAmp_TPA3255.kicad_dru` MD5 | `cb9016bfa1ef3b3c612531ec1e105f7a` (inchangé) |
+| Version | `kicad-cli` 10.0.6 |
+| Commande | `kicad-cli pcb drc --schematic-parity --severity-all --format json --output docs/drc/drc-g1.4.json HifiAmp_TPA3255.kicad_pcb` (sans `--save-board`, MD5 PCB identique avant et après) |
+
+## Résultat
+
+| Catégorie | Type | Sévérité | G1.1 | G1.3 | G1.4 |
+| --- | --- | --- | --- | --- | --- |
+| `violations` | `silk_overlap` | warning | 90 | 89 | 0 |
+| `violations` | `silk_over_copper` | warning | 26 | 25 | 4 |
+| `unconnected_items` | — | — | 0 | 0 | 0 |
+| `schematic_parity` | `net_conflict` | warning | 1 | 1 | 1 |
+| `schematic_parity` | `extra_footprint` | warning | 2 | 2 | 2 |
+
+- Les 4 `silk_over_copper` restantes sont les repères de broche 1 de `L301`–`L304` (empreinte, acceptés).
+  Aucune autre violation : 0 `clearance`, `solder_mask_bridge`, `track_dangling`, `via_dangling`,
+  `courtyards_overlap`, `hole_clearance`, `starved_thermal`, `isolated_copper`.
+- Parité : les 3 mêmes écarts connus (`U6` pin 45, `H1`, `H2`).
+- Comparaison à G1.3 : 114 → 4 entrées silk (110 champs référence déplacés, 22 champs) ; aucune violation
+  non-silk ni modification électrique ; vias `C206.2`, `U7.3`, `C10.2` sortis de leur pastille ; marge de masque
+  `U8` à 0,025 mm (pont 0,10 mm). 125 `(units`, `pad_prop_heatsink` = 1.
+- ERC du schéma (`--severity-all`) : 0 erreur, 16 avertissements identiques aux 16 connus
+  (6 `lib_symbol_mismatch`, 10 `endpoint_off_grid`).
+- Zones : `--refill-zones --save-board` sur une copie redonne un fichier de MD5 identique au PCB du dépôt
+  (`4f4b3682…`), donc zones à jour.
