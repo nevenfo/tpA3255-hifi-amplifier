@@ -12,12 +12,12 @@ couture, vias thermiques `U1`/`Q301`, remplissage.
 
 ## Dernière tâche validée
 
-F1.4-b1 : 112 segments `B.Cu` passés en `In2.Cu`, avec 2 copies `In2.Cu` en plus pour `PVDD` vers `C310`/`C311`.
+F1.4-b2 : règle DRU interdisant les vias sous `L1`/`U6`, 60 vias `/GND` (dog-bones, 2 vias dans un pad, 6 thermiques `U1`).
 
 Validation :
-- DRC sans `clearance`/`shorting_items`/`track_dangling`/`courtyards_overlap`/`hole_clearance`.
-- Non-connectés 76, tous `/GND` ; parité 3 ; 124 `(units` ; `pad_prop_heatsink` = 1.
-- Couches : `F.Cu` 421, `In2.Cu` 116, `B.Cu` 4 segments. PCB MD5 `fe6ee0dd2738c8de3cab2819ea089624`.
+- DRC sans `clearance`/`shorting_items`/`track_dangling`/`courtyards_overlap`/`hole_clearance`/`solder_mask_bridge`.
+- Parité 3 ; 73 non-connectés, tous `/GND` ; 60 `via_dangling` attendus jusqu'aux zones.
+- 124 `(units` ; `pad_prop_heatsink` = 1. PCB MD5 `59ae3657641d9452e170b37efd8b27ad`.
 
 ## Décisions actives
 
@@ -31,6 +31,7 @@ Validation :
 - Cuivre de drain `Q301` sur `F.Cu` + `In2.Cu` (plus `B.Cu`) ; `U1` : vias 2 × 3 de 0,6/0,3 mm
   dans le pad exposé, bouchés côté `B.Cu`.
 - F1.4-b, choix validés par l'utilisateur : plans en retrait de 0,5 mm, pas de zone `PVDD` en `In2.Cu`, règle DRU interdisant les vias sous `L1`/`U6`, couture par pad. Drain `Q301` : agrandir à ≥ 6 cm² par couche.
+- Vias dans les pads `C303.2`/`C206.2` et dans l'EP de `U1` : à faire boucher et capper (G1).
 - Sérigraphie à traiter en bloc. Interdiction composants `x` [280 ; 291], `y` [160 ; 190].
 
 ## Blocage actif
@@ -46,5 +47,5 @@ Aucun. Éditeur PCB fermé : travail au fichier ou réouverture seule avant IPC 
 
 ## NEXT ACTION
 
-F1.4-b2 — pour les 6 pads `/GND` sans via (`U6.3/4/33/34`, `C303.2`, `C206.2`), chiffrer les options
-(reprise locale de pistes, via dans le pad, liaison vers un pad `GND` voisin), puis appliquer la moins risquée.
+F1.4-b3 — zones `/GND` `In1.Cu` et `B.Cu` (retrait de 0,5 mm, `B.Cu` hors `C310.1`/`C311.1`), remplissage ;
+valider selon `plan.md` F1.4-b3 (0 non-connecté, 0 `via_dangling`).
