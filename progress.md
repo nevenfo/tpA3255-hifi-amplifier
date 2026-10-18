@@ -12,12 +12,12 @@ couture, vias thermiques `U1`/`Q301`, remplissage.
 
 ## Dernière tâche validée
 
-F1.4-b2 : règle DRU interdisant les vias sous `L1`/`U6`, 60 vias `/GND` (dog-bones, 2 vias dans un pad, 6 thermiques `U1`).
+F1.4-b3 : zones `/GND` `In1.Cu` et `B.Cu` créées et remplies.
 
 Validation :
-- DRC sans `clearance`/`shorting_items`/`track_dangling`/`courtyards_overlap`/`hole_clearance`/`solder_mask_bridge`.
-- Parité 3 ; 73 non-connectés, tous `/GND` ; 60 `via_dangling` attendus jusqu'aux zones.
-- 124 `(units` ; `pad_prop_heatsink` = 1. PCB MD5 `59ae3657641d9452e170b37efd8b27ad`.
+- 0 non-connecté, 0 `via_dangling`.
+- DRC sans `clearance`/`shorting_items`/`track_dangling`/`courtyards_overlap`/`hole_clearance`/`solder_mask_bridge`/`starved_thermal`/`isolated_copper`.
+- Parité 3 ; aucun îlot ; pistes, vias et empreintes inchangés. PCB MD5 `a83e6740c14efea4de81de4958ae97f9`.
 
 ## Décisions actives
 
@@ -36,7 +36,7 @@ Validation :
 
 ## Blocage actif
 
-Aucun. Éditeur PCB fermé : travail au fichier ou réouverture seule avant IPC ; recompter les 124 `(units`.
+Aucun. Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb drc --refill-zones --save-board` ; recompter les 124 `(units`.
 
 ## Fichiers / zones utiles
 
@@ -47,5 +47,5 @@ Aucun. Éditeur PCB fermé : travail au fichier ou réouverture seule avant IPC 
 
 ## NEXT ACTION
 
-F1.4-b3 — zones `/GND` `In1.Cu` et `B.Cu` (retrait de 0,5 mm, `B.Cu` hors `C310.1`/`C311.1`), remplissage ;
-valider selon `plan.md` F1.4-b3 (0 non-connecté, 0 `via_dangling`).
+F1.4-b4 — chiffrer au fichier l'agrandissement du cuivre de drain `Q301` (≥ 6 cm² par couche, `F.Cu` + `In2.Cu`) :
+emprise possible et déplacements nécessaires (`D301`, `R305`, pistes) ; appliquer si local, sinon soumettre à l'utilisateur.
