@@ -7,15 +7,15 @@ Branche `ai/g1-drc-review`, créée depuis `ai/f1.4-plane-strategy`.
 
 ## Tâche actuelle
 
-G1.3-b — `C13` à 1 µF en `B.Cu`, ajout de `C329` 1 µF/100 V sur `/PVDD_SENSE`, par schéma, F8 et placement.
+G1.3 — clôture : rejouer le DRC, l'archiver et mettre à jour les statuts C1 à C6 dans la revue.
 
 ## Dernière tâche validée
 
-G1.3-a : `PVDD` de `U6` en option (b), C6, et rapprochement de `C318`, `C319`, `C9`, `C326`.
+G1.3-b : `C13` à 1 µF en `B.Cu` près de `U1.9`, `C329` 1 µF/100 V près du drain de `Q302`.
 
 Validation :
-- DRC : seuls `silk_overlap` 89 et `silk_over_copper` 24 restent ; 0 non-connecté, parité 3, 124 `(units`.
-- Chemin `PVDD` vers `U6` ≤ 9,5 °C à 4,6 A. PCB MD5 `64148dfa4996b48dffbe20d462662a3b`.
+- DRC : seuls `silk_overlap` 89 et `silk_over_copper` 25 restent ; 0 non-connecté, parité 3.
+- 127 empreintes, 125 `(units`, ERC 16 avertissements connus. PCB MD5 `ea6ea4b3695946c52b2deca67f622fd4`.
 
 ## Décisions actives
 
@@ -35,7 +35,7 @@ Validation :
 
 ## Blocage actif
 
-Aucun. Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb drc --refill-zones --save-board` ; recompter les 124 `(units`.
+Aucun. Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb drc --refill-zones --save-board` ; recompter les 125 `(units`.
 
 ## Fichiers / zones utiles
 
@@ -47,5 +47,5 @@ Aucun. Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb 
 
 ## NEXT ACTION
 
-G1.3-b — schéma fait (MD5 `9bcba85d`, ERC 16 avertissements connus) ; F8 par GUI (ajout de `C329` seulement),
-retournement de `C13` en `B.Cu`, puis placement, routage et valeur `C13` au fichier.
+G1.3 — rejouer le DRC (`docs/drc/drc-g1.3.json`), mettre à jour `docs/drc/README.md` et les statuts C1 à C6 de
+`docs/drc/design-review-g1.2.md`, puis cocher G1.3.

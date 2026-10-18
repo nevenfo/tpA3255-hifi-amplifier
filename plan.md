@@ -555,7 +555,12 @@ F1 validée.
     - net de chaque via contrôlé ;
     - échauffement IPC-2221 ≤ 10 °C sur le chemin `PVDD` de `U6`, ou écart chiffré ;
     - existants hors reprises déclarées inchangés par UUID.
-  - [ ] G1.3-b Schéma et nouveaux composants. Dépendances : G1.3-a. Tâches :
+  - [x] G1.3-b *(**PASS** 2026-10-18, PCB MD5 `ea6ea4b3695946c52b2deca67f622fd4`, schéma `9bcba85d`.)*
+    - `C13` (1 µF/25 V, 0603) en `B.Cu` à (176,925 ; 171,2) : chemin `VCC` d'environ 2,2 mm au lieu de 13,2.
+    - `C329` (1 µF/100 V, 1210) à (183,6 ; 206,95), à 0,75 mm bord à bord du drain de `Q302`.
+    - 127 empreintes, 125 `(units`, ERC 16 avertissements connus.
+    - DRC : seuls `silk_overlap` 89 et `silk_over_copper` 25 restent ; 0 non-connecté, parité 3.
+    - Définition : schéma et nouveaux composants. Dépendances : G1.3-a. Tâches :
     - `C13` à 1 µF ;
     - ajout de `C329` 1 µF/100 V 1210 entre `/PVDD_SENSE` et `GND`, puis ERC ;
     - propagation F8 (GUI) ;
