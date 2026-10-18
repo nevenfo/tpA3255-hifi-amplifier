@@ -7,15 +7,15 @@ Branche `ai/g1-drc-review`, créée depuis `ai/f1.4-plane-strategy`.
 
 ## Tâche actuelle
 
-G1.3 — clôture : rejouer le DRC, l'archiver et mettre à jour les statuts C1 à C6 dans la revue.
+G1.4 — revue de manufacturabilité et écarts résiduels.
 
 ## Dernière tâche validée
 
-G1.3-b : `C13` à 1 µF en `B.Cu` près de `U1.9`, `C329` 1 µF/100 V près du drain de `Q302`.
+G1.3 : corrections C1 à C6, DRC rejoué et archivé dans `docs/drc/drc-g1.3.json`.
 
 Validation :
-- DRC : seuls `silk_overlap` 89 et `silk_over_copper` 25 restent ; 0 non-connecté, parité 3.
-- 127 empreintes, 125 `(units`, ERC 16 avertissements connus. PCB MD5 `ea6ea4b3695946c52b2deca67f622fd4`.
+- Seuls `silk_overlap` 89 et `silk_over_copper` 25 restent ; 0 non-connecté, parité 3.
+- Zones identiques au rejeu. PCB MD5 `ea6ea4b3695946c52b2deca67f622fd4`.
 
 ## Décisions actives
 
@@ -47,5 +47,5 @@ Aucun. Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb 
 
 ## NEXT ACTION
 
-G1.3 — rejouer le DRC (`docs/drc/drc-g1.3.json`), mettre à jour `docs/drc/README.md` et les statuts C1 à C6 de
-`docs/drc/design-review-g1.2.md`, puis cocher G1.3.
+G1.4 — établir la revue de manufacturabilité (`docs/drc/dfm-g1.4.md`) : B1 via-in-pad (10 vias + 3 en bord de pad),
+capacités fabricant requises, sérigraphie (89 + 25), écarts résiduels assumés.

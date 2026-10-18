@@ -516,7 +516,7 @@ F1 validée.
   - Bloquant avant H2 : B1, via-in-pad à remplir et capper (IPC-4761 type VII) : `C303.2`, `C206.2`, `C319` GND, EP `U1`.
   - À corriger : C1 à C6. Accepté : A1 à A11.
   - Reste à lever : les `NEEDS_DATA` des fiches TPA3255, LM5010 et LM5069 (distances et valeurs de découplage, broches `GND`, M1/M2).
-- [ ] G1.3 Corriger via MCP, relancer DRC et le workflow de design review.
+- [x] G1.3 Corriger via MCP, relancer DRC et le workflow de design review. *(**PASS** 2026-10-18 : `docs/drc/drc-g1.3.json`. Seuls `silk_overlap` 89 et `silk_over_copper` 25 restent ; 0 non-connecté, parité 3, zones à jour. Statuts dans `design-review-g1.2.md`, « Statut après G1.3 » : C2, C4 (distance), C5 et C6 résolus ; C1 résolu pour le courant mais partiel sur T1 ; C3 partiel (`C318` à 5,13 mm) ; B1 ouvert, 10 vias dans un pad et 3 en bord de pad à classer : `C10.2`, `C207.1`, `U7.3`.)*
   - Étude du 2026-10-18 (lecture seule, PCB `70e315fa`) :
     - broche 42 de `U6` reliée à `/GND` (via `b253eeed`) ;
     - `PVDD` arrive à `U6` par la barre `In2.Cu`, puis 4 cous de 1,1 mm (≈ 38 °C d'échauffement), puis 2 vias ;

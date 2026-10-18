@@ -1,0 +1,2706 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-18T10:05:00",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [
+        {
+            "description": "Aucun pad trouvé pour la pin 45 (/GND) du schéma",
+            "items": [
+                {
+                    "description": "Empreinte U6",
+                    "pos": {
+                        "x": 285.0,
+                        "y": 175.0
+                    },
+                    "uuid": "1120244f-1e14-474d-89f7-b1a2c1bfdf39"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Extra footprint",
+            "items": [
+                {
+                    "description": "Empreinte H1",
+                    "pos": {
+                        "x": 285.0,
+                        "y": 163.0
+                    },
+                    "uuid": "0f454911-0e40-44fe-9c53-4c42b7fc9ba1"
+                }
+            ],
+            "severity": "warning",
+            "type": "extra_footprint"
+        },
+        {
+            "description": "Extra footprint",
+            "items": [
+                {
+                    "description": "Empreinte H2",
+                    "pos": {
+                        "x": 285.0,
+                        "y": 187.0
+                    },
+                    "uuid": "506a01c1-4e39-4487-ae6e-ce21d4c803b9"
+                }
+            ],
+            "severity": "warning",
+            "type": "extra_footprint"
+        }
+    ],
+    "source": "HifiAmp_TPA3255.kicad_pcb",
+    "unconnected_items": [],
+    "violations": [
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 249.87,
+                        "y": 118.921
+                    },
+                    "uuid": "2987dd9c-2789-418f-b81d-556b5458bb64"
+                },
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 249.91,
+                        "y": 118.921
+                    },
+                    "uuid": "2c74f30c-4731-4774-b321-54dfba7c05a1"
+                },
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 249.95,
+                        "y": 118.922
+                    },
+                    "uuid": "1e9fe595-aba2-4184-a934-694e873d7727"
+                },
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 249.99,
+                        "y": 118.923
+                    },
+                    "uuid": "bfbc60f4-5d8d-4deb-921e-998a25b0bd86"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 250.03,
+                        "y": 118.924
+                    },
+                    "uuid": "ee62c108-5fb6-481e-9016-7d23862d4498"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 249.83,
+                        "y": 118.92
+                    },
+                    "uuid": "cab4d4ab-2a73-467f-968b-05ad0aa92904"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Cercle de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 128.0
+                    },
+                    "uuid": "b4023491-1972-4755-9166-245a90ed10af"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 250.07,
+                        "y": 118.926
+                    },
+                    "uuid": "484063f0-936c-4100-b73a-b15dd9efe70c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 250.11,
+                        "y": 118.927
+                    },
+                    "uuid": "0ed28bfd-e684-456c-bfdc-ff680b795779"
+                },
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 250.15,
+                        "y": 118.929
+                    },
+                    "uuid": "27488874-4720-4366-81cc-18fbe6542054"
+                },
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 250.19,
+                        "y": 118.931
+                    },
+                    "uuid": "590cd2dd-8b0d-4d38-a518-c739c454862b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 250.23,
+                        "y": 118.933
+                    },
+                    "uuid": "a4d25d14-aedf-4cc3-8f83-46355c278018"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 250.27,
+                        "y": 118.935
+                    },
+                    "uuid": "9ae1c48c-0658-41dd-837c-0e329ad10304"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 250.31,
+                        "y": 118.937
+                    },
+                    "uuid": "45fa9525-cf56-4f61-84f2-f3d4df62018e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 250.35,
+                        "y": 118.94
+                    },
+                    "uuid": "1a8dd868-4a5d-400c-9f95-19bea6f9d5cb"
+                },
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 250.79,
+                        "y": 118.979
+                    },
+                    "uuid": "8faa45a6-a7b7-46dd-beb7-fd76d6a55dab"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 250.83,
+                        "y": 118.984
+                    },
+                    "uuid": "b5e0767c-6fbc-4024-80bf-bcb5a6d4aefa"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 250.87,
+                        "y": 118.989
+                    },
+                    "uuid": "60693467-6eab-405f-8bca-4d111547eb59"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 250.91,
+                        "y": 118.994
+                    },
+                    "uuid": "2466a93d-edad-459f-b82e-fe7ae6fcbcde"
+                },
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 250.95,
+                        "y": 118.999
+                    },
+                    "uuid": "b58c611b-bb04-4a5b-a9c5-650dbc1154a2"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 250.99,
+                        "y": 119.005
+                    },
+                    "uuid": "20d7ab6a-558c-4748-8eb8-6d3472bc93fe"
+                },
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 251.03,
+                        "y": 119.01
+                    },
+                    "uuid": "25fa0e2b-ccb1-485a-8181-9b3fdbbb07a0"
+                },
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 251.07,
+                        "y": 119.016
+                    },
+                    "uuid": "2641b48a-4f20-4380-8dc9-541ed98bac32"
+                },
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 251.11,
+                        "y": 119.022
+                    },
+                    "uuid": "2b231e81-87b2-4e5f-af37-e0568990b9be"
+                },
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 251.15,
+                        "y": 119.028
+                    },
+                    "uuid": "4ffa194b-c124-4433-9750-dfec504d22b5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 251.19,
+                        "y": 119.034
+                    },
+                    "uuid": "3b1c8555-431d-4407-a6d3-cd7b6a7ff200"
+                },
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 251.23,
+                        "y": 119.041
+                    },
+                    "uuid": "c93ca808-a7e2-4661-92fa-57be90055f8e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 251.27,
+                        "y": 119.048
+                    },
+                    "uuid": "d7e0c57d-8ebf-48f4-b2a0-d3c162b33dd6"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 251.31,
+                        "y": 119.054
+                    },
+                    "uuid": "e2858101-c5fb-427e-9a69-2aa5a5d9d8f4"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 251.35,
+                        "y": 119.061
+                    },
+                    "uuid": "a016fb27-ed11-470c-b334-20f7fce215c8"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 251.39,
+                        "y": 119.069
+                    },
+                    "uuid": "cb31d7a1-5d5f-4677-baa7-234ac9835e8d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 251.43,
+                        "y": 119.076
+                    },
+                    "uuid": "db356e35-3678-4516-9975-8f15002d959b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 251.47,
+                        "y": 119.084
+                    },
+                    "uuid": "65ed9b1b-7729-4baf-bb96-4eb05355fe71"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 251.51,
+                        "y": 119.091
+                    },
+                    "uuid": "fc65437e-edc2-453d-b272-b9cb40fa7a1d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                },
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 251.55,
+                        "y": 119.099
+                    },
+                    "uuid": "c3b04124-cd8f-43f5-8324-e73510056bc5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C314 sur F.Silkscreen",
+                    "pos": {
+                        "x": 251.59,
+                        "y": 119.108
+                    },
+                    "uuid": "3ba0e205-3aa0-408d-9617-5a1da0766ad7"
+                },
+                {
+                    "description": "Champ référence de C315",
+                    "pos": {
+                        "x": 249.75,
+                        "y": 136.75
+                    },
+                    "uuid": "447d1d4b-3045-4e61-8657-e066bbf11b52"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C4 sur F.Silkscreen",
+                    "pos": {
+                        "x": 181.838748,
+                        "y": 184.71
+                    },
+                    "uuid": "575f1e29-e548-48d0-aaa2-876729d72999"
+                },
+                {
+                    "description": "Champ référence de C39",
+                    "pos": {
+                        "x": 181.75,
+                        "y": 184.75
+                    },
+                    "uuid": "9c38d01b-cd10-4ab1-a008-fc84eb321163"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C3 sur F.Silkscreen",
+                    "pos": {
+                        "x": 182.288748,
+                        "y": 180.36
+                    },
+                    "uuid": "1ba46811-6dac-4e14-9c58-ebf5b65a9357"
+                },
+                {
+                    "description": "Champ référence de C4",
+                    "pos": {
+                        "x": 183.0,
+                        "y": 180.35
+                    },
+                    "uuid": "5705384c-b614-445e-9955-b43a3a4a0aa8"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de H2",
+                    "pos": {
+                        "x": 285.0,
+                        "y": 182.85
+                    },
+                    "uuid": "18ce5152-d69c-44c0-b982-c73ed5430a7b"
+                },
+                {
+                    "description": "Champ référence de U6",
+                    "pos": {
+                        "x": 285.0,
+                        "y": 182.95
+                    },
+                    "uuid": "4ea7a34f-c5e3-454d-8a3a-bc220c1bf2a0"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C106 sur F.Silkscreen",
+                    "pos": {
+                        "x": 291.35942,
+                        "y": 182.51
+                    },
+                    "uuid": "8eaa5ae0-e679-482a-bf57-0f71d920dbe4"
+                },
+                {
+                    "description": "Champ référence de C302",
+                    "pos": {
+                        "x": 293.0,
+                        "y": 182.57
+                    },
+                    "uuid": "cd6cd9e9-7036-4009-96c2-668f07465aa3"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C207",
+                    "pos": {
+                        "x": 291.5,
+                        "y": 167.21
+                    },
+                    "uuid": "315c9ba9-5740-4ec5-80a6-ec59a5bbc97a"
+                },
+                {
+                    "description": "Champ référence de C206",
+                    "pos": {
+                        "x": 295.0,
+                        "y": 167.2
+                    },
+                    "uuid": "e5fab7f3-1c3f-4bcb-80b1-3e92c0dacb76"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C303 sur F.Silkscreen",
+                    "pos": {
+                        "x": 292.738748,
+                        "y": 166.735
+                    },
+                    "uuid": "391e96ad-93e0-41da-bfd0-6023d1d2822a"
+                },
+                {
+                    "description": "Champ référence de C206",
+                    "pos": {
+                        "x": 295.0,
+                        "y": 167.2
+                    },
+                    "uuid": "e5fab7f3-1c3f-4bcb-80b1-3e92c0dacb76"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C207",
+                    "pos": {
+                        "x": 291.5,
+                        "y": 167.21
+                    },
+                    "uuid": "315c9ba9-5740-4ec5-80a6-ec59a5bbc97a"
+                },
+                {
+                    "description": "Segment de C303 sur F.Silkscreen",
+                    "pos": {
+                        "x": 292.738748,
+                        "y": 166.735
+                    },
+                    "uuid": "391e96ad-93e0-41da-bfd0-6023d1d2822a"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C319",
+                    "pos": {
+                        "x": 292.53,
+                        "y": 175.25
+                    },
+                    "uuid": "0b251000-e349-4f96-9704-b5a60894a58e"
+                },
+                {
+                    "description": "Segment de C318 sur F.Silkscreen",
+                    "pos": {
+                        "x": 293.015,
+                        "y": 173.711252
+                    },
+                    "uuid": "3ddb4290-834d-4432-a3e2-f081cb560222"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C107",
+                    "pos": {
+                        "x": 295.0,
+                        "y": 180.57
+                    },
+                    "uuid": "c5d0527d-ed18-4098-a188-5da2be1a4453"
+                },
+                {
+                    "description": "Champ référence de C106",
+                    "pos": {
+                        "x": 291.5,
+                        "y": 180.57
+                    },
+                    "uuid": "ef73135a-cfab-440f-8cde-a45cc82ec579"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Cercle de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 128.0
+                    },
+                    "uuid": "2a27e1a2-d965-4de3-994f-b60ccb3d35da"
+                },
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 269.15,
+                        "y": 118.929
+                    },
+                    "uuid": "6be5c1bb-688d-4642-a09b-2f0c3b2acd1b"
+                },
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                },
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 269.19,
+                        "y": 118.931
+                    },
+                    "uuid": "c286e7c4-079f-45a6-ad72-5bb3d81093b1"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 269.23,
+                        "y": 118.933
+                    },
+                    "uuid": "047dbf9c-a916-4086-9f62-f69d45de84e3"
+                },
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                },
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 269.27,
+                        "y": 118.935
+                    },
+                    "uuid": "87314940-6777-4f2b-af3f-7fc7b69b0250"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                },
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 269.31,
+                        "y": 118.937
+                    },
+                    "uuid": "b3ecc3aa-f296-4378-86d3-467150a013e6"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                },
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 269.35,
+                        "y": 118.94
+                    },
+                    "uuid": "e43e6a62-291b-4b1b-8990-c7c48289b97e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 269.03,
+                        "y": 118.924
+                    },
+                    "uuid": "0181e2fb-ce6b-460c-8ebc-8831f089a15e"
+                },
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 269.07,
+                        "y": 118.926
+                    },
+                    "uuid": "18e7382e-df01-4641-8af1-33350b1e87ed"
+                },
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                },
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 269.11,
+                        "y": 118.927
+                    },
+                    "uuid": "cc5de5aa-7cc4-4d4a-ae24-1ada2390d15c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                },
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 268.95,
+                        "y": 118.922
+                    },
+                    "uuid": "a56af76c-5cc8-4b15-b038-4e9ad4fc06ad"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 268.99,
+                        "y": 118.923
+                    },
+                    "uuid": "155ae134-0380-4b3e-b77f-40ed16820dd8"
+                },
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 268.83,
+                        "y": 118.92
+                    },
+                    "uuid": "45afca5b-023e-47e1-8e1b-38337fbaa67e"
+                },
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                },
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 268.87,
+                        "y": 118.921
+                    },
+                    "uuid": "9e63806b-42f7-40ba-be02-c3827e146010"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                },
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 268.91,
+                        "y": 118.921
+                    },
+                    "uuid": "949bebc4-85e6-411d-95a7-7959b35cf9d5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                },
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 269.75,
+                        "y": 118.975
+                    },
+                    "uuid": "f0bc4182-a6ff-4df8-99e2-8475be9c58df"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                },
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 269.79,
+                        "y": 118.979
+                    },
+                    "uuid": "98c8c215-0170-44cb-931a-5a2d579dead6"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 269.83,
+                        "y": 118.984
+                    },
+                    "uuid": "5f862690-e4d5-4018-874a-96ac8c5fabc5"
+                },
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 269.87,
+                        "y": 118.989
+                    },
+                    "uuid": "2e8fd186-d727-4351-892b-9ea88677a82b"
+                },
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                },
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 269.91,
+                        "y": 118.994
+                    },
+                    "uuid": "c37490b6-ea7a-4f33-b284-d3c4f6e066b8"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 269.95,
+                        "y": 118.999
+                    },
+                    "uuid": "11ce966e-1462-43a1-90dd-fe7d9489c254"
+                },
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 269.99,
+                        "y": 119.005
+                    },
+                    "uuid": "62802ca5-e59d-418a-ad02-cff8856c0390"
+                },
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                },
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 270.03,
+                        "y": 119.01
+                    },
+                    "uuid": "aa9cefa9-e617-4435-9ab9-7a583602ab3a"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                },
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 270.07,
+                        "y": 119.016
+                    },
+                    "uuid": "d4917fd1-6ca9-4b6c-b757-070a4818c0ee"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 270.11,
+                        "y": 119.022
+                    },
+                    "uuid": "392cea12-8d34-4f05-9764-d0b7736c2193"
+                },
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                },
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 270.15,
+                        "y": 119.028
+                    },
+                    "uuid": "b1faae70-ac19-4bc8-a99c-925e59a9898b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 270.19,
+                        "y": 119.034
+                    },
+                    "uuid": "031cf39c-1945-4820-b10e-8525c772a20f"
+                },
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                },
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 270.23,
+                        "y": 119.041
+                    },
+                    "uuid": "fef2ba03-78cf-4821-95c8-bdaf82bba1b5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                },
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 270.27,
+                        "y": 119.048
+                    },
+                    "uuid": "9546dabb-aef8-44e6-ab5e-0f051d0b8b01"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 270.31,
+                        "y": 119.054
+                    },
+                    "uuid": "51cac396-cb6b-458a-9b00-8a083a35c9cf"
+                },
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                },
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 270.35,
+                        "y": 119.061
+                    },
+                    "uuid": "a81ca3aa-fc61-405b-8bac-a82dd7e35e3d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 270.39,
+                        "y": 119.069
+                    },
+                    "uuid": "1caeabc9-62c6-4c94-acab-277edf324499"
+                },
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 270.43,
+                        "y": 119.076
+                    },
+                    "uuid": "06957e20-7bad-422b-a0a8-2f933b45461c"
+                },
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                },
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 270.47,
+                        "y": 119.084
+                    },
+                    "uuid": "e01f2c5a-e3f1-4e32-93d9-93d37d6b1f83"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 270.51,
+                        "y": 119.091
+                    },
+                    "uuid": "152ce634-6cec-40e4-be50-a479cfb6603d"
+                },
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                },
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 270.55,
+                        "y": 119.099
+                    },
+                    "uuid": "87a14782-4b38-4ba2-a8d5-4fac50797c5d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C313",
+                    "pos": {
+                        "x": 268.75,
+                        "y": 136.75
+                    },
+                    "uuid": "7d105998-d4db-4bb3-bb73-d5ad2a4c84d5"
+                },
+                {
+                    "description": "Segment de C312 sur F.Silkscreen",
+                    "pos": {
+                        "x": 270.59,
+                        "y": 119.108
+                    },
+                    "uuid": "ae94350b-d00c-4eff-960f-c753cf3448c2"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C202 sur F.Silkscreen",
+                    "pos": {
+                        "x": 121.85942,
+                        "y": 179.51
+                    },
+                    "uuid": "51ba9f0b-5f06-4e08-bc82-d5cc42a3c1dc"
+                },
+                {
+                    "description": "Champ référence de R202",
+                    "pos": {
+                        "x": 122.0,
+                        "y": 180.07
+                    },
+                    "uuid": "8ae8de47-84ad-4538-9988-bd0a5537b3fd"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C83",
+                    "pos": {
+                        "x": 178.0,
+                        "y": 127.32
+                    },
+                    "uuid": "621e1700-fc65-472a-8c15-59a4064a904c"
+                },
+                {
+                    "description": "Segment de C84 sur F.Silkscreen",
+                    "pos": {
+                        "x": 177.738748,
+                        "y": 126.735
+                    },
+                    "uuid": "917d361d-74a5-458d-ad26-f66f7f02f8dc"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de C327 sur F.Silkscreen",
+                    "pos": {
+                        "x": 172.96558,
+                        "y": 169.46
+                    },
+                    "uuid": "07901942-c2bc-4b85-9bdd-945027aa6705"
+                },
+                {
+                    "description": "Champ référence de U1",
+                    "pos": {
+                        "x": 172.0,
+                        "y": 169.05
+                    },
+                    "uuid": "2f1317a8-8e5f-418b-9f0e-52598371b98f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C327",
+                    "pos": {
+                        "x": 172.825,
+                        "y": 170.38
+                    },
+                    "uuid": "ebbd7339-719b-4a22-8035-8cdf806e5bda"
+                },
+                {
+                    "description": "Segment de U1 sur F.Silkscreen",
+                    "pos": {
+                        "x": 169.89,
+                        "y": 169.89
+                    },
+                    "uuid": "f54a5e26-e7ee-4e43-9403-84cede613994"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment de U1 sur F.Silkscreen",
+                    "pos": {
+                        "x": 174.11,
+                        "y": 169.89
+                    },
+                    "uuid": "723a3389-48ff-4431-b2e9-9a91e8f9aec3"
+                },
+                {
+                    "description": "Champ référence de C327",
+                    "pos": {
+                        "x": 172.825,
+                        "y": 170.38
+                    },
+                    "uuid": "ebbd7339-719b-4a22-8035-8cdf806e5bda"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de U1",
+                    "pos": {
+                        "x": 172.0,
+                        "y": 169.05
+                    },
+                    "uuid": "2f1317a8-8e5f-418b-9f0e-52598371b98f"
+                },
+                {
+                    "description": "Champ référence de C328",
+                    "pos": {
+                        "x": 173.525,
+                        "y": 168.8
+                    },
+                    "uuid": "60303888-b0f1-41d2-8008-ea1aaae5d452"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Champ référence de C38",
+                    "pos": {
+                        "x": 182.0,
+                        "y": 150.32
+                    },
+                    "uuid": "40fb1947-76e4-4908-bd60-d58a1eca0b8c"
+                },
+                {
+                    "description": "Segment de C5 sur F.Silkscreen",
+                    "pos": {
+                        "x": 181.288748,
+                        "y": 150.36
+                    },
+                    "uuid": "a0079aae-9fb8-4249-8093-0e271bb8d4ad"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Cercle de L304 sur F.Silkscreen",
+                    "pos": {
+                        "x": 228.35,
+                        "y": 183.1
+                    },
+                    "uuid": "983bd3f7-eeae-4ef2-88f4-f8f871a95885"
+                },
+                {
+                    "description": "Pad métallisé 1 [/OUT_D] de L304",
+                    "pos": {
+                        "x": 228.35,
+                        "y": 184.5
+                    },
+                    "uuid": "8e4c7eee-8c9b-4415-a130-08172bdb5b99"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Champ référence de C302",
+                    "pos": {
+                        "x": 293.0,
+                        "y": 182.57
+                    },
+                    "uuid": "cd6cd9e9-7036-4009-96c2-668f07465aa3"
+                },
+                {
+                    "description": "Pad 2 [/GND] de C106 sur F.Cu",
+                    "pos": {
+                        "x": 292.275,
+                        "y": 182.0
+                    },
+                    "uuid": "4f382adf-eb7b-4a0d-97f7-985a342d12c4"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Champ référence de C206",
+                    "pos": {
+                        "x": 295.0,
+                        "y": 167.2
+                    },
+                    "uuid": "e5fab7f3-1c3f-4bcb-80b1-3e92c0dacb76"
+                },
+                {
+                    "description": "Pad 2 [/GND] de C303 sur F.Cu",
+                    "pos": {
+                        "x": 293.95,
+                        "y": 166.0
+                    },
+                    "uuid": "67d6c669-bacc-41d0-8957-1acbe0550cdb"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Champ référence de C319",
+                    "pos": {
+                        "x": 292.53,
+                        "y": 175.25
+                    },
+                    "uuid": "0b251000-e349-4f96-9704-b5a60894a58e"
+                },
+                {
+                    "description": "Pad 1 [/AVDD] de C318 sur F.Cu",
+                    "pos": {
+                        "x": 293.75,
+                        "y": 174.4
+                    },
+                    "uuid": "9feddf88-cb0d-4fec-a1f9-deb824e1ed0f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Cercle de L301 sur F.Silkscreen",
+                    "pos": {
+                        "x": 276.5,
+                        "y": 202.9
+                    },
+                    "uuid": "950b860b-addd-4265-a31b-6cd30810ad2a"
+                },
+                {
+                    "description": "Pad métallisé 1 [/OUT_A] de L301",
+                    "pos": {
+                        "x": 276.5,
+                        "y": 204.3
+                    },
+                    "uuid": "d439353b-d00c-4c2f-882b-98f6bf20a012"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Cercle de L303 sur F.Silkscreen",
+                    "pos": {
+                        "x": 244.4,
+                        "y": 202.9
+                    },
+                    "uuid": "64d66889-77c1-43f1-90e7-1e07297fd5f2"
+                },
+                {
+                    "description": "Pad métallisé 1 [/OUT_C] de L303",
+                    "pos": {
+                        "x": 244.4,
+                        "y": 204.3
+                    },
+                    "uuid": "d03d1e1e-ab94-4bb4-ba83-963c06238a68"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Cercle de L302 sur F.Silkscreen",
+                    "pos": {
+                        "x": 260.45,
+                        "y": 183.1
+                    },
+                    "uuid": "538485e0-07c4-4db9-8e5b-83a5bf2731dc"
+                },
+                {
+                    "description": "Pad métallisé 1 [/OUT_B] de L302",
+                    "pos": {
+                        "x": 260.45,
+                        "y": 184.5
+                    },
+                    "uuid": "489d6adb-8c36-42d3-abb0-ae3ede6cee87"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Champ référence de C302",
+                    "pos": {
+                        "x": 293.0,
+                        "y": 182.57
+                    },
+                    "uuid": "cd6cd9e9-7036-4009-96c2-668f07465aa3"
+                },
+                {
+                    "description": "Pad 1 [/INPUT_B] de C107 sur F.Cu",
+                    "pos": {
+                        "x": 294.225,
+                        "y": 182.0
+                    },
+                    "uuid": "9b29b701-a36d-42a6-80b4-72bfa39596e5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Champ référence de R301",
+                    "pos": {
+                        "x": 297.0,
+                        "y": 182.57
+                    },
+                    "uuid": "91b37aab-b3b3-4eac-b685-9dd2305c402b"
+                },
+                {
+                    "description": "Pad 2 [/GND] de C107 sur F.Cu",
+                    "pos": {
+                        "x": 295.775,
+                        "y": 182.0
+                    },
+                    "uuid": "83287fce-ffdc-473c-b8ba-4727ac87d998"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Champ référence de C207",
+                    "pos": {
+                        "x": 291.5,
+                        "y": 167.21
+                    },
+                    "uuid": "315c9ba9-5740-4ec5-80a6-ec59a5bbc97a"
+                },
+                {
+                    "description": "Pad 1 [/VBG] de C303 sur F.Cu",
+                    "pos": {
+                        "x": 292.05,
+                        "y": 166.0
+                    },
+                    "uuid": "5478f7f5-834c-4378-944c-79f0b2cb7db0"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Champ référence de Q302",
+                    "pos": {
+                        "x": 181.45,
+                        "y": 208.8
+                    },
+                    "uuid": "ea1965bb-176c-4dce-aeab-7fddf3d7ab2c"
+                },
+                {
+                    "description": "Pad 1 [/PVDD_SENSE] de C329 sur F.Cu",
+                    "pos": {
+                        "x": 183.6,
+                        "y": 208.425
+                    },
+                    "uuid": "40a7e4de-d5c0-462b-95a0-366c967c328b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Champ référence de C39",
+                    "pos": {
+                        "x": 181.75,
+                        "y": 184.75
+                    },
+                    "uuid": "9c38d01b-cd10-4ab1-a008-fc84eb321163"
+                },
+                {
+                    "description": "Pad 1 [/GND] de C4 sur F.Cu",
+                    "pos": {
+                        "x": 180.95,
+                        "y": 183.0
+                    },
+                    "uuid": "70dde139-d073-453e-ba69-ee71ee561361"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Champ référence de R202",
+                    "pos": {
+                        "x": 122.0,
+                        "y": 180.07
+                    },
+                    "uuid": "8ae8de47-84ad-4538-9988-bd0a5537b3fd"
+                },
+                {
+                    "description": "Pad 1 [/INV3_NEG] de C202 sur F.Cu",
+                    "pos": {
+                        "x": 121.225,
+                        "y": 179.0
+                    },
+                    "uuid": "172675d5-7ab7-48d9-b01f-5d73043e513c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Champ référence de R202",
+                    "pos": {
+                        "x": 122.0,
+                        "y": 180.07
+                    },
+                    "uuid": "8ae8de47-84ad-4538-9988-bd0a5537b3fd"
+                },
+                {
+                    "description": "Pad 2 [/-VSE_R] de C202 sur F.Cu",
+                    "pos": {
+                        "x": 122.775,
+                        "y": 179.0
+                    },
+                    "uuid": "cdba71a1-0f4c-4f94-9f2f-463ecf30c5b1"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Champ référence de R102",
+                    "pos": {
+                        "x": 122.0,
+                        "y": 140.07
+                    },
+                    "uuid": "b1c5a2ed-60f6-403f-a206-07adda528be4"
+                },
+                {
+                    "description": "Pad 2 [/-VSE] de C102 sur F.Cu",
+                    "pos": {
+                        "x": 122.775,
+                        "y": 139.0
+                    },
+                    "uuid": "62bc1d6f-0919-4d00-8fa6-1515ff13c32b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Champ référence de R102",
+                    "pos": {
+                        "x": 122.0,
+                        "y": 140.07
+                    },
+                    "uuid": "b1c5a2ed-60f6-403f-a206-07adda528be4"
+                },
+                {
+                    "description": "Pad 1 [/INV1_NEG] de C102 sur F.Cu",
+                    "pos": {
+                        "x": 121.225,
+                        "y": 139.0
+                    },
+                    "uuid": "65e5a4e1-6761-4eea-9837-1dedc88b37f7"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Champ référence de C83",
+                    "pos": {
+                        "x": 178.0,
+                        "y": 127.32
+                    },
+                    "uuid": "621e1700-fc65-472a-8c15-59a4064a904c"
+                },
+                {
+                    "description": "Pad 2 [/RESET-SW] de C84 sur F.Cu",
+                    "pos": {
+                        "x": 178.95,
+                        "y": 126.0
+                    },
+                    "uuid": "7c1e1dc1-05b6-4d8a-8208-c59c909e1d84"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Champ référence de C83",
+                    "pos": {
+                        "x": 178.0,
+                        "y": 127.32
+                    },
+                    "uuid": "621e1700-fc65-472a-8c15-59a4064a904c"
+                },
+                {
+                    "description": "Pad 1 [/GND] de C84 sur F.Cu",
+                    "pos": {
+                        "x": 177.05,
+                        "y": 126.0
+                    },
+                    "uuid": "73ee3a79-b2c4-4c9e-9029-9643f695977b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Champ référence de C327",
+                    "pos": {
+                        "x": 172.825,
+                        "y": 170.38
+                    },
+                    "uuid": "ebbd7339-719b-4a22-8035-8cdf806e5bda"
+                },
+                {
+                    "description": "Pad 11 [/GND] de U1 sur F.Cu",
+                    "pos": {
+                        "x": 172.0,
+                        "y": 172.0
+                    },
+                    "uuid": "c574afdf-437f-4ccd-8434-884072b89649"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Champ référence de C327",
+                    "pos": {
+                        "x": 172.825,
+                        "y": 170.38
+                    },
+                    "uuid": "ebbd7339-719b-4a22-8035-8cdf806e5bda"
+                },
+                {
+                    "description": "Pad 10 [/BUCK_VIN] de U1 sur F.Cu",
+                    "pos": {
+                        "x": 173.9375,
+                        "y": 170.4
+                    },
+                    "uuid": "07ae1c26-2a50-4ab1-94fe-0f93efc6e723"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Champ référence de U1",
+                    "pos": {
+                        "x": 172.0,
+                        "y": 169.05
+                    },
+                    "uuid": "2f1317a8-8e5f-418b-9f0e-52598371b98f"
+                },
+                {
+                    "description": "Pad 2 [/GND] de C327 sur F.Cu",
+                    "pos": {
+                        "x": 172.05,
+                        "y": 168.95
+                    },
+                    "uuid": "c1a8e2fa-b552-4952-b113-427ccd96b329"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Champ référence de C328",
+                    "pos": {
+                        "x": 173.525,
+                        "y": 168.8
+                    },
+                    "uuid": "60303888-b0f1-41d2-8008-ea1aaae5d452"
+                },
+                {
+                    "description": "Pad 2 [/GND] de C327 sur F.Cu",
+                    "pos": {
+                        "x": 172.05,
+                        "y": 168.95
+                    },
+                    "uuid": "c1a8e2fa-b552-4952-b113-427ccd96b329"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Champ référence de C38",
+                    "pos": {
+                        "x": 182.0,
+                        "y": 150.32
+                    },
+                    "uuid": "40fb1947-76e4-4908-bd60-d58a1eca0b8c"
+                },
+                {
+                    "description": "Pad 1 [/GND] de C5 sur F.Cu",
+                    "pos": {
+                        "x": 180.525,
+                        "y": 149.0
+                    },
+                    "uuid": "003f0e70-77cb-44b4-864b-21209a1ed692"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Champ référence de C38",
+                    "pos": {
+                        "x": 182.0,
+                        "y": 150.32
+                    },
+                    "uuid": "40fb1947-76e4-4908-bd60-d58a1eca0b8c"
+                },
+                {
+                    "description": "Pad 2 [/+12V] de C5 sur F.Cu",
+                    "pos": {
+                        "x": 183.475,
+                        "y": 149.0
+                    },
+                    "uuid": "c4ad3997-83ee-496f-a0d4-ad635970b412"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Champ référence de C328",
+                    "pos": {
+                        "x": 173.525,
+                        "y": 168.8
+                    },
+                    "uuid": "60303888-b0f1-41d2-8008-ea1aaae5d452"
+                },
+                {
+                    "description": "Pad 1 [/BUCK_VIN] de C327 sur F.Cu",
+                    "pos": {
+                        "x": 173.6,
+                        "y": 168.95
+                    },
+                    "uuid": "8ecb85cd-bed3-464e-8a03-ca7e9cf0b2d6"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        }
+    ]
+}

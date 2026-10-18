@@ -45,3 +45,41 @@ Le JSON liste cinq contrôles ignorés (`ignored_checks`) : `missing_courtyard`,
 
 Les sévérités `warning` du projet (dont `track_dangling`, `via_dangling`, `isolated_copper`)
 n'ont aucune entrée : le critère « 0 » s'applique aussi à elles.
+
+# DRC final G1.3
+
+Rapport archivé : [`drc-g1.3.json`](drc-g1.3.json).
+
+| Élément | Valeur |
+| --- | --- |
+| Date du rapport | 2026-10-18 (JSON `2026-10-18T10:05:00`) |
+| Branche / HEAD | `ai/g1-drc-review` / `4fb6e89` (G1.3-b commitée) |
+| `HifiAmp_TPA3255.kicad_pcb` MD5 | `ea6ea4b3695946c52b2deca67f622fd4` |
+| `HifiAmp_TPA3255.kicad_sch` MD5 | `9bcba85d947b78af82475f58438dcdcb` |
+| `HifiAmp_TPA3255.kicad_dru` MD5 | `cb9016bfa1ef3b3c612531ec1e105f7a` (inchangé depuis G1.1) |
+| Version | `kicad-cli` 10.0.6 |
+| Commande | `kicad-cli pcb drc --schematic-parity --severity-all --format json --output docs/drc/drc-g1.3.json HifiAmp_TPA3255.kicad_pcb` |
+| Écriture du PCB | aucune : MD5 du PCB identique avant et après |
+
+## Résultat
+
+| Catégorie | Type | Sévérité | G1.1 | G1.3 |
+| --- | --- | --- | --- | --- |
+| `violations` | `silk_overlap` | warning | 90 | 89 |
+| `violations` | `silk_over_copper` | warning | 26 | 25 |
+| `unconnected_items` | — | — | 0 | 0 |
+| `schematic_parity` | `net_conflict` | warning | 1 | 1 |
+| `schematic_parity` | `extra_footprint` | warning | 2 | 2 |
+
+- Aucun autre type : 0 `clearance`, `shorting_items`, `track_dangling`, `via_dangling`,
+  `courtyards_overlap`, `hole_clearance`, `solder_mask_bridge`, `starved_thermal`, `isolated_copper`.
+- Parité : les 3 mêmes écarts connus (`U6` pin 45, `H1`, `H2`).
+- Comparaison à G1.1 (appariement type + objets) : 3 entrées silk nouvelles, 5 disparues, toutes des
+  champs référence déplacés avec les composants (C9, C13, C318, C319, C326, C329) ; aucune violation
+  non-silk. Le total silk baisse de 116 à 114.
+- Même liste de 5 contrôles ignorés qu'en G1.1. ERC du schéma : 0 erreur, 16 avertissements connus
+  (6 `lib_symbol_mismatch`, 10 `endpoint_off_grid`).
+- Empreintes : 127 (126 + `C329`) ; `(units` : 125 ; `pad_prop_heatsink` : 1.
+- Zones : `--refill-zones --save-board` sur une copie redonne un fichier de MD5 identique au PCB
+  du dépôt (`ea6ea4b3…`), donc zones à jour. Surfaces (cm²) : `/GND` `B.Cu` 289,99 (G1.1 : 290,15),
+  `/GND` `In1.Cu` 290,27 (290,39), `/PVDD_FUSED` `F.Cu` 6,54 et `In2.Cu` 7,16 (inchangées).

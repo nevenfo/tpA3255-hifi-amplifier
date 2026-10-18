@@ -116,3 +116,23 @@ Sources : pages `document-viewer` de ti.com. Aucun PDF n'a pu être décodé, do
 - **C5** : la règle du LM5069 porte sur la proximité avec `Rsns` et le drain, pas avec VIN. Recalculer `C326`/`C39` selon ce critère.
 - **Broche 42** : vérifier qu'elle est reliée à `/GND` et dotée d'un chemin vers les plans.
 - **TJ max 150 °C** pour `U6`, à reprendre dans la revue thermique (A-thermique).
+
+## Statut après G1.3 (PCB `ea6ea4b3`, SCH `9bcba85d`, DRC `drc-g1.3.json`)
+
+DRC : 0 non-connecté, 0 `via_dangling`, parité 3, silk 89/25 (G1.1 : 90/26), aucune autre violation.
+Les valeurs fabricant restent celles de la section « Données fabricant relevées » (PDF non recontrôlés).
+
+| Constat | Statut | Preuve |
+| --- | --- | --- |
+| B1 | **Ouvert, aggravé de 1** | 10 vias dans un pad (les 9 de G1.2 + le via GND `a4061ec3` (290,51 ; 174,15) dans le pad GND de C319, déplacé en G1.3-a). Mesure géométrique centre-dans-pad : 3 autres cas en bord de pad (`C10.2`, `C207.1`, `U7.3`), antérieurs à G1.3, à classer. `NEEDS_DATA` capacité fabricant (via-in-pad rempli et capé). |
+| C1 | **Résolu pour le courant, partiel pour T1** | Option (b) : 10 vias PVDD vers `In2.Cu` (2 existants + 8 neufs) contre 2, soit ≈ 0,46 A par via à 4,6 A (capacité 1,9 A) et ≈ 0,4 °C. Barre `F.Cu` 2,6 mm (9,0 °C pour 4,6 A) et dents 1,1 mm vers les 6 broches (7,8 °C à 2,3 A) : arrivée `F.Cu` directe. Respect partiel de T1 : les vias restent sur le chemin (pas de tronc `F.Cu` jusqu'aux bulks, l'option (a) n'est pas retenue). Deux cous `In2.Cu` de 1,1 mm (≈ 38 °C estimés) remplacés par 2 bras de 3,0 mm (7,2 °C à 2,3 A). |
+| C2 | **Résolu** | `C13` : 1 µF/25 V (0603), `B.Cu` sous le via VCC `902b3185` ; pad VCC à 2,21 mm de `U1.9` (≤ 3 mm), chemin ≈ 2,2 mm contre 13,2 mm. Valeur ≥ 0,47 µF à recontrôler sur SNVS376F. |
+| C3 | **Partiel** | `C319` (DVDD) à 2,31 mm de `U6.11`, piste ≈ 2,5 mm (avant : 38,3 mm). `C318` (AVDD) à 5,13 mm de `U6.14`, piste ≈ 5,5 mm (avant : 32,4 mm) ; le critère « ≤ 20 mm de piste » est atteint pour les deux, mais SLOU441 n'est pas lu : distance maximale et valeurs `NEEDS_DATA`. `C318` ne peut pas être plus proche sans déplacer `INPUT_C`/`C_START`. |
+| C4 | **Résolu (distance)** | `C9` (100 nF) à 2,30 mm de `U3.3` (avant : 12,7 mm, critère ≤ 5 mm). Pas de 10 µF ajouté (décision utilisateur) ; condensateur d'entrée du TLV1117-33 `NEEDS_DATA`. |
+| C5 | **Résolu** | `C326` à 2,14 mm de `R306.1` (avant : 14,7 mm). `C329` 1 µF/100 V 1210 ajouté sur `/PVDD_SENSE` à 4,17 mm du centre du drain `Q302.2` (0,75 mm bord à bord). Critère LM5069 (§10.1.1, §9) repris du résumé, PDF à recontrôler. |
+| C6 | **Résolu** | `In2.Cu` : barre 7,0 mm (8,8 °C à 4,6 A) et goulot 6,6 mm (9,5 °C) contre 5 mm (15,1 °C). Tout ≤ 10 °C. La branche 4 mm `e74fd2fd` (C317 seul, courant d'ondulation) reste acceptée. |
+
+Découpes des plans sous `U6` : les 8 vias PVDD (x 284,6 et 285,9) et le via GND (283 ; 175) ouvrent deux
+fentes d'environ 2,9 × 2,5 mm dans `In1.Cu` et `B.Cu`, reliées par un pont de plan d'environ 1 mm.
+Surfaces des plans : `B.Cu` 290,15 → 289,99 cm² (−0,16), `In1.Cu` 290,39 → 290,27 cm² (−0,12) ;
+les deux plans restent d'un seul tenant et aucun `isolated_copper` n'apparaît.
