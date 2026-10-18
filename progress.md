@@ -2,20 +2,21 @@
 
 ## Phase actuelle
 
-Phase F — Routage validée (F1.1–F1.8), PR vers `main` à ouvrir. Phase G — Validation PCB à démarrer.
-Branche `ai/f1.4-plane-strategy`.
+Phase G — Validation PCB. Phase F validée, PR #1 ouverte vers `main` (non fusionnée).
+Branche `ai/g1-drc-review`, créée depuis `ai/f1.4-plane-strategy`.
 
 ## Tâche actuelle
 
-G1.1 — DRC final archivé.
+G1.2/G1.3 — lever les `NEEDS_DATA` de fiches techniques, puis corriger C1 à C6 de
+`docs/drc/design-review-g1.2.md`.
 
 ## Dernière tâche validée
 
-F1.8 : nettoyage du routage, ce qui clôt la phase F.
+G1.1 : DRC final archivé dans `docs/drc/`.
 
 Validation :
-- DRC : seuls `silk_overlap` 90 et `silk_over_copper` 26 restent ; 0 non-connecté, 0 `via_dangling`, parité 3.
-- Longueurs `OUT` inchangées, `INPUT` à Δ ≤ 0,14 mm ; zones identiques. PCB MD5 `70e315fad1997ce7b3616006aac5cd1b`.
+- 116 avertissements de sérigraphie, 0 erreur, 0 non-connecté, parité 3.
+- PCB MD5 `70e315fad1997ce7b3616006aac5cd1b`.
 
 ## Décisions actives
 
@@ -38,12 +39,13 @@ Aucun. Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb 
 
 ## Fichiers / zones utiles
 
-- `plan.md` G1 ; points reportés en G1 : vias dans les pads `C303.2`/`C206.2`/EP `U1`, broches `GND` du TPA3255 (SLASEG), écart de 40 mm entre les paires `INPUT` A–B et C–D, dog-bones `U6` à la limite, sérigraphie.
+- `docs/drc/design-review-g1.2.md` — constats B1, C1 à C6, A1 à A11 et `NEEDS_DATA`.
+- `docs/drc/README.md` — DRC archivé.
 - `docs/plane-strategy-f1.4-a.md` — mesures, préconditions F1.4-b.
 - `docs/kicad-operations.md` — à lire avant manipulation.
 - `HifiAmp_TPA3255.kicad_pcb`.
 
 ## NEXT ACTION
 
-G1.1 — exécuter le DRC final (avec parité et `--severity-all`) et archiver le rapport dans `docs/`,
-après ouverture de la PR de la phase F vers `main`.
+G1.2 — lever les `NEEDS_DATA` (TPA3255 : distances de découplage `AVDD`/`DVDD`/`GVDD`/`VBG`, broches `GND`, M1/M2 ;
+LM5010 : condensateur `VCC` ; LM5069 : condensateurs d'entrée) et les reporter dans la revue.

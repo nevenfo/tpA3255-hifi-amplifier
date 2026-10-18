@@ -511,8 +511,11 @@ F1 validée.
 
 ### Tâches
 
-- [ ] G1.1 Exécuter DRC et archiver le résultat.
-- [ ] G1.2 Revoir courts-circuits, alimentations, masses, découplages, puissance et thermique.
+- [x] G1.1 Exécuter DRC et archiver le résultat. *(**PASS** 2026-10-18 : `docs/drc/drc-g1.1.json` et `docs/drc/README.md`, KiCad 10.0.6. 116 avertissements de sérigraphie, 0 erreur, 0 non-connecté, parité 3.)*
+- [ ] G1.2 Revoir courts-circuits, alimentations, masses, découplages, puissance et thermique. *(Revue écrite : `docs/drc/design-review-g1.2.md`.)*
+  - Bloquant avant H2 : B1, via-in-pad à remplir et capper (IPC-4761 type VII).
+  - À corriger : C1 à C6. Accepté : A1 à A11.
+  - Reste à lever : les `NEEDS_DATA` des fiches TPA3255, LM5010 et LM5069 (distances et valeurs de découplage, broches `GND`, M1/M2).
 - [ ] G1.3 Corriger via MCP, relancer DRC et le workflow de design review.
 - [ ] G1.4 Établir la revue manufacturabilité et les écarts résiduels.
 
