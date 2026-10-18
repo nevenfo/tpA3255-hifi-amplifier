@@ -2,20 +2,21 @@
 
 ## Phase actuelle
 
-Phase F — Routage validée (F1.1–F1.8), PR vers `main` à ouvrir. Phase G — Validation PCB à démarrer.
-Branche `ai/f1.4-plane-strategy`.
+Phase G validée (G1.1–G1.4). PR #1 (phase F) et PR de la phase G ouvertes, non fusionnées.
+Phase H — Revue électronique et livrables à démarrer. Branche `ai/g1-drc-review`.
 
 ## Tâche actuelle
 
-G1.1 — DRC final archivé.
+H1.1 — vérifier par le calcul gain, headroom, impédances, coupures, LC, courants et dissipation.
 
 ## Dernière tâche validée
 
-F1.8 : nettoyage du routage, ce qui clôt la phase F.
+G1 : DRC final archivé dans `docs/drc/drc-g1.4.json`.
 
 Validation :
-- DRC : seuls `silk_overlap` 90 et `silk_over_copper` 26 restent ; 0 non-connecté, 0 `via_dangling`, parité 3.
-- Longueurs `OUT` inchangées, `INPUT` à Δ ≤ 0,14 mm ; zones identiques. PCB MD5 `70e315fad1997ce7b3616006aac5cd1b`.
+- Seuls 4 `silk_over_copper` restent (B2 accepté) ; 0 non-connecté, parité 3.
+- ERC : 16 avertissements connus ; zones à jour.
+- MD5 : PCB `4f4b36822efc7ac6eb330008314dde87`, schéma `9bcba85d947b78af82475f58438dcdcb`.
 
 ## Décisions actives
 
@@ -29,21 +30,23 @@ Validation :
 - Cuivre de drain `Q301` sur `F.Cu` + `In2.Cu` (plus `B.Cu`) ; `U1` : vias 2 × 3 de 0,6/0,3 mm
   dans le pad exposé, bouchés côté `B.Cu`.
 - F1.4-b, choix validés par l'utilisateur : plans en retrait de 0,5 mm, pas de zone `PVDD` en `In2.Cu`, règle DRU interdisant les vias sous `L1`/`U6`, couture par pad. Drain `Q301` agrandi (b4) ; Tj à mesurer en H2.
-- Vias dans les pads `C303.2`/`C206.2` et dans l'EP de `U1` : à faire boucher et capper (G1).
-- Sérigraphie à traiter en bloc. Interdiction composants `x` [280 ; 291], `y` [160 ; 190].
+- G1.3 (utilisateur) : C1 en option (b) ; `C13` à 1 µF en `B.Cu` ; ajout d'un 1 µF/100 V sur `/PVDD_SENSE` ; pas de 10 µF sur `U3`.
+- Fabrication (utilisateur) : PCBWay, IPC-4761 type VII pour les vias dans une pastille, 1 oz sur toutes les couches. Notes : `docs/drc/dfm-g1.4.md` §5.
+- Sérigraphie traitée en G1.4-a ; seuls restent les 4 repères B2 de `L301`–`L304`. Interdiction composants `x` [280 ; 291], `y` [160 ; 190].
 
 ## Blocage actif
 
-Aucun. Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb drc --refill-zones --save-board` ; recompter les 124 `(units`.
+Aucun. Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb drc --refill-zones --save-board` ; recompter les 125 `(units`.
 
 ## Fichiers / zones utiles
 
-- `plan.md` G1 ; points reportés en G1 : vias dans les pads `C303.2`/`C206.2`/EP `U1`, broches `GND` du TPA3255 (SLASEG), écart de 40 mm entre les paires `INPUT` A–B et C–D, dog-bones `U6` à la limite, sérigraphie.
+- `docs/drc/design-review-g1.2.md` — constats B1, C1 à C6, A1 à A11 et `NEEDS_DATA`.
+- `docs/drc/README.md` — DRC archivé.
 - `docs/plane-strategy-f1.4-a.md` — mesures, préconditions F1.4-b.
 - `docs/kicad-operations.md` — à lire avant manipulation.
 - `HifiAmp_TPA3255.kicad_pcb`.
 
 ## NEXT ACTION
 
-G1.1 — exécuter le DRC final (avec parité et `--severity-all`) et archiver le rapport dans `docs/`,
-après ouverture de la PR de la phase F vers `main`.
+H1.1 — sur une branche `ai/h1-electrical-review`, vérifier par le calcul gain, headroom, impédances, coupures,
+filtre LC, courants et dissipation à partir du schéma, et écrire `docs/review/h1-electrical.md`.

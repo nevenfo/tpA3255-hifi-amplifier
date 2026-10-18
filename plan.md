@@ -511,14 +511,85 @@ F1 validée.
 
 ### Tâches
 
-- [ ] G1.1 Exécuter DRC et archiver le résultat.
-- [ ] G1.2 Revoir courts-circuits, alimentations, masses, découplages, puissance et thermique.
-- [ ] G1.3 Corriger via MCP, relancer DRC et le workflow de design review.
-- [ ] G1.4 Établir la revue manufacturabilité et les écarts résiduels.
+- [x] G1.1 Exécuter DRC et archiver le résultat. *(**PASS** 2026-10-18 : `docs/drc/drc-g1.1.json` et `docs/drc/README.md`, KiCad 10.0.6. 116 avertissements de sérigraphie, 0 erreur, 0 non-connecté, parité 3.)*
+- [x] G1.2 Revoir courts-circuits, alimentations, masses, découplages, puissance et thermique. *(**PASS** 2026-10-18, revue `docs/drc/design-review-g1.2.md`. Données TI relevées. Restent `NEEDS_DATA`, en écarts résiduels de `dfm-g1.4.md` §4 : SLOU441 pour `AVDD`/`DVDD`, condensateur d'entrée du TLV1117, valeurs TI à recontrôler sur PDF.)*
+  - Bloquant avant H2 : B1, via-in-pad à remplir et capper (IPC-4761 type VII) : `C303.2`, `C206.2`, `C319` GND, EP `U1`.
+  - À corriger : C1 à C6. Accepté : A1 à A11.
+  - Reste à lever : les `NEEDS_DATA` des fiches TPA3255, LM5010 et LM5069 (distances et valeurs de découplage, broches `GND`, M1/M2).
+- [x] G1.3 Corriger via MCP, relancer DRC et le workflow de design review. *(**PASS** 2026-10-18 : `docs/drc/drc-g1.3.json`. Seuls `silk_overlap` 89 et `silk_over_copper` 25 restent ; 0 non-connecté, parité 3, zones à jour. Statuts dans `design-review-g1.2.md`, « Statut après G1.3 » : C2, C4 (distance), C5 et C6 résolus ; C1 résolu pour le courant mais partiel sur T1 ; C3 partiel (`C318` à 5,13 mm) ; B1 ouvert, 10 vias dans un pad et 3 en bord de pad à classer : `C10.2`, `C207.1`, `U7.3`.)*
+  - Étude du 2026-10-18 (lecture seule, PCB `70e315fa`) :
+    - broche 42 de `U6` reliée à `/GND` (via `b253eeed`) ;
+    - `PVDD` arrive à `U6` par la barre `In2.Cu`, puis 4 cous de 1,1 mm (≈ 38 °C d'échauffement), puis 2 vias ;
+    - options C1 :
+      - (a) tout en `F.Cu`, en coupant le `+12V` `ada74fbd` ;
+      - (b) barre `F.Cu` de 2,6 mm à x = 285,3, avec 8 vias de plus (10 au total), des bras `In2.Cu` de 3 mm et les `GND` 33/34 reprises par un via (283 ; 175) ;
+      - (c) seulement 4 vias de plus ;
+    - C6 : élargir `1fd0727d` à 7 mm ; goulot de 5,5 mm à y ≈ 202 (via `70c513ec`) ;
+    - C2 : `C13` vaut 100 nF pour ≥ 0,47 µF requis ; aucune place à moins de 3 mm en `F.Cu`, mais 2,2 mm en `B.Cu` ;
+    - C3 : `C319` à 2,5 mm de piste, `C318` à 5,5 mm ;
+    - C4 : `C9` à 2,3 mm de `U3.3` ;
+    - C5 : `C326` à 2,0 mm de `R306.1`, plus un 1 µF/100 V sur `/PVDD_SENSE` près du drain de `Q302`.
+  - **Décisions utilisateur du 2026-10-18** :
+    - C1 en option (b) ;
+    - `C13` passe à 1 µF et se place en `B.Cu`, sous le via `VCC` ;
+    - ajout d'un 1 µF/100 V 1210 sur `/PVDD_SENSE` ;
+    - pas de 10 µF sur `U3` : on rapproche seulement `C9`.
+  - [x] G1.3-a *(**PASS** 2026-10-18, MD5 `64148dfa4996b48dffbe20d462662a3b`.)*
+    - DRC : seuls `silk_overlap` 89 et `silk_over_copper` 24 restent ; 0 non-connecté, parité 3, 124 `(units`.
+    - Chemin `PVDD` vers `U6` à 4,6 A : ≤ 9,5 °C partout ; 10 vias.
+    - `C319` à 2,31 mm de sa broche, `C318` à 5,13 mm (zone saturée), `C9` à 2,30 mm, `C326` à 2,14 mm de `R306.1`.
+    - Le via `70c513ec` a été supprimé : il ne servait qu'à `C326`, qui a maintenant son propre via.
+    - Le via `GND` de `C319` tombe dans sa pastille : il s'ajoute à B1.
+    - Sous `U6`, les plans présentent deux découpes d'environ 2,9 × 2,5 mm reliées par un pont d'environ 1 mm.
+    - 33 éléments supprimés et 27 ajoutés (voir le diff Git du commit G1.3-a) ; le reste est inchangé.
+    - Définition : corrections PCB seules. Dépendances : G1.2. Tâches :
+    - C1 en option (b) ;
+    - C6 : élargir `1fd0727d`/`2d1d025d` à 7 mm et déplacer le via `70c513ec` pour lever le goulot ;
+    - C3 : déplacer `C319`/`C318` ;
+    - C4 : déplacer `C9` ;
+    - C5 : déplacer `C326` ;
+    - re-remplir les zones.
+
+    Validation :
+    - DRC sans nouvelle violation, 0 non-connecté, parité 3, 124 `(units` ;
+    - net de chaque via contrôlé ;
+    - échauffement IPC-2221 ≤ 10 °C sur le chemin `PVDD` de `U6`, ou écart chiffré ;
+    - existants hors reprises déclarées inchangés par UUID.
+  - [x] G1.3-b *(**PASS** 2026-10-18, PCB MD5 `ea6ea4b3695946c52b2deca67f622fd4`, schéma `9bcba85d`.)*
+    - `C13` (1 µF/25 V, 0603) en `B.Cu` à (176,925 ; 171,2) : chemin `VCC` d'environ 2,2 mm au lieu de 13,2.
+    - `C329` (1 µF/100 V, 1210) à (183,6 ; 206,95), à 0,75 mm bord à bord du drain de `Q302`.
+    - 127 empreintes, 125 `(units`, ERC 16 avertissements connus.
+    - DRC : seuls `silk_overlap` 89 et `silk_over_copper` 25 restent ; 0 non-connecté, parité 3.
+    - Définition : schéma et nouveaux composants. Dépendances : G1.3-a. Tâches :
+    - `C13` à 1 µF ;
+    - ajout de `C329` 1 µF/100 V 1210 entre `/PVDD_SENSE` et `GND`, puis ERC ;
+    - propagation F8 (GUI) ;
+    - `C13` retourné en `B.Cu` (GUI) et routé ;
+    - `C329` placé près du drain de `Q302` et routé.
+
+    Validation : ERC sans nouvelle erreur, 127 empreintes, parité 3, DRC propre, 0 non-connecté.
+- [x] G1.4 Établir la revue manufacturabilité et les écarts résiduels. *(**PASS** 2026-10-18.)*
+  - Revue écrite le 2026-10-18 : `docs/drc/dfm-g1.4.md`.
+  - [x] G1.4-a *(**PASS** 2026-10-18, MD5 `4f4b36822efc7ac6eb330008314dde87`. DRC : seuls 4 `silk_over_copper` restent (B2 accepté) ; 0 non-connecté, parité 3, 125 `(units`, `pad_prop_heatsink` = 1. Masque `U8` à +0,025 mm, soit un pont de 0,10 mm ; 3 vias sortis de leur pastille ; 22 champs déplacés.)* Corrections DFM autonomes. Dépendances : G1.3. Tâches :
+    - marge de masque locale de −0,025 mm sur les pastilles de `U8` ;
+    - sortir de leur pastille les vias de `C206.2`, `U7.3` et `C10.2` ;
+    - déplacer les champs de référence (catégories A1–A3 et B1, 110 entrées) ;
+    - re-remplir les zones.
+
+    Validation : DRC sans nouvelle violation et sérigraphie ≤ 4 entrées (B2 accepté), 0 non-connecté, parité 3, `(units` et `pad_prop_heatsink` inchangés.
+  - [x] G1.4-b *(**PASS** 2026-10-18. Décisions utilisateur : PCBWay, IPC-4761 type VII pour les vias restants dans une pastille, 1 oz sur toutes les couches. Consignées dans `docs/drc/dfm-g1.4.md`, notes de fabrication prêtes ; capacités PCBWay à confirmer au devis.)* Décisions fabrication. Dépendances : G1.4-a. Tâches :
+    - choisir le fabricant ;
+    - choisir le traitement des vias dans les pastilles (EP de `U1`, `C303.2`, `C207.1`, `C319`) ;
+    - choisir le cuivre (interne ≥ 35 µm exigé ; 2 oz recommandé par TI) ;
+    - consigner les écarts résiduels.
+
+    Validation : choix utilisateur consignés dans `docs/drc/dfm-g1.4.md`, notes de fabrication finales prêtes pour H2.
 
 ### Validation
 
 DRC final et design review documentés après corrections.
+
+**PASS** 2026-10-18 (G1.1–G1.4) : `docs/drc/drc-g1.4.json`, PCB `4f4b3682`. Seuls 4 `silk_over_copper` restent (B2 accepté) ; 0 non-connecté, parité 3, ERC 16 avertissements connus, zones à jour. Revue : `design-review-g1.2.md`, DFM et écarts résiduels : `dfm-g1.4.md`.
 
 # Phase H — Revue électronique et livrables
 
