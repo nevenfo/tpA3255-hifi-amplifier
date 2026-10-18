@@ -621,6 +621,11 @@ G1 validée ou état final PCB explicitement PARTIAL.
     - A1 : ajouter `C7` ;
     - A2 : ajouter le réseau RC de sortie de la Fig. 29 de TI, après vérification de la topologie sur le PDF.
   - **Tâches** : appliquer les décisions utilisateur au schéma, puis ERC, F8, placement, routage, remplissage, DRC, et mettre à jour les docs (`architecture.md`, `power-block.md` : `C13`).
+  - Fait au schéma (MD5 `c1aaee89`, ERC 16 avertissements connus, nets vérifiés sur la netlist) :
+    - `C111`/`C211` 10 µF/63 V film, empreinte `Capacitor_THT:C_Rect_L26.5mm_W10.5mm_P22.50mm_MKS4` (26,5 × 10,5 mm, hauteur et pièce à confirmer) ;
+    - nets `/VOL_L` = {`J4.2`, `C111.1`} et `/VOL_L_AC` = {`C111.2`, `R101.1`}, idem pour la voie R ;
+    - `C7` 5,6 nF C0G 0603 entre `/FB` et `/+15V`.
+  - Reste à faire : le réseau RC de sortie (A2), puis F8, placement et routage.
   - **Validation** :
     - ERC sans nouvelle erreur ; netlist prouvant un condensateur série sur `VOL_L`→`R101` et `VOL_R`→`R201` ;
     - DRC : 0 non-connecté, parité 3, aucune violation hors sérigraphie acceptée ;

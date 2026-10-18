@@ -9315,16 +9315,6 @@
 		)
 		(uuid "d52b8695-7933-4a0d-9c71-46771297a2ef")
 	)
-	(label "VOL_L"
-		(at 88.9 173.99 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "fcf1cb2c-c253-4d3b-bbe6-349b024e23db")
-	)
 	(label "INV1_NEG"
 		(at 88.9 181.61 0)
 		(effects
@@ -9804,16 +9794,6 @@
 			(justify left bottom)
 		)
 		(uuid "0c9a73bc-e0eb-4dc6-a1e1-b3c830aca1f2")
-	)
-	(label "VOL_R"
-		(at 88.9 262.89 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "9130865e-c6b1-4fb1-b10a-26a6d188f678")
 	)
 	(label "INV3_NEG"
 		(at 88.9 270.51 0)
@@ -11834,6 +11814,86 @@
 			(justify right bottom)
 		)
 		(uuid "bb19cc54-0ca4-49ef-af46-c15ecec7a026")
+	)
+	(label "VOL_L"
+		(at 69.85 186.69 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "9d663c56-408a-480a-bbd9-6b3efa72abc1")
+	)
+	(label "VOL_L_AC"
+		(at 69.85 194.31 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c78c1ef1-cae6-41cb-8f00-73264ed3cea5")
+	)
+	(label "VOL_L_AC"
+		(at 88.9 173.99 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5ec0c394-0286-406a-851c-83e89e268f71")
+	)
+	(label "VOL_R"
+		(at 69.85 275.59 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "ef11bfc2-0e3d-4941-b8c9-c1db7baf352a")
+	)
+	(label "VOL_R_AC"
+		(at 69.85 283.21 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "52c33a00-0e39-4233-87a4-40b4b3924742")
+	)
+	(label "VOL_R_AC"
+		(at 88.9 262.89 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "87d0afb2-96c7-4050-a9a5-07c438804c85")
+	)
+	(label "FB"
+		(at 121.92 111.76 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "78d6a898-2ed8-462b-84c0-107c2684494a")
+	)
+	(label "+15V"
+		(at 121.92 119.38 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "cf7d97dd-c5fb-4a99-b1e0-c5c047cb5a8d")
 	)
 	(symbol
 		(lib_id "HifiAmp_TPA3255_Local:LM5010ASD")
@@ -19024,6 +19084,165 @@
 			(project "HifiAmp_TPA3255"
 				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
 					(reference "C329")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 69.85 190.5 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "747ce0da-8fd5-4765-958d-14c7f488b587")
+		(property "Reference" "C111"
+			(at 70.485 187.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10uF/63V film"
+			(at 70.485 193.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:C_Rect_L26.5mm_W10.5mm_P22.50mm_MKS4"
+			(at 70.8152 194.31 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 69.85 190.5 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "C111")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 69.85 279.4 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5ffef195-87be-487e-b137-fe702389a85d")
+		(property "Reference" "C211"
+			(at 70.485 276.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10uF/63V film"
+			(at 70.485 281.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:C_Rect_L26.5mm_W10.5mm_P22.50mm_MKS4"
+			(at 70.8152 283.21 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 69.85 279.4 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "C211")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 121.92 115.57 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "817b0945-8245-4044-8271-825fb3fe39d4")
+		(property "Reference" "C7"
+			(at 122.555 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "5.6nF C0G 50V"
+			(at 122.555 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 122.8852 119.38 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 121.92 115.57 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "HifiAmp_TPA3255"
+				(path "/82ac8e0a-ee6a-44b0-87ab-dda432df5a9b"
+					(reference "C7")
 					(unit 1)
 				)
 			)
