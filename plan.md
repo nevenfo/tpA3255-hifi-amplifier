@@ -410,7 +410,16 @@ E1 validée.
   - [x] F1.6-a Diagnostic, lecture seule. *(PASS : `BUCK_VIN` = `U1.10`, `D3.1` (Schottky série anti-retour), `R2.2`, aucun condensateur ; le plus proche, `C11` 10 nF, est à ~15,6 mm de piste derrière `D3`, boucle ≈ 27 mm. Ajout requis.)*
   - [x] F1.6-b Ajouter le découplage d'entrée selon SNVS376F (Table 2, §8.2.2.1.5, §8.2.2.1.9, §Layout) : `C327` 0,1 µF 100 V X7R (rôle C5, au plus près de `U1.10`) et `C328` 2,2 µF 100 V X7R 1210 (rôle C1, boucle `C1`–`VIN`–`SW`–`L1`–`COUT` minimale), tous deux entre `BUCK_VIN` et `GND`, `GND` direct vers l'EP de `U1` sans via. Eq. 18 à 48 V, `R_ON` 182 k, 0,5 A : ≥ 0,33 µF pour ΔV 1 V. Étapes : schéma + ERC, propagation F8 (« Supprimer les empreintes sans symbole » décoché), placement, routage. Validation : ERC sans nouvelle erreur, 126 empreintes, parité 3, `pad_prop_heatsink` = 1, aucune `clearance`/`shorting_items`/`courtyards_overlap`, non-connectés tous `GND`, pistes existantes identiques par UUID hormis reprises déclarées.
 
-- [ ] F1.7 Corriger les empreintes de `U1` et `L1` (**découvert en F1.4-b**, 2026-10-17) en un seul passage F8 et une seule reprise de placement du buck auxiliaire. **Bloque F1.4-b.**
+- [x] F1.7 Corriger les empreintes de `U1` et `L1` (**découvert en F1.4-b**, 2026-10-17) en un seul passage F8 et une seule reprise de placement du buck auxiliaire. **Bloque F1.4-b.**
+  - **PASS** (2026-10-18), MD5 `050bbce302a6f410e3a3378507d0cff3` :
+    - DRC sans `clearance`/`shorting_items`/`track_dangling`/`courtyards_overlap`/`hole_clearance`/`solder_mask_bridge` ; restent `silk_overlap` 90 et `silk_over_copper` 26 ;
+    - non-connectés 76, tous `/GND` ; parité 3 ; `pad_prop_heatsink` = 1 ; 124 `(units` ; ERC 16 avertissements, comme avant ;
+    - 46 éléments de la zone supprimés et 43 ajoutés, dont 5 vias de 0,6/0,3 mm ; les 552 autres sont identiques par UUID ;
+    - aucun via sous `L1`.
+  - Écarts au placement cible :
+    - `D1` en (165,7 ; 173) : à 165,8, l'isolement avec `ISEN` serait de 0,2 mm, sous les 0,25 mm requis ;
+    - `D3` en (178,8 ; 171) : le via `VCC` de `U1.9` en (174,95 ; 171,2) l'impose.
+  - `+15V` vers `R39.2` passe maintenant en `In2.Cu` (33,5 mm) : à relire avec O3 en F1.4-b.
   - Écarts constatés :
     - `U1` (`LM5010ASD/NOPB`) : boîtier `DPR0010A` de 4 × 4 mm au pas de 0,8 mm, pad exposé 2,6 × 3 mm (SNVS376F, dessins 4218856/B). Le PCB porte `WSON-10-1EP_2.5x2.5mm_P0.5mm_EP1.2x2mm`. Cible : `Package_SON:WSON-10-1EP_4x4mm_P0.8mm_EP2.6x3mm`.
     - `L1` (`7447714101`) : WE-PD taille 1050, corps 10 × 10 × 5 mm. Land pattern Würth : pastilles 3,5 × 2 mm, 7 mm intérieur, 11 mm extérieur, « no vias and sensitive traces underneath ». Le PCB porte `L_Wuerth_WE-PD2-Typ-MS`, pastilles 2,15 × 5,5 mm à ± 1,93 mm.

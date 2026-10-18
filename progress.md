@@ -2,26 +2,22 @@
 
 ## Phase actuelle
 
-Phase F — Routage. F1.1 à F1.3, F1.6 et F1.4-a validées ; F1.4-b bloquée par F1.7.
+Phase F — Routage. F1.1 à F1.3, F1.6, F1.7 et F1.4-a validées ; F1.4-b débloquée.
 Branche `ai/f1.4-plane-strategy`.
 
 ## Tâche actuelle
 
-F1.7 — empreintes de `U1` (`WSON-10-1EP_4x4mm_P0.8mm_EP2.6x3mm`) et `L1`
-(`L_Wuerth_WE-PD-1050_10x10x5mm`) propagées au PCB. Reste : replacer, puis re-router la zone du buck
-auxiliaire (positions cibles et pistes à refaire : `plan.md` F1.7).
+F1.4-b — appliquer O3 : transfert `B.Cu` → `In2.Cu`, zones `/GND` `In1.Cu`/`B.Cu`, `PVDD`,
+couture, vias thermiques `U1`/`Q301`, remplissage.
 
 ## Dernière tâche validée
 
-F1.7, propagation F8 : seules `U1`/`L1` changent de lib_id ; `U1.11` garde `pad_prop_heatsink`.
+F1.7 : `U1`/`L1` avec les bonnes empreintes, buck auxiliaire replacé et re-routé.
 
 Validation :
-- Géométrie : `U1` pas de 0,8 mm, pad exposé de 2,6 × 3 mm ; `L1` pads 2,0 × 3,5 mm à ± 4,5 mm.
-- 544 segments et 54 vias identiques par UUID ; parité = 3 écarts connus.
-- PCB MD5 `84eea39742fab9ee92628179f1048da5`.
-- DRC transitoire attendu (anciennes pistes sous les nouveaux pads) : `shorting_items` 11, `clearance` 4,
-  `hole_clearance` 1, `courtyards_overlap` 4, `solder_mask_bridge` 15, `track_dangling` 5,
-  `silk_over_copper` 32, non-connectés 83.
+- DRC sans `clearance`/`shorting_items`/`track_dangling`/`courtyards_overlap`/`hole_clearance`/`solder_mask_bridge`.
+- Non-connectés 76, tous `/GND` ; parité 3 ; `pad_prop_heatsink` = 1 ; 124 `(units`.
+- Pistes hors zone identiques par UUID. PCB MD5 `050bbce302a6f410e3a3378507d0cff3`.
 
 ## Décisions actives
 
@@ -38,17 +34,18 @@ Validation :
 
 ## Blocage actif
 
-Aucun. L'éditeur de schéma est ouvert à côté de l'éditeur PCB : l'IPC voit 2 instances. Fermer
-l'éditeur de schéma avant toute écriture IPC.
+Aucun. Éditeur PCB fermé (seul le gestionnaire de projet est ouvert) : le rouvrir seul avant toute
+écriture IPC, recompter les `(units` (124) après chaque déplacement MCP.
 
 ## Fichiers / zones utiles
 
-- `plan.md` F1.7 — positions cibles, pistes/vias à refaire, validation.
+- `plan.md` F1.4-b et F1.7 (`+15V` en `In2.Cu` à relire).
 - `docs/plane-strategy-f1.4-a.md` — mesures, préconditions F1.4-b.
 - `docs/kicad-operations.md` — à lire avant manipulation.
 - `HifiAmp_TPA3255.kicad_pcb`.
 
 ## NEXT ACTION
 
-F1.7 — fermer l'éditeur de schéma, replacer `L1`/`U1`/`C327`/`C328`/`D1`/`D3` aux positions cibles,
-re-router la zone (33 segments, 2 vias, `BST`) ; valider selon `plan.md` F1.7.
+F1.4-b — inventorier au fichier, sans écriture, les pistes et vias `B.Cu` à transférer en
+`In2.Cu`, les conflits avec les pistes `In2.Cu` existantes et l'emprise des zones prévues par O3 ;
+proposer un découpage de F1.4-b en sous-unités validables.
