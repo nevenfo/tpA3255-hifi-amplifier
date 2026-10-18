@@ -36,9 +36,8 @@ Validation :
 
 ## Blocage actif
 
-Aucun.
-
-Notes : Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb drc --refill-zones --save-board` ; recompter les 140 `(units`.
+Décision utilisateur : les écritures PCB « au fichier » faites depuis F1.4-b1 (hors MCP) violent l'invariant n° 4 du plan. Faut-il accepter l'écart et le documenter dans H2.2, ou rejouer ces unités par MCP/IPC ? Détail : `plan.md` H2.2.
+Désormais, toute écriture KiCad passe par le MCP/IPC, éditeur ouvert par `desktop-control` si nécessaire.
 
 ## Fichiers / zones utiles
 
@@ -50,4 +49,4 @@ Notes : Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb
 
 ## NEXT ACTION
 
-H2 — ouvrir la PR de la phase H1, puis lire `plan.md` H2 et produire la BOM (avec les choix PCBWay et les composants ajoutés en H1.4).
+H2.2 — après décision utilisateur sur l'écart à l'invariant MCP, inventorier les opérations MCP et hors MCP de chaque unité (Git et `docs/kicad-operations.md`).

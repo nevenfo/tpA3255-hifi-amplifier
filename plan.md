@@ -657,6 +657,11 @@ H1.
 
 - [ ] H2.1 Générer BOM et livrables exploitables disponibles.
 - [ ] H2.2 Collecter métriques MCP observables, erreurs, retries, limitations et `NEEDS_DATA`.
+  - **Écart à l'invariant « aucun contournement par édition de `.kicad_sch`/`.kicad_pcb` », constaté le 2026-10-18.**
+    - Depuis F1.4-b1, l'éditeur PCB était fermé : le principal a demandé à `kicad-control` de « travailler au fichier ». Le PCB a donc été modifié par script texte, hors MCP, dans F1.4-b1 à b4, F1.8, G1.3-a, G1.3-b (placement), G1.4-a et H1.4 (placement, routage, `.kicad_pro`). La restauration des `(units` en F1.7 relève du même cas.
+    - Sont passés par le MCP ou la GUI : le `move_component` de F1.7, les modifications de schéma (`kicad_invoke`) et les gestes F8.
+    - Les validations DRC, ERC et parité restent établies par `kicad-cli`, mais ces unités ne prouvent rien sur l'autonomie du MCP. Le statut AUTONOMIE MCP doit le refléter.
+    - **Décision utilisateur requise** : accepter l'écart et le documenter, ou rejouer ces unités par MCP/IPC (éditeur PCB ouvert).
 - [ ] H2.3 Vérifier la présence de tous les livrables demandés.
 - [ ] H2.4 Émettre les huit statuts finaux et `PRÊT À FABRIQUER` avec preuves.
 
