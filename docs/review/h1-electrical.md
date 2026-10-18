@@ -147,3 +147,22 @@ Source : SLASEA8A rév. A (oct. 2016), PDF téléchargé depuis ti.com, Figure 2
   - au résidu de découpage de 450 kHz (≈ 0,5 V) : P < 1 mW.
   - Le 0603 de 0,1 W suffit, avec une marge > 10.
 - **Autres valeurs de la Figure 29, pour mémoire** : bootstrap 33 nF, VBG 1 µF, AVDD 1 µF, DVDD 1 µF, C_START 47 nF, VDD 10 µF + 100 nF, GVDD 100 nF via 3,3 Ω, PVDD 1 µF par pont plus 470 µF, entrées 10 µF en série. Les découplages AVDD/DVDD (1 µF chacun) lèvent le NEEDS_DATA de C3 (`C318`/`C319`). Leurs valeurs au schéma restent à recouper.
+
+## H1.4 — correctifs appliqués et point de fonctionnement DC recalculé (2026-10-18)
+
+- **B1 corrigé** : `C111` (voie L) et `C211` (voie R), 10 µF/63 V film, sont en série entre le curseur et `R101`/`R201`. Nets `VOL_L` = {`J4.2`, `C111.1`} et `VOL_L_AC` = {`C111.2`, `R101.1`}, idem pour la voie R. [K] (netlist)
+- **Point DC recalculé** [C] :
+  - `R101` ne conduit plus de DC, donc `U4A` est un suiveur de `VMID` pour le continu : `Vout = Vmid = 6 V`.
+  - `U4B` reçoit 6 V sur `R103`, avec `+` à `VMID` : `Vout = 6 − (R104/R103)·(6 − 6) = 6 V`.
+  - Même chose pour `U5A`/`U5B`. Les quatre sorties sont à `VMID`, avec 3,17 V de marge aux rails à 2 Vrms.
+- **Coupure basse ajoutée** [C] : 1/(2π·10 kΩ·10 µF) = 1,6 Hz (1,3 Hz avec le curseur à 2,5 kΩ). Cumulée avec `C101`, la perte est d'environ −0,5 dB à 20 Hz dans le pire cas, l'essentiel venant de `C101`.
+- **Pop de mise sous tension** [NV] :
+  - À la montée de `VMID` (τ ≈ 50 ms), `C111` est déchargé, donc l'étage a un gain DC de 2 : transitoire jusqu'à environ 2·Vmid, avec τ = 100 ms.
+  - Il doit être masqué par `RESET` du TPA3255, maintenu bas pendant le délai du superviseur et au moins 250 ms selon SLASEA8A §11.2, puis par sa précharge de 200 ms.
+  - La marge reste à vérifier en mesure.
+- **A1 corrigé** : `C7` 5,6 nF C0G est entre `/FB` et `/+15V`, en parallèle de `R39`, comme le prévoit `power-block.md`. [K]
+- **A2 corrigé** : le réseau de la Fig. 29 est ajouté sur `OUT_A_F`–`OUT_D_F` (`C330`–`C337`, `R311`–`R314`). [K]
+- **A5** : `power-block.md` est mis à jour, `C13` vaut maintenant 1 µF/25 V.
+- **Restent ouverts** :
+  - A3 (résonance d'environ 9 kHz de `+12V-OA`) et A4 (marge de 95 % des condensateurs de 63 V) : à surveiller, aucune action décidée ;
+  - les NEEDS_DATA du §5.

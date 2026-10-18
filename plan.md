@@ -608,7 +608,7 @@ G1 validée ou état final PCB explicitement PARTIAL.
 - [x] H1.1 Vérifier par calcul gain, headroom, impédances, coupures, LC, courants et dissipation. *(**PASS** 2026-10-18 : `docs/review/h1-electrical.md`.)*
 - [x] H1.2 Classer preuves : KiCad, documentation, calcul/simulation, non vérifié physiquement. *(**PASS**, classement [K]/[D]/[C]/[NV] dans le rapport.)*
 - [x] H1.3 Documenter bruit/EMI/stabilité/thermique non mesurés et toute divergence TI. *(**PASS**, §4–5 du rapport.)*
-- [ ] H1.4 Corriger les défauts de schéma révélés par H1 (**découvert le 2026-10-18**), en un seul passage schéma → F8 → placement/routage → DRC.
+- [x] H1.4 *(**PASS** 2026-10-18.)* Corriger les défauts de schéma révélés par H1 (**découvert le 2026-10-18**), en un seul passage schéma → F8 → placement/routage → DRC.
   - **Objectif** : rendre la chaîne d'entrée fonctionnelle et trancher les écarts à l'intention.
   - **Dépendances** : H1.1–H1.3.
   - **Constats** :
@@ -629,7 +629,11 @@ G1 validée ou état final PCB explicitement PARTIAL.
   - F8 appliqué (15 ajouts, aucune suppression), puis placement et routage au fichier (PCB `dee8a699`). DRC : 0 non-connecté, parité 3, aucune violation hors sérigraphie (`silk_overlap` 12, `silk_over_copper` 8). `OUT` et `INPUT` inchangés ; `OUT_B_F` +3,2 mm et `OUT_C_F` +4,3 mm (raccords des réseaux RC) ; 140 `(units`.
     - `C111`/`C211` en (125 ; 126,5)/(125 ; 166,5), symétrie (0 ; +40) ; `C7` en (178 ; 179,5).
     - Réseaux RC en `F.Cu` près de `C321`–`C324`, un via `GND` par réseau, aucun via sur `OUT_x_F`.
-  - Reste à faire : classes de nets des nouveaux nets, sérigraphie, puis validation finale.
+  - Finitions : `.kicad_pro` met `/VOL_L_AC` et `/VOL_R_AC` en ANALOG, `/SNUB_A`–`D` en PWR_OUT ; 16 champs de sérigraphie déplacés.
+  - Validation finale (PCB `f50cd65e`, schéma `18680060`) :
+    - DRC : seuls les 4 `silk_over_copper` B2 restent ; 0 non-connecté, parité 3 ;
+    - ERC : 16 avertissements connus ; 140 `(units`, `pad_prop_heatsink` = 1 ;
+    - point DC recalculé : toutes les sorties d'étage à `VMID` (`docs/review/h1-electrical.md`, H1.4).
   - **Validation** :
     - ERC sans nouvelle erreur ; netlist prouvant un condensateur série sur `VOL_L`→`R101` et `VOL_R`→`R201` ;
     - DRC : 0 non-connecté, parité 3, aucune violation hors sérigraphie acceptée ;

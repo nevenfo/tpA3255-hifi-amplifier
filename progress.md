@@ -2,20 +2,20 @@
 
 ## Phase actuelle
 
-Phase H. H1.1–H1.3 faites (`docs/review/h1-electrical.md`). PR #1 et #2 ouvertes, non fusionnées.
-Branche `ai/h1-electrical-review`.
+Phase H. H1 validée (H1.1–H1.4). PR #1 (F) et #2 (G) ouvertes, non fusionnées. Branche `ai/h1-electrical-review`.
 
 ## Tâche actuelle
 
-H1.4 — corriger le défaut bloquant B1 (chaîne d'entrée couplée en DC) et trancher A1 (`C7`) et A2 (réseau RC de sortie).
+H2 — BOM, rapports et benchmark MCP (voir `plan.md` H2).
 
 ## Dernière tâche validée
 
-H1.1–H1.3 : revue électrique par le calcul.
+H1.4 : B1 corrigé (`C111`/`C211` film en série après le curseur), `C7` ajouté, réseaux RC de la Fig. 29 de TI ajoutés, placés et routés.
 
 Validation :
-- Rapport `docs/review/h1-electrical.md`, avec classement des preuves et NEEDS_DATA.
-- B1 confirmé sur la netlist (`kicad-cli`) : `VOL_L` = `J4.2`, `R101.1` ; `J4.3` sur `/GND` ; `VMID` sur `U4.3`/`U4.5`.
+- DRC : seuls les 4 `silk_over_copper` B2 restent ; 0 non-connecté, parité 3.
+- ERC : 16 avertissements connus ; point DC recalculé, sorties à `VMID`.
+- MD5 : PCB `f50cd65ee128bc41ee1257ab9f55c032`, schéma `186800607ef2fd0be080824c86d9b314`.
 
 ## Décisions actives
 
@@ -30,6 +30,7 @@ Validation :
   dans le pad exposé, bouchés côté `B.Cu`.
 - F1.4-b, choix validés par l'utilisateur : plans en retrait de 0,5 mm, pas de zone `PVDD` en `In2.Cu`, règle DRU interdisant les vias sous `L1`/`U6`, couture par pad. Drain `Q301` agrandi (b4) ; Tj à mesurer en H2.
 - G1.3 (utilisateur) : C1 en option (b) ; `C13` à 1 µF en `B.Cu` ; ajout d'un 1 µF/100 V sur `/PVDD_SENSE` ; pas de 10 µF sur `U3`.
+- H1.4 (utilisateur) : condensateurs film de 10 µF en série après le curseur, `C7` ajouté, réseaux RC de la Fig. 29 ajoutés.
 - Fabrication (utilisateur) : PCBWay, IPC-4761 type VII pour les vias dans une pastille, 1 oz sur toutes les couches. Notes : `docs/drc/dfm-g1.4.md` §5.
 - Sérigraphie traitée en G1.4-a ; seuls restent les 4 repères B2 de `L301`–`L304`. Interdiction composants `x` [280 ; 291], `y` [160 ; 190].
 
@@ -37,7 +38,7 @@ Validation :
 
 Aucun.
 
-Notes : Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb drc --refill-zones --save-board` ; recompter les 125 `(units`.
+Notes : Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb drc --refill-zones --save-board` ; recompter les 140 `(units`.
 
 ## Fichiers / zones utiles
 
@@ -49,5 +50,4 @@ Notes : Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb
 
 ## NEXT ACTION
 
-H1.4 — F8 par GUI (ajout de `C111`, `C211`, `C7`, `C330`–`C337`, `R311`–`R314`, posés hors carte), puis placement et routage
-dans le fichier, remplissage et DRC (validation : `plan.md` H1.4).
+H2 — ouvrir la PR de la phase H1, puis lire `plan.md` H2 et produire la BOM (avec les choix PCBWay et les composants ajoutés en H1.4).

@@ -782,6 +782,30 @@
       },
       {
         "netclass": "ANALOG",
+        "pattern": "/VOL_L_AC"
+      },
+      {
+        "netclass": "ANALOG",
+        "pattern": "/VOL_R_AC"
+      },
+      {
+        "netclass": "PWR_OUT",
+        "pattern": "/SNUB_A"
+      },
+      {
+        "netclass": "PWR_OUT",
+        "pattern": "/SNUB_B"
+      },
+      {
+        "netclass": "PWR_OUT",
+        "pattern": "/SNUB_C"
+      },
+      {
+        "netclass": "PWR_OUT",
+        "pattern": "/SNUB_D"
+      },
+      {
+        "netclass": "ANALOG",
         "pattern": "/INPUT_A"
       },
       {
