@@ -420,7 +420,12 @@ E1 validée.
       - DRC sans `clearance`, `shorting_items`, `track_dangling`, `courtyards_overlap` ni `hole_clearance` ;
       - non-connectés 76, tous `/GND` ; parité 3 ;
       - 427 segments inchangés par UUID ; `B.Cu` = 4 segments, `In2.Cu` = 114.
-    - [ ] F1.4-b2 Couture et vias `GND`. Dépendances : b1. Tâches :
+    - [ ] F1.4-b2 Couture et vias `GND`. *(Partiel le 2026-10-18 : PCB MD5 `2f487b45c48cc0e61287dd892bf3d362`, DRU `cb9016bf`.)*
+      - Fait :
+        - règle « pas de via sous `L1` ni `U6` », prouvée par des vias d'essai refusés (`items_not_allowed`) ; les 6 vias déjà présents dans le courtyard de `U6` sont exemptés par net (`PVDD`, `GND`, `BST_B`, `BST_C`) ;
+        - 57 vias `/GND` (51 dog-bones et 6 thermiques `U1`) ; existants inchangés par UUID ;
+        - DRC propre et parité 3 ; 57 `via_dangling` attendus jusqu'à b3.
+      - Reste : 6 pads `/GND` sans emplacement de via (`U6.3`, `U6.4`, `U6.33`, `U6.34`, `C303.2`, `C206.2`), enfermés par des pistes `F.Cu`/`In2.Cu`. Dépendances : b1. Tâches :
       - règle `.kicad_dru` interdisant les vias sous `L1`/`U6`, prouvée par un via d'essai refusé ;
       - un via 0,6/0,3 en dog-bone par pad CMS `/GND` (environ 60, dont 8 pour `U6` hors corps) ;
       - vias thermiques `U1` 2 × 3 (x 171,5/172,5 ; y 171/172/173).

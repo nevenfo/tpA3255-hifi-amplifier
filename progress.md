@@ -46,5 +46,5 @@ Aucun. Éditeur PCB fermé : travail au fichier ou réouverture seule avant IPC 
 
 ## NEXT ACTION
 
-F1.4-b2 — règle `.kicad_dru` interdisant les vias sous `L1`/`U6` (test négatif), vias `GND` en dog-bone pour
-chaque pad CMS `/GND`, vias thermiques `U1` 2 × 3 ; valider selon `plan.md` F1.4-b2.
+F1.4-b2 — pour les 6 pads `/GND` sans via (`U6.3/4/33/34`, `C303.2`, `C206.2`), chiffrer les options
+(reprise locale de pistes, via dans le pad, liaison vers un pad `GND` voisin), puis appliquer la moins risquée.
