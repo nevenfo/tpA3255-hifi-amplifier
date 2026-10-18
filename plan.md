@@ -626,7 +626,10 @@ G1 validée ou état final PCB explicitement PARTIAL.
     - nets `/VOL_L` = {`J4.2`, `C111.1`} et `/VOL_L_AC` = {`C111.2`, `R101.1`}, idem pour la voie R ;
     - `C7` 5,6 nF C0G 0603 entre `/FB` et `/+15V`.
     - A2 (schéma MD5 `18680060`) : sur chaque `/OUT_x_F`, 1 nF C0G 1206 vers `GND` (`C330`–`C333`) et 3,3 Ω 0603 (`R311`–`R314`) en série avec 10 nF X7R 0603 (`C334`–`C337`), nœuds `/SNUB_A`–`D`. Topologie de la Fig. 29 de SLASEA8A ; ERC 16 avertissements connus.
-  - Reste à faire : F8 (15 empreintes à ajouter), placement, routage, remplissage, DRC.
+  - F8 appliqué (15 ajouts, aucune suppression), puis placement et routage au fichier (PCB `dee8a699`). DRC : 0 non-connecté, parité 3, aucune violation hors sérigraphie (`silk_overlap` 12, `silk_over_copper` 8). `OUT` et `INPUT` inchangés ; `OUT_B_F` +3,2 mm et `OUT_C_F` +4,3 mm (raccords des réseaux RC) ; 140 `(units`.
+    - `C111`/`C211` en (125 ; 126,5)/(125 ; 166,5), symétrie (0 ; +40) ; `C7` en (178 ; 179,5).
+    - Réseaux RC en `F.Cu` près de `C321`–`C324`, un via `GND` par réseau, aucun via sur `OUT_x_F`.
+  - Reste à faire : classes de nets des nouveaux nets, sérigraphie, puis validation finale.
   - **Validation** :
     - ERC sans nouvelle erreur ; netlist prouvant un condensateur série sur `VOL_L`→`R101` et `VOL_R`→`R201` ;
     - DRC : 0 non-connecté, parité 3, aucune violation hors sérigraphie acceptée ;
