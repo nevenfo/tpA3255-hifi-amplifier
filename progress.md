@@ -2,21 +2,20 @@
 
 ## Phase actuelle
 
-Phase G validée (G1.1–G1.4). PR #1 (phase F) et PR de la phase G ouvertes, non fusionnées.
-Phase H — Revue électronique et livrables à démarrer. Branche `ai/g1-drc-review`.
+Phase H. H1.1–H1.3 faites (`docs/review/h1-electrical.md`). PR #1 et #2 ouvertes, non fusionnées.
+Branche `ai/h1-electrical-review`.
 
 ## Tâche actuelle
 
-H1.1 — vérifier par le calcul gain, headroom, impédances, coupures, LC, courants et dissipation.
+H1.4 — corriger le défaut bloquant B1 (chaîne d'entrée couplée en DC) et trancher A1 (`C7`) et A2 (réseau RC de sortie).
 
 ## Dernière tâche validée
 
-G1 : DRC final archivé dans `docs/drc/drc-g1.4.json`.
+H1.1–H1.3 : revue électrique par le calcul.
 
 Validation :
-- Seuls 4 `silk_over_copper` restent (B2 accepté) ; 0 non-connecté, parité 3.
-- ERC : 16 avertissements connus ; zones à jour.
-- MD5 : PCB `4f4b36822efc7ac6eb330008314dde87`, schéma `9bcba85d947b78af82475f58438dcdcb`.
+- Rapport `docs/review/h1-electrical.md`, avec classement des preuves et NEEDS_DATA.
+- B1 confirmé sur la netlist (`kicad-cli`) : `VOL_L` = `J4.2`, `R101.1` ; `J4.3` sur `/GND` ; `VMID` sur `U4.3`/`U4.5`.
 
 ## Décisions actives
 
@@ -36,7 +35,9 @@ Validation :
 
 ## Blocage actif
 
-Aucun. Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb drc --refill-zones --save-board` ; recompter les 125 `(units`.
+Décision utilisateur requise pour H1.4 : correctif de B1 et type de condensateur, ajout ou non de `C7` et du réseau RC de sortie.
+
+Notes : Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb drc --refill-zones --save-board` ; recompter les 125 `(units`.
 
 ## Fichiers / zones utiles
 
@@ -48,5 +49,5 @@ Aucun. Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb 
 
 ## NEXT ACTION
 
-H1.1 — sur une branche `ai/h1-electrical-review`, vérifier par le calcul gain, headroom, impédances, coupures,
-filtre LC, courants et dissipation à partir du schéma, et écrire `docs/review/h1-electrical.md`.
+H1.4 — après décision utilisateur, modifier le schéma (condensateurs série curseur → `R101`/`R201`, et selon décision `C7` et le réseau RC),
+puis ERC et netlist, puis F8 par GUI.

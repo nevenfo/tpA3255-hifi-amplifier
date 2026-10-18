@@ -605,9 +605,22 @@ G1 validée ou état final PCB explicitement PARTIAL.
 
 ### Tâches
 
-- [ ] H1.1 Vérifier par calcul gain, headroom, impédances, coupures, LC, courants et dissipation.
-- [ ] H1.2 Classer preuves : KiCad, documentation, calcul/simulation, non vérifié physiquement.
-- [ ] H1.3 Documenter bruit/EMI/stabilité/thermique non mesurés et toute divergence TI.
+- [x] H1.1 Vérifier par calcul gain, headroom, impédances, coupures, LC, courants et dissipation. *(**PASS** 2026-10-18 : `docs/review/h1-electrical.md`.)*
+- [x] H1.2 Classer preuves : KiCad, documentation, calcul/simulation, non vérifié physiquement. *(**PASS**, classement [K]/[D]/[C]/[NV] dans le rapport.)*
+- [x] H1.3 Documenter bruit/EMI/stabilité/thermique non mesurés et toute divergence TI. *(**PASS**, §4–5 du rapport.)*
+- [ ] H1.4 Corriger les défauts de schéma révélés par H1 (**découvert le 2026-10-18**), en un seul passage schéma → F8 → placement/routage → DRC.
+  - **Objectif** : rendre la chaîne d'entrée fonctionnelle et trancher les écarts à l'intention.
+  - **Dépendances** : H1.1–H1.3.
+  - **Constats** :
+    - **B1 (bloquant, confirmé sur la netlist)** : le curseur du volume (`J4.2`/`J4.5`, à 0 V DC parce que `J4.3`/`J4.6` sont sur `/GND`) attaque `R101`/`R201` sans condensateur, alors que les entrées + des OPA1612 sont à `VMID` = 6 V. L'étage 1 sature à 12 V et l'étage 2 vers 0 V : aucun signal ne passe. C'est un trou de l'intention (`architecture.md` l. 56–62), pas une erreur d'implémentation.
+    - Correctif recommandé (a) : 10 µF en série entre le curseur et `R101`/`R201` (film ou électrolytique bipolaire 16–25 V), fc 1,6 Hz. Le pop de mise sous tension doit être masqué par `RESET`/mute, ce qui reste à vérifier.
+    - **A1** : `C7` (5,6 nF en parallèle de `R39`, FB du LM5010A) est documenté mais absent du schéma.
+    - **A2** : le réseau RC de sortie TI (Fig. 29) est absent.
+  - **Tâches** : appliquer les décisions utilisateur au schéma, puis ERC, F8, placement, routage, remplissage, DRC, et mettre à jour les docs (`architecture.md`, `power-block.md` : `C13`).
+  - **Validation** :
+    - ERC sans nouvelle erreur ; netlist prouvant un condensateur série sur `VOL_L`→`R101` et `VOL_R`→`R201` ;
+    - DRC : 0 non-connecté, parité 3, aucune violation hors sérigraphie acceptée ;
+    - point de fonctionnement DC recalculé (sorties des étages à `VMID`).
 
 ### Validation
 
