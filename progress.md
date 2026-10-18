@@ -12,12 +12,12 @@ couture, vias thermiques `U1`/`Q301`, remplissage.
 
 ## Dernière tâche validée
 
-F1.7 : `U1`/`L1` avec les bonnes empreintes, buck auxiliaire replacé et re-routé.
+F1.4-b1 : 112 segments `B.Cu` passés en `In2.Cu`, avec 2 copies `In2.Cu` en plus pour `PVDD` vers `C310`/`C311`.
 
 Validation :
-- DRC sans `clearance`/`shorting_items`/`track_dangling`/`courtyards_overlap`/`hole_clearance`/`solder_mask_bridge`.
-- Non-connectés 76, tous `/GND` ; parité 3 ; `pad_prop_heatsink` = 1 ; 124 `(units`.
-- Pistes hors zone identiques par UUID. PCB MD5 `050bbce302a6f410e3a3378507d0cff3`.
+- DRC sans `clearance`/`shorting_items`/`track_dangling`/`courtyards_overlap`/`hole_clearance`.
+- Non-connectés 76, tous `/GND` ; parité 3 ; 124 `(units` ; `pad_prop_heatsink` = 1.
+- Couches : `F.Cu` 421, `In2.Cu` 116, `B.Cu` 4 segments. PCB MD5 `fe6ee0dd2738c8de3cab2819ea089624`.
 
 ## Décisions actives
 
@@ -30,14 +30,12 @@ Validation :
   `COUT`–EP de `U1` et `AVDD`/`DVDD`. Aucun via sous `U6` ni sous `L1`.
 - Cuivre de drain `Q301` sur `F.Cu` + `In2.Cu` (plus `B.Cu`) ; `U1` : vias 2 × 3 de 0,6/0,3 mm
   dans le pad exposé, bouchés côté `B.Cu`.
+- F1.4-b, choix validés par l'utilisateur : plans en retrait de 0,5 mm, pas de zone `PVDD` en `In2.Cu`, règle DRU interdisant les vias sous `L1`/`U6`, couture par pad. Drain `Q301` : agrandir à ≥ 6 cm² par couche.
 - Sérigraphie à traiter en bloc. Interdiction composants `x` [280 ; 291], `y` [160 ; 190].
 
 ## Blocage actif
 
-Décision utilisateur attendue pour F1.4-b4 seulement : cuivre de drain `Q301` à 4,6 cm² par couche
-au lieu des 9 cm² de l'étude (Tj ≈ 121 °C estimée). Options : accepter et mesurer en H2, agrandir
-la zone, ou ajouter un dissipateur. F1.4-b1 à b3 n'en dépendent pas. Éditeur PCB fermé (seul le gestionnaire de projet est ouvert) : le rouvrir seul avant toute
-écriture IPC, recompter les `(units` (124) après chaque déplacement MCP.
+Aucun. Éditeur PCB fermé : travail au fichier ou réouverture seule avant IPC ; recompter les 124 `(units`.
 
 ## Fichiers / zones utiles
 
@@ -48,5 +46,5 @@ la zone, ou ajouter un dissipateur. F1.4-b1 à b3 n'en dépendent pas. Éditeur 
 
 ## NEXT ACTION
 
-F1.4-b1 — transférer 112 segments `B.Cu` en `In2.Cu` (garder les 4 de `C310`/`C311` et les 56 vias),
-puis valider selon `plan.md` F1.4-b1.
+F1.4-b2 — règle `.kicad_dru` interdisant les vias sous `L1`/`U6` (test négatif), vias `GND` en dog-bone pour
+chaque pad CMS `/GND`, vias thermiques `U1` 2 × 3 ; valider selon `plan.md` F1.4-b2.

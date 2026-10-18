@@ -411,12 +411,12 @@ E1 validée.
       - aucun conflit géométrique pour un transfert à géométrie identique ; le transfert passe par suppression puis re-routage, donc les UUID changent ;
       - à garder en `B.Cu` : 4 segments `PVDD`/`GND` vers `C310`/`C311`, les seules empreintes `B.Cu` ;
       - correction de F1.4-a : la boîte de drain `Q301` (x 175..200, y 230..248,5) fait 4,6 cm² par couche, pas 9 cm².
-    - Défauts retenus, sauf avis contraire de l'utilisateur :
+    - Défauts **validés par l'utilisateur le 2026-10-18** :
       - plans en retrait de 0,5 mm du bord, la valeur de la règle ;
       - pas de zone `PVDD` en `In2.Cu`, car la barre de 7 mm y est transférée telle quelle ;
       - règle `.kicad_dru` interdisant les vias sous `L1`/`U6`, avec test négatif ;
       - pas de ligne de couture continue à `x` ≈ 156, où passent les `INPUT` : couture par pad et vias libres environ tous les 10 mm.
-    - [ ] F1.4-b1 Transfert `B.Cu` → `In2.Cu`. Dépendances : F1.7. Tâches : refaire 112 segments en `In2.Cu` par net, conserver les 56 vias et les 4 segments `C310`/`C311`. Validation :
+    - [x] F1.4-b1 *(**PASS** 2026-10-18, MD5 `fe6ee0dd2738c8de3cab2819ea089624`. DRC propre, non-connectés 76 tous `/GND`, parité 3, 427 segments inchangés, 124 `(units`, `pad_prop_heatsink` = 1. Le transfert ne change que `(layer)`, donc les 112 segments gardent leur UUID. Écart : 2 copies `In2.Cu` de `853289ed`/`88eb8b10`, sinon la barre `PVDD` ne rejoint plus les vias de `C310`/`C311` ; `In2.Cu` = 116, `B.Cu` = 4.)* Transfert `B.Cu` → `In2.Cu`. Dépendances : F1.7. Tâches : refaire 112 segments en `In2.Cu` par net, conserver les 56 vias et les 4 segments `C310`/`C311`. Validation :
       - DRC sans `clearance`, `shorting_items`, `track_dangling`, `courtyards_overlap` ni `hole_clearance` ;
       - non-connectés 76, tous `/GND` ; parité 3 ;
       - 427 segments inchangés par UUID ; `B.Cu` = 4 segments, `In2.Cu` = 114.
@@ -427,7 +427,7 @@ E1 validée.
 
       Validation : 0 via sous `L1`/`U6`, DRC propre, parité 3.
     - [ ] F1.4-b3 Zones `/GND` `In1.Cu` et `B.Cu`. Dépendances : b2. Tâches : polygones en retrait du contour, `B.Cu` excluant `C310.1`/`C311.1`, remplissage. Validation : 0 non-connecté, DRC propre, ni îlot ni `starved_thermal`, parité 3, références continues sous chaque `INPUT`.
-    - [ ] F1.4-b4 Drain `Q301` et `PVDD`. Dépendances : b1. Tâches : zones `PVDD_FUSED` `F.Cu` + `In2.Cu` (hors `D301.2`/`R305`) avec vias de couture, dimensionnées selon la décision utilisateur sur la surface. Validation : DRC propre, surface mesurée au fichier, Tj estimée consignée.
+    - [ ] F1.4-b4 Drain `Q301` et `PVDD`. Dépendances : b1. Tâches : zones `PVDD_FUSED` `F.Cu` + `In2.Cu` (hors `D301.2`/`R305`) avec vias de couture, **agrandies** (décision utilisateur du 2026-10-18 : la boîte x 175..200, y 230..248,5 ne fait que 4,6 cm² par couche, objectif ≥ 420 cm²·µm, soit ≥ 6 cm² par couche) ; d'abord chiffrer l'agrandissement possible et les déplacements qu'il impose (`D301`, `R305`, pistes voisines). Validation : DRC propre, surface mesurée au fichier, Tj estimée consignée.
     - [ ] F1.4-b5 Clôture. Dépendances : b3, b4. Tâches : ERC/DRC complets, parité, `pad_prop_heatsink`, 124 `(units`. Validation : celle de F1.4-b.
 - [ ] F1.5 Vérifier l’absence de ratsnest et les longueurs/vias inutiles critiques.
 - [x] F1.6 Vérifier au schéma le découplage d'entrée du buck `U1` : aucun condensateur sur `BUCK_VIN` après `D3` (`C2`–`C4` côté `PVDD`). Validation : capacité locale VIN du LM5010 présente au schéma et au PCB, ou absence justifiée par la fiche technique.
