@@ -290,3 +290,9 @@ les deux régressions connues du projet : `pad_prop_heatsink` de `U1` (perdu en 
 - **Un `move_component` MCP peut retirer le bloc `(units` d'une empreinte** : recompter les
   `(units` après chaque placement. **`save_project` échoue (« found 2 ») si l'éditeur de schéma
   est ouvert en même temps que celui de PCB.**
+- **Zones (F1.4-b3/b4)** : le remplissage se fait sans IPC par `kicad-cli pcb drc --refill-zones
+  --save-board`. **Poser et remplir une zone avant d'y ajouter ses vias de couture** : un via posé
+  avant la zone a été réaffecté au net `/GND` du plan voisin. Ordre : zone → remplissage → vias
+  → second remplissage. Contrôler ensuite le net de chaque via ajouté.
+- **F8 peut annoncer « Ajouté attribut 'Ne pas placer' »** sans l'écrire au fichier (F1.7) :
+  vérifier `dnp`/`attr` au fichier plutôt que d'en déduire un changement.

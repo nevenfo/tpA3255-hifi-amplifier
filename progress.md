@@ -12,12 +12,12 @@ couture, vias thermiques `U1`/`Q301`, remplissage.
 
 ## Dernière tâche validée
 
-F1.4-b3 : zones `/GND` `In1.Cu` et `B.Cu` créées et remplies.
+F1.4-b4 : cuivre de drain `Q301` agrandi (`/PVDD_FUSED` `F.Cu` 6,54 cm², `In2.Cu` 7,16 cm², 12 vias de couture).
 
 Validation :
 - 0 non-connecté, 0 `via_dangling`.
 - DRC sans `clearance`/`shorting_items`/`track_dangling`/`courtyards_overlap`/`hole_clearance`/`solder_mask_bridge`/`starved_thermal`/`isolated_copper`.
-- Parité 3 ; aucun îlot ; pistes, vias et empreintes inchangés. PCB MD5 `a83e6740c14efea4de81de4958ae97f9`.
+- Parité 3 ; Tj ≈ 102 °C estimée. PCB MD5 `581d3783b58f78fa067fa1df4ec89c11`.
 
 ## Décisions actives
 
@@ -30,7 +30,7 @@ Validation :
   `COUT`–EP de `U1` et `AVDD`/`DVDD`. Aucun via sous `U6` ni sous `L1`.
 - Cuivre de drain `Q301` sur `F.Cu` + `In2.Cu` (plus `B.Cu`) ; `U1` : vias 2 × 3 de 0,6/0,3 mm
   dans le pad exposé, bouchés côté `B.Cu`.
-- F1.4-b, choix validés par l'utilisateur : plans en retrait de 0,5 mm, pas de zone `PVDD` en `In2.Cu`, règle DRU interdisant les vias sous `L1`/`U6`, couture par pad. Drain `Q301` : agrandir à ≥ 6 cm² par couche.
+- F1.4-b, choix validés par l'utilisateur : plans en retrait de 0,5 mm, pas de zone `PVDD` en `In2.Cu`, règle DRU interdisant les vias sous `L1`/`U6`, couture par pad. Drain `Q301` agrandi (b4) ; Tj à mesurer en H2.
 - Vias dans les pads `C303.2`/`C206.2` et dans l'EP de `U1` : à faire boucher et capper (G1).
 - Sérigraphie à traiter en bloc. Interdiction composants `x` [280 ; 291], `y` [160 ; 190].
 
@@ -47,5 +47,5 @@ Aucun. Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb 
 
 ## NEXT ACTION
 
-F1.4-b4 — chiffrer au fichier l'agrandissement du cuivre de drain `Q301` (≥ 6 cm² par couche, `F.Cu` + `In2.Cu`) :
-emprise possible et déplacements nécessaires (`D301`, `R305`, pistes) ; appliquer si local, sinon soumettre à l'utilisateur.
+F1.4-b5 — clôture : ERC, DRC complet avec parité, `pad_prop_heatsink`, 124 `(units`, zones à jour ;
+valider selon F1.4-b, puis cocher F1.4.
