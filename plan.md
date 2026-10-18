@@ -480,7 +480,7 @@ E1 validée.
     - non-connectés tous `GND`, aucun via sous `L1` ;
     - pistes hors zone identiques par UUID, sauf reprises déclarées.
 
-- [ ] F1.8 Nettoyage du routage (anomalies F1.5, toutes fonctionnelles au DRC).
+- [x] F1.8 Nettoyage du routage (anomalies F1.5, toutes fonctionnelles au DRC). *(**PASS** 2026-10-18, MD5 `70e315fad1997ce7b3616006aac5cd1b`. 23 éléments supprimés, dont 22 micro-segments ; 6 modifiés ; 3 ajoutés. Restent 2 micro-segments utiles : `566b5a3b`, `20d20fe0`. DRC inchangé, 0 non-connecté, parité 3. `OUT` à Δ 0 mm, `INPUT` à Δ ≤ 0,14 mm. Zones identiques.)*
   - **Dépendances** : F1.5.
   - **Tâches** :
     - fusionner les segments `SS` `a61a4555`/`de15abac` ;
@@ -494,6 +494,8 @@ E1 validée.
 ### Validation
 
 Routage terminé, zones remplies, contraintes critiques inspectées.
+
+**PASS** 2026-10-18 (F1.1–F1.8) : PCB `70e315fa`, 0 non-connecté, DRC sans violation autre que la sérigraphie (90 + 26), parité 3, 4 zones remplies.
 
 # Phase G — Validation PCB
 

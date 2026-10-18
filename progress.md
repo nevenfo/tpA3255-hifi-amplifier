@@ -2,21 +2,20 @@
 
 ## Phase actuelle
 
-Phase F — Routage. F1.1 à F1.7 validées ; reste F1.8 (nettoyage), puis PR de la phase F.
+Phase F — Routage validée (F1.1–F1.8), PR vers `main` à ouvrir. Phase G — Validation PCB à démarrer.
 Branche `ai/f1.4-plane-strategy`.
 
 ## Tâche actuelle
 
-F1.8 — nettoyage des anomalies mineures relevées en F1.5.
+G1.1 — DRC final archivé.
 
 ## Dernière tâche validée
 
-F1.4-b5 et F1.5 : routage complet et zones à jour.
+F1.8 : nettoyage du routage, ce qui clôt la phase F.
 
 Validation :
-- ERC : 16 avertissements connus. DRC complet : seuls `silk_overlap` 90 et `silk_over_copper` 26 restent.
-- 0 non-connecté, parité 3 ; zones du fichier identiques au rejeu.
-- 128 vias, aucun inutile ni sur `OUT`. PCB MD5 `581d3783b58f78fa067fa1df4ec89c11`.
+- DRC : seuls `silk_overlap` 90 et `silk_over_copper` 26 restent ; 0 non-connecté, 0 `via_dangling`, parité 3.
+- Longueurs `OUT` inchangées, `INPUT` à Δ ≤ 0,14 mm ; zones identiques. PCB MD5 `70e315fad1997ce7b3616006aac5cd1b`.
 
 ## Décisions actives
 
@@ -39,11 +38,12 @@ Aucun. Éditeur PCB fermé : travail au fichier, remplissage par `kicad-cli pcb 
 
 ## Fichiers / zones utiles
 
-- `plan.md` F1.4-b et F1.7 (`+15V` en `In2.Cu` à relire).
+- `plan.md` G1 ; points reportés en G1 : vias dans les pads `C303.2`/`C206.2`/EP `U1`, broches `GND` du TPA3255 (SLASEG), écart de 40 mm entre les paires `INPUT` A–B et C–D, dog-bones `U6` à la limite, sérigraphie.
 - `docs/plane-strategy-f1.4-a.md` — mesures, préconditions F1.4-b.
 - `docs/kicad-operations.md` — à lire avant manipulation.
 - `HifiAmp_TPA3255.kicad_pcb`.
 
 ## NEXT ACTION
 
-F1.8 — appliquer au fichier les nettoyages listés dans `plan.md` F1.8, re-remplir les zones, valider.
+G1.1 — exécuter le DRC final (avec parité et `--severity-all`) et archiver le rapport dans `docs/`,
+après ouverture de la PR de la phase F vers `main`.
